@@ -27,11 +27,11 @@ export default async function LoginPage({
         <div className="flex justify-center mb-8">
           <Image
             src="/logo.png"
-            alt="MD Clinics"
-            width={240}
-            height={240}
+            alt="MD Clinics — مجمع عيادات د. مها دحلان الطبي"
+            width={160}
+            height={160}
             priority
-            style={{ width: "auto", height: 120, objectFit: "contain" }}
+            className="h-36 w-36 object-contain drop-shadow-sm"
           />
         </div>
 
