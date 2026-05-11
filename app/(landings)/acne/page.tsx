@@ -326,109 +326,48 @@ export default function AcneLanding() {
       {/* ────────────── HERO ────────────── */}
       <header
         id="top"
-        className="relative pt-24 sm:pt-28 lg:pt-36 pb-16 sm:pb-24 lg:pb-32"
+        className="relative pt-24 sm:pt-28 lg:pt-32 pb-20 sm:pb-28 lg:pb-32 overflow-hidden"
       >
+        {/* Decorative grid + dot pattern */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 opacity-[0.07] [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_75%)]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, #3d301a 1px, transparent 0)",
+            backgroundSize: "26px 26px",
+          }}
+        />
+
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-            {/* Image — first on mobile so it reads as the visual hook */}
-            <div className="relative order-1 lg:order-2 lg:col-span-6">
-              <div className="relative w-full aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] rounded-[2rem] lg:rounded-[3rem] overflow-hidden bg-stone-200 shadow-[0_30px_60px_-15px_rgba(61,48,26,0.25)]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={heroIndex}
-                    initial={{ opacity: 0, scale: 1.06 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.97 }}
-                    transition={{ duration: 1, ease: [0.2, 0.7, 0.2, 1] }}
-                    className="absolute inset-0"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={heroImages[heroIndex]}
-                      alt="بشرة صافية بعد علاج حب الشباب"
-                      className="absolute inset-0 w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 via-transparent to-transparent" />
-
-                {/* Slide indicator dots */}
-                <div className="absolute bottom-4 inset-x-0 flex justify-center gap-1.5">
-                  {heroImages.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setHeroIndex(i)}
-                      aria-label={`عرض الصورة ${i + 1}`}
-                      className={`h-1.5 rounded-full transition-all duration-500 ${
-                        i === heroIndex
-                          ? "w-8 bg-white"
-                          : "w-1.5 bg-white/50"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Floating glass card */}
-              <div
-                data-reveal
-                className="absolute -bottom-6 -right-3 sm:right-6 lg:-right-8 acne-card p-4 sm:p-5 max-w-[230px] sm:max-w-[280px] shadow-xl shadow-stone-900/10"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center shadow-lg shadow-gold-700/30 shrink-0">
-                    <CheckCircle2 className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-stone-900 text-sm sm:text-base">
-                      نتائج طبية مثبتة
-                    </div>
-                    <div className="text-xs text-stone-500">
-                      أحدث أجهزة الليزر العالمية
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Experience badge */}
-              <div
-                data-reveal
-                className="hidden sm:flex absolute -top-4 -left-4 lg:-left-10 acne-card !rounded-2xl px-5 py-4 shadow-xl shadow-stone-900/10 items-center gap-3"
-              >
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-black text-gold-700">
-                    <span data-count="20" data-count-suffix="+">0</span>
-                  </div>
-                  <div className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">
-                    عاماً من الخبرة
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="order-2 lg:order-1 lg:col-span-6 space-y-6 sm:space-y-8">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* CONTENT */}
+            <div className="order-2 lg:order-1 lg:col-span-7 space-y-7 sm:space-y-9 text-right">
               <div
                 data-hero-cta
-                className="opacity-0 translate-y-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-100/70 text-gold-800 text-xs md:text-sm font-semibold border border-gold-200/60 backdrop-blur"
+                className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/70 text-gold-800 text-xs md:text-sm font-semibold border border-gold-200/60 backdrop-blur-lg shadow-sm shadow-stone-900/[0.04]"
               >
-                <Star className="w-3.5 h-3.5 fill-gold-600 text-gold-600" />
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inset-0 rounded-full bg-gold-500 animate-ping opacity-70" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-600" />
+                </span>
                 <span>الخيار الأول لعلاج حب الشباب في جدة</span>
               </div>
 
               <h1
                 data-hero-headline
-                className="text-[2rem] sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.15] text-stone-900 tracking-tight"
+                className="text-[2.25rem] sm:text-6xl lg:text-7xl xl:text-[5.5rem] font-black leading-[1.05] text-stone-900 tracking-[-0.02em]"
               >
-                استعدّي ثقتكِ ببشرة صافية تنطق بها مرآتك.
+                بشرتكِ تستحق فصلاً جديداً من الصفاء.
               </h1>
 
               <p
                 data-hero-sub
-                className="opacity-0 translate-y-3 text-base sm:text-lg lg:text-xl text-stone-600 leading-relaxed max-w-xl font-light"
+                className="text-base sm:text-lg lg:text-xl text-stone-600 leading-relaxed max-w-xl font-light mr-0 ms-auto lg:ms-0"
               >
-                وداعاً لحب الشباب وآثاره — بروتوكول طبي مخصص بأحدث أجهزة
-                الليزر، تحت إشراف نخبة استشاريي الجلدية والتجميل في جدة.
+                نُصمم لكِ بروتوكولاً طبياً مخصصاً يدمج أحدث أجهزة الليزر مع
+                خبرة نخبة استشاريي الجلدية في جدة — لتخرجي من العيادة بثقة
+                ترينها قبل أن تشعري بها.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
@@ -437,7 +376,7 @@ export default function AcneLanding() {
                   href={WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="acne-btn-primary opacity-0 translate-y-3 !py-4 sm:!py-5 !px-7 sm:!px-9 text-base sm:text-lg"
+                  className="acne-btn-primary !py-4 sm:!py-5 !px-7 sm:!px-9 text-base sm:text-lg"
                 >
                   <WhatsAppIcon className="w-6 h-6" />
                   <span>احجزي استشارتك الآن</span>
@@ -450,56 +389,170 @@ export default function AcneLanding() {
                       .getElementById("doctors")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="acne-btn-ghost opacity-0 translate-y-3 !py-4 sm:!py-5 !px-7 sm:!px-9 text-base sm:text-lg"
+                  className="acne-btn-ghost !py-4 sm:!py-5 !px-7 sm:!px-9 text-base sm:text-lg"
                 >
                   <User className="w-5 h-5 text-gold-700" />
                   <span>تعرّفي على أطبائنا</span>
                 </button>
               </div>
 
-              {/* Stat strip */}
-              <dl className="grid grid-cols-3 gap-4 pt-6 sm:pt-8 max-w-lg">
-                {[
-                  { label: "تقييم Google", v: "4.8", suffix: "★" },
-                  {
-                    label: "عميلة سعيدة",
-                    v: "1158",
-                    suffix: "+",
-                    isCount: true,
-                  },
-                  {
-                    label: "سنة خبرة",
-                    v: "20",
-                    suffix: "+",
-                    isCount: true,
-                  },
-                ].map((s, i) => (
-                  <div
-                    key={i}
-                    data-reveal
-                    className="border-t border-stone-300/60 pt-3"
-                  >
-                    <dt className="text-[11px] font-semibold text-stone-500 tracking-widest uppercase">
-                      {s.label}
-                    </dt>
-                    <dd className="mt-1 font-black text-2xl sm:text-3xl text-stone-900">
-                      {s.isCount ? (
-                        <>
-                          <span data-count={s.v}>0</span>
-                          <span className="text-gold-700">{s.suffix}</span>
-                        </>
-                      ) : (
-                        <>
-                          {s.v}
-                          <span className="text-gold-700">{s.suffix}</span>
-                        </>
-                      )}
-                    </dd>
+              {/* Social-proof pill — avatar stack + rating */}
+              <div
+                data-hero-cta
+                className="flex flex-wrap items-center gap-4 pt-2"
+              >
+                <div className="flex -space-x-2 rtl:space-x-reverse rtl:-space-x-reverse">
+                  {doctors.slice(0, 4).map((d, i) => (
+                    <div
+                      key={i}
+                      className="relative w-10 h-10 rounded-full ring-2 ring-white overflow-hidden bg-stone-200"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={d.img}
+                        alt={d.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="text-sm">
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                      />
+                    ))}
+                    <span className="font-bold text-stone-900 ms-1">4.8</span>
                   </div>
-                ))}
-              </dl>
+                  <div className="text-xs text-stone-500 leading-tight mt-0.5">
+                    تحت إشراف ٤ استشاريات — أكثر من ١٬١٥٨ تقييم
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* IMAGE CARD */}
+            <div className="order-1 lg:order-2 lg:col-span-5 relative">
+              {/* Backdrop frame */}
+              <div
+                aria-hidden
+                className="absolute inset-0 -m-3 sm:-m-4 rounded-[2.4rem] sm:rounded-[3rem] border border-gold-300/40 bg-gradient-to-br from-gold-100/40 via-transparent to-transparent"
+              />
+
+              <div className="relative w-full aspect-[4/5] rounded-[2rem] sm:rounded-[2.6rem] overflow-hidden bg-stone-200 shadow-[0_40px_80px_-20px_rgba(61,48,26,0.35)]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={heroIndex}
+                    initial={{ opacity: 0, scale: 1.08 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 1.1, ease: [0.2, 0.7, 0.2, 1] }}
+                    className="absolute inset-0"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={heroImages[heroIndex]}
+                      alt="بشرة صافية بعد علاج حب الشباب"
+                      className="absolute inset-0 w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/45 via-stone-900/0 to-stone-900/10" />
+
+                {/* Top chip */}
+                <div className="absolute top-4 right-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/85 backdrop-blur-md text-[11px] font-bold text-gold-800 tracking-wider border border-white/60">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>تقنية ليزر معتمدة عالمياً</span>
+                </div>
+
+                {/* Slide indicator dots */}
+                <div className="absolute bottom-5 inset-x-0 flex justify-center gap-1.5">
+                  {heroImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setHeroIndex(i)}
+                      aria-label={`عرض الصورة ${i + 1}`}
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
+                        i === heroIndex
+                          ? "w-8 bg-white"
+                          : "w-1.5 bg-white/55 hover:bg-white/80"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Floating stat: years */}
+              <div
+                data-reveal
+                className="absolute -top-4 sm:-top-6 -right-3 sm:-right-6 lg:-right-10 acne-card !rounded-2xl px-4 py-3 sm:px-5 sm:py-4 shadow-2xl shadow-stone-900/15 flex items-center gap-3"
+              >
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-black text-gold-700 leading-none">
+                    <span data-count="20" data-count-suffix="+">20+</span>
+                  </div>
+                  <div className="text-[9px] sm:text-[10px] font-bold text-stone-500 uppercase tracking-widest mt-1">
+                    عاماً من الخبرة
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating result badge */}
+              <div
+                data-reveal
+                className="absolute -bottom-5 sm:-bottom-6 -left-3 sm:-left-6 lg:-left-10 acne-card p-4 sm:p-5 max-w-[230px] sm:max-w-[270px] shadow-2xl shadow-stone-900/15"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center shadow-lg shadow-gold-700/30 shrink-0">
+                    <CheckCircle2 className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-stone-900 text-sm sm:text-base leading-tight">
+                      نتائج مثبتة
+                    </div>
+                    <div className="text-xs text-stone-500 mt-0.5">
+                      ٩٢٪ من حالاتنا تستجيب
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* Stat strip */}
+          <dl className="mt-20 sm:mt-24 lg:mt-28 grid grid-cols-3 gap-4 sm:gap-8 max-w-3xl">
+            {[
+              { label: "تقييم Google", v: "4.8", suffix: "★" },
+              { label: "عميلة سعيدة", v: "1158", suffix: "+", isCount: true },
+              { label: "سنة خبرة", v: "20", suffix: "+", isCount: true },
+            ].map((s, i) => (
+              <div
+                key={i}
+                data-reveal
+                className="border-t border-stone-300/60 pt-3 sm:pt-4"
+              >
+                <dt className="text-[11px] font-semibold text-stone-500 tracking-widest uppercase">
+                  {s.label}
+                </dt>
+                <dd className="mt-1 font-black text-2xl sm:text-4xl text-stone-900">
+                  {s.isCount ? (
+                    <>
+                      <span data-count={s.v}>{s.v}</span>
+                      <span className="text-gold-700">{s.suffix}</span>
+                    </>
+                  ) : (
+                    <>
+                      {s.v}
+                      <span className="text-gold-700">{s.suffix}</span>
+                    </>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </header>
 

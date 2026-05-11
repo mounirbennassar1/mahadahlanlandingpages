@@ -126,17 +126,17 @@
   background: var(--color-gold-500);
 }
 
-/* ─── Reveal targets used by the GSAP module */
+/* ─── Reveal targets used by the GSAP module
+ * Important: do NOT hide elements with CSS. The animation module sets the
+ * initial hidden state in JS (gsap.set) so content stays visible whenever
+ * JS fails to run, hydration is delayed, or the user has reduced motion.
+ */
 .acne-landing [data-reveal],
 .acne-landing [data-reveal-stagger] > * {
-  opacity: 0;
-  transform: translate3d(0, 24px, 0);
   will-change: transform, opacity;
 }
 .acne-landing [data-reveal-char] {
   display: inline-block;
-  opacity: 0;
-  transform: translate3d(0, 40%, 0);
   will-change: transform, opacity;
 }
 
@@ -190,12 +190,6 @@
 
 /* ─── Smooth scroll only when motion is fine */
 @media (prefers-reduced-motion: reduce) {
-  .acne-landing [data-reveal],
-  .acne-landing [data-reveal-stagger] > *,
-  .acne-landing [data-reveal-char] {
-    opacity: 1;
-    transform: none;
-  }
   .acne-landing .acne-halo,
   .acne-landing .acne-marquee {
     animation: none;
