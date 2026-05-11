@@ -558,9 +558,16 @@ export default function AcneLanding() {
 
       {/* ────────────── MARQUEE ────────────── */}
       <section className="border-y border-stone-200/60 bg-white/60 py-5 overflow-hidden">
-        <div className="acne-marquee whitespace-nowrap font-bold text-2xl sm:text-3xl text-stone-700/80 gap-8">
+        <div
+          className="acne-marquee whitespace-nowrap font-bold text-2xl sm:text-3xl text-stone-700/80"
+          dir="ltr"
+        >
           {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-8 pe-8">
+            <div
+              key={i}
+              aria-hidden={i === 1}
+              className="flex items-center gap-8 pr-8 shrink-0"
+            >
               {marqueeWords.map((w, j) => (
                 <span
                   key={`${i}-${j}`}
