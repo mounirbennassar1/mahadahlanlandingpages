@@ -5,18 +5,20 @@ export const runtime = "nodejs";
 /**
  * Shared lead-ingestion proxy.
  *
- * All landing pages POST here with `{ fullName, phone, city, source }`. We
- * forward to the existing dashboard's ingest endpoint at
- * `${LEAD_PANEL_URL}/api/leads` with `Authorization: Bearer ${LEAD_API_KEY}`.
- * The dashboard owns the database and validation.
+ * Each landing POSTs here with `{ fullName, phone, city, source }`. We look
+ * up the per-source API key in the env (`LEAD_API_KEY_<UPPER_SLUG>`) and
+ * forward to the dashboard's ingest endpoint. The dashboard derives the
+ * source from the API key, so the body is just the lead fields.
+ *
+ *   slug: "dark-circles"  →  env: LEAD_API_KEY_DARK_CIRCLES
+ *   slug: "hyperpigmentation"  →  env: LEAD_API_KEY_HYPERPIGMENTATION
  */
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.LEAD_API_KEY;
   const panelUrl = process.env.LEAD_PANEL_URL;
 
-  if (!apiKey || !panelUrl) {
+  if (!panelUrl) {
     return Response.json(
-      { error: "Lead API is not configured on the server." },
+      { error: "Lead panel URL is not configured." },
       { status: 500 },
     );
   }
@@ -38,14 +40,24 @@ export async function POST(request: NextRequest) {
   const phone = typeof payload.phone === "string" ? payload.phone.trim() : "";
   const city = typeof payload.city === "string" ? payload.city.trim() : "";
   const source =
-    typeof payload.source === "string" && payload.source.trim()
-      ? payload.source.trim()
-      : "unknown";
+    typeof payload.source === "string" ? payload.source.trim() : "";
 
   if (!fullName || !phone || !city) {
     return Response.json(
       { error: "الرجاء تعبئة الاسم الكامل ورقم الجوال والمدينة." },
       { status: 400 },
+    );
+  }
+  if (!source) {
+    return Response.json({ error: "Missing source." }, { status: 400 });
+  }
+
+  const apiKey = apiKeyForSource(source);
+  if (!apiKey) {
+    console.error(`[api/leads] No API key configured for source "${source}"`);
+    return Response.json(
+      { error: "Lead source is not configured on the server." },
+      { status: 500 },
     );
   }
 
@@ -57,10 +69,10 @@ export async function POST(request: NextRequest) {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: `Bearer ${apiKey}`,
-          "X-API-Key": apiKey,
+          "x-api-key": apiKey,
         },
-        body: JSON.stringify({ fullName, phone, city, source }),
+        // dashboard derives source from key — body is just the lead fields
+        body: JSON.stringify({ fullName, phone, city }),
         cache: "no-store",
       },
     );
@@ -89,6 +101,11 @@ export async function POST(request: NextRequest) {
       { status: 502 },
     );
   }
+}
+
+function apiKeyForSource(source: string): string | undefined {
+  const envName = `LEAD_API_KEY_${source.replace(/-/g, "_").toUpperCase()}`;
+  return process.env[envName];
 }
 
 function safeParse(text: string) {

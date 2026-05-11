@@ -39,10 +39,12 @@ export async function submitHairLead(
   }
 
   const panelUrl = process.env.LEAD_PANEL_URL;
-  const apiKey = process.env.LEAD_API_KEY;
+  const apiKey = process.env.LEAD_API_KEY_HAIR;
 
   if (!panelUrl || !apiKey) {
-    console.error("[submitHairLead] Missing LEAD_PANEL_URL or LEAD_API_KEY env var");
+    console.error(
+      "[submitHairLead] Missing LEAD_PANEL_URL or LEAD_API_KEY_HAIR env var",
+    );
     return {
       status: "server_error",
       message:
@@ -59,7 +61,8 @@ export async function submitHairLead(
         "content-type": "application/json",
         "x-api-key": apiKey,
       },
-      body: JSON.stringify({ fullName, phone, city, source: "hair" }),
+      // Dashboard derives source from the API key — body is just lead fields.
+      body: JSON.stringify({ fullName, phone, city }),
       cache: "no-store",
     });
   } catch (err) {
