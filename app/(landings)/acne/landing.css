@@ -1,8 +1,7 @@
 /* Acne landing — Tailwind v4 design tokens used by this page's utility
- * classes (text-gold-600, bg-gold-100, etc.). The same token names exist
- * in other landings (e.g. botox) with different values; the wrapper class
- * below re-declares them so this landing's subtree wins regardless of
- * which file's @theme block is emitted last to :root.
+ * classes (text-gold-600, bg-gold-100, etc.). Token names are shared with
+ * other landings (e.g. botox), so the wrapper class below re-declares them
+ * to win locally regardless of which file's @theme block lands in :root.
  */
 @theme {
   --color-gold-50: #faf8f2;
@@ -18,8 +17,8 @@
 }
 
 .acne-landing {
-  background: #ffffff;
-  color: #171717;
+  background: #faf8f4;
+  color: #1a1a1a;
 
   --color-gold-50: #faf8f2;
   --color-gold-100: #f0ead6;
@@ -31,4 +30,174 @@
   --color-gold-700: #7a5e30;
   --color-gold-800: #634b28;
   --color-gold-900: #3d301a;
+
+  --acne-ink: #1a1a1a;
+  --acne-ink-soft: #4a4a48;
+  --acne-cream: #faf8f4;
+  --acne-cream-deep: #f1ece1;
+  --acne-line: #e7e1d2;
+}
+
+/* ─── Primary CTA: solid gold gradient + ring for unmistakable contrast */
+.acne-landing .acne-btn-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  color: #fff;
+  background-image: linear-gradient(
+    135deg,
+    var(--color-gold-500) 0%,
+    var(--color-gold-700) 100%
+  );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 10px 30px -10px rgba(122, 94, 48, 0.55),
+    0 4px 12px -4px rgba(122, 94, 48, 0.4);
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.25s ease,
+    background-position 0.4s ease;
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+}
+.acne-landing .acne-btn-primary:hover {
+  background-position: 100% 50%;
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 18px 40px -12px rgba(122, 94, 48, 0.6),
+    0 6px 16px -6px rgba(122, 94, 48, 0.45);
+}
+.acne-landing .acne-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ─── Ghost CTA: outlined for the rare secondary action */
+.acne-landing .acne-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  color: var(--acne-ink);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--acne-line);
+  backdrop-filter: blur(8px);
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+.acne-landing .acne-btn-ghost:hover {
+  border-color: var(--color-gold-500);
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+/* ─── Card surfaces */
+.acne-landing .acne-card {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--acne-line);
+  border-radius: 28px;
+  backdrop-filter: blur(10px);
+}
+
+.acne-landing .acne-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold-700);
+}
+.acne-landing .acne-eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: var(--color-gold-500);
+}
+
+/* ─── Reveal targets used by the GSAP module */
+.acne-landing [data-reveal],
+.acne-landing [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  will-change: transform, opacity;
+}
+.acne-landing [data-reveal-char] {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 40%, 0);
+  will-change: transform, opacity;
+}
+
+/* ─── Hero animated halo (CSS for fallback when JS reduced-motion) */
+@keyframes acne-halo {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.45; }
+  50% { transform: translate3d(20px, -20px, 0) scale(1.15); opacity: 0.6; }
+}
+.acne-landing .acne-halo {
+  animation: acne-halo 14s ease-in-out infinite;
+}
+
+/* ─── Marquee track */
+.acne-landing .acne-marquee {
+  display: flex;
+  width: max-content;
+  animation: acne-marquee 38s linear infinite;
+}
+@keyframes acne-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── Scroll progress bar */
+.acne-landing .acne-progress {
+  position: fixed;
+  top: 0;
+  inset-inline-end: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-gold-400),
+    var(--color-gold-700)
+  );
+  transform-origin: right center;
+  transform: scaleX(0);
+  z-index: 60;
+  will-change: transform;
+}
+
+/* ─── Sticky mobile CTA bar safe-area padding */
+.acne-landing .acne-mobile-cta {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* ─── Selection style */
+.acne-landing ::selection {
+  background: var(--color-gold-200);
+  color: var(--color-gold-900);
+}
+
+/* ─── Smooth scroll only when motion is fine */
+@media (prefers-reduced-motion: reduce) {
+  .acne-landing [data-reveal],
+  .acne-landing [data-reveal-stagger] > *,
+  .acne-landing [data-reveal-char] {
+    opacity: 1;
+    transform: none;
+  }
+  .acne-landing .acne-halo,
+  .acne-landing .acne-marquee {
+    animation: none;
+  }
 }
