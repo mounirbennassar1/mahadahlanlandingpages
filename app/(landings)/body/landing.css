@@ -1,0 +1,146 @@
+/* Body landing — terracotta + gold palette for HIFEM body-sculpting page.
+ * All tokens are prefixed `body-*` so Tailwind utilities like `bg-body-bg`,
+ * `text-body-accent`, `border-body-line` don't collide with the global
+ * `--color-background` / `--color-foreground` tokens or other landings.
+ */
+@theme {
+  --color-body-bg: #f5f1ea;
+  --color-body-surface: #ede6d8;
+  --color-body-surface-strong: #e5dcc9;
+  --color-body-fg: #161513;
+  --color-body-muted: #6a645b;
+  --color-body-line: #d9cfbc;
+  --color-body-accent: #c15f3c;
+  --color-body-accent-deep: #8f3f23;
+  --color-body-accent-soft: #e9b79f;
+  --color-body-gold: #b08c4a;
+}
+
+.body-landing {
+  background: var(--color-body-bg);
+  color: var(--color-body-fg);
+  font-family: var(--font-cairo), "IBM Plex Sans Arabic", sans-serif;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+.body-landing .font-display-body {
+  font-family: var(--font-plex-arabic), var(--font-cairo), sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.body-landing ::selection {
+  background: var(--color-body-accent);
+  color: #fff;
+}
+
+.body-landing .grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(22, 21, 19, 0.6) 1px,
+    transparent 0
+  );
+  background-size: 3px 3px;
+}
+
+.body-landing .hairline {
+  background: linear-gradient(
+    to left,
+    transparent,
+    var(--color-body-line) 20%,
+    var(--color-body-line) 80%,
+    transparent
+  );
+  height: 1px;
+  width: 100%;
+}
+
+.body-landing .marquee-track {
+  display: flex;
+  width: max-content;
+  animation: body-marquee 40s linear infinite;
+}
+
+@keyframes body-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+.body-landing .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.body-landing .reveal-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40%);
+  will-change: transform, opacity;
+}
+
+.body-landing .btn-primary-body {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 999px;
+  background: var(--color-body-fg);
+  color: var(--color-body-bg);
+  font-weight: 500;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.body-landing .btn-primary-body:hover {
+  background: var(--color-body-accent-deep);
+  transform: translateY(-1px);
+}
+
+.body-landing .btn-ghost-body {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-body-line);
+  color: var(--color-body-fg);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.body-landing .btn-ghost-body:hover {
+  border-color: var(--color-body-fg);
+  background: rgba(22, 21, 19, 0.04);
+}
+
+.body-landing .card-body {
+  background: rgba(255, 253, 248, 0.55);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-body-line);
+  border-radius: 22px;
+}
+
+.body-landing .eyebrow-body {
+  font-size: 0.75rem;
+  color: var(--color-body-muted);
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .body-landing .marquee-track {
+    animation: none;
+  }
+  .body-landing .reveal,
+  .body-landing .reveal-char {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,34 +1,74 @@
-// Centralized landing pages — Prisma schema.
-//
-// The real models live in the existing dashboard's Postgres database. To
-// import them into this project, set DATABASE_URL in .env then run:
-//
-//     npx prisma db pull
-//     npx prisma generate
-//
-// `db pull` will replace the models below with whatever already exists in
-// the dashboard's database (e.g. submissions / leads / users). Keep the
-// generator + datasource blocks unchanged.
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
-// Placeholder model — will be overwritten by `prisma db pull`.
-model Lead {
-  id        String   @id @default(cuid())
-  source    String
-  name      String?
-  email     String?
-  phone     String?
-  message   String?
-  metadata  Json?
-  createdAt DateTime @default(now())
+enum UserRole {
+  ADMIN
+  MANAGER
+  AGENT
+}
 
-  @@index([source])
-  @@index([createdAt])
+enum LeadStatus {
+  INQUIRY
+  CONFIRMED
+  BOOKED
+  CANCELLED
+  NO_ANSWER
+  NOT_INTERESTED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  passwordHash  String
+  role          UserRole  @default(AGENT)
+  avatarHue     Int       @default(295)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  assignedLeads Lead[]    @relation("AssignedLeads")
+}
+
+model LeadSource {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  label       String
+  apiKeyHash  String   @unique
+  apiKeyHint  String
+  origin      String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  leads       Lead[]
+}
+
+model Lead {
+  id          String     @id @default(cuid())
+  fullName    String
+  phone       String
+  city        String
+  status      LeadStatus @default(INQUIRY)
+  notesCount  Int        @default(0)
+
+  sourceId    String
+  source      LeadSource @relation(fields: [sourceId], references: [id])
+
+  assigneeId  String?
+  assignee    User?      @relation("AssignedLeads", fields: [assigneeId], references: [id])
+
+  submittedAt DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([sourceId, submittedAt])
+  @@index([status])
+  @@index([assigneeId])
+  @@index([city])
 }

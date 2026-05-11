@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
 export type LeadFormState = {
   status: "idle" | "validation_error" | "server_error";
@@ -38,35 +39,23 @@ export async function submitHairLead(
     };
   }
 
-  const panelUrl = process.env.LEAD_PANEL_URL;
-  const apiKey = process.env.LEAD_API_KEY_HAIR;
-
-  if (!panelUrl || !apiKey) {
-    console.error(
-      "[submitHairLead] Missing LEAD_PANEL_URL or LEAD_API_KEY_HAIR env var",
-    );
-    return {
-      status: "server_error",
-      message:
-        "حدث خطأ ما، يرجى المحاولة لاحقاً أو الاتصال بنا على 920007515",
-      values: { fullName, phone, city },
-    };
-  }
-
-  let response: Response;
   try {
-    response = await fetch(`${panelUrl.replace(/\/+$/, "")}/api/leads`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": apiKey,
-      },
-      // Dashboard derives source from the API key — body is just lead fields.
-      body: JSON.stringify({ fullName, phone, city }),
-      cache: "no-store",
+    const source = await prisma.leadSource.findUnique({ where: { slug: "hair" } });
+    if (!source || !source.active) {
+      console.error("[submitHairLead] Source 'hair' missing or inactive — run db:seed.");
+      return {
+        status: "server_error",
+        message:
+          "حدث خطأ ما، يرجى المحاولة لاحقاً أو الاتصال بنا على 920007515",
+        values: { fullName, phone, city },
+      };
+    }
+
+    await prisma.lead.create({
+      data: { fullName, phone, city, sourceId: source.id },
     });
   } catch (err) {
-    console.error("[submitHairLead] network error", err);
+    console.error("[submitHairLead] DB error", err);
     return {
       status: "server_error",
       message:
@@ -75,47 +64,5 @@ export async function submitHairLead(
     };
   }
 
-  if (response.status === 200 || response.status === 201) {
-    redirect("/hair/thank-you");
-  }
-
-  if (response.status === 400) {
-    let issues: Record<string, string> = {};
-    try {
-      const data = (await response.json()) as {
-        error?: string;
-        issues?: Record<string, unknown>;
-      };
-      if (data.issues && typeof data.issues === "object") {
-        for (const [key, value] of Object.entries(data.issues)) {
-          if (typeof value === "string") {
-            issues[key] = value;
-          } else if (Array.isArray(value) && typeof value[0] === "string") {
-            issues[key] = value[0];
-          }
-        }
-      }
-    } catch {
-      issues = {};
-    }
-    return {
-      status: "validation_error",
-      issues,
-      values: { fullName, phone, city },
-    };
-  }
-
-  let detail = "";
-  try {
-    detail = await response.text();
-  } catch {}
-  console.error(
-    `[submitHairLead] panel responded ${response.status}: ${detail.slice(0, 500)}`,
-  );
-  return {
-    status: "server_error",
-    message:
-      "حدث خطأ ما، يرجى المحاولة لاحقاً أو الاتصال بنا على 920007515",
-    values: { fullName, phone, city },
-  };
+  redirect("/hair/thank-you");
 }

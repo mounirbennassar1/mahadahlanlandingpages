@@ -1,117 +1,108 @@
-import { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
+import { prisma } from "@/lib/prisma";
+import { hashApiKey } from "@/lib/api-key";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 /**
- * Shared lead-ingestion proxy.
+ * Unified lead-ingest endpoint.
  *
- * Each landing POSTs here with `{ fullName, phone, city, source }`. We look
- * up the per-source API key in the env (`LEAD_API_KEY_<UPPER_SLUG>`) and
- * forward to the dashboard's ingest endpoint. The dashboard derives the
- * source from the API key, so the body is just the lead fields.
+ * Two ways to identify the source:
+ *   1. External clients send an `x-api-key` header (issued via /dashboard/sources).
+ *      The source is derived from the key's sha256 hash.
+ *   2. Same-origin clients (our landings) send `source: "<slug>"` in the JSON
+ *      body. The source is looked up by slug.
  *
- *   slug: "dark-circles"  →  env: LEAD_API_KEY_DARK_CIRCLES
- *   slug: "hyperpigmentation"  →  env: LEAD_API_KEY_HYPERPIGMENTATION
+ * In both cases the body must be `{ fullName, phone, city }`.
  */
-export async function POST(request: NextRequest) {
-  const panelUrl = process.env.LEAD_PANEL_URL;
+const BodySchema = z.object({
+  fullName: z.string().trim().min(2).max(120),
+  phone: z.string().trim().min(5).max(32),
+  city: z.string().trim().min(2).max(80),
+  source: z.string().trim().min(1).max(64).optional(),
+});
 
-  if (!panelUrl) {
-    return Response.json(
-      { error: "Lead panel URL is not configured." },
-      { status: 500 },
-    );
-  }
+const ALLOWED_ORIGINS = (process.env.LANDING_ORIGINS ?? "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
-  let payload: {
-    fullName?: unknown;
-    phone?: unknown;
-    city?: unknown;
-    source?: unknown;
+function corsHeaders(origin: string | null): Record<string, string> {
+  const allow =
+    origin && (ALLOWED_ORIGINS.length === 0 || ALLOWED_ORIGINS.includes(origin))
+      ? origin
+      : ALLOWED_ORIGINS[0] ?? "*";
+  return {
+    "Access-Control-Allow-Origin": allow,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, x-api-key",
+    "Access-Control-Max-Age": "86400",
+    Vary: "Origin",
   };
-  try {
-    payload = await request.json();
-  } catch {
-    return Response.json({ error: "Invalid JSON body." }, { status: 400 });
-  }
-
-  const fullName =
-    typeof payload.fullName === "string" ? payload.fullName.trim() : "";
-  const phone = typeof payload.phone === "string" ? payload.phone.trim() : "";
-  const city = typeof payload.city === "string" ? payload.city.trim() : "";
-  const source =
-    typeof payload.source === "string" ? payload.source.trim() : "";
-
-  if (!fullName || !phone || !city) {
-    return Response.json(
-      { error: "الرجاء تعبئة الاسم الكامل ورقم الجوال والمدينة." },
-      { status: 400 },
-    );
-  }
-  if (!source) {
-    return Response.json({ error: "Missing source." }, { status: 400 });
-  }
-
-  const apiKey = apiKeyForSource(source);
-  if (!apiKey) {
-    console.error(`[api/leads] No API key configured for source "${source}"`);
-    return Response.json(
-      { error: "Lead source is not configured on the server." },
-      { status: 500 },
-    );
-  }
-
-  try {
-    const upstream = await fetch(
-      `${panelUrl.replace(/\/+$/, "")}/api/leads`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "x-api-key": apiKey,
-        },
-        // dashboard derives source from key — body is just the lead fields
-        body: JSON.stringify({ fullName, phone, city }),
-        cache: "no-store",
-      },
-    );
-
-    const text = await upstream.text();
-    const data = text ? safeParse(text) : null;
-
-    if (!upstream.ok) {
-      return Response.json(
-        {
-          error: "تعذّر إرسال طلبكِ، حاولي مرة أخرى لاحقاً.",
-          status: upstream.status,
-          detail: data ?? text,
-        },
-        { status: 502 },
-      );
-    }
-
-    return Response.json({ success: true, data });
-  } catch (err) {
-    return Response.json(
-      {
-        error: "تعذّر الاتصال بالخادم. تحققي من اتصالكِ بالإنترنت.",
-        detail: err instanceof Error ? err.message : String(err),
-      },
-      { status: 502 },
-    );
-  }
 }
 
-function apiKeyForSource(source: string): string | undefined {
-  const envName = `LEAD_API_KEY_${source.replace(/-/g, "_").toUpperCase()}`;
-  return process.env[envName];
+export async function OPTIONS(req: NextRequest) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders(req.headers.get("origin")),
+  });
 }
 
-function safeParse(text: string) {
+export async function POST(req: NextRequest) {
+  const cors = corsHeaders(req.headers.get("origin"));
+
+  let raw: unknown;
   try {
-    return JSON.parse(text);
+    raw = await req.json();
   } catch {
-    return text;
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400, headers: cors });
   }
+
+  const parsed = BodySchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Validation failed", issues: parsed.error.flatten().fieldErrors },
+      { status: 400, headers: cors },
+    );
+  }
+
+  // Resolve source — either by API key (external) or by slug (same-origin).
+  const apiKey = req.headers.get("x-api-key");
+  let source:
+    | Awaited<ReturnType<typeof prisma.leadSource.findUnique>>
+    | null = null;
+
+  if (apiKey) {
+    source = await prisma.leadSource.findUnique({
+      where: { apiKeyHash: hashApiKey(apiKey) },
+    });
+  } else if (parsed.data.source) {
+    source = await prisma.leadSource.findUnique({
+      where: { slug: parsed.data.source },
+    });
+  }
+
+  if (!source || !source.active) {
+    return NextResponse.json(
+      { error: "Unknown or inactive source." },
+      { status: 401, headers: cors },
+    );
+  }
+
+  const lead = await prisma.lead.create({
+    data: {
+      fullName: parsed.data.fullName,
+      phone: parsed.data.phone,
+      city: parsed.data.city,
+      sourceId: source.id,
+    },
+    select: { id: true, submittedAt: true },
+  });
+
+  return NextResponse.json(
+    { ok: true, id: lead.id, submittedAt: lead.submittedAt, source: source.slug },
+    { status: 201, headers: cors },
+  );
 }
