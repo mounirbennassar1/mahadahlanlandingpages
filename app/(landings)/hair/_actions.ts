@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { ensureSource } from "@/lib/sources";
 
 export type LeadFormState = {
   status: "idle" | "validation_error" | "server_error";
@@ -51,9 +52,12 @@ export async function submitHairLead(
   }
 
   try {
-    const source = await prisma.leadSource.findUnique({ where: { slug: "hair" } });
+    // ensureSource bootstraps the LeadSource + 5 UTM links if this is the
+    // first hair submission ever — so the hair landing works in any env
+    // where it has been deployed, with or without a prior seed run.
+    const source = await ensureSource("hair");
     if (!source || !source.active) {
-      console.error("[submitHairLead] Source 'hair' missing or inactive — run db:seed.");
+      console.error("[submitHairLead] Source 'hair' missing or inactive.");
       return {
         status: "server_error",
         message:

@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { hashApiKey } from "@/lib/api-key";
+import { ensureSource } from "@/lib/sources";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -75,6 +76,13 @@ export async function POST(req: NextRequest) {
   }
 
   // Resolve source — either by API key (external) or by slug (same-origin).
+  //
+  // External clients (x-api-key) must hit an already-registered source — we
+  // do NOT auto-create from key lookups (a missing key is an auth failure).
+  //
+  // Same-origin slug lookups auto-register: the first lead from a brand-new
+  // landing page bootstraps its LeadSource + 5 UtmLink rows. So deploying a
+  // new app/(landings)/<slug>/page.tsx is enough — no manual seed step.
   const apiKey = req.headers.get("x-api-key");
   let source:
     | Awaited<ReturnType<typeof prisma.leadSource.findUnique>>
@@ -85,9 +93,7 @@ export async function POST(req: NextRequest) {
       where: { apiKeyHash: hashApiKey(apiKey) },
     });
   } else if (parsed.data.source) {
-    source = await prisma.leadSource.findUnique({
-      where: { slug: parsed.data.source },
-    });
+    source = await ensureSource(parsed.data.source);
   }
 
   if (!source || !source.active) {
