@@ -1,0 +1,34 @@
+/* Acne landing — Tailwind v4 design tokens used by this page's utility
+ * classes (text-gold-600, bg-gold-100, etc.). The same token names exist
+ * in other landings (e.g. botox) with different values; the wrapper class
+ * below re-declares them so this landing's subtree wins regardless of
+ * which file's @theme block is emitted last to :root.
+ */
+@theme {
+  --color-gold-50: #faf8f2;
+  --color-gold-100: #f0ead6;
+  --color-gold-200: #e2d4ad;
+  --color-gold-300: #d1b97e;
+  --color-gold-400: #c4a55c;
+  --color-gold-500: #b08d46;
+  --color-gold-600: #96753a;
+  --color-gold-700: #7a5e30;
+  --color-gold-800: #634b28;
+  --color-gold-900: #3d301a;
+}
+
+.acne-landing {
+  background: #ffffff;
+  color: #171717;
+
+  --color-gold-50: #faf8f2;
+  --color-gold-100: #f0ead6;
+  --color-gold-200: #e2d4ad;
+  --color-gold-300: #d1b97e;
+  --color-gold-400: #c4a55c;
+  --color-gold-500: #b08d46;
+  --color-gold-600: #96753a;
+  --color-gold-700: #7a5e30;
+  --color-gold-800: #634b28;
+  --color-gold-900: #3d301a;
+}

@@ -1,0 +1,49 @@
+/* Facial landing — dark theme with brand-gold accents.
+ * Tokens declared via @theme and re-scoped under `.facial-landing` so they
+ * win in this subtree even if another landing redeclares the same names.
+ */
+@theme {
+  --color-brand-gold: #d4af37;
+  --color-brand-gold-light: #f4db93;
+  --color-brand-gold-dark: #b8860b;
+
+  --animate-slide-up: slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
+}
+
+.facial-landing {
+  background: #050505;
+  color: #ffffff;
+  font-family: var(--font-noto-kufi-arabic), sans-serif;
+
+  --color-brand-gold: #d4af37;
+  --color-brand-gold-light: #f4db93;
+  --color-brand-gold-dark: #b8860b;
+}
+
+.facial-landing ::selection {
+  background: #d4af37;
+  color: #000;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

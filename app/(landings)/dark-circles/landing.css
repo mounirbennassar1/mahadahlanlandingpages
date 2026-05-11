@@ -1,0 +1,77 @@
+/* Dark circles landing — warm rose-copper palette.
+ * Tokens scoped under `.dc-landing` so they don't bleed to other landings.
+ */
+@theme {
+  --color-dc-bg: #fef7f3;
+  --color-dc-surface: #ffffff;
+  --color-dc-ink: #2e1f1a;
+  --color-dc-ink-soft: #6e5a52;
+  --color-dc-muted: #a08982;
+  --color-dc-primary: #c47d6e;
+  --color-dc-primary-dim: #9a5a4e;
+  --color-dc-accent: #e3a695;
+  --color-dc-line: rgba(46, 31, 26, 0.08);
+}
+
+.dc-landing {
+  background: #fef7f3;
+  color: #2e1f1a;
+  font-family: var(--font-plex-arabic), system-ui, sans-serif;
+
+  --color-dc-bg: #fef7f3;
+  --color-dc-surface: #ffffff;
+  --color-dc-ink: #2e1f1a;
+  --color-dc-ink-soft: #6e5a52;
+  --color-dc-muted: #a08982;
+  --color-dc-primary: #c47d6e;
+  --color-dc-primary-dim: #9a5a4e;
+  --color-dc-accent: #e3a695;
+  --color-dc-line: rgba(46, 31, 26, 0.08);
+}
+
+.dc-landing ::selection {
+  background: #e3a695;
+  color: #2e1f1a;
+}
+
+/* Hero headline split-line wrappers — GSAP slides each .dc-line up from below. */
+.dc-line-mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.05em;
+}
+.dc-line {
+  display: block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+/* Marquee strip */
+@keyframes dc-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.dc-landing .dc-marquee {
+  animation: dc-marquee 35s linear infinite;
+}
+.dc-landing .dc-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Scroll-linked progress bar at the top of the page */
+.dc-landing .dc-progress {
+  background: linear-gradient(90deg, #c47d6e, #e3a695);
+  transform-origin: right center;
+  will-change: transform;
+}
+
+/* Subtle grain on hero (paint-API-free fallback to a tiled SVG noise). */
+.dc-landing .dc-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}

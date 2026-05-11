@@ -1,0 +1,46 @@
+/* Botox landing — Tailwind v4 design tokens used by this page's utility
+ * classes (text-gold-500, bg-blush-100, shadow-elegant, etc.).
+ * Tailwind v4 scans every CSS file in the build for `@theme` blocks and
+ * makes the resulting utilities available, so adding tokens here is enough
+ * to wire up `text-gold-500` / `bg-blush-100` / `shadow-elegant`.
+ */
+@theme {
+  --color-gold-50: #fdfaf0;
+  --color-gold-100: #fbf5e1;
+  --color-gold-200: #f6e6b4;
+  --color-gold-300: #f1d787;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #b5952f;
+  --color-gold-600: #8f7625;
+
+  --color-blush-50: #fef8f8;
+  --color-blush-100: #fcebeb;
+  --color-blush-200: #fad5d5;
+
+  --color-charcoal: #333333;
+
+  --shadow-elegant: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  --shadow-gold-glow: 0 10px 25px -5px rgba(212, 175, 55, 0.4);
+}
+
+/* Scope the body-level paint AND re-declare the design tokens at the wrapper
+ * so they win in this landing's subtree even if another landing's CSS
+ * declares the same token names at :root scope. */
+.botox-landing {
+  background: #fefbfb;
+  color: #333333;
+
+  --color-gold-50: #fdfaf0;
+  --color-gold-100: #fbf5e1;
+  --color-gold-200: #f6e6b4;
+  --color-gold-300: #f1d787;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #b5952f;
+  --color-gold-600: #8f7625;
+
+  --color-blush-50: #fef8f8;
+  --color-blush-100: #fcebeb;
+  --color-blush-200: #fad5d5;
+
+  --color-charcoal: #333333;
+}

@@ -1,0 +1,93 @@
+/* Stretchmarks landing — Material Design 3 token palette.
+ *
+ * The `@theme` block makes utilities like `bg-primary`, `text-on-surface`,
+ * `border-outline-variant` available app-wide. The wrapper class re-declares
+ * the same tokens inside `.stretchmarks-landing` so other landings can never
+ * inherit these (e.g. `--color-primary` is a common name).
+ */
+@theme {
+  --color-stretch-background: #faf9f6;
+  --color-on-background: #303330;
+  --color-surface: #faf9f6;
+  --color-on-surface: #303330;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f4f0;
+  --color-surface-container: #eeeeea;
+  --color-surface-container-high: #e7e9e4;
+  --color-surface-container-highest: #e1e3de;
+  --color-surface-variant: #e1e3de;
+  --color-on-surface-variant: #5d605c;
+
+  --color-primary: #8c4c59;
+  --color-on-primary: #fff7f7;
+  --color-primary-container: #fcabb9;
+  --color-on-primary-container: #632a37;
+  --color-primary-dim: #7e404d;
+
+  --color-secondary: #72585e;
+  --color-on-secondary: #fff7f7;
+  --color-secondary-container: #fcdae1;
+  --color-on-secondary-container: #644b51;
+
+  --color-outline: #797b78;
+  --color-outline-variant: #b0b3ae;
+
+  --color-primary-fixed: #fcabb9;
+  --color-primary-fixed-dim: #ec9eac;
+  --color-on-primary-fixed: #491623;
+  --color-on-primary-fixed-variant: #6d3340;
+
+  --font-headline: var(--font-noto-kufi-arabic), sans-serif;
+  --font-body: var(--font-noto-kufi-arabic), sans-serif;
+  --font-label: var(--font-noto-kufi-arabic), sans-serif;
+}
+
+@utility organic-shape {
+  border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.stretchmarks-landing {
+  background: #faf9f6;
+  color: #303330;
+  font-family: var(--font-noto-kufi-arabic), sans-serif;
+
+  /* Re-declare so this subtree wins even if another landing's CSS sets
+   * these same token names at :root. */
+  --color-on-background: #303330;
+  --color-surface: #faf9f6;
+  --color-on-surface: #303330;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f4f0;
+  --color-surface-container: #eeeeea;
+  --color-surface-container-high: #e7e9e4;
+  --color-surface-container-highest: #e1e3de;
+  --color-surface-variant: #e1e3de;
+  --color-on-surface-variant: #5d605c;
+
+  --color-primary: #8c4c59;
+  --color-on-primary: #fff7f7;
+  --color-primary-container: #fcabb9;
+  --color-on-primary-container: #632a37;
+  --color-primary-dim: #7e404d;
+
+  --color-secondary: #72585e;
+  --color-on-secondary: #fff7f7;
+  --color-secondary-container: #fcdae1;
+  --color-on-secondary-container: #644b51;
+
+  --color-outline: #797b78;
+  --color-outline-variant: #b0b3ae;
+}
+
+.stretchmarks-landing .material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}

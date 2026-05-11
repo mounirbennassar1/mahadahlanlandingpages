@@ -1,0 +1,34 @@
+// Centralized landing pages — Prisma schema.
+//
+// The real models live in the existing dashboard's Postgres database. To
+// import them into this project, set DATABASE_URL in .env then run:
+//
+//     npx prisma db pull
+//     npx prisma generate
+//
+// `db pull` will replace the models below with whatever already exists in
+// the dashboard's database (e.g. submissions / leads / users). Keep the
+// generator + datasource blocks unchanged.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Placeholder model — will be overwritten by `prisma db pull`.
+model Lead {
+  id        String   @id @default(cuid())
+  source    String
+  name      String?
+  email     String?
+  phone     String?
+  message   String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([source])
+  @@index([createdAt])
+}

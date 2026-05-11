@@ -1,0 +1,60 @@
+/* Hair landing — gold accent + forest-green primary palette.
+ * Tokens declared via @theme and re-scoped under `.hair-landing` so they
+ * don't conflict with other landings that use `--color-primary`.
+ */
+@theme {
+  --color-hair-primary: #c9a84c;
+  --color-accent-gold: #e8c96d;
+  --color-forest-green: #1a3a2a;
+  --color-background-light: #f9f7f2;
+  --color-background-dark: #0f1f16;
+}
+
+.hair-landing {
+  background: #f9f7f2;
+  color: #1a3a2a;
+  font-family: var(--font-plex-arabic), "IBM Plex Sans Arabic", sans-serif;
+
+  --color-hair-primary: #c9a84c;
+  --color-accent-gold: #e8c96d;
+  --color-forest-green: #1a3a2a;
+  --color-background-light: #f9f7f2;
+  --color-background-dark: #0f1f16;
+}
+
+.hair-landing .material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.hair-landing .material-symbols-outlined.fill-1 {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Marquee animations */
+@keyframes hair-marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes hair-marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.hair-landing .marquee-left {
+  animation: hair-marquee-left 40s linear infinite;
+}
+
+.hair-landing .marquee-right {
+  animation: hair-marquee-right 45s linear infinite;
+}
+
+.hair-landing .marquee-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+}
+
+.hair-landing .marquee-track:hover {
+  animation-play-state: paused;
+}
