@@ -102,7 +102,7 @@ export default function AcneLanding() {
     return () => clearInterval(timer);
   }, []);
 
-  const whatsappLink = `https://wa.me/966503377702?text=مرحباً%20عندي%20استفسار%20عن%20الخدمات%20والأسعار%20(عروض_جوجل)`;
+  const whatsappLink = `https://wa.me/966503377702?text=السلام%20عليكم%20ورحمة%20الله%20وبركاته%0Aعندي%20استفسار%20بخصوص%20علاج%20حب%20الشباب`;
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900 font-sans overflow-x-hidden selection:bg-gold-100 selection:text-gold-900">

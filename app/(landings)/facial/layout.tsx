@@ -4,9 +4,34 @@ import { notoKufiArabic } from "@/lib/fonts";
 import "./landing.css";
 
 export const metadata: Metadata = {
-  title: "عيادات د. مها دحلان | Dr. Maha Dahlan Clinics",
+  title: "عيادات د. مها دحلان | العناية بالبشرة والهايدرافيشل",
   description:
-    "باقة متكاملة من جلسات العناية بالبشرة وتنظيف البشرة والهايدرافيشل وعلاج تساقط الشعر.",
+    "باقة متكاملة من جلسات العناية بالبشرة وتنظيف البشرة والهايدرافيشل وعلاج تساقط الشعر في عيادات د. مها دحلان بجدة.",
+  openGraph: {
+    title: "عيادات د. مها دحلان | العناية بالبشرة والهايدرافيشل",
+    description:
+      "جلسات تنظيف البشرة، الهايدرافيشل، وعلاج تساقط الشعر بأحدث التقنيات الطبية في جدة.",
+    locale: "ar_SA",
+    type: "website",
+    siteName: "عيادات د. مها دحلان",
+    images: [
+      {
+        url: "/facial/closeup-portrait-beautiful-woman-cosmetology-therapy-beauty-salon-professional-dermatology-procedures-lifting-rejuvenation-modern-devices-healthcare.jpg",
+        width: 1200,
+        height: 630,
+        alt: "عيادات د. مها دحلان — العناية بالبشرة",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "عيادات د. مها دحلان | العناية بالبشرة والهايدرافيشل",
+    description:
+      "تنظيف البشرة، الهايدرافيشل، وعلاج تساقط الشعر بأحدث التقنيات في جدة.",
+    images: [
+      "/facial/closeup-portrait-beautiful-woman-cosmetology-therapy-beauty-salon-professional-dermatology-procedures-lifting-rejuvenation-modern-devices-healthcare.jpg",
+    ],
+  },
 };
 
 export default function FacialLayout({

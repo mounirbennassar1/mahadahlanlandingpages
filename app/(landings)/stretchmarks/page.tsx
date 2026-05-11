@@ -8,7 +8,7 @@ import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { FadeIn } from "./_components/FadeIn";
 
 const WA =
-  "https://wa.me/966503377702?text=مرحباً%20عندي%20استفسار%20عن%20الخدمات%20والأسعار%20(عروض_جوجل)";
+  "https://wa.me/966503377702?text=السلام%20عليكم%20ورحمة%20الله%20وبركاته%0Aعندي%20استفسار%20بخصوص%20علاج%20علامات%20التمدد%20أو%20السترتش%20ماركس";
 
 /* ─── Hero Slider Images ─── */
 const heroSlides = [

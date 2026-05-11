@@ -1,0 +1,1 @@
+- [Tailwind-first styling](feedback_tailwind_first.md) — Tailwind utilities by default; CSS only for keyframes, `::selection`, and pseudo-element backgrounds.

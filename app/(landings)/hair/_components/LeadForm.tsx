@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { motion } from "framer-motion";
 import { submitHairLead, type LeadFormState } from "../_actions";
+import { readUtmFromUrl } from "@/lib/utm";
 
 const initialState: LeadFormState = { status: "idle" };
 
@@ -36,6 +37,12 @@ function SubmitButton() {
 
 export default function LeadForm({ id }: { id?: string }) {
   const [state, formAction] = useActionState(submitHairLead, initialState);
+  const [utm, setUtm] = useState<Record<string, string>>({});
+
+  // Capture UTM params on mount so the server action sees them.
+  useEffect(() => {
+    setUtm(readUtmFromUrl());
+  }, []);
 
   const fieldError = (name: "fullName" | "phone" | "city") =>
     state.issues?.[name];
@@ -73,6 +80,9 @@ export default function LeadForm({ id }: { id?: string }) {
       )}
 
       <form action={formAction} className="space-y-5" noValidate>
+        {Object.entries(utm).map(([k, v]) => (
+          <input key={k} type="hidden" name={k} value={v} />
+        ))}
         <div>
           <label
             htmlFor="fullName"

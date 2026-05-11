@@ -1,4 +1,4 @@
-import { PrismaClient, LeadStatus } from "@prisma/client";
+import { PrismaClient, LeadStatus, UtmPlatform } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { generateApiKey } from "../lib/api-key";
 import "dotenv/config";
@@ -116,6 +116,42 @@ async function main() {
     sourceRecords.push(record);
     console.log(`   ${src.slug.padEnd(12)} → ${key}`);
   }
+
+  console.log("→ Seeding UTM links (one per source × platform)…");
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahadahlan.com").replace(/\/+$/, "");
+  const PLATFORMS: { platform: UtmPlatform; utmSource: string; utmMedium: string }[] = [
+    { platform: "GOOGLE_ADS", utmSource: "google", utmMedium: "cpc" },
+    { platform: "INSTAGRAM", utmSource: "instagram", utmMedium: "paid_social" },
+    { platform: "TIKTOK", utmSource: "tiktok", utmMedium: "paid_social" },
+    { platform: "X", utmSource: "x", utmMedium: "paid_social" },
+    { platform: "SNAPCHAT", utmSource: "snapchat", utmMedium: "paid_social" },
+  ];
+  let utmCount = 0;
+  for (const src of sourceRecords) {
+    for (const p of PLATFORMS) {
+      const utmCampaign = src.slug;
+      const params = new URLSearchParams({
+        utm_source: p.utmSource,
+        utm_medium: p.utmMedium,
+        utm_campaign: utmCampaign,
+      });
+      const url = `${baseUrl}/${src.slug}?${params.toString()}`;
+      await prisma.utmLink.upsert({
+        where: { sourceId_platform: { sourceId: src.id, platform: p.platform } },
+        update: { utmSource: p.utmSource, utmMedium: p.utmMedium, utmCampaign, url },
+        create: {
+          sourceId: src.id,
+          platform: p.platform,
+          utmSource: p.utmSource,
+          utmMedium: p.utmMedium,
+          utmCampaign,
+          url,
+        },
+      });
+      utmCount++;
+    }
+  }
+  console.log(`   Created/updated ${utmCount} UTM links.`);
 
   console.log("→ Seeding sample leads…");
   const existing = await prisma.lead.count();

@@ -24,6 +24,14 @@ enum LeadStatus {
   NOT_INTERESTED
 }
 
+enum UtmPlatform {
+  GOOGLE_ADS
+  INSTAGRAM
+  TIKTOK
+  X
+  SNAPCHAT
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -48,6 +56,23 @@ model LeadSource {
   createdAt   DateTime @default(now())
 
   leads       Lead[]
+  utmLinks    UtmLink[]
+}
+
+model UtmLink {
+  id          String      @id @default(cuid())
+  sourceId    String
+  source      LeadSource  @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  platform    UtmPlatform
+  utmSource   String
+  utmMedium   String
+  utmCampaign String
+  url         String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([sourceId, platform])
+  @@index([sourceId])
 }
 
 model Lead {
@@ -64,6 +89,13 @@ model Lead {
   assigneeId  String?
   assignee    User?      @relation("AssignedLeads", fields: [assigneeId], references: [id])
 
+  // UTM attribution — captured from URL params at form submission.
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+
   submittedAt DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
@@ -71,4 +103,6 @@ model Lead {
   @@index([status])
   @@index([assigneeId])
   @@index([city])
+  @@index([utmSource])
+  @@index([utmCampaign])
 }

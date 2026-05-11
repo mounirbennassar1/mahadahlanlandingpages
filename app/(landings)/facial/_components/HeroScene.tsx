@@ -150,7 +150,7 @@ export function HeroScene() {
           >
             <MagneticButton>
               <a
-                href="https://wa.me/966503377702?text=مرحباً%20عندي%20استفسار%20عن%20الخدمات%20والأسعار%20(عروض_جوجل)"
+                href="https://wa.me/966503377702?text=السلام%20عليكم%20ورحمة%20الله%20وبركاته%0Aعندي%20استفسار%20بخصوص%20أنواع%20تنظيف%20البشرة%20عندكم"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative w-full sm:w-auto px-8 md:px-12 py-5 bg-[#D4AF37] text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 block text-center rounded-2xl"
@@ -161,7 +161,7 @@ export function HeroScene() {
             </MagneticButton>
             <MagneticButton>
               <a
-                href="https://wa.me/966503377702?text=مرحباً%20عندي%20استفسار%20عن%20الخدمات%20والأسعار%20(عروض_جوجل)"
+                href="https://wa.me/966503377702?text=السلام%20عليكم%20ورحمة%20الله%20وبركاته%0Aعندي%20استفسار%20بخصوص%20أنواع%20تنظيف%20البشرة%20عندكم"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-8 md:px-12 py-5 border border-white/20 hover:border-[#D4AF37]/50 bg-black/40 hover:bg-black/60 text-white font-medium backdrop-blur-md transition-all duration-300 text-lg block text-center rounded-2xl"

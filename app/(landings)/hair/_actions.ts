@@ -26,6 +26,17 @@ export async function submitHairLead(
   const phone = String(formData.get("phone") ?? "").trim();
   const city = String(formData.get("city") ?? "").trim();
 
+  // UTM attribution (optional — passed as hidden inputs from the form).
+  const utmField = (k: string) => {
+    const v = String(formData.get(k) ?? "").trim();
+    return v.length > 0 ? v.slice(0, 120) : null;
+  };
+  const utmSource = utmField("utmSource");
+  const utmMedium = utmField("utmMedium");
+  const utmCampaign = utmField("utmCampaign");
+  const utmContent = utmField("utmContent");
+  const utmTerm = utmField("utmTerm");
+
   const clientIssues: LeadFormState["issues"] = {};
   if (!fullName) clientIssues.fullName = "الاسم الكامل مطلوب";
   if (!phone) clientIssues.phone = "رقم الجوال مطلوب";
@@ -52,7 +63,17 @@ export async function submitHairLead(
     }
 
     await prisma.lead.create({
-      data: { fullName, phone, city, sourceId: source.id },
+      data: {
+        fullName,
+        phone,
+        city,
+        sourceId: source.id,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        utmTerm,
+      },
     });
   } catch (err) {
     console.error("[submitHairLead] DB error", err);

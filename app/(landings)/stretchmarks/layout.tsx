@@ -23,10 +23,20 @@ export const metadata: Metadata = {
       "متخصصة في علاج تشققات الجلد وعلامات التمدد بأحدث التقنيات الطبية العالمية. احجزي استشارتك المجانية.",
     locale: "ar_SA",
     type: "website",
+    siteName: "عيادات د. مها دحلان",
+    images: [
+      {
+        url: "/stretchmarks/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "عيادات د. مها دحلان — علاج التشققات وعلامات التمدد",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "د. مها دحلان | علاج التشققات وعلامات التمدد",
+    images: ["/stretchmarks/logo.png"],
     description:
       "عيادة متخصصة في علاج تشققات الجلد وعلامات التمدد بأحدث التقنيات في جدة.",
   },

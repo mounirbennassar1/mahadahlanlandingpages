@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@/components/icons";
+import { readUtmFromUrl } from "@/lib/utm";
 
 type Status =
   | { kind: "idle" }
@@ -39,6 +40,7 @@ export function LeadForm() {
           phone: phone.trim(),
           city: city.trim(),
           source: "dark-circles",
+          ...readUtmFromUrl(),
         }),
       });
       const data = await res.json().catch(() => ({}));

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { readUtmFromUrl } from "@/lib/utm";
 
 type Status =
   | { kind: "idle" }
@@ -37,6 +38,7 @@ export default function ContactForm() {
           phone: phone.trim(),
           city: city.trim(),
           source: "hyperpigmentation",
+          ...readUtmFromUrl(),
         }),
       });
       const data = await res.json().catch(() => ({}));

@@ -22,6 +22,12 @@ const BodySchema = z.object({
   phone: z.string().trim().min(5).max(32),
   city: z.string().trim().min(2).max(80),
   source: z.string().trim().min(1).max(64).optional(),
+  // Optional UTM attribution captured from the landing page's URL params.
+  utmSource: z.string().trim().max(64).optional(),
+  utmMedium: z.string().trim().max(64).optional(),
+  utmCampaign: z.string().trim().max(120).optional(),
+  utmContent: z.string().trim().max(120).optional(),
+  utmTerm: z.string().trim().max(120).optional(),
 });
 
 const ALLOWED_ORIGINS = (process.env.LANDING_ORIGINS ?? "")
@@ -97,6 +103,11 @@ export async function POST(req: NextRequest) {
       phone: parsed.data.phone,
       city: parsed.data.city,
       sourceId: source.id,
+      utmSource: parsed.data.utmSource || null,
+      utmMedium: parsed.data.utmMedium || null,
+      utmCampaign: parsed.data.utmCampaign || null,
+      utmContent: parsed.data.utmContent || null,
+      utmTerm: parsed.data.utmTerm || null,
     },
     select: { id: true, submittedAt: true },
   });

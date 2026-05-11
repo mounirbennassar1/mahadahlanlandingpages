@@ -11,7 +11,24 @@ export const metadata: Metadata = {
     title: "نحت الجسم بتقنية التحفيز العضلي — عيادات د. مها دحلان",
     description:
       "تجربة نحت الجسم الأكثر أناقةً في المنطقة. جلسات تحفيز عضلي كهرومغناطيسي (HIFEM) تمنحك قوامًا متناسقًا وعضلات مشدودة بدون جراحة ولا فترة تعافٍ.",
-    images: ["/body/logo.png"],
+    locale: "ar_SA",
+    type: "website",
+    siteName: "عيادات د. مها دحلان",
+    images: [
+      {
+        url: "/body/hero-hifem.png",
+        width: 1200,
+        height: 630,
+        alt: "عيادات د. مها دحلان — نحت الجسم بتقنية HIFEM",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "نحت الجسم بتقنية التحفيز العضلي — عيادات د. مها دحلان",
+    description:
+      "جلسات HIFEM لنحت الجسم وشدّ العضلات بدون جراحة في جدة. احجزي تجربتك.",
+    images: ["/body/hero-hifem.png"],
   },
 };
 

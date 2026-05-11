@@ -28,12 +28,22 @@ export const metadata: Metadata = {
     locale: "ar_SA",
     type: "website",
     siteName: "عيادات د. مها دحلان",
+    url: "https://acne.mahadahlan.com",
+    images: [
+      {
+        url: "/acne/logo.avif",
+        width: 1200,
+        height: 630,
+        alt: "عيادات د. مها دحلان — علاج حب الشباب",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "عيادات د. مها دحلان | علاج حب الشباب في جدة",
     description:
       "استعد ثقتك ببشرتك الصافية مع أحدث التقنيات الطبية العالمية في عيادات د. مها دحلان بجدة.",
+    images: ["/acne/logo.avif"],
   },
   robots: {
     index: true,

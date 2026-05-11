@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { readUtmFromUrl } from '@/lib/utm'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -158,6 +159,7 @@ function BookingForm() {
           phone: phone.trim(),
           city: city.trim(),
           source: 'botox',
+          ...readUtmFromUrl(),
         }),
       })
       const data = await res.json().catch(() => ({}))
