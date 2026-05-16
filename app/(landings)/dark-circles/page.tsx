@@ -191,16 +191,16 @@ export default function DarkCirclesLanding() {
 
               <h1 className="font-bold leading-[1.1] tracking-tight text-[var(--color-dc-ink)]" style={{ fontSize: "clamp(2.5rem, 5.5vw, 4.75rem)" }}>
                 <span className="dc-line-mask">
+                  <span className="dc-line">تحت العين...</span>
+                </span>
+                <span className="dc-line-mask">
                   <span className="dc-line">
-                    نظرة <em className="not-italic text-[var(--color-dc-primary)]">مشرقة</em>
+                    التفاصيل <em className="not-italic text-[var(--color-dc-primary)]">الصغيرة</em>
                   </span>
                 </span>
                 <span className="dc-line-mask">
-                  <span className="dc-line">تبدأ من تحت</span>
-                </span>
-                <span className="dc-line-mask">
                   <span className="dc-line">
-                    العين <span className="text-[var(--color-dc-primary)]">.</span>
+                    تغيّر النظرة كلها<span className="text-[var(--color-dc-primary)]">.</span>
                   </span>
                 </span>
               </h1>
