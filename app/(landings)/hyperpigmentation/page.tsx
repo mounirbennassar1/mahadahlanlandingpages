@@ -21,24 +21,23 @@ export default function HyperpigmentationLanding() {
             عيادة مهادهلان · علاج التصبّغات
           </div>
           <h1 className="h-display">
-            بشرة <em>صافية</em>،
+            علاج <em>التصبّغات</em>
             <br />
-            تستحق أن تُروى
+            بخطة مخصّصة
             <br />
-            من جديد.
+            لبشرتكِ.
           </h1>
           <p className="lead">
-            برنامج علاج التصبّغات في مهادهلان مصمَّم خصيصاً لكِ — جلسات هادئة،
-            مكوّنات نقية، وخطة شخصية ترسمها طبيبتنا لتعيد إلى وجهكِ توازنه
-            الطبيعي ولونه الصافي.
+            نعالج مختلف أنواع التصبّغات باستخدام تقنيات حديثة وخطط علاج مخصّصة
+            حسب نوع البشرة وسبب التصبّغ، بإشراف طبي ومتابعة دقيقة لكل مرحلة.
           </p>
           <div className="hero-actions">
             <a href="#cta" className="btn btn-gold">
-              احصلي على خطتكِ الشخصية
+              احجزي استشارتكِ الآن
               <span className="arrow" />
             </a>
             <a href="#process" className="btn btn-ghost">
-              تعرّفي على المراحل
+              استكملي خطة علاجكِ
             </a>
           </div>
           <div className="hero-stats">
@@ -91,12 +90,11 @@ export default function HyperpigmentationLanding() {
               ما هو التصبّغ
             </div>
             <h2 className="h-section reveal">
-              حين تفقد البشرة <em>توازنها</em>، يظهر اللون.
+              حدّدي <em>نوع</em> التصبّغ... وابدئي العلاج المناسب.
             </h2>
             <p className="lead reveal">
-              التصبّغ ليس عيباً — هو إشارة من بشرتكِ. تراكم الميلانين، آثار
-              الشمس، التغيّرات الهرمونية أو ما تخلّفه الندبات. كلّ نوع له
-              قصّته، ولكلّ قصّة علاجها الخاص في مهادهلان.
+              التصبّغات تختلف من حالة لأخرى، لذلك يعتمد العلاج الصحيح على معرفة
+              نوع التصبّغ وسببه قبل اختيار الجلسات أو المنتجات المناسبة.
             </p>
             <ul className="problem-list">
               <li>
@@ -104,8 +102,8 @@ export default function HyperpigmentationLanding() {
                 <div>
                   <strong>الكَلَف (Melasma)</strong>
                   <p>
-                    بقع متناظرة على الوجنتين والجبهة، غالباً مرتبطة بالهرمونات
-                    والشمس.
+                    تصبّغات مرتبطة غالباً بالهرمونات والتعرّض للشمس، وتظهر
+                    بالخدّين والجبهة.
                   </p>
                 </div>
               </li>
@@ -114,7 +112,7 @@ export default function HyperpigmentationLanding() {
                 <div>
                   <strong>التصبّغ الشمسي</strong>
                   <p>
-                    نقاط بُنية يخلّفها التعرّض المتكرر للشمس على البشرة المكشوفة.
+                    بقع ناتجة عن التعرّض المستمر للشمس وتظهر بالمناطق المكشوفة.
                   </p>
                 </div>
               </li>
@@ -123,7 +121,8 @@ export default function HyperpigmentationLanding() {
                 <div>
                   <strong>التصبّغ بعد الالتهاب</strong>
                   <p>
-                    أثر يبقى بعد الحبوب أو الجروح، ويمكن تفتيحه بخطة دقيقة.
+                    آثار تظهر بعد الحبوب أو التهيّج وتحتاج خطة علاج مناسبة
+                    لطبيعة البشرة.
                   </p>
                 </div>
               </li>
@@ -157,44 +156,40 @@ export default function HyperpigmentationLanding() {
         <div className="section-head">
           <div className="eyebrow reveal">مراحل العلاج</div>
           <h2 className="h-section reveal">
-            رحلتكِ في <em>أربع</em> خطوات هادئة
+            خطة علاج <em>واضحة</em> من أول جلسة
           </h2>
           <p className="lead reveal">
-            من الاستشارة الأولى إلى نتيجة دائمة — كل مرحلة مدروسة، وكل جلسة
-            مخصّصة لكِ.
+            كل مرحلة بالعلاج يتم اختيارها بناءً على احتياج البشرة ونوع التصبّغ
+            للحصول على أفضل نتيجة ممكنة.
           </p>
         </div>
         <div className="process-grid">
           <div className="process-card">
             <div className="process-num">01</div>
-            <h3>استشارة وتشخيص</h3>
+            <h3>تشخيص وتحليل البشرة</h3>
             <p>
-              لقاء أوّل مع طبيبتكِ لفحص البشرة، تحليل نوع التصبّغ، وفهم تاريخكِ
-              الصحي.
+              تقييم نوع التصبّغ وعمقه والعوامل المؤثّرة عليه.
             </p>
           </div>
           <div className="process-card">
             <div className="process-num">02</div>
-            <h3>خطة شخصية</h3>
+            <h3>تصميم الخطة العلاجية</h3>
             <p>
-              برنامج مصمَّم خصيصاً لكِ، يجمع بين الجلسات والمكوّنات النقية
-              الملائمة لبشرتكِ.
+              اختيار الجلسات والتقنيات المناسبة حسب حالة البشرة.
             </p>
           </div>
           <div className="process-card">
             <div className="process-num">03</div>
-            <h3>الجلسات العلاجية</h3>
+            <h3>جلسات علاجية مخصّصة</h3>
             <p>
-              جلسات لطيفة في أجواء هادئة، باستخدام تقنيات حديثة بإشراف طبي
-              مستمر.
+              تقنيات حديثة تساعد على تحسين لون البشرة وتقليل التصبّغات تدريجياً.
             </p>
           </div>
           <div className="process-card">
             <div className="process-num">04</div>
-            <h3>متابعة ووقاية</h3>
+            <h3>متابعة واستمرارية</h3>
             <p>
-              روتين منزلي ومتابعة دورية لحماية النتيجة والحفاظ على صفاء البشرة
-              طويلاً.
+              متابعة النتائج وتعديل الخطة حسب استجابة البشرة.
             </p>
           </div>
         </div>
@@ -211,10 +206,11 @@ export default function HyperpigmentationLanding() {
         <div className="section-head">
           <div className="eyebrow reveal">قبل وبعد</div>
           <h2 className="h-section reveal">
-            نتائج <em>حقيقية</em> من عميلاتنا
+            كيف يمكن أن تبدو <em>النتائج</em> بعد الخطة المناسبة
           </h2>
           <p className="lead reveal">
-            صور موثّقة بإذن من العميلات، تُظهر أثر برنامجنا خلال أسابيع قليلة.
+            نعالج مجموعة متنوّعة من التصبّغات المختلفة بالخطة العلاجية المناسبة
+            لكل حالة، بإشراف طبي ومتابعة دقيقة.
           </p>
         </div>
         <div className="results-grid">
@@ -308,7 +304,7 @@ export default function HyperpigmentationLanding() {
       {/* ════════════ TESTIMONIALS ════════════ */}
       <section className="testimonials">
         <div className="section-head">
-          <div className="eyebrow reveal">شهادات العميلات</div>
+          <div className="eyebrow reveal">تجارب مرضانا</div>
           <h2 className="h-section reveal">
             ثقة <em>تُروى</em> بأصواتهنّ
           </h2>
@@ -366,6 +362,7 @@ export default function HyperpigmentationLanding() {
           <h2 className="h-section reveal">
             إجابات قبل أن <em>تسألي</em>
           </h2>
+          <p className="lead reveal">كل ما تحتاجين معرفته قبل العلاج.</p>
         </div>
         <div className="faq-wrap">
           <details className="faq-item" open>
@@ -374,9 +371,9 @@ export default function HyperpigmentationLanding() {
               <span className="faq-icon" />
             </summary>
             <div className="faq-a">
-              تظهر بوادر التحسّن عادةً بعد ٣ إلى ٤ جلسات، أي ما يقارب ٦
-              أسابيع. النتيجة الكاملة ترتبط بنوع التصبّغ والالتزام بالخطة
-              المنزلية.
+              تبدأ ملاحظة التحسّن تدريجياً بعد عدة جلسات حسب نوع التصبّغ
+              واستجابة البشرة للخطة العلاجية. تختلف مدة العلاج من حالة لأخرى
+              ويتم تحديدها بعد التقييم.
             </div>
           </details>
           <details className="faq-item">
@@ -385,8 +382,8 @@ export default function HyperpigmentationLanding() {
               <span className="faq-icon" />
             </summary>
             <div className="faq-a">
-              لا. جميع جلساتنا لطيفة وآمنة، وقد تشعرين فقط بدفء خفيف أو وخز
-              بسيط لحظات قليلة.
+              لا. أغلب الجلسات لطيفة وآمنة، وقد تشعرين بدفء خفيف أو وخز بسيط
+              لحظات قليلة فقط.
             </div>
           </details>
           <details className="faq-item">
@@ -395,8 +392,8 @@ export default function HyperpigmentationLanding() {
               <span className="faq-icon" />
             </summary>
             <div className="faq-a">
-              غالباً لا. يمكنكِ العودة إلى يومكِ مباشرة، مع الالتزام بواقي
-              الشمس والروتين الذي تصفه طبيبتكِ.
+              معظم الجلسات لا تحتاج فترة نقاهة طويلة، يمكنكِ استئناف يومكِ بشكل
+              طبيعي مع الالتزام بواقي الشمس والتعليمات التي تصفها الطبيبة.
             </div>
           </details>
           <details className="faq-item">
@@ -405,9 +402,8 @@ export default function HyperpigmentationLanding() {
               <span className="faq-icon" />
             </summary>
             <div className="faq-a">
-              النتيجة طويلة الأمد إذا التزمتِ بالحماية من الشمس والروتين الموصى
-              به. التصبّغ قد يعود إن لم تُحمَ البشرة، لذا المتابعة جزء أساسي من
-              البرنامج.
+              نعم، النتائج طويلة الأمد عند الالتزام بالحماية من الشمس والروتين
+              المنزلي للحفاظ على البشرة وتجنّب عودة التصبّغ.
             </div>
           </details>
           <details className="faq-item">
@@ -416,8 +412,8 @@ export default function HyperpigmentationLanding() {
               <span className="faq-icon" />
             </summary>
             <div className="faq-a">
-              نعم. نُصمّم خطة مختلفة لكل نوع بشرة بعد التشخيص الأوّلي مع
-              الطبيبة.
+              نعم، الخطة العلاجية تختلف من حالة لأخرى ويتم تخصيصها حسب نوع
+              البشرة وسبب التصبّغ.
             </div>
           </details>
           <details className="faq-item">
@@ -426,8 +422,8 @@ export default function HyperpigmentationLanding() {
               <span className="faq-icon" />
             </summary>
             <div className="faq-a">
-              املئي النموذج في الأسفل، أو اتصلي بنا مباشرة. سنتواصل خلال ٢٤
-              ساعة لتحديد أنسب وقت لكِ.
+              يمكنكِ تعبئة النموذج في الأسفل أو الاتصال بنا مباشرة، وسيتم
+              التواصل معكِ من فريقنا لتحديد الموعد المناسب.
             </div>
           </details>
         </div>
