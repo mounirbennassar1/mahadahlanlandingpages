@@ -738,21 +738,20 @@ export default function DarkCirclesLanding() {
 
             <motion.div variants={fadeUp} className="flex flex-col gap-3 sm:flex-row">
               <a
+                href="#book"
+                className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[var(--color-dc-ink)] px-6 py-3.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
+              >
+                <Icon.CalendarCheck className="size-4" />
+                احجزي استشارتكِ
+              </a>
+              <a
                 href={WA}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[#25D366] px-6 py-3.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
               >
                 <FontAwesomeIcon icon={faWhatsapp} className="text-lg" />
-                +966 503377702
-              </a>
-              <a
-                href="tel:+966920007515"
-                dir="ltr"
-                className="inline-flex items-center justify-center gap-3 rounded-2xl border border-[var(--color-dc-line)] bg-white px-6 py-3.5 text-sm font-bold text-[var(--color-dc-ink)] transition-colors hover:border-[var(--color-dc-primary)] hover:text-[var(--color-dc-primary)]"
-              >
-                <Icon.Phone className="size-4" />
-                +966 920007515
+                تواصلي عبر واتساب
               </a>
             </motion.div>
 
