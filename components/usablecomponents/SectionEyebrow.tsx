@@ -1,3 +1,4 @@
+import type { ComponentType, SVGProps } from "react";
 import { Icon } from "@/components/icons";
 
 type Props = {
@@ -7,7 +8,9 @@ type Props = {
 };
 
 export function SectionEyebrow({ tokenPrefix, children, icon }: Props) {
-  const IconCmp = icon ? Icon[icon] : Icon.Sparkles;
+  const IconCmp = (icon ? Icon[icon] : Icon.Sparkles) as ComponentType<
+    SVGProps<SVGSVGElement> & { className?: string }
+  >;
 
   return (
     <span
