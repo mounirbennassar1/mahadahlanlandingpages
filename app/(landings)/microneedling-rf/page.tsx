@@ -213,11 +213,10 @@ export default function MicroneedlingRfLanding() {
                 aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
                 className="block w-full"
                 style={{
-                  mixBlendMode: "darken",
                   WebkitMaskImage:
-                    "radial-gradient(ellipse 75% 85% at 50% 50%, #000 80%, transparent 100%)",
+                    "radial-gradient(ellipse 48% 58% at 50% 48%, #000 35%, transparent 95%)",
                   maskImage:
-                    "radial-gradient(ellipse 75% 85% at 50% 50%, #000 80%, transparent 100%)",
+                    "radial-gradient(ellipse 48% 58% at 50% 48%, #000 35%, transparent 95%)",
                 }}
               />
             </div>
