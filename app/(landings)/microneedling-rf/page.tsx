@@ -192,8 +192,11 @@ export default function MicroneedlingRfLanding() {
               </div>
             </div>
 
-            {/* Hero media — no frame, no mask, no glow. Video bg is the
-                same cream as the hero section so it blends seamlessly. */}
+            {/* Hero media — bg dissolves into the section via mix-blend-darken,
+                and the outer ~6% fades to fully transparent so any leftover
+                cream mismatch at the edge can't form a rectangle. Mask +
+                blend live on the same element so blend mode still sees the
+                section as backdrop. */}
             <div
               data-mrf-hero-media
               className="relative mx-auto mt-4 w-full max-w-[420px] will-change-transform sm:max-w-[500px] lg:mt-0 lg:max-w-[560px]"
@@ -208,7 +211,14 @@ export default function MicroneedlingRfLanding() {
                 playsInline
                 preload="metadata"
                 aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
-                className="block w-full mix-blend-multiply"
+                className="block w-full"
+                style={{
+                  mixBlendMode: "darken",
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 75% 85% at 50% 50%, #000 80%, transparent 100%)",
+                  maskImage:
+                    "radial-gradient(ellipse 75% 85% at 50% 50%, #000 80%, transparent 100%)",
+                }}
               />
             </div>
           </div>
