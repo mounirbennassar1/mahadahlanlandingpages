@@ -129,7 +129,7 @@ export default function MicroneedlingRfLanding() {
       <HeroChoreography>
         <header
           ref={heroRef}
-          className="mrf-grain relative overflow-hidden bg-[var(--color-mrf-bg)] pt-24 pb-20 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32"
+          className="relative overflow-hidden bg-[var(--color-mrf-bg)] pt-24 pb-20 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32"
         >
           <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 sm:gap-12 sm:px-6 lg:grid-cols-[1.05fr_1fr]">
             <div className="space-y-8 text-right">
@@ -208,7 +208,7 @@ export default function MicroneedlingRfLanding() {
                 playsInline
                 preload="metadata"
                 aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
-                className="block w-full"
+                className="block w-full mix-blend-multiply"
               />
             </div>
           </div>
