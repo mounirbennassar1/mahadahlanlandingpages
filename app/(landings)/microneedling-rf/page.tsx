@@ -192,64 +192,24 @@ export default function MicroneedlingRfLanding() {
               </div>
             </div>
 
-            {/* Hero media — frameless, free-floating, scroll-rotated by GSAP */}
+            {/* Hero media — no frame, no mask, no glow. Video bg is the
+                same cream as the hero section so it blends seamlessly. */}
             <div
               data-mrf-hero-media
-              className="relative mx-auto mt-4 w-full max-w-[380px] will-change-transform sm:max-w-[460px] lg:mt-0 lg:max-w-[520px]"
+              className="relative mx-auto mt-4 w-full max-w-[420px] will-change-transform sm:max-w-[500px] lg:mt-0 lg:max-w-[560px]"
             >
-              {/* ambient glow behind the subject — no rectangle, no border */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(closest-side,var(--color-mrf-accent)/55,transparent_70%)] blur-3xl"
+              <video
+                data-mrf-hero-video
+                poster="/microneedling-rf/hero.png"
+                src="/microneedling-rf/hero.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
+                className="block w-full"
               />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -top-10 -right-10 hidden size-40 rounded-full bg-[var(--color-mrf-primary)]/25 blur-3xl sm:block"
-              />
-
-              <div
-                className="relative aspect-[3/4] w-full"
-                style={{
-                  // Feathered/soft edges so the subject sits free, no rectangle.
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse 70% 78% at 50% 52%, #000 55%, rgba(0,0,0,0.85) 70%, transparent 96%)",
-                  maskImage:
-                    "radial-gradient(ellipse 70% 78% at 50% 52%, #000 55%, rgba(0,0,0,0.85) 70%, transparent 96%)",
-                }}
-              >
-                <video
-                  data-mrf-hero-video
-                  poster="/microneedling-rf/hero.png"
-                  src="/microneedling-rf/hero.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
-                  className="absolute inset-0 size-full object-cover object-center"
-                />
-              </div>
-
-              {/* Floating credibility chip — not tied to any frame */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.6, duration: 0.6 }}
-                className="absolute bottom-4 left-0 flex items-center gap-2.5 rounded-2xl border border-white/60 bg-white/90 px-3.5 py-2.5 shadow-xl backdrop-blur-md sm:bottom-6 sm:left-2 sm:gap-3 sm:px-5 sm:py-3.5"
-              >
-                <div className="flex size-9 items-center justify-center rounded-xl bg-[var(--color-mrf-primary)]/15 text-[var(--color-mrf-primary-dim)] sm:size-10">
-                  <Icon.Sparkles className="size-4 sm:size-5" />
-                </div>
-                <div className="text-right">
-                  <p className="text-xs font-bold text-[var(--color-mrf-ink)] sm:text-sm">
-                    تجديد جلدي عميق
-                  </p>
-                  <p className="text-[10px] text-[var(--color-mrf-ink-soft)] sm:text-xs">
-                    كولاجين جديد من الجلسة الأولى
-                  </p>
-                </div>
-              </motion.div>
             </div>
           </div>
         </header>
