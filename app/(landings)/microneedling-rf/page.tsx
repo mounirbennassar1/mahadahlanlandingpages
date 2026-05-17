@@ -192,15 +192,31 @@ export default function MicroneedlingRfLanding() {
               </div>
             </div>
 
-            {/* Hero media — parallax driven by GSAP ScrollTrigger in HeroChoreography */}
+            {/* Hero media — frameless, free-floating, scroll-rotated by GSAP */}
             <div
               data-mrf-hero-media
-              className="relative mx-auto mt-4 w-full max-w-[340px] will-change-transform sm:max-w-[440px] lg:mt-0 lg:max-w-[480px]"
+              className="relative mx-auto mt-4 w-full max-w-[380px] will-change-transform sm:max-w-[460px] lg:mt-0 lg:max-w-[520px]"
             >
-              <div className="absolute -inset-3 rounded-[2.5rem] border border-[var(--color-mrf-primary)]/30 sm:-inset-4" />
-              <div className="absolute -top-6 -right-6 hidden size-32 rounded-full bg-[var(--color-mrf-accent)]/40 blur-2xl sm:block" />
+              {/* ambient glow behind the subject — no rectangle, no border */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(closest-side,var(--color-mrf-accent)/55,transparent_70%)] blur-3xl"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-10 -right-10 hidden size-40 rounded-full bg-[var(--color-mrf-primary)]/25 blur-3xl sm:block"
+              />
 
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-[0_30px_60px_-30px_rgba(154,90,78,0.45)] sm:rounded-[2rem] sm:shadow-[0_40px_80px_-30px_rgba(154,90,78,0.45)]">
+              <div
+                className="relative aspect-[3/4] w-full"
+                style={{
+                  // Feathered/soft edges so the subject sits free, no rectangle.
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 70% 78% at 50% 52%, #000 55%, rgba(0,0,0,0.85) 70%, transparent 96%)",
+                  maskImage:
+                    "radial-gradient(ellipse 70% 78% at 50% 52%, #000 55%, rgba(0,0,0,0.85) 70%, transparent 96%)",
+                }}
+              >
                 <video
                   data-mrf-hero-video
                   poster="/microneedling-rf/hero.png"
@@ -211,16 +227,16 @@ export default function MicroneedlingRfLanding() {
                   playsInline
                   preload="metadata"
                   aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
-                  className="absolute inset-0 size-full object-cover"
+                  className="absolute inset-0 size-full object-cover object-center"
                 />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-mrf-ink)]/20 to-transparent" />
               </div>
 
+              {/* Floating credibility chip — not tied to any frame */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.6, duration: 0.6 }}
-                className="absolute -bottom-4 left-2 flex items-center gap-2.5 rounded-2xl border border-white/60 bg-white/90 px-3.5 py-2.5 shadow-xl backdrop-blur-md sm:-bottom-6 sm:left-4 sm:gap-3 sm:px-5 sm:py-3.5"
+                className="absolute bottom-4 left-0 flex items-center gap-2.5 rounded-2xl border border-white/60 bg-white/90 px-3.5 py-2.5 shadow-xl backdrop-blur-md sm:bottom-6 sm:left-2 sm:gap-3 sm:px-5 sm:py-3.5"
               >
                 <div className="flex size-9 items-center justify-center rounded-xl bg-[var(--color-mrf-primary)]/15 text-[var(--color-mrf-primary-dim)] sm:size-10">
                   <Icon.Sparkles className="size-4 sm:size-5" />

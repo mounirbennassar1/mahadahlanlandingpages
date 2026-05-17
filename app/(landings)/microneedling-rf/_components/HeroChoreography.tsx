@@ -41,14 +41,19 @@ export function HeroChoreography({ children }: { children: React.ReactNode }) {
           const media = ref.current?.querySelector<HTMLElement>("[data-mrf-hero-media]");
           if (!media) return;
 
-          // Parallax: media drifts down ~22% of its height as the hero
-          // scrolls out of view. ScrollTrigger handles all the math.
+          // Carousel-style turn: as the page scrolls, the hero media drifts,
+          // tilts on Y (subtle 3D rotation), and scales — feels like the
+          // subject is slowly turning toward the viewer.
+          gsap.set(media, { transformPerspective: 900, transformOrigin: "50% 55%" });
+
           gsap.fromTo(
             media,
-            { yPercent: 0, scale: 1 },
+            { yPercent: 0, scale: 1, rotateY: -10, rotateZ: -1.5 },
             {
-              yPercent: 22,
-              scale: 1.04,
+              yPercent: 18,
+              scale: 1.06,
+              rotateY: 10,
+              rotateZ: 1.5,
               ease: "none",
               scrollTrigger: {
                 trigger: ref.current,
@@ -58,6 +63,16 @@ export function HeroChoreography({ children }: { children: React.ReactNode }) {
               },
             },
           );
+
+          // Continuous gentle "breathing" rotation independent of scroll —
+          // sells the carousel/turn feel even when the user is still.
+          gsap.to(media, {
+            rotateY: "+=4",
+            duration: 4,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut",
+          });
 
           // Subtle counter-parallax on the headline column for depth.
           const headline = ref.current?.querySelector<HTMLElement>("h1");
