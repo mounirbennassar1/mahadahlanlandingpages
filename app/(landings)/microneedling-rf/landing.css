@@ -19,16 +19,20 @@
 }
 
 @keyframes mrf-marquee {
-  to { transform: translateX(-50%); }
+  /* The track holds 4 identical "set" wrappers. Translating by
+     -25% slides exactly one set's width; since sets are identical,
+     the wrap-around (animation restart at 0%) lands on visually
+     identical content — no snap, truly seamless. */
+  from { transform: translateX(0); }
+  to   { transform: translateX(-25%); }
 }
 .mrf-landing .mrf-marquee {
-  /* Force LTR layout on the track itself so the duplicated set
-     always sits to the right of the original — otherwise an
-     inherited dir="rtl" stacks duplicates off-screen to the left
-     and the translateX(-50%) reveals an empty viewport. The
-     individual items below restore dir="rtl" for Arabic text. */
+  /* Force LTR layout on the track itself so duplicated sets always
+     stack to the right; an inherited dir="rtl" would push them
+     off-screen left and reveal an empty viewport. Individual items
+     restore dir="rtl" for proper Arabic rendering. */
   direction: ltr;
-  animation: mrf-marquee 35s linear infinite;
+  animation: mrf-marquee 60s linear infinite;
   will-change: transform;
 }
 .mrf-landing .mrf-marquee:hover {
