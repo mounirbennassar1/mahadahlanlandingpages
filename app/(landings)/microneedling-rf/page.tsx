@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   motion,
   AnimatePresence,
@@ -64,6 +64,14 @@ export default function MicroneedlingRfLanding() {
 
   const nextDoc = () => setActiveDoc((p) => (p + 1) % DOCTORS.length);
   const prevDoc = () => setActiveDoc((p) => (p - 1 + DOCTORS.length) % DOCTORS.length);
+
+  useEffect(() => {
+    const id = setInterval(
+      () => setActiveDoc((p) => (p + 1) % DOCTORS.length),
+      2600,
+    );
+    return () => clearInterval(id);
+  }, []);
 
   const navLinks = [
     { href: "#problem", label: "عن العلاج" },
@@ -481,26 +489,21 @@ export default function MicroneedlingRfLanding() {
           </motion.div>
 
           <motion.div variants={fadeUp} className="order-1 lg:order-2">
-            <div className="relative mx-auto w-full max-w-sm sm:max-w-md">
+            <div className="relative mx-auto w-full max-w-md sm:max-w-lg lg:max-w-xl">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border-[6px] border-white shadow-[0_30px_70px_-30px_rgba(154,90,78,0.4)] sm:rounded-[2rem] sm:border-8">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={DOCTORS[activeDoc].img}
-                    initial={{ opacity: 0, scale: 1.04 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={DOCTORS[activeDoc].img}
-                      alt={DOCTORS[activeDoc].name}
-                      fill
-                      sizes="(max-width: 1024px) 80vw, 480px"
-                      className="object-cover object-top"
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                {DOCTORS.map((d, i) => (
+                  <Image
+                    key={d.img}
+                    src={d.img}
+                    alt={d.name}
+                    fill
+                    priority={i === 0}
+                    sizes="(max-width: 1024px) 90vw, 640px"
+                    className={`object-cover object-top transition-opacity duration-300 ease-out ${
+                      i === activeDoc ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                ))}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--color-mrf-ink)]/70 via-[var(--color-mrf-ink)]/20 to-transparent p-6 text-white">
                   <p className="font-bold text-lg">{DOCTORS[activeDoc].name}</p>
                   <p className="text-xs opacity-85">{DOCTORS[activeDoc].title}</p>
