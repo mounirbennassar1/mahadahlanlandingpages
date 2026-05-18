@@ -604,26 +604,33 @@ export default function MicroneedlingRfLanding() {
                     "linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%)",
                 }}
               >
-                <div className="mrf-marquee flex w-max gap-4 sm:gap-6">
-                  {[...testimonials, ...testimonials].map((t, i) => (
+                <div className="mrf-marquee flex w-max">
+                  {[0, 1, 2, 3].map((setIdx) => (
                     <div
-                      key={`${t.name}-${i}`}
-                      dir="rtl"
-                      className="flex w-[280px] shrink-0 flex-col gap-4 rounded-3xl border border-[var(--color-mrf-line)] bg-[var(--color-mrf-bg)] p-5 sm:w-[340px] sm:gap-5 sm:p-7"
+                      key={setIdx}
+                      className="flex shrink-0 gap-4 pe-4 sm:gap-6 sm:pe-6"
                     >
-                      <Icon.Quote className="size-6 text-[var(--color-mrf-primary)]" />
-                      <p className="text-sm leading-loose text-[var(--color-mrf-ink-soft)]">
-                        «{t.text}»
-                      </p>
-                      <div className="mt-auto flex items-center gap-3 border-t border-[var(--color-mrf-line)] pt-4">
-                        <div className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-mrf-primary)] to-[var(--color-mrf-accent)] font-bold text-white">
-                          {t.name.charAt(0)}
+                      {testimonials.map((t, i) => (
+                        <div
+                          key={`${setIdx}-${t.name}-${i}`}
+                          dir="rtl"
+                          className="flex w-[280px] shrink-0 flex-col gap-4 rounded-3xl border border-[var(--color-mrf-line)] bg-[var(--color-mrf-bg)] p-5 sm:w-[340px] sm:gap-5 sm:p-7"
+                        >
+                          <Icon.Quote className="size-6 text-[var(--color-mrf-primary)]" />
+                          <p className="text-sm leading-loose text-[var(--color-mrf-ink-soft)]">
+                            «{t.text}»
+                          </p>
+                          <div className="mt-auto flex items-center gap-3 border-t border-[var(--color-mrf-line)] pt-4">
+                            <div className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-mrf-primary)] to-[var(--color-mrf-accent)] font-bold text-white">
+                              {t.name.charAt(0)}
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-bold text-[var(--color-mrf-ink)]">{t.name}</p>
+                              <p className="text-xs text-[var(--color-mrf-muted)]">{t.location}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm font-bold text-[var(--color-mrf-ink)]">{t.name}</p>
-                          <p className="text-xs text-[var(--color-mrf-muted)]">{t.location}</p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   ))}
                 </div>
