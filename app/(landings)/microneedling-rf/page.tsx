@@ -187,19 +187,29 @@ export default function MicroneedlingRfLanding() {
               data-mrf-hero-media
               className="relative mx-auto aspect-square w-full max-w-[200px] will-change-transform sm:max-w-[340px] lg:max-w-[560px]"
             >
-              {/* Slow continuous rotation ring */}
+              {/* Rotating conic-gradient frame — animated colored beam
+                  travels around the video edge. */}
               <motion.div
                 aria-hidden
                 animate={{ rotate: 360 }}
-                transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
-                className="pointer-events-none absolute -inset-2 -z-10 rounded-full border border-dashed border-[var(--color-mrf-primary)]/30 sm:-inset-3"
+                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                className="pointer-events-none absolute -inset-[3px] rounded-[1.6rem] sm:-inset-[5px] sm:rounded-[2.1rem]"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, #c47d6e 0deg, transparent 90deg, transparent 180deg, #c47d6e 270deg, transparent 360deg)",
+                }}
+              />
+              {/* Static base outline for when the gradient is between beams */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-[1px] rounded-[1.55rem] border border-[#c47d6e]/30 sm:-inset-[2px] sm:rounded-[2rem]"
               />
               {/* Subtle floating accent dot */}
               <motion.span
                 aria-hidden
                 animate={{ y: [0, -8, 0], opacity: [0.85, 1, 0.85] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="pointer-events-none absolute -top-1 right-2 z-10 size-2.5 rounded-full bg-[var(--color-mrf-primary)] shadow-[0_0_18px_var(--color-mrf-primary)] sm:right-4 sm:size-3"
+                className="pointer-events-none absolute -top-1 right-2 z-20 size-2.5 rounded-full bg-[#c47d6e] shadow-[0_0_18px_#c47d6e] sm:right-4 sm:size-3"
               />
               <motion.video
                 initial={{ opacity: 0, scale: 0.92 }}
@@ -214,7 +224,7 @@ export default function MicroneedlingRfLanding() {
                 playsInline
                 preload="metadata"
                 aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
-                className="block size-full object-cover drop-shadow-[0_24px_50px_rgba(154,90,78,0.22)]"
+                className="relative z-10 block size-full rounded-[1.45rem] object-cover drop-shadow-[0_24px_50px_rgba(196,125,110,0.25)] sm:rounded-[1.95rem]"
               />
             </div>
           </div>
