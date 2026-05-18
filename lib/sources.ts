@@ -65,7 +65,23 @@ export async function ensureSource(slug: string): Promise<LeadSource | null> {
   });
 
   await ensureUtmLinksForSource(source.id, slug);
+  await ensureConversionActionsForSource(source.id);
   return source;
+}
+
+/**
+ * Idempotently create the (WHATSAPP, FORM) conversion-action rows for a source.
+ * Rows start with null conversionId/Label — fill in via /dashboard/conversions
+ * once the action has been created in Google Ads.
+ */
+export async function ensureConversionActionsForSource(sourceId: string) {
+  for (const type of ["WHATSAPP", "FORM"] as const) {
+    await prisma.conversionAction.upsert({
+      where: { sourceId_type: { sourceId, type } },
+      update: {},
+      create: { sourceId, type, active: true },
+    });
+  }
 }
 
 /**

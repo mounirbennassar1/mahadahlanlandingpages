@@ -32,6 +32,11 @@ enum UtmPlatform {
   SNAPCHAT
 }
 
+enum ConversionType {
+  WHATSAPP
+  FORM
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -57,6 +62,22 @@ model LeadSource {
 
   leads       Lead[]
   utmLinks    UtmLink[]
+  conversions ConversionAction[]
+}
+
+model ConversionAction {
+  id              String         @id @default(cuid())
+  sourceId        String
+  source          LeadSource     @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  type            ConversionType
+  conversionId    String?
+  conversionLabel String?
+  active          Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@unique([sourceId, type])
+  @@index([sourceId])
 }
 
 model UtmLink {
