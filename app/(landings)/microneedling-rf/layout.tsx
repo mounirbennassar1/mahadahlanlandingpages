@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 // The only stylesheet is `landing.css`, which holds the bits Tailwind
 // can't express (marquee keyframes, ::selection, grain pseudo-element).
 const paletteVars: CSSProperties = {
-  "--color-mrf-bg": "#fff9f4",
+  "--color-mrf-bg": "#fbf8f3",
   "--color-mrf-surface": "#ffffff",
   "--color-mrf-ink": "#2e1f1a",
   "--color-mrf-ink-soft": "#6e5a52",
@@ -29,7 +29,7 @@ const paletteVars: CSSProperties = {
   "--color-mrf-primary-dim": "#9a5a4e",
   "--color-mrf-accent": "#e3a695",
   "--color-mrf-line": "rgba(46, 31, 26, 0.08)",
-  background: "#fff9f4",
+  background: "#fbf8f3",
   color: "#2e1f1a",
 } as CSSProperties;
 
