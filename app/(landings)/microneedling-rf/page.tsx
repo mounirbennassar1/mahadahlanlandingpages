@@ -131,23 +131,6 @@ export default function MicroneedlingRfLanding() {
           ref={heroRef}
           className="relative overflow-hidden bg-[var(--color-mrf-bg)] pt-20 pb-14 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32"
         >
-          {/* Animated ambient blobs — drift continuously to keep the hero
-              feeling alive even before the user scrolls. */}
-          <motion.div
-            aria-hidden
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, x: [0, 18, 0], y: [0, -14, 0] }}
-            transition={{ opacity: { duration: 1.2 }, x: { duration: 11, repeat: Infinity, ease: "easeInOut" }, y: { duration: 13, repeat: Infinity, ease: "easeInOut" } }}
-            className="pointer-events-none absolute -top-16 right-4 -z-10 size-48 rounded-full bg-[var(--color-mrf-primary)]/25 blur-3xl sm:size-72"
-          />
-          <motion.div
-            aria-hidden
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, x: [0, -22, 0], y: [0, 18, 0] }}
-            transition={{ opacity: { duration: 1.4 }, x: { duration: 14, repeat: Infinity, ease: "easeInOut" }, y: { duration: 9, repeat: Infinity, ease: "easeInOut" } }}
-            className="pointer-events-none absolute -bottom-20 left-0 -z-10 size-56 rounded-full bg-[var(--color-mrf-accent)]/40 blur-3xl sm:size-80"
-          />
-
           <div className="relative mx-auto grid max-w-7xl items-center gap-3 px-4 sm:gap-8 sm:px-6 grid-cols-[1fr_1.05fr] sm:grid-cols-[1.1fr_1fr] lg:grid-cols-[1.05fr_1fr] lg:gap-12">
             <div className="space-y-3 text-right sm:space-y-6 lg:space-y-8">
               <span className="mrf-eyebrow inline-flex translate-y-2.5 items-center gap-1.5 rounded-full border border-[var(--color-mrf-primary)]/25 bg-[var(--color-mrf-primary)]/5 px-2.5 py-1 text-[9px] font-semibold tracking-[0.18em] text-[var(--color-mrf-primary-dim)] opacity-0 sm:gap-2 sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.22em]">
@@ -204,11 +187,6 @@ export default function MicroneedlingRfLanding() {
               data-mrf-hero-media
               className="relative mx-auto aspect-square w-full max-w-[200px] will-change-transform sm:max-w-[340px] lg:max-w-[560px]"
             >
-              {/* Soft pastel halo */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -inset-4 -z-10 rounded-full bg-[radial-gradient(closest-side,var(--color-mrf-accent)/55,transparent_70%)] blur-2xl sm:-inset-10 sm:blur-3xl"
-              />
               {/* Slow continuous rotation ring */}
               <motion.div
                 aria-hidden
