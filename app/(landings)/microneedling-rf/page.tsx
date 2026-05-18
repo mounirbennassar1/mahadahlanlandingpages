@@ -129,16 +129,16 @@ export default function MicroneedlingRfLanding() {
       <HeroChoreography>
         <header
           ref={heroRef}
-          className="relative overflow-hidden bg-[var(--color-mrf-bg)] pt-24 pb-20 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32"
+          className="relative overflow-hidden bg-[var(--color-mrf-bg)] pt-20 pb-14 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32"
         >
-          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 sm:gap-12 sm:px-6 lg:grid-cols-[1.05fr_1fr]">
-            <div className="space-y-8 text-right">
+          <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-5 sm:gap-12 sm:px-6 lg:grid-cols-[1.05fr_1fr]">
+            <div className="order-2 space-y-6 text-right sm:space-y-8 lg:order-1">
               <span className="mrf-eyebrow inline-flex translate-y-2.5 items-center gap-2 rounded-full border border-[var(--color-mrf-primary)]/25 bg-[var(--color-mrf-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-[0.22em] text-[var(--color-mrf-primary-dim)] opacity-0">
                 <Icon.Sparkles className="size-3.5" />
                 تقنية طبية متقدمة
               </span>
 
-              <h1 className="space-y-1 text-[clamp(2.5rem,5.5vw,4.75rem)] font-bold leading-[1.35] tracking-tight text-[var(--color-mrf-ink)] sm:space-y-2">
+              <h1 className="space-y-1 text-[clamp(2rem,5.5vw,4.75rem)] font-bold leading-[1.35] tracking-tight text-[var(--color-mrf-ink)] sm:space-y-2">
                 <span className="block overflow-hidden pt-[0.1em] pb-[0.25em]">
                   <span className="mrf-line block">
                     ميكرونيدلينغ
@@ -192,12 +192,12 @@ export default function MicroneedlingRfLanding() {
               </div>
             </div>
 
-            {/* Hero media — square video, its cream bg matches the
-                section so it sits frameless; GSAP drives the scroll
-                parallax in HeroChoreography. */}
+            {/* Hero media — first on mobile, second on lg+. Square video
+                whose cream bg matches the section so it sits frameless.
+                GSAP drives the scroll parallax in HeroChoreography. */}
             <div
               data-mrf-hero-media
-              className="relative mx-auto mt-4 aspect-square w-full max-w-[420px] will-change-transform sm:max-w-[500px] lg:mt-0 lg:max-w-[560px]"
+              className="relative order-1 mx-auto aspect-square w-full max-w-[320px] will-change-transform sm:max-w-[440px] lg:order-2 lg:mt-0 lg:max-w-[560px]"
             >
               <video
                 data-mrf-hero-video
@@ -475,52 +475,50 @@ export default function MicroneedlingRfLanding() {
             </motion.h2>
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={stagger}
-            className="grid gap-6 md:grid-cols-3"
-          >
-            {[
-              {
-                name: "نورة م.",
-                location: "جدة · آثار حب الشباب",
-                text: "بعد ٤ جلسات صار في فرق واضح في ندوب وجهي. البشرة صارت ناعمة وموحّدة بشكل ما توقعته. الطاقم محترف ومريح.",
-              },
-              {
-                name: "لمى ع.",
-                location: "الرياض · شدّ البشرة",
-                text: "بشرتي صارت أكثر تماسكاً، خصوصاً منطقة الفك. اللي عجبني إن النتيجة طبيعية جداً ومحدش يلاحظ إنك سويتي إجراء.",
-              },
-              {
-                name: "ريم ك.",
-                location: "الدمام · المسام",
-                text: "مساماتي كانت واسعة وكل الكريمات ما نفعت. مع الميكرونيدلينغ RF صرت أحس ببشرتي ناعمة من غير ميكب. ممتنة جداً.",
-              },
-            ].map((t) => (
-              <motion.div
-                key={t.name}
-                variants={fadeUp}
-                whileHover={{ y: -6 }}
-                className="flex flex-col gap-4 rounded-3xl border border-[var(--color-mrf-line)] bg-[var(--color-mrf-bg)] p-5 transition-shadow hover:shadow-[0_20px_50px_-25px_rgba(154,90,78,0.25)] sm:gap-5 sm:p-7"
+          {(() => {
+            const testimonials = [
+              { name: "نورة م.", location: "جدة · آثار حب الشباب", text: "بعد ٤ جلسات صار في فرق واضح في ندوب وجهي. البشرة صارت ناعمة وموحّدة بشكل ما توقعته. الطاقم محترف ومريح." },
+              { name: "لمى ع.", location: "الرياض · شدّ البشرة", text: "بشرتي صارت أكثر تماسكاً، خصوصاً منطقة الفك. اللي عجبني إن النتيجة طبيعية جداً ومحدش يلاحظ إنك سويتي إجراء." },
+              { name: "ريم ك.", location: "الدمام · المسام", text: "مساماتي كانت واسعة وكل الكريمات ما نفعت. مع الميكرونيدلينغ RF صرت أحس ببشرتي ناعمة من غير ميكب. ممتنة جداً." },
+              { name: "هند س.", location: "جدة · خطوط دقيقة", text: "خطوط حول العين خفّت بشكل واضح بعد ٣ جلسات فقط. الجلسة مريحة والنتيجة بدت تدريجياً بشكل طبيعي." },
+              { name: "أمل ع.", location: "الرياض · تجديد عام", text: "بشرتي صارت أنضر وأكثر إشراقاً، وكل اللي حولي لاحظوا الفرق بدون ما يعرفوا السبب. تجربة ممتازة." },
+              { name: "رنا ك.", location: "الدمام · ندوب قديمة", text: "ندوب من سنوات بدأت تختفي. الدكتورة شرحتلي كل خطوة قبل البدء وكان في متابعة بعد كل جلسة." },
+            ];
+            return (
+              <div
+                className="group relative overflow-hidden"
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%)",
+                  maskImage:
+                    "linear-gradient(to right, transparent 0%, #000 6%, #000 94%, transparent 100%)",
+                }}
               >
-                <Icon.Quote className="size-6 text-[var(--color-mrf-primary)]" />
-                <p className="text-sm leading-loose text-[var(--color-mrf-ink-soft)]">
-                  «{t.text}»
-                </p>
-                <div className="mt-auto flex items-center gap-3 border-t border-[var(--color-mrf-line)] pt-4">
-                  <div className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-mrf-primary)] to-[var(--color-mrf-accent)] font-bold text-white">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-bold text-[var(--color-mrf-ink)]">{t.name}</p>
-                    <p className="text-xs text-[var(--color-mrf-muted)]">{t.location}</p>
-                  </div>
+                <div className="mrf-marquee flex w-max gap-4 sm:gap-6">
+                  {[...testimonials, ...testimonials].map((t, i) => (
+                    <div
+                      key={`${t.name}-${i}`}
+                      className="flex w-[280px] shrink-0 flex-col gap-4 rounded-3xl border border-[var(--color-mrf-line)] bg-[var(--color-mrf-bg)] p-5 sm:w-[340px] sm:gap-5 sm:p-7"
+                    >
+                      <Icon.Quote className="size-6 text-[var(--color-mrf-primary)]" />
+                      <p className="text-sm leading-loose text-[var(--color-mrf-ink-soft)]">
+                        «{t.text}»
+                      </p>
+                      <div className="mt-auto flex items-center gap-3 border-t border-[var(--color-mrf-line)] pt-4">
+                        <div className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-mrf-primary)] to-[var(--color-mrf-accent)] font-bold text-white">
+                          {t.name.charAt(0)}
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-bold text-[var(--color-mrf-ink)]">{t.name}</p>
+                          <p className="text-xs text-[var(--color-mrf-muted)]">{t.location}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              </div>
+            );
+          })()}
         </div>
       </section>
 
