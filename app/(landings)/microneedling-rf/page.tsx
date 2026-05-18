@@ -608,6 +608,7 @@ export default function MicroneedlingRfLanding() {
                   {[...testimonials, ...testimonials].map((t, i) => (
                     <div
                       key={`${t.name}-${i}`}
+                      dir="rtl"
                       className="flex w-[280px] shrink-0 flex-col gap-4 rounded-3xl border border-[var(--color-mrf-line)] bg-[var(--color-mrf-bg)] p-5 sm:w-[340px] sm:gap-5 sm:p-7"
                     >
                       <Icon.Quote className="size-6 text-[var(--color-mrf-primary)]" />

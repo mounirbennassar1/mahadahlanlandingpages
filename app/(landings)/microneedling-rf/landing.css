@@ -22,7 +22,14 @@
   to { transform: translateX(-50%); }
 }
 .mrf-landing .mrf-marquee {
+  /* Force LTR layout on the track itself so the duplicated set
+     always sits to the right of the original — otherwise an
+     inherited dir="rtl" stacks duplicates off-screen to the left
+     and the translateX(-50%) reveals an empty viewport. The
+     individual items below restore dir="rtl" for Arabic text. */
+  direction: ltr;
   animation: mrf-marquee 35s linear infinite;
+  will-change: transform;
 }
 .mrf-landing .mrf-marquee:hover {
   animation-play-state: paused;
