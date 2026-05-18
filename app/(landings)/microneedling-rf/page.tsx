@@ -242,7 +242,7 @@ export default function MicroneedlingRfLanding() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                 data-mrf-hero-video
-                poster="/microneedling-rf/hero.png"
+                poster="/microneedling-rf/poster.jpg"
                 src="/microneedling-rf/video.mp4"
                 autoPlay
                 loop
