@@ -33,10 +33,37 @@ const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
 };
 
+const DOCTORS = [
+  {
+    name: "د. مها دحلان",
+    title: "استشارية الجلدية والتجميل والليزر",
+    img: "/team/dr-maha.avif",
+  },
+  {
+    name: "د. إيناس عبدالعزيز",
+    title: "طبيب مقيم الأمراض الجلدية",
+    img: "/team/dr-inas.avif",
+  },
+  {
+    name: "د. لجين الجرماني",
+    title: "نائب الجلدية والتجميل والليزر",
+    img: "/team/dr-lajin.avif",
+  },
+  {
+    name: "د. دينا محمد البشير",
+    title: "نائب أول جلدية وتجميل وليزر",
+    img: "/team/dr-dina.avif",
+  },
+];
+
 export default function MicroneedlingRfLanding() {
   const heroRef = useRef<HTMLDivElement>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeDoc, setActiveDoc] = useState(0);
+
+  const nextDoc = () => setActiveDoc((p) => (p + 1) % DOCTORS.length);
+  const prevDoc = () => setActiveDoc((p) => (p - 1 + DOCTORS.length) % DOCTORS.length);
 
   const navLinks = [
     { href: "#problem", label: "عن العلاج" },
@@ -187,22 +214,13 @@ export default function MicroneedlingRfLanding() {
               data-mrf-hero-media
               className="relative mx-auto aspect-square w-full max-w-[200px] will-change-transform sm:max-w-[340px] lg:max-w-[560px]"
             >
-              {/* Rotating conic-gradient frame — animated colored beam
-                  travels around the video edge. */}
+              {/* Slow rotating dashed frame — transparent fill, just a
+                  thin dashed line in #c47d6e drifting around the video. */}
               <motion.div
                 aria-hidden
                 animate={{ rotate: 360 }}
-                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                className="pointer-events-none absolute -inset-[3px] rounded-[1.6rem] sm:-inset-[5px] sm:rounded-[2.1rem]"
-                style={{
-                  background:
-                    "conic-gradient(from 0deg, #c47d6e 0deg, transparent 90deg, transparent 180deg, #c47d6e 270deg, transparent 360deg)",
-                }}
-              />
-              {/* Static base outline for when the gradient is between beams */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -inset-[1px] rounded-[1.55rem] border border-[#c47d6e]/30 sm:-inset-[2px] sm:rounded-[2rem]"
+                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                className="pointer-events-none absolute -inset-[6px] rounded-[1.7rem] border-2 border-dashed border-[#c47d6e]/55 sm:-inset-[10px] sm:rounded-[2.2rem]"
               />
               {/* Subtle floating accent dot */}
               <motion.span
@@ -427,16 +445,16 @@ export default function MicroneedlingRfLanding() {
         >
           <motion.div variants={fadeUp} className="order-2 space-y-5 text-right lg:order-1">
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-mrf-primary)]/25 bg-[var(--color-mrf-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-[0.22em] text-[var(--color-mrf-primary-dim)]">
-              الطبيبة المختصة
+              فريقنا الطبي
             </span>
             <h2
               className="font-bold leading-tight text-[var(--color-mrf-ink)]"
               style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}
             >
-              د. <em className="not-italic text-[var(--color-mrf-primary)]">مها</em> دحلان
+              تعرّفي على <em className="not-italic text-[var(--color-mrf-primary)]">أخصائياتنا</em>
             </h2>
             <p className="text-base font-semibold text-[var(--color-mrf-ink-soft)]">
-              استشارية الأمراض الجلدية والتجميل والليزر
+              نخبة من استشاريات الأمراض الجلدية والتجميل والليزر
             </p>
             <blockquote className="border-r-4 border-[var(--color-mrf-primary)]/30 bg-[var(--color-mrf-surface)] px-6 py-5 text-right text-base leading-loose text-[var(--color-mrf-ink-soft)]">
               «الميكرونيدلينغ بالترددات الراديوية ليس مجرد جلسة تجميل — هو إعادة
@@ -463,17 +481,76 @@ export default function MicroneedlingRfLanding() {
           </motion.div>
 
           <motion.div variants={fadeUp} className="order-1 lg:order-2">
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[1.75rem] border-[6px] border-white shadow-[0_30px_70px_-30px_rgba(154,90,78,0.4)] sm:max-w-md sm:rounded-[2rem] sm:border-8">
-              <Image
-                src="/microneedling-rf/doctor.png"
-                alt="د. مها دحلان"
-                fill
-                sizes="(max-width: 1024px) 80vw, 480px"
-                className="object-cover object-top"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--color-mrf-ink)]/40 to-transparent p-6 text-white">
-                <p className="font-bold">د. مها دحلان</p>
-                <p className="text-xs opacity-85">جدة، المملكة العربية السعودية</p>
+            <div className="relative mx-auto w-full max-w-sm sm:max-w-md">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border-[6px] border-white shadow-[0_30px_70px_-30px_rgba(154,90,78,0.4)] sm:rounded-[2rem] sm:border-8">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={DOCTORS[activeDoc].img}
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={DOCTORS[activeDoc].img}
+                      alt={DOCTORS[activeDoc].name}
+                      fill
+                      sizes="(max-width: 1024px) 80vw, 480px"
+                      className="object-cover object-top"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--color-mrf-ink)]/70 via-[var(--color-mrf-ink)]/20 to-transparent p-6 text-white">
+                  <p className="font-bold text-lg">{DOCTORS[activeDoc].name}</p>
+                  <p className="text-xs opacity-85">{DOCTORS[activeDoc].title}</p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={prevDoc}
+                  aria-label="السابق"
+                  className="absolute right-3 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-[var(--color-mrf-ink)] shadow-lg backdrop-blur transition hover:bg-white"
+                >
+                  <Icon.ArrowLeft className="size-4 rotate-180" />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextDoc}
+                  aria-label="التالي"
+                  className="absolute left-3 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-[var(--color-mrf-ink)] shadow-lg backdrop-blur transition hover:bg-white"
+                >
+                  <Icon.ArrowLeft className="size-4" />
+                </button>
+              </div>
+
+              <div className="mt-5 flex items-center justify-center gap-2">
+                {DOCTORS.map((d, i) => (
+                  <button
+                    key={d.name}
+                    type="button"
+                    onClick={() => setActiveDoc(i)}
+                    aria-label={d.name}
+                    className={`h-2 rounded-full transition-all ${i === activeDoc ? "w-8 bg-[var(--color-mrf-primary)]" : "w-2 bg-[var(--color-mrf-line)] hover:bg-[var(--color-mrf-primary)]/40"}`}
+                  />
+                ))}
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                {DOCTORS.map((d, i) => (
+                  <button
+                    key={d.name}
+                    type="button"
+                    onClick={() => setActiveDoc(i)}
+                    className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+                      i === activeDoc
+                        ? "border-[var(--color-mrf-primary)] bg-[var(--color-mrf-primary)] text-white"
+                        : "border-[var(--color-mrf-line)] bg-white text-[var(--color-mrf-ink-soft)] hover:border-[var(--color-mrf-primary)] hover:text-[var(--color-mrf-primary)]"
+                    }`}
+                  >
+                    {d.name}
+                  </button>
+                ))}
               </div>
             </div>
           </motion.div>
