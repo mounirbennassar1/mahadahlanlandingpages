@@ -192,29 +192,24 @@ export default function MicroneedlingRfLanding() {
               </div>
             </div>
 
-            {/* Hero media — cropped to head & neck only, edges softly
-                feathered just enough to dissolve the rectangle boundary. */}
+            {/* Hero media — square video, its cream bg matches the
+                section so it sits frameless; GSAP drives the scroll
+                parallax in HeroChoreography. */}
             <div
               data-mrf-hero-media
-              className="relative mx-auto mt-4 aspect-square w-full max-w-[380px] overflow-hidden will-change-transform sm:max-w-[460px] lg:mt-0 lg:max-w-[520px]"
+              className="relative mx-auto mt-4 aspect-square w-full max-w-[420px] will-change-transform sm:max-w-[500px] lg:mt-0 lg:max-w-[560px]"
             >
               <video
                 data-mrf-hero-video
                 poster="/microneedling-rf/hero.png"
-                src="/microneedling-rf/hero.mp4"
+                src="/microneedling-rf/vid.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
                 preload="metadata"
                 aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
-                className="absolute inset-0 size-full object-cover object-[center_15%]"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse 65% 65% at 50% 50%, #000 75%, transparent 100%)",
-                  maskImage:
-                    "radial-gradient(ellipse 65% 65% at 50% 50%, #000 75%, transparent 100%)",
-                }}
+                className="block size-full object-cover"
               />
             </div>
           </div>

@@ -41,23 +41,33 @@ export function HeroChoreography({ children }: { children: React.ReactNode }) {
           const media = ref.current?.querySelector<HTMLElement>("[data-mrf-hero-media]");
           if (!media) return;
 
-          // 2D parallax only — no 3D transforms (they create an isolation
-          // context that breaks blending and can clip the mask).
+          // Smooth scroll-linked parallax — generous scrub for buttery lag,
+          // gentle drift + zoom-out as the hero scrolls out of view.
           gsap.fromTo(
             media,
-            { yPercent: 0, scale: 1 },
+            { yPercent: -4, scale: 1.04 },
             {
-              yPercent: 18,
-              scale: 1.05,
+              yPercent: 22,
+              scale: 0.96,
               ease: "none",
               scrollTrigger: {
                 trigger: ref.current,
                 start: "top top",
                 end: "bottom top",
-                scrub: 0.6,
+                scrub: 1.2,
               },
             },
           );
+
+          // Continuous gentle float when the page is still — keeps the
+          // subject feeling alive without any rotation/3D.
+          gsap.to(media, {
+            y: "-=10",
+            duration: 3.2,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut",
+          });
 
           // Subtle counter-parallax on the headline column for depth.
           const headline = ref.current?.querySelector<HTMLElement>("h1");
