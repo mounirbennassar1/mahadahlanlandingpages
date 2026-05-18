@@ -131,14 +131,14 @@ export default function MicroneedlingRfLanding() {
           ref={heroRef}
           className="relative overflow-hidden bg-[var(--color-mrf-bg)] pt-20 pb-14 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32"
         >
-          <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-5 sm:gap-12 sm:px-6 lg:grid-cols-[1.05fr_1fr]">
-            <div className="order-2 space-y-6 text-right sm:space-y-8 lg:order-1">
-              <span className="mrf-eyebrow inline-flex translate-y-2.5 items-center gap-2 rounded-full border border-[var(--color-mrf-primary)]/25 bg-[var(--color-mrf-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-[0.22em] text-[var(--color-mrf-primary-dim)] opacity-0">
-                <Icon.Sparkles className="size-3.5" />
+          <div className="relative mx-auto grid max-w-7xl items-center gap-4 px-5 sm:gap-8 sm:px-6 grid-cols-[1.15fr_1fr] sm:grid-cols-[1.2fr_1fr] lg:grid-cols-[1.05fr_1fr] lg:gap-12">
+            <div className="space-y-3 text-right sm:space-y-6 lg:space-y-8">
+              <span className="mrf-eyebrow inline-flex translate-y-2.5 items-center gap-1.5 rounded-full border border-[var(--color-mrf-primary)]/25 bg-[var(--color-mrf-primary)]/5 px-2.5 py-1 text-[9px] font-semibold tracking-[0.18em] text-[var(--color-mrf-primary-dim)] opacity-0 sm:gap-2 sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.22em]">
+                <Icon.Sparkles className="size-3 sm:size-3.5" />
                 تقنية طبية متقدمة
               </span>
 
-              <h1 className="space-y-1 text-[clamp(2rem,5.5vw,4.75rem)] font-bold leading-[1.35] tracking-tight text-[var(--color-mrf-ink)] sm:space-y-2">
+              <h1 className="space-y-0.5 text-[clamp(1.15rem,3.4vw,4.75rem)] font-bold leading-[1.4] tracking-tight text-[var(--color-mrf-ink)] sm:space-y-1 sm:leading-[1.35] lg:space-y-2">
                 <span className="block overflow-hidden pt-[0.1em] pb-[0.25em]">
                   <span className="mrf-line block">
                     ميكرونيدلينغ
@@ -154,51 +154,42 @@ export default function MicroneedlingRfLanding() {
                 </span>
               </h1>
 
-              <p className="mrf-sub max-w-xl translate-y-5 text-lg leading-[1.9] text-[var(--color-mrf-ink-soft)] opacity-0">
+              <p className="mrf-sub hidden max-w-xl translate-y-5 text-base leading-[1.9] text-[var(--color-mrf-ink-soft)] opacity-0 sm:block sm:text-lg">
                 علاج طبي يجمع بين الإبر الدقيقة وموجات الترددات الراديوية لتحفيز إنتاج الكولاجين، شدّ البشرة، وتنعيم آثار حب الشباب — بإشراف د. مها دحلان.
               </p>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex flex-col gap-2 sm:gap-3 lg:flex-row">
                 <a
                   href="#book"
-                  className="mrf-cta inline-flex h-14 translate-y-5 items-center justify-center gap-3 rounded-2xl bg-[var(--color-mrf-ink)] px-6 text-base font-bold text-white opacity-0 shadow-lg transition-transform hover:scale-[1.02] sm:h-auto sm:px-7 sm:py-4"
+                  className="mrf-cta inline-flex h-10 translate-y-5 items-center justify-center gap-1.5 rounded-xl bg-[var(--color-mrf-ink)] px-3 text-[11px] font-bold text-white opacity-0 shadow-md transition-transform hover:scale-[1.02] sm:h-12 sm:gap-3 sm:rounded-2xl sm:px-6 sm:text-base lg:h-14 lg:px-7 lg:py-4"
                 >
-                  <Icon.CalendarCheck className="size-5" />
-                  احجزي استشارتكِ
-                  <Icon.ArrowLeft className="size-4" />
+                  <Icon.CalendarCheck className="size-3.5 sm:size-5" />
+                  احجزي
+                  <span className="hidden sm:inline">استشارتكِ</span>
+                  <Icon.ArrowLeft className="hidden size-4 sm:inline" />
                 </a>
                 <a
                   href={WA}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mrf-cta inline-flex h-14 translate-y-5 items-center justify-center gap-3 rounded-2xl border border-[var(--color-mrf-ink)]/15 bg-white px-6 text-base font-bold text-[var(--color-mrf-ink)] opacity-0 transition-colors hover:border-[var(--color-mrf-primary)] hover:text-[var(--color-mrf-primary)] sm:h-auto sm:px-7 sm:py-4"
+                  className="mrf-cta inline-flex h-10 translate-y-5 items-center justify-center gap-1.5 rounded-xl border border-[var(--color-mrf-ink)]/15 bg-white px-3 text-[11px] font-bold text-[var(--color-mrf-ink)] opacity-0 transition-colors hover:border-[var(--color-mrf-primary)] hover:text-[var(--color-mrf-primary)] sm:h-12 sm:gap-3 sm:rounded-2xl sm:px-6 sm:text-base lg:h-14 lg:px-7 lg:py-4"
                 >
-                  <FontAwesomeIcon icon={faWhatsapp} className="text-lg text-[#25D366]" />
-                  تواصلي عبر واتساب
+                  <FontAwesomeIcon icon={faWhatsapp} className="text-sm text-[#25D366] sm:text-lg" />
+                  واتساب
                 </a>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 border-t border-[var(--color-mrf-line)] pt-6 text-sm text-[var(--color-mrf-ink-soft)] sm:flex sm:flex-wrap sm:gap-6">
-                {[
-                  { num: "+١٢", label: "سنة خبرة" },
-                  { num: "٤.٩", label: "تقييم العميلات" },
-                  { num: "+٩٢٪", label: "تحسن واضح" },
-                ].map((s) => (
-                  <div key={s.label} className="flex flex-col">
-                    <span className="text-2xl font-bold text-[var(--color-mrf-ink)]">{s.num}</span>
-                    <span className="text-[10px] uppercase tracking-widest sm:text-xs">{s.label}</span>
-                  </div>
-                ))}
               </div>
             </div>
 
-            {/* Hero media — first on mobile, second on lg+. Square video
-                whose cream bg matches the section so it sits frameless.
-                GSAP drives the scroll parallax in HeroChoreography. */}
+            {/* Hero media — left column in RTL natural order. Soft pastel
+                glow halo behind it for a modern editorial feel. */}
             <div
               data-mrf-hero-media
-              className="relative order-1 mx-auto aspect-square w-full max-w-[320px] will-change-transform sm:max-w-[440px] lg:order-2 lg:mt-0 lg:max-w-[560px]"
+              className="relative mx-auto aspect-square w-full max-w-[160px] will-change-transform sm:max-w-[300px] lg:max-w-[560px]"
             >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-[radial-gradient(closest-side,var(--color-mrf-accent)/45,transparent_70%)] blur-2xl sm:-inset-10 sm:blur-3xl"
+              />
               <video
                 data-mrf-hero-video
                 poster="/microneedling-rf/hero.png"
@@ -209,9 +200,24 @@ export default function MicroneedlingRfLanding() {
                 playsInline
                 preload="metadata"
                 aria-label="نتائج علاج الميكرونيدلينغ بالترددات الراديوية"
-                className="block size-full object-cover"
+                className="block size-full object-cover drop-shadow-[0_20px_40px_rgba(154,90,78,0.18)]"
               />
             </div>
+          </div>
+
+          {/* Stats row — full-width under the 2-col grid so it doesn't
+              squeeze the text column on mobile. */}
+          <div className="relative mx-auto mt-8 grid max-w-7xl grid-cols-3 gap-3 border-t border-[var(--color-mrf-line)] px-5 pt-5 text-[var(--color-mrf-ink-soft)] sm:mt-12 sm:gap-6 sm:px-6 sm:pt-6">
+            {[
+              { num: "+١٢", label: "سنة خبرة" },
+              { num: "٤.٩", label: "تقييم العميلات" },
+              { num: "+٩٢٪", label: "تحسن واضح" },
+            ].map((s) => (
+              <div key={s.label} className="flex flex-col text-right">
+                <span className="text-lg font-bold text-[var(--color-mrf-ink)] sm:text-2xl">{s.num}</span>
+                <span className="text-[9px] uppercase tracking-widest sm:text-xs">{s.label}</span>
+              </div>
+            ))}
           </div>
         </header>
       </HeroChoreography>
