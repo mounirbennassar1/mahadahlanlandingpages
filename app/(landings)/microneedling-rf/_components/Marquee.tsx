@@ -27,7 +27,10 @@ export function Marquee() {
   );
 
   return (
-    <div className="overflow-hidden border-y border-[var(--color-mrf-line)] bg-[var(--color-mrf-surface)] py-4">
+    <div
+      dir="ltr"
+      className="overflow-hidden border-y border-[var(--color-mrf-line)] bg-[var(--color-mrf-surface)] py-4"
+    >
       <div className="mrf-marquee flex w-max whitespace-nowrap text-sm font-semibold text-[var(--color-mrf-ink-soft)]">
         <Set />
         <Set />

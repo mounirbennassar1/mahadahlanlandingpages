@@ -596,6 +596,7 @@ export default function MicroneedlingRfLanding() {
             ];
             return (
               <div
+                dir="ltr"
                 className="group relative overflow-hidden"
                 style={{
                   WebkitMaskImage:
