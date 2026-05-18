@@ -138,18 +138,18 @@ export default function MicroneedlingRfLanding() {
                 تقنية طبية متقدمة
               </span>
 
-              <h1 className="text-[clamp(2.5rem,5.5vw,4.75rem)] font-bold leading-[1.1] tracking-tight text-[var(--color-mrf-ink)]">
-                <span className="block overflow-hidden py-[0.05em]">
+              <h1 className="space-y-1 text-[clamp(2.5rem,5.5vw,4.75rem)] font-bold leading-[1.35] tracking-tight text-[var(--color-mrf-ink)] sm:space-y-2">
+                <span className="block overflow-hidden pt-[0.1em] pb-[0.25em]">
                   <span className="mrf-line block">
                     ميكرونيدلينغ
                   </span>
                 </span>
-                <span className="block overflow-hidden py-[0.05em]">
+                <span className="block overflow-hidden pt-[0.1em] pb-[0.25em]">
                   <span className="mrf-line block">
                     <em className="not-italic" style={{ color: "var(--color-mrf-primary)" }}>بالترددات الراديوية</em>
                   </span>
                 </span>
-                <span className="block overflow-hidden py-[0.05em]">
+                <span className="block overflow-hidden pt-[0.1em] pb-[0.25em]">
                   <span className="mrf-line block">لبشرة تتجدّد من الداخل<span style={{ color: "var(--color-mrf-primary)" }}>.</span></span>
                 </span>
               </h1>
