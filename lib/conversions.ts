@@ -1,6 +1,10 @@
 import "server-only";
-import type { ConversionType } from "@prisma/client";
+import type { ConversionType, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+
+type SourceWithConversions = Prisma.LeadSourceGetPayload<{
+  include: { conversions: true };
+}>;
 
 export type ConversionConfig = {
   conversionId: string;
@@ -43,7 +47,7 @@ export async function getConversionsForSlug(
 ): Promise<LandingConversionConfig> {
   const empty: LandingConversionConfig = { whatsapp: null, form: null };
 
-  let source: Awaited<ReturnType<typeof prisma.leadSource.findUnique>> = null;
+  let source: SourceWithConversions | null = null;
   try {
     source = await prisma.leadSource.findUnique({
       where: { slug },
