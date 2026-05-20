@@ -539,27 +539,13 @@ export default function EidOfferPage() {
 
           <div className="benefits-wrap">
             <div className="benefits-art reveal">
-              <svg className="lantern" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="lg1" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#fff5d8" />
-                    <stop offset="100%" stopColor="#8e6628" />
-                  </linearGradient>
-                </defs>
-                <path d="M100 5 L100 35" stroke="url(#lg1)" strokeWidth="3" />
-                <circle cx="100" cy="5" r="4" fill="url(#lg1)" />
-                <path d="M65 35 L135 35 L143 60 L57 60 Z" fill="url(#lg1)" />
-                <path d="M55 60 L80 80 L80 180 L55 200 Z" fill="url(#lg1)" />
-                <path d="M145 60 L120 80 L120 180 L145 200 Z" fill="url(#lg1)" />
-                <rect x="80" y="80" width="40" height="100" fill="rgba(255,255,255,.5)" />
-                <g stroke="#fff" strokeWidth="1.5" fill="none" opacity=".8">
-                  <path d="M100 90 Q112 105 100 120 Q88 105 100 90 Z" />
-                  <path d="M100 120 Q115 140 100 160 Q85 140 100 120 Z" />
-                  <circle cx="100" cy="170" r="3" fill="#fff" />
-                </g>
-                <path d="M57 200 L143 200 L133 220 L67 220 Z" fill="url(#lg1)" />
-                <path d="M80 220 L120 220 L110 240 L90 240 Z" fill="url(#lg1)" />
-              </svg>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/eid-offer/benefits-art.png" alt="تجربة فاخرة" />
+              <div className="benefits-art-overlay" />
+              <div className="benefits-art-chip">
+                <span className="dot" />
+                تجربة ذهبية
+              </div>
             </div>
 
             <div className="ben-list">
@@ -614,20 +600,55 @@ export default function EidOfferPage() {
       {/* ===== TESTIMONIAL ===== */}
       <section className="eid-section testi">
         <div className="shell">
+          <div className="sec-head reveal">
+            <span className="sec-eyebrow">شهادات عميلاتنا</span>
+            <h2 className="sec-title">
+              قصص <span className="gilt">نجاح</span> تروّيها التجارب
+            </h2>
+          </div>
+
           <div className="testi-card reveal">
-            <div className="testi-avatar">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM2 22a10 10 0 0 1 20 0H2z" />
-              </svg>
+            <div className="testi-media">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/eid-offer/avatar-sara.png" alt="سارة العتيبي" />
+              <div className="testi-media-glow" />
+              <div className="testi-media-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 12l2 2 4-4" />
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+                عميلة موثّقة
+              </div>
             </div>
-            <div>
+
+            <div className="testi-body">
+              <div className="testi-rating">
+                <span className="stars">★★★★★</span>
+                <span className="testi-rating-num">٥٫٠</span>
+                <span className="testi-rating-src">— تقييم Google</span>
+              </div>
+
               <p className="testi-quote">
-                تجربتي مع عيادة مها دحلان كانت رائعة بكل المعاني. الطاقم محترف،
-                والنتائج فاقت توقعاتي. عرض العيد كان فرصة ذهبية حقيقية!
+                «تجربتي مع عيادة مها دحلان كانت رائعة بكل المعاني. الطاقم محترف،
+                والنتائج فاقت توقعاتي. عرض العيد كان فرصة ذهبية حقيقية!»
               </p>
-              <div className="testi-name">سارة العتيبي</div>
-              <div className="testi-role">عميلة منذ ٢٠٢٣</div>
-              <div className="stars">★ ★ ★ ★ ★</div>
+
+              <div className="testi-meta">
+                <div>
+                  <div className="testi-name">سارة العتيبي</div>
+                  <div className="testi-role">عميلة منذ ٢٠٢٣ — جدة</div>
+                </div>
+                <div className="testi-stats">
+                  <div className="ts-cell">
+                    <div className="ts-num">٤</div>
+                    <div className="ts-lbl">جلسات</div>
+                  </div>
+                  <div className="ts-cell">
+                    <div className="ts-num">١٠٠٪</div>
+                    <div className="ts-lbl">رضا</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
