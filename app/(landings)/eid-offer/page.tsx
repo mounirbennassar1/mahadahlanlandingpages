@@ -29,64 +29,53 @@ const SERVICES = [
     slug: "hydrafacial",
     title: "هيدرافيشل",
     desc: "تنظيف عميق وترطيب فوري للبشرة بتقنية الهيدرافيشل لإطلالة مشرقة ليوم العيد.",
-    price: "٤٥٠",
-    old: "٧٠٠",
     badge: "خصم ٣٥٪",
   },
   {
     slug: "hair",
     title: "علاجات الشعر",
     desc: "البلازما الغنية والميزوثيرابي لإيقاف التساقط وتحفيز نمو شعر صحي وكثيف.",
-    price: "٤٥٠",
-    old: "٧٠٠",
     badge: "خصم ٣٥٪",
+    image: "/eid-offer/hairv1.png",
   },
   {
     slug: "botox",
     title: "البوتوكس",
     desc: "بوتوكس الوجه على يد استشاريين معتمدين، نتائج طبيعية تُخفي علامات التعب فوراً.",
-    price: "٨٥٠",
-    old: "١٢٠٠",
     badge: "خصم ٢٩٪",
+    image: "/eid-offer/botoxv1.png",
   },
   {
     slug: "filler",
     title: "الفيلر",
     desc: "فيلر الشفاه والوجه لإبراز ملامحك بتناسق طبيعي ولمسة فاخرة في يوم العيد.",
-    price: "٩٩٠",
-    old: "١٤٠٠",
     badge: "خصم ٣٠٪",
   },
   {
     slug: "dark-circles",
     title: "علاج الهالات السوداء",
     desc: "بروتوكول متقدم بالميزوثيرابي والبلازما لتفتيح منطقة تحت العين وإشراقتها.",
-    price: "٤٩٠",
-    old: "٧٥٠",
     badge: "خصم ٣٥٪",
+    image: "/eid-offer/dark-circlev1.png",
   },
   {
     slug: "hyperpigmentation",
     title: "علاج التصبغات",
     desc: "جلسات الليزر والتقشير المتدرج لتوحيد لون البشرة والتخلص من الكلف والبقع.",
-    price: "٥٥٠",
-    old: "٨٥٠",
     badge: "خصم ٣٥٪",
+    image: "/eid-offer/hyperpigmentation.v1.png",
   },
   {
     slug: "microneedling-rf",
     title: "ميكرونيدلينغ RF",
     desc: "تجديد البشرة بترددات راديوية وإبر دقيقة لشد المسام وتحفيز الكولاجين بأمان.",
-    price: "٦٩٩",
-    old: "١٠٠٠",
     badge: "خصم ٣٠٪",
+    image: "/eid-offer/microneedling-rfv1.png",
   },
   {
     slug: "stretchmarks",
     title: "علامات التمدد",
     desc: "تقنيات الليزر والميزوثيرابي لتقليل علامات التمدد وتنعيم البشرة بشكل ملحوظ.",
-    price: "٥٩٠",
-    old: "٩٠٠",
     badge: "خصم ٣٥٪",
   },
 ];
@@ -416,7 +405,7 @@ export default function EidOfferPage() {
               <article className="svc" key={s.slug}>
                 <div className="svc-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`/eid-offer/${s.slug}.png`} alt={s.title} loading="lazy" />
+                  <img src={s.image ?? `/eid-offer/${s.slug}.png`} alt={s.title} loading="lazy" />
                   <span className="badge">{s.badge}</span>
                 </div>
                 <div className="svc-body">

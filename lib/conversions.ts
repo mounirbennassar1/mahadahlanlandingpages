@@ -41,12 +41,25 @@ function toConversionConfig(action: {
 export async function getConversionsForSlug(
   slug: string,
 ): Promise<LandingConversionConfig> {
-  const source = await prisma.leadSource.findUnique({
-    where: { slug },
-    include: { conversions: true },
-  });
-
   const empty: LandingConversionConfig = { whatsapp: null, form: null };
+
+  let source: Awaited<ReturnType<typeof prisma.leadSource.findUnique>> = null;
+  try {
+    source = await prisma.leadSource.findUnique({
+      where: { slug },
+      include: { conversions: true },
+    });
+  } catch (err) {
+    // Don't fail the build/render if the DB is unreachable — fall back to
+    // empty conversion config. Conversions will simply not fire until the
+    // DB is healthy again.
+    console.warn(
+      `[conversions] Could not load conversion config for slug "${slug}":`,
+      err instanceof Error ? err.message : err,
+    );
+    return empty;
+  }
+
   if (!source) return empty;
 
   const map = new Map<ConversionType, (typeof source.conversions)[number]>();
