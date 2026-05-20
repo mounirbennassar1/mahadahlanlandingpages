@@ -422,11 +422,6 @@ export default function EidOfferPage() {
                 <div className="svc-body">
                   <h3>{s.title}</h3>
                   <p>{s.desc}</p>
-                  <div className="svc-row">
-                    <div className="price">
-                      {s.price} <span className="old">{s.old} ر.س</span>
-                    </div>
-                  </div>
                   <a
                     href={waLink(`عرض العيد — ${s.title}: أرغب بالحجز والاستفسار عن السعر`)}
                     target="_blank"
