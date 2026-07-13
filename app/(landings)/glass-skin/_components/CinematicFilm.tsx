@@ -362,12 +362,12 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
               <span
                 className="block font-[family-name:var(--font-plex-arabic)] text-[clamp(3rem,15vw,6.8rem)] font-semibold leading-[1.05]"
               >
-                <span className="block overflow-hidden pt-[0.16em] pb-1">
+                <span className="block overflow-hidden pt-[0.16em] pb-[0.14em]">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
                     البشرة
                   </span>
                 </span>
-                <span className="block overflow-hidden pt-[0.16em] pb-2">
+                <span className="block overflow-hidden pt-[0.16em] pb-[0.14em]">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
                     الزجاجية
                   </span>

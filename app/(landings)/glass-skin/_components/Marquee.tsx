@@ -15,7 +15,7 @@ export function Marquee() {
     <div className="relative z-10 overflow-hidden border-y border-[var(--color-gls-line-soft)] bg-[#1d2023]/50 py-4 backdrop-blur-sm">
       <div
         className="gls-marquee flex w-max whitespace-nowrap text-sm font-semibold text-[var(--color-gls-ink-soft)]"
-        dir="ltr"
+        dir="rtl"
       >
         {[0, 1].map((copy) => (
           <div

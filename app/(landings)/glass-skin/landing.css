@@ -12,7 +12,8 @@
 
 /* ── trust marquee ─────────────────────────────────────────── */
 @keyframes gls-marquee {
-  to { transform: translate3d(-50%, 0, 0); }
+  from { transform: translate3d(50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 .gls-landing .gls-marquee {
   animation: gls-marquee 38s linear infinite;
