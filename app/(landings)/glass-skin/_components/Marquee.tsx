@@ -20,7 +20,7 @@ export function Marquee() {
         {[0, 1].map((copy) => (
           <div
             key={copy}
-            className="gls-marquee-group flex shrink-0 gap-12 pe-12"
+            className="gls-marquee-group flex min-w-[100vw] shrink-0 items-center justify-around gap-12 px-6"
             dir="rtl"
             aria-hidden={copy === 1}
           >

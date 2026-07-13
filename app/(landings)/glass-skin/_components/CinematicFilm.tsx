@@ -46,7 +46,7 @@ const CAPTIONS: Caption[] = [
     k: "٠٣",
     label: "إشراقة",
     title: "توهّجٌ زجاجي يدوم",
-    text: "لمعان فوري وملمس حريري من أول جلسة — بدون إبر، وبدون فترة نقاهة.",
+    text: "لمعان فوري وملمس حريري من أول جلسة، بدون إبر وبدون فترة نقاهة.",
     a: 0.64,
     b: 0.82,
   },
@@ -280,7 +280,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
           <div className="gls-fallback-host absolute inset-0">
             <Image
               src="/glass-skin/poster.jpg"
-              alt="بشرة زجاجية متوهّجة — الجلاس سكين الكوري"
+              alt="بشرة زجاجية متوهّجة ببروتوكول الجمال الكوري"
               fill
               priority
               sizes="100vw"
@@ -360,14 +360,14 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
                   glyphs — background-clip:text breaks if the clipped gradient
                   is on an ancestor while the text sits in a transformed child. */}
               <span
-                className="block font-[family-name:var(--font-plex-arabic)] text-[clamp(3rem,15vw,6.8rem)] font-semibold leading-[0.95]"
+                className="block font-[family-name:var(--font-plex-arabic)] text-[clamp(3rem,15vw,6.8rem)] font-semibold leading-[1.05]"
               >
-                <span className="block overflow-hidden pb-1">
+                <span className="block overflow-hidden pt-[0.16em] pb-1">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
                     البشرة
                   </span>
                 </span>
-                <span className="block overflow-hidden pb-2">
+                <span className="block overflow-hidden pt-[0.16em] pb-2">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
                     الزجاجية
                   </span>
@@ -381,7 +381,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
             </h1>
 
             <p className="gls-hero-fade mx-auto mt-4 max-w-md text-[13.5px] leading-7 text-[var(--color-gls-ink-soft)] sm:mt-5 sm:text-base sm:leading-8 md:mx-0">
-              الطقس الكوري الكامل للبشرة الزجاجية — تنظيف عميق، تقشير لطيف،
+              الطقس الكوري الكامل للبشرة الزجاجية: تنظيف عميق، وتقشير لطيف،
               وترطيب مكثّف يمنحكِ نقاءً ولمعاناً فورياً. بدون إبر، وبدون فترة
               نقاهة.
             </p>

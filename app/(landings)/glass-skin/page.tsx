@@ -55,7 +55,7 @@ const CHECKLIST = [
   {
     icon: Icon.Layers,
     title: "بروتوكول متعدد الطبقات",
-    text: "تنظيف، تقشير، ترطيب وتغذية — في جلسة واحدة متكاملة.",
+    text: "تنظيف وتقشير وترطيب وتغذية في جلسة واحدة متكاملة.",
   },
   {
     icon: Icon.ShieldCheck,
@@ -65,7 +65,7 @@ const CHECKLIST = [
   {
     icon: Icon.Leaf,
     title: "مكوّنات لطيفة وآمنة",
-    text: "مناسبة للبشرة الحساسة — بدون إبر وبدون تهيّج.",
+    text: "مناسبة للبشرة الحساسة، بدون إبر وبدون تهيّج.",
   },
   {
     icon: Icon.Sparkles,
@@ -133,7 +133,7 @@ const FAQS = [
   },
   {
     q: "هل يناسب البروتوكول البشرة الحساسة؟",
-    a: "نعم — جميع الخطوات لطيفة وخالية من الإبر، وتُخصَّص التركيزات بعد تقييم بشرتكِ في بداية الجلسة.",
+    a: "نعم، جميع الخطوات لطيفة وخالية من الإبر، وتُخصَّص التركيزات بعد تقييم بشرتكِ في بداية الجلسة.",
   },
   {
     q: "هل هناك ألم أو فترة نقاهة؟",
@@ -145,7 +145,7 @@ const FAQS = [
   },
   {
     q: "ما الفرق بين الجلاس سكين والتنظيف العميق العادي؟",
-    a: "الجلاس سكين بروتوكول كوري متكامل: يجمع التنظيف العميق مع التقشير الإنزيمي وضخ السيرومات وقناع التوهّج — الهدف ليس النظافة فقط بل بشرة تعكس الضوء.",
+    a: "الجلاس سكين بروتوكول كوري متكامل يجمع التنظيف العميق مع التقشير الإنزيمي وضخ السيرومات وقناع التوهّج. الهدف ليس النظافة فقط، بل بشرة تعكس الضوء.",
   },
 ];
 
@@ -313,7 +313,7 @@ export default function GlassSkinLanding() {
               variants={fadeUp}
               className="mt-5 max-w-xl text-[15px] leading-8 text-[var(--color-gls-ink-soft)]"
             >
-              «الجلاس سكين» ليس مجرد تنظيف بشرة — إنه فلسفة كورية كاملة هدفها
+              «الجلاس سكين» ليس مجرد تنظيف بشرة، بل فلسفة كورية كاملة هدفها
               بشرة صافية، ممتلئة بالترطيب، تعكس الضوء كسطح الزجاج. في عيادات
               د. مها دحلان ننقل لكِ البروتوكول الأصيل بأيدٍ طبية خبيرة
               ومنتجات كورية موثوقة.
@@ -421,7 +421,7 @@ export default function GlassSkinLanding() {
                 خطوة بخطوة
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-8 text-[var(--color-gls-ink-soft)]">
-                أربع مراحل متتالية، كل واحدة تُهيّئ البشرة للتي بعدها — حتى
+                أربع مراحل متتالية، كل واحدة تُهيّئ البشرة للتي بعدها، حتى
                 تخرجي واللمعان الزجاجي يسبقكِ.
               </p>
             </motion.div>
@@ -432,7 +432,7 @@ export default function GlassSkinLanding() {
                 <div className="gls-fallback-host relative h-full min-h-[28rem] overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
                   <Image
                     src="/glass-skin/ritual.jpg"
-                    alt="أدوات الطقس الكوري — سيروم وحجر الغوا شا"
+                    alt="أدوات الطقس الكوري، سيروم وحجر الغوا شا"
                     fill
                     sizes="30vw"
                     className="object-cover"
@@ -557,13 +557,13 @@ export default function GlassSkinLanding() {
               variants={fadeUp}
               className="mt-2 text-sm font-bold tracking-wide text-[var(--color-gls-primary-dim)]"
             >
-              استشارية الأمراض الجلدية والتجميل — جدة
+              استشارية الأمراض الجلدية والتجميل في جدة
             </motion.p>
             <motion.blockquote
               variants={fadeUp}
               className="mt-6 border-r-2 border-[var(--color-gls-primary)] pr-5 text-[15px] leading-8 text-[var(--color-gls-ink-soft)]"
             >
-              «البشرة الزجاجية ليست فلتراً ولا خدعة إضاءة — إنها صحة بشرة
+              «البشرة الزجاجية ليست فلتراً ولا خدعة إضاءة، بل صحة بشرة
               حقيقية تُبنى طبقة فوق طبقة. مهمتنا أن نصل ببشرتكِ إلى أنقى
               نسخة منها، بلطف وبعلم.»
             </motion.blockquote>
@@ -611,7 +611,7 @@ export default function GlassSkinLanding() {
             <div className="gls-fallback-host relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] bg-[var(--color-gls-surface)] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.85)]">
               <Image
                 src="/team/dr-maha.avif"
-                alt="د. مها دحلان — استشارية الأمراض الجلدية والتجميل"
+                alt="د. مها دحلان، استشارية الأمراض الجلدية والتجميل"
                 fill
                 sizes="(max-width: 768px) 90vw, 35vw"
                 className="object-cover object-top [filter:sepia(0.55)_saturate(1.5)_brightness(1.03)_contrast(1.02)]"
@@ -837,7 +837,7 @@ export default function GlassSkinLanding() {
                     عيادات د. مها دحلان
                   </span>
                   <span className="text-sm text-[var(--color-gls-muted)]">
-                    جدة — المملكة العربية السعودية
+                    جدة، المملكة العربية السعودية
                   </span>
                 </div>
               </motion.li>
@@ -904,7 +904,7 @@ export default function GlassSkinLanding() {
             </div>
 
             <p className="text-center text-xs leading-6 text-[var(--color-gls-muted)]">
-              © {new Date().getFullYear()} عيادات د. مها دحلان — جميع الحقوق
+              © {new Date().getFullYear()} عيادات د. مها دحلان، جميع الحقوق
               محفوظة
             </p>
           </div>
