@@ -459,12 +459,11 @@ export default function HairLanding() {
               <motion.p variants={fadeUp} custom={0.1} className="text-slate-600">علاج متقدم لتساقط الشعر بجميع أنواعه في MD Clinics، بإشراف أطباء جلدية متخصصين وتقنيات حديثة تساعد على تحفيز نمو الشعر واستعادة كثافته بطريقة آمنة وفعالة.</motion.p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {[
                 { name: "د. مها دحلان", title: "استشارية الجلدية والتجميل والليزر", img: "/hair/team/dr-maha.avif", quals: ["البورد السعودي في طب الأمراض الجلدية والتجميل والليزر", "البورد العربي في طب الأمراض الجلدية والتناسلية", "ماجستير صحة عامة من جامعة بوسطن", "زمالة البرنامج العالمي من جامعة هارفارد للأمراض الجلدية"] },
                 { name: "د. إيناس عبدالعزيز", title: "طبيب مقيم الأمراض الجلدية", img: "/hair/team/dr-inas.avif", quals: ["بكالوريوس طب وجراحة عامة - تخصص الجلدية", "الدبلوم الأمريكي للجلدية والتجميل والليزر"] },
                 { name: "د. لجين الجرماني", title: "نائب الجلدية والتجميل والليزر", img: "/hair/team/dr-lajin.avif", quals: ["البورد السوري في طب الأمراض الجلدية", "الدبلوم الأمريكي للجلدية والتجميل والليزر"] },
-                { name: "د. دينا محمد البشير", title: "نائب أول جلدية وتجميل وليزر", img: "/hair/team/dr-dina.avif", quals: ["البورد الأمريكي للتجميل والليزر", "الزمالة المصرية للأمراض الجلدية", "دبلوما ليزر المركز القومي للبحوث", "الدبلوما الأمريكية للتجميل النسائي"] },
               ].map((doc, idx) => (
                 <motion.div key={doc.name} variants={fadeUp} custom={idx * 0.1} className="group relative bg-[#f9f7f2] rounded-3xl overflow-hidden flex flex-col h-full border border-[#1a3a2a]/5 hover:shadow-2xl hover:shadow-[#c9a84c]/10 transition-all duration-300">
                   <div className="aspect-[4/5] relative overflow-hidden bg-white">

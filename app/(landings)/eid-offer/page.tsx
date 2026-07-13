@@ -96,11 +96,6 @@ const DOCTORS = [
     title: "نائب الجلدية والتجميل والليزر",
     img: "/team/dr-lajin.avif",
   },
-  {
-    name: "د. دينا محمد البشير",
-    title: "نائب أول جلدية وتجميل وليزر",
-    img: "/team/dr-dina.avif",
-  },
 ];
 
 const BENEFITS = [

@@ -423,7 +423,7 @@
 
 /* doctors */
 .eid-landing .doctors { background: linear-gradient(180deg, #f6ead4 0%, var(--ivory) 100%); }
-.eid-landing .doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.eid-landing .doc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .eid-landing .doc {
   background: #fff; border-radius: 24px; overflow: hidden;
   border: 1px solid var(--line); box-shadow: var(--shadow-soft);

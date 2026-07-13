@@ -159,17 +159,6 @@ const doctors = [
       "الدبلوم الأمريكي للجلدية والتجميل والليزر",
     ],
   },
-  {
-    name: "د. دينا محمد البشير",
-    title: "نائب أول جلدية وتجميل وليزر",
-    img: "/acne/team/dr-dina.avif",
-    quals: [
-      "البورد الأمريكي للتجميل والليزر",
-      "الزمالة المصرية للأمراض الجلدية",
-      "دبلوما ليزر المركز القومي للبحوث",
-      "الدبلوما الأمريكية للتجميل النسائي",
-    ],
-  },
 ];
 
 const reviews = [
@@ -652,7 +641,7 @@ export default function AcneLanding() {
 
           <div
             data-reveal-stagger
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-7"
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7"
           >
             {doctors.map((doc) => (
               <article
