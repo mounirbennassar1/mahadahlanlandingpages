@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { FireFormConversion } from "@/components/landing/FireFormConversion";
 
 export const metadata: Metadata = {
   title: "شكراً لك - عيادة مها دهلان",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 export default function HairThankYouPage() {
   return (
     <main className="min-h-screen bg-[#f9f7f2] text-[#1a3a2a] flex items-center justify-center px-6 py-16">
+      <FireFormConversion />
       <div className="w-full max-w-xl">
         <div className="bg-white rounded-[2.5rem] border border-[#1a3a2a]/10 shadow-2xl shadow-[#1a3a2a]/10 p-8 md:p-12 text-center">
           <div className="mx-auto mb-8 size-20 rounded-full bg-[#c9a84c]/15 border border-[#c9a84c]/30 flex items-center justify-center">

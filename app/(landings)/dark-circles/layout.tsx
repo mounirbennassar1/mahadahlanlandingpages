@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { plexArabic } from "@/lib/fonts";
+import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -46,6 +47,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-ML8NWCR');`}
       </Script>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=AW-10989762778"
+        strategy="afterInteractive"
+      />
+      <Script id="dc-gtag-init" strategy="afterInteractive">
+        {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-10989762778');`}
+      </Script>
       <noscript>
         <iframe
           src="https://www.googletagmanager.com/ns.html?id=GTM-ML8NWCR"
@@ -55,6 +66,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
       </noscript>
 
+      <ConversionTracking slug="dark-circles" />
       {children}
     </div>
   );

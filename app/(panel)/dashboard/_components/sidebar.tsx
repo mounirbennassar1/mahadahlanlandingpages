@@ -65,6 +65,15 @@ const OVERVIEW_NAV: NavItem[] = [
       </svg>
     ),
   },
+  {
+    href: "/dashboard/conversions",
+    label: "Conversions",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={navIconStyle}>
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+      </svg>
+    ),
+  },
 ];
 
 const WORKSPACE_NAV: NavItem[] = [

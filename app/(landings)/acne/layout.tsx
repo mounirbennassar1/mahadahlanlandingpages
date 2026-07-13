@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -90,6 +91,7 @@ gtag('config', 'AW-10989762778');`}
         />
       </noscript>
 
+      <ConversionTracking slug="acne" />
       {children}
     </div>
   );

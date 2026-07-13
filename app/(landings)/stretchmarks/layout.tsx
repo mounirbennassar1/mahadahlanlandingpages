@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { notoKufiArabic, notoSerif } from "@/lib/fonts";
+import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -84,6 +85,7 @@ gtag('config', 'AW-707324287');`}
         />
       </noscript>
 
+      <ConversionTracking slug="stretchmarks" />
       {children}
     </div>
   );

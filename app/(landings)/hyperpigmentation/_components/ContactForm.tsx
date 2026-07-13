@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { readUtmFromUrl } from "@/lib/utm";
+import { fireConversion } from "@/lib/gtag";
 
 type Status =
   | { kind: "idle" }
@@ -53,6 +54,7 @@ export default function ContactForm() {
         return;
       }
 
+      fireConversion("form");
       setStatus({ kind: "ok" });
       setFullName("");
       setPhone("");

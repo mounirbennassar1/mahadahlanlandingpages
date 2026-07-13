@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { readUtmFromUrl } from '@/lib/utm'
+import { fireConversion } from '@/lib/gtag'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -172,6 +173,7 @@ function BookingForm() {
         return
       }
 
+      fireConversion('form')
       setStatus({ kind: 'success' })
       setFullName('')
       setPhone('')

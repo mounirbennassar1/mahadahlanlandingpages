@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@/components/icons";
 import { readUtmFromUrl } from "@/lib/utm";
+import { fireConversion } from "@/lib/gtag";
 
 type Status =
   | { kind: "idle" }
@@ -55,6 +56,7 @@ export function LeadForm() {
         return;
       }
 
+      fireConversion("form");
       setStatus({ kind: "ok" });
       setFullName("");
       setPhone("");
