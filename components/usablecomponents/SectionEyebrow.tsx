@@ -19,7 +19,7 @@ export function SectionEyebrow({ tokenPrefix, children, icon }: Props) {
         background: `color-mix(in oklab, var(--color-${tokenPrefix}-primary) 5%, transparent)`,
         color: `var(--color-${tokenPrefix}-primary-dim)`,
       }}
-      className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.22em]"
+      className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-normal"
     >
       <IconCmp className="size-3.5" />
       {children}

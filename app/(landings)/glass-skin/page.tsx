@@ -365,7 +365,7 @@ export default function GlassSkinLanding() {
                 aria-hidden
               />
               <span
-                className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-sm font-semibold tracking-wide text-[var(--color-gls-accent)]"
+                className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-sm font-semibold tracking-normal text-[var(--color-gls-accent)]"
               >
                 نضارة وإشراقة
               </span>
@@ -375,7 +375,7 @@ export default function GlassSkinLanding() {
               <span className="block text-xl font-extrabold text-[var(--color-gls-primary-dim)]">
                 ٧٢ ساعة
               </span>
-              <span className="text-[11px] tracking-wider text-[var(--color-gls-muted)]">
+              <span className="text-[11px] tracking-normal text-[var(--color-gls-muted)]">
                 ترطيب متواصل بعد الجلسة
               </span>
             </div>
@@ -453,7 +453,7 @@ export default function GlassSkinLanding() {
                     aria-hidden
                   />
                   <span
-                    className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-wide text-[var(--color-gls-accent)]"
+                    className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-normal text-[var(--color-gls-accent)]"
                   >
                     الطقس الكوري
                   </span>
@@ -471,7 +471,7 @@ export default function GlassSkinLanding() {
                     <span className="pointer-events-none absolute -left-2 -top-6 font-[family-name:var(--font-plex-arabic)] text-[5.5rem] font-semibold leading-none text-[var(--color-gls-primary)]/12 transition-colors group-hover:text-[var(--color-gls-primary)]/20">
                       {s.n}
                     </span>
-                    <span className="font-[family-name:var(--font-plex-arabic)] text-[11px] font-semibold tracking-wide text-[var(--color-gls-primary)]">
+                    <span className="font-[family-name:var(--font-plex-arabic)] text-[11px] font-semibold tracking-normal text-[var(--color-gls-primary)]">
                       {s.label}
                     </span>
                     <h3 className="mt-2 text-lg font-extrabold text-white">
@@ -517,7 +517,7 @@ export default function GlassSkinLanding() {
                   <span className="gls-gold-text font-[family-name:var(--font-plex-arabic)] text-5xl font-semibold">
                     {s.num}
                   </span>
-                  <span className="mt-2 text-xs font-bold tracking-wider text-[var(--color-gls-muted)]">
+                  <span className="mt-2 text-xs font-bold tracking-normal text-[var(--color-gls-muted)]">
                     {s.label}
                   </span>
                 </div>
@@ -555,7 +555,7 @@ export default function GlassSkinLanding() {
             </motion.h2>
             <motion.p
               variants={fadeUp}
-              className="mt-2 text-sm font-bold tracking-wide text-[var(--color-gls-primary-dim)]"
+              className="mt-2 text-sm font-bold tracking-normal text-[var(--color-gls-primary-dim)]"
             >
               استشارية الأمراض الجلدية والتجميل في جدة
             </motion.p>
@@ -645,7 +645,7 @@ export default function GlassSkinLanding() {
                   د. مها دحلان
                 </span>
                 <span
-                  className="font-[family-name:var(--font-plex-arabic)] text-[10px] font-semibold tracking-wide text-[var(--color-gls-accent)]"
+                  className="font-[family-name:var(--font-plex-arabic)] text-[10px] font-semibold tracking-normal text-[var(--color-gls-accent)]"
                 >
                   عيادات مها دحلان
                 </span>
@@ -879,7 +879,7 @@ export default function GlassSkinLanding() {
                   عيادات د. مها دحلان
                 </span>
                 <span
-                  className="font-[family-name:var(--font-plex-arabic)] text-[10px] font-semibold tracking-wide text-[var(--color-gls-primary-dim)]"
+                  className="font-[family-name:var(--font-plex-arabic)] text-[10px] font-semibold tracking-normal text-[var(--color-gls-primary-dim)]"
                 >
                   بروتوكول البشرة الزجاجية
                 </span>

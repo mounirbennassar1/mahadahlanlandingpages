@@ -111,7 +111,7 @@ export function LeadForm() {
             className="relative z-10 space-y-5"
           >
             <div className="space-y-1.5 text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gls-primary)]/20 bg-[var(--color-gls-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-[0.18em] text-[var(--color-gls-primary-dim)]">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gls-primary)]/20 bg-[var(--color-gls-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-normal text-[var(--color-gls-primary-dim)]">
                 <Icon.Sparkles className="size-3.5" />
                 استشارة مجانية
               </span>

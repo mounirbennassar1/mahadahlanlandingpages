@@ -350,7 +350,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
             the subject's face); desktop: floated on the right, centered. */}
         <div ref={heroRef} className="absolute inset-0 z-20">
           <div className="flex h-full w-full flex-col items-center justify-end px-5 pb-28 pt-24 text-center md:absolute md:right-[6%] md:w-[min(38rem,46vw)] md:items-start md:justify-center md:pb-10 md:text-right">
-            <span className="gls-hero-fade inline-flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/55 px-3.5 py-1.5 text-[10px] font-bold tracking-[0.16em] text-[var(--color-gls-primary-dim)] backdrop-blur-md sm:text-[11px] sm:tracking-[0.18em]">
+            <span className="gls-hero-fade inline-flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/55 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-gls-primary-dim)] backdrop-blur-md sm:text-[11px]">
               <Icon.Sparkles className="size-3.5" />
               عيادات د. مها دحلان · بروتوكول كوري أصيل
             </span>
@@ -430,7 +430,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
               className="pointer-events-none absolute inset-x-6 bottom-[14svh] z-20 mx-auto max-w-sm text-center opacity-0 md:inset-x-auto md:bottom-auto md:right-[7%] md:top-1/2 md:mx-0 md:max-w-xs md:-translate-y-1/2 md:text-right"
             >
               <span
-                className="font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-wide text-[var(--color-gls-primary)]"
+                className="font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-normal text-[var(--color-gls-primary)]"
               >
                 {c.label} · {c.k}
               </span>
@@ -454,7 +454,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
             className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
             aria-hidden
           >
-            <span className="text-[10px] font-bold tracking-[0.3em] text-[var(--color-gls-muted)]">
+            <span className="text-[10px] font-bold tracking-normal text-[var(--color-gls-muted)]">
               مرّري للأسفل
             </span>
             <span className="block h-10 w-px bg-gradient-to-b from-[var(--color-gls-primary)] to-transparent" />
@@ -464,7 +464,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
 
         {/* preloader chip */}
         <div
-          className={`pointer-events-none absolute bottom-5 right-5 z-30 flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/70 px-3.5 py-1.5 text-[10px] font-bold tracking-widest text-[var(--color-gls-primary-dim)] backdrop-blur-md transition-opacity duration-700 ${
+          className={`pointer-events-none absolute bottom-5 right-5 z-30 flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/70 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-gls-primary-dim)] backdrop-blur-md transition-opacity duration-700 ${
             phase === "loading" && !reduced ? "opacity-100" : "opacity-0"
           }`}
           aria-hidden
