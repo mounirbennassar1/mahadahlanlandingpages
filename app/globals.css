@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Skill docs/templates and memory notes contain literal utility examples
+ * (e.g. arbitrary var() classes) that must never become Tailwind candidates. */
+@source not "../.claude";
+@source not "../memory";
+
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;

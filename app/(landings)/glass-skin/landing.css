@@ -1,0 +1,113 @@
+/* glass-skin landing — CSS only for what Tailwind can't express cleanly.
+ *
+ * Palette tokens live inline on `.gls-landing` in layout.tsx.
+ * This file holds: ::selection, @keyframes (marquee, motes, aura, sheen,
+ * float), and the grain / fallback pseudo-elements.
+ */
+
+.gls-landing ::selection {
+  background: #d4af37;
+  color: #1d2023;
+}
+
+/* ── trust marquee ─────────────────────────────────────────── */
+@keyframes gls-marquee {
+  to { transform: translateX(-50%); }
+}
+.gls-landing .gls-marquee {
+  animation: gls-marquee 38s linear infinite;
+}
+.gls-landing .gls-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ── film grain (screen blend for the dark ground) ─────────── */
+.gls-landing .gls-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
+
+/* ── hero aura: slow breathing gold light ──────────────────── */
+@keyframes gls-aura {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.08); }
+}
+.gls-landing .gls-aura {
+  animation: gls-aura 7s ease-in-out infinite;
+}
+
+/* ── drifting gold dust motes ──────────────────────────────── */
+@keyframes gls-mote {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  12%  { opacity: var(--mote-o, 0.7); }
+  85%  { opacity: var(--mote-o, 0.7); }
+  100% { transform: translateY(-46vh) translateX(var(--mote-x, 12px)); opacity: 0; }
+}
+.gls-landing .gls-mote {
+  animation: gls-mote var(--mote-d, 11s) linear infinite;
+  animation-delay: var(--mote-delay, 0s);
+}
+
+/* ── gold sheen sweeping across the display wordmark ───────── */
+@keyframes gls-sheen {
+  0%   { background-position: 130% center; }
+  100% { background-position: -30% center; }
+}
+.gls-landing .gls-gold-text {
+  background-image: linear-gradient(
+    100deg,
+    #a9852b 0%,
+    #d4af37 28%,
+    #f6e7ae 47%,
+    #d4af37 62%,
+    #a9852b 100%
+  );
+  background-size: 220% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.gls-landing .gls-gold-text-animated {
+  animation: gls-sheen 7.5s ease-in-out infinite;
+  /* dark halo so the gold wordmark stays legible over bright skin (mobile) */
+  filter: drop-shadow(0 2px 10px rgba(24, 27, 30, 0.75));
+}
+
+/* ── gentle float for imagery cards ────────────────────────── */
+@keyframes gls-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.gls-landing .gls-float {
+  animation: gls-float 8s ease-in-out infinite;
+}
+
+/* ── graceful asset fallback: gradient shows if an image 404s ─ */
+.gls-landing .gls-fallback-host {
+  position: relative;
+}
+.gls-landing .gls-fallback-host.is-missing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 70% 20%, rgba(212, 175, 55, 0.18), transparent 55%),
+    linear-gradient(160deg, #33383c 0%, #26292c 60%, #1d2023 100%);
+}
+
+/* ── reduced motion: kill continuous loops ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .gls-landing .gls-marquee,
+  .gls-landing .gls-aura,
+  .gls-landing .gls-mote,
+  .gls-landing .gls-float,
+  .gls-landing .gls-gold-text-animated {
+    animation: none;
+  }
+}
