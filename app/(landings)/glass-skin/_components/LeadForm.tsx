@@ -136,7 +136,7 @@ export function LeadForm() {
               <Field
                 id="gls-phone"
                 label="رقم الجوال"
-                placeholder="+966 5X XXX XXXX"
+                placeholder="مثال: ٠٥٠ ١٢٣ ٤٥٦٧"
                 type="tel"
                 inputMode="tel"
                 autoComplete="tel"

@@ -77,25 +77,25 @@ const CHECKLIST = [
 const STEPS = [
   {
     n: "٠١",
-    latin: "Gentle Cleanse",
+    label: "المرحلة الأولى",
     title: "تنظيف مزدوج",
     text: "إزالة الشوائب والمكياج بعمق على الطريقة الكورية، دون المساس بحاجز البشرة الواقي.",
   },
   {
     n: "٠٢",
-    latin: "Luminous Peel",
+    label: "المرحلة الثانية",
     title: "تقشير إنزيمي لطيف",
     text: "إذابة الخلايا الميتة وتوحيد لون البشرة وتهيئتها لامتصاص مثالي.",
   },
   {
     n: "٠٣",
-    latin: "Oxygen Infusion",
+    label: "المرحلة الثالثة",
     title: "ضخ الأكسجين والسيرومات",
     text: "هيالورونيك وببتيدات وفيتامينات تُضخّ بتقنية الأكسجين حتى الطبقات العميقة.",
   },
   {
     n: "٠٤",
-    latin: "Wet-Glow Finish",
+    label: "المرحلة الرابعة",
     title: "قناع التوهّج الزجاجي",
     text: "ختام مرطّب مكثّف يمنح اللمعان الزجاجي الشهير وملمساً حريرياً.",
   },
@@ -156,6 +156,13 @@ const NAV_LINKS = [
   { href: "#faq", label: "أسئلة شائعة" },
 ];
 
+const SOCIAL_LINKS = [
+  { name: "instagram", label: "إنستغرام" },
+  { name: "tiktok", label: "تيك توك" },
+  { name: "snapchat", label: "سناب شات" },
+  { name: "whatsapp", label: "واتساب" },
+] as const;
+
 /* ─────────────────────────────── page ─────────────────────────────── */
 
 export default function GlassSkinLanding() {
@@ -183,10 +190,10 @@ export default function GlassSkinLanding() {
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         className="fixed inset-x-3 top-3 z-50 mx-auto flex max-w-6xl items-center justify-between rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/70 px-4 py-2.5 backdrop-blur-xl sm:inset-x-4 sm:top-4 sm:px-6 sm:py-3"
       >
-        <a href="#film" aria-label="MD Clinics" className="flex items-center">
+        <a href="#film" aria-label="عيادات د. مها دحلان" className="flex items-center">
           <Image
             src="/glass-skin/logo.png"
-            alt="MD Clinics — مجمع عيادات د. مها دحلان الطبي"
+            alt="شعار مجمع عيادات د. مها دحلان الطبي"
             width={56}
             height={56}
             priority
@@ -292,7 +299,7 @@ export default function GlassSkinLanding() {
           <div>
             <motion.div variants={fadeUp}>
               <SectionEyebrow tokenPrefix="gls" icon="Gem">
-                THE GLASS SKIN METHOD
+                طريقة البشرة الزجاجية
               </SectionEyebrow>
             </motion.div>
             <motion.h2
@@ -337,8 +344,8 @@ export default function GlassSkinLanding() {
           <motion.div variants={fadeUp} className="relative">
             <div className="gls-fallback-host gls-float relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
               <Image
-                src="/glass-skin/closeup.jpg"
-                alt="بشرة زجاجية متوهّجة — قطرة ترطيب على وجنة مضيئة"
+                src="/glass-skin/koreanglass.png"
+                alt="بشرة نقيّة ومتوهّجة كالزجاج"
                 fill
                 sizes="(max-width: 768px) 90vw, 40vw"
                 className="object-cover"
@@ -358,10 +365,9 @@ export default function GlassSkinLanding() {
                 aria-hidden
               />
               <span
-                className="absolute bottom-5 right-5 font-[family-name:var(--font-cormorant)] text-sm font-semibold tracking-[0.4em] text-[var(--color-gls-accent)]"
-                dir="ltr"
+                className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-sm font-semibold tracking-wide text-[var(--color-gls-accent)]"
               >
-                DEW °GLOW
+                نضارة وإشراقة
               </span>
             </div>
             {/* floating chip */}
@@ -408,10 +414,9 @@ export default function GlassSkinLanding() {
               <h2 className="mt-5 text-3xl font-extrabold text-white sm:text-4xl">
                 رحلة{" "}
                 <span
-                  className="gls-gold-text font-[family-name:var(--font-cormorant)] tracking-[0.08em]"
-                  dir="ltr"
+                  className="gls-gold-text font-[family-name:var(--font-plex-arabic)]"
                 >
-                  G.L.O.W
+                  التوهّج
                 </span>{" "}
                 خطوة بخطوة
               </h2>
@@ -448,10 +453,9 @@ export default function GlassSkinLanding() {
                     aria-hidden
                   />
                   <span
-                    className="absolute bottom-5 right-5 font-[family-name:var(--font-cormorant)] text-xs font-semibold tracking-[0.45em] text-[var(--color-gls-accent)]"
-                    dir="ltr"
+                    className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-wide text-[var(--color-gls-accent)]"
                   >
-                    SEOUL RITUAL
+                    الطقس الكوري
                   </span>
                 </div>
               </motion.div>
@@ -464,14 +468,11 @@ export default function GlassSkinLanding() {
                     variants={fadeUp}
                     className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--color-gls-line-soft)] bg-[#2c3034]/70 p-6 backdrop-blur-sm transition-colors hover:border-[var(--color-gls-line)]"
                   >
-                    <span className="pointer-events-none absolute -left-2 -top-6 font-[family-name:var(--font-cormorant)] text-[5.5rem] font-semibold leading-none text-[var(--color-gls-primary)]/12 transition-colors group-hover:text-[var(--color-gls-primary)]/20">
+                    <span className="pointer-events-none absolute -left-2 -top-6 font-[family-name:var(--font-plex-arabic)] text-[5.5rem] font-semibold leading-none text-[var(--color-gls-primary)]/12 transition-colors group-hover:text-[var(--color-gls-primary)]/20">
                       {s.n}
                     </span>
-                    <span
-                      className="font-[family-name:var(--font-cormorant)] text-[11px] font-semibold tracking-[0.35em] text-[var(--color-gls-primary)]"
-                      dir="ltr"
-                    >
-                      {s.latin.toUpperCase()}
+                    <span className="font-[family-name:var(--font-plex-arabic)] text-[11px] font-semibold tracking-wide text-[var(--color-gls-primary)]">
+                      {s.label}
                     </span>
                     <h3 className="mt-2 text-lg font-extrabold text-white">
                       {s.title}
@@ -513,7 +514,7 @@ export default function GlassSkinLanding() {
                       : ""
                   }`}
                 >
-                  <span className="gls-gold-text font-[family-name:var(--font-cormorant)] text-5xl font-semibold">
+                  <span className="gls-gold-text font-[family-name:var(--font-plex-arabic)] text-5xl font-semibold">
                     {s.num}
                   </span>
                   <span className="mt-2 text-xs font-bold tracking-wider text-[var(--color-gls-muted)]">
@@ -644,10 +645,9 @@ export default function GlassSkinLanding() {
                   د. مها دحلان
                 </span>
                 <span
-                  className="font-[family-name:var(--font-cormorant)] text-[10px] font-semibold tracking-[0.4em] text-[var(--color-gls-accent)]"
-                  dir="ltr"
+                  className="font-[family-name:var(--font-plex-arabic)] text-[10px] font-semibold tracking-wide text-[var(--color-gls-accent)]"
                 >
-                  MD CLINICS
+                  عيادات مها دحلان
                 </span>
               </div>
             </div>
@@ -869,7 +869,7 @@ export default function GlassSkinLanding() {
             <div className="flex items-center gap-3">
               <Image
                 src="/glass-skin/logo.png"
-                alt="MD Clinics"
+                alt="شعار عيادات د. مها دحلان"
                 width={44}
                 height={44}
                 className="size-11 object-contain"
@@ -879,26 +879,25 @@ export default function GlassSkinLanding() {
                   عيادات د. مها دحلان
                 </span>
                 <span
-                  className="font-[family-name:var(--font-cormorant)] text-[10px] font-semibold tracking-[0.35em] text-[var(--color-gls-primary-dim)]"
-                  dir="ltr"
+                  className="font-[family-name:var(--font-plex-arabic)] text-[10px] font-semibold tracking-wide text-[var(--color-gls-primary-dim)]"
                 >
-                  KOREAN GLASS SKIN
+                  بروتوكول البشرة الزجاجية
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              {(["instagram", "tiktok", "snapchat", "whatsapp"] as const).map(
-                (s) => (
+              {SOCIAL_LINKS.map(
+                ({ name, label }) => (
                   <a
-                    key={s}
-                    href={s === "whatsapp" ? WA : "#"}
+                    key={name}
+                    href={name === "whatsapp" ? WA : "#"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={s}
+                    aria-label={label}
                     className="flex size-10 items-center justify-center rounded-full border border-[var(--color-gls-line-soft)] text-[var(--color-gls-muted)] transition-colors hover:border-[var(--color-gls-primary)] hover:text-[var(--color-gls-primary-dim)]"
                   >
-                    <SocialIcon name={s} />
+                    <SocialIcon name={name} />
                   </a>
                 ),
               )}

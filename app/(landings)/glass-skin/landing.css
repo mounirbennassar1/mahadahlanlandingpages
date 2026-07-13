@@ -12,10 +12,11 @@
 
 /* ── trust marquee ─────────────────────────────────────────── */
 @keyframes gls-marquee {
-  to { transform: translateX(-50%); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 .gls-landing .gls-marquee {
   animation: gls-marquee 38s linear infinite;
+  will-change: transform;
 }
 .gls-landing .gls-marquee:hover {
   animation-play-state: paused;

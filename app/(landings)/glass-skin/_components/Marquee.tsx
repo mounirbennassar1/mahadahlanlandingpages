@@ -13,12 +13,24 @@ const ITEMS = [
 export function Marquee() {
   return (
     <div className="relative z-10 overflow-hidden border-y border-[var(--color-gls-line-soft)] bg-[#1d2023]/50 py-4 backdrop-blur-sm">
-      <div className="gls-marquee flex w-max gap-12 whitespace-nowrap text-sm font-semibold text-[var(--color-gls-ink-soft)]">
-        {[...ITEMS, ...ITEMS].map((item, i) => (
-          <span key={i} className="flex items-center gap-3">
-            <span className="size-1.5 rounded-full bg-[var(--color-gls-primary)]" />
-            {item}
-          </span>
+      <div
+        className="gls-marquee flex w-max whitespace-nowrap text-sm font-semibold text-[var(--color-gls-ink-soft)]"
+        dir="ltr"
+      >
+        {[0, 1].map((copy) => (
+          <div
+            key={copy}
+            className="gls-marquee-group flex shrink-0 gap-12 pe-12"
+            dir="rtl"
+            aria-hidden={copy === 1}
+          >
+            {ITEMS.map((item) => (
+              <span key={item} className="flex items-center gap-3">
+                <span className="size-1.5 rounded-full bg-[var(--color-gls-primary)]" />
+                {item}
+              </span>
+            ))}
+          </div>
         ))}
       </div>
     </div>

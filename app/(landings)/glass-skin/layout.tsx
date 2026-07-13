@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
-import { almarai, cormorant } from "@/lib/fonts";
+import { plexArabic } from "@/lib/fonts";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -45,10 +45,10 @@ export default function GlassSkinLayout({
 }) {
   return (
     <div
-      className={`gls-landing relative ${almarai.variable} ${cormorant.variable}`}
+      className={`gls-landing relative ${plexArabic.variable}`}
       style={{
         ...paletteVars,
-        fontFamily: "var(--font-almarai), system-ui, sans-serif",
+        fontFamily: "var(--font-plex-arabic), system-ui, sans-serif",
       }}
     >
       {children}

@@ -18,7 +18,7 @@ const BG = "#26292c";
 
 type Caption = {
   k: string;
-  latin: string;
+  label: string;
   title: string;
   text: string;
   a: number;
@@ -28,7 +28,7 @@ type Caption = {
 const CAPTIONS: Caption[] = [
   {
     k: "٠١",
-    latin: "PURIFY",
+    label: "تنقية",
     title: "نقاءٌ يعكس الضوء",
     text: "تنظيف مزدوج وتقشير إنزيمي لطيف يفتح المسام ويُهيّئ بشرتكِ للامتصاص المثالي.",
     a: 0.16,
@@ -36,7 +36,7 @@ const CAPTIONS: Caption[] = [
   },
   {
     k: "٠٢",
-    latin: "INFUSE",
+    label: "تغذية",
     title: "ترطيبٌ يتوهّج من الداخل",
     text: "هيالورونيك وببتيدات كورية تُشبع البشرة طبقةً بعد طبقة حتى تمتلئ بالضوء.",
     a: 0.4,
@@ -44,7 +44,7 @@ const CAPTIONS: Caption[] = [
   },
   {
     k: "٠٣",
-    latin: "GLOW",
+    label: "إشراقة",
     title: "توهّجٌ زجاجي يدوم",
     text: "لمعان فوري وملمس حريري من أول جلسة — بدون إبر، وبدون فترة نقاهة.",
     a: 0.64,
@@ -360,17 +360,16 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
                   glyphs — background-clip:text breaks if the clipped gradient
                   is on an ancestor while the text sits in a transformed child. */}
               <span
-                className="block font-[family-name:var(--font-cormorant)] text-[clamp(3rem,15vw,6.8rem)] font-semibold leading-[0.9] tracking-[0.06em]"
-                dir="ltr"
+                className="block font-[family-name:var(--font-plex-arabic)] text-[clamp(3rem,15vw,6.8rem)] font-semibold leading-[0.95]"
               >
                 <span className="block overflow-hidden pb-1">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
-                    GLASS
+                    البشرة
                   </span>
                 </span>
                 <span className="block overflow-hidden pb-2">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
-                    SKIN
+                    الزجاجية
                   </span>
                 </span>
               </span>
@@ -431,10 +430,9 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
               className="pointer-events-none absolute inset-x-6 bottom-[14svh] z-20 mx-auto max-w-sm text-center opacity-0 md:inset-x-auto md:bottom-auto md:right-[7%] md:top-1/2 md:mx-0 md:max-w-xs md:-translate-y-1/2 md:text-right"
             >
               <span
-                className="font-[family-name:var(--font-cormorant)] text-xs font-semibold tracking-[0.5em] text-[var(--color-gls-primary)]"
-                dir="ltr"
+                className="font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-wide text-[var(--color-gls-primary)]"
               >
-                {c.latin} · {c.k}
+                {c.label} · {c.k}
               </span>
               <h3 className="mt-3 text-2xl font-extrabold leading-snug text-white md:text-[1.7rem]">
                 {c.title}
