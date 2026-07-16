@@ -12,7 +12,7 @@ const ITEMS = [
 
 export function Marquee() {
   return (
-    <div className="relative z-10 overflow-hidden border-y border-[var(--color-gls-line-soft)] bg-[#1d2023]/50 py-4 backdrop-blur-sm">
+    <div className="relative z-10 overflow-hidden border-y border-[var(--color-gls-line-soft)] bg-[#060708]/50 py-4 backdrop-blur-sm">
       <div
         className="gls-marquee flex w-max whitespace-nowrap text-sm font-semibold text-[var(--color-gls-ink-soft)]"
         dir="rtl"

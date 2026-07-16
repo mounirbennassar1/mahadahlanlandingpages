@@ -188,7 +188,7 @@ export default function GlassSkinLanding() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: navHidden ? -110 : 0, opacity: 1 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-x-3 top-3 z-50 mx-auto flex max-w-6xl items-center justify-between rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/70 px-4 py-2.5 backdrop-blur-xl sm:inset-x-4 sm:top-4 sm:px-6 sm:py-3"
+        className="fixed inset-x-3 top-3 z-50 mx-auto flex max-w-6xl items-center justify-between rounded-full border border-[var(--color-gls-line)] bg-[#060708]/70 px-4 py-2.5 backdrop-blur-xl sm:inset-x-4 sm:top-4 sm:px-6 sm:py-3"
       >
         <a href="#film" aria-label="عيادات د. مها دحلان" className="flex items-center">
           <Image
@@ -230,7 +230,7 @@ export default function GlassSkinLanding() {
             onClick={() => setMenuOpen((p) => !p)}
             aria-label={menuOpen ? "إغلاق القائمة" : "القائمة"}
             aria-expanded={menuOpen}
-            className="flex size-10 items-center justify-center rounded-full border border-[var(--color-gls-line)] bg-[#26292c]/80 text-[var(--color-gls-ink)] transition-colors hover:border-[var(--color-gls-primary)] hover:text-[var(--color-gls-primary-dim)] md:hidden"
+            className="flex size-10 items-center justify-center rounded-full border border-[var(--color-gls-line)] bg-[#16181b]/80 text-[var(--color-gls-ink)] transition-colors hover:border-[var(--color-gls-primary)] hover:text-[var(--color-gls-primary-dim)] md:hidden"
           >
             {menuOpen ? <Icon.X className="size-5" /> : <Icon.Menu className="size-5" />}
           </button>
@@ -243,7 +243,7 @@ export default function GlassSkinLanding() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-0 top-full mt-2 overflow-hidden rounded-3xl border border-[var(--color-gls-line)] bg-[#1d2023]/95 p-2 shadow-2xl backdrop-blur-xl md:hidden"
+              className="absolute inset-x-0 top-full mt-2 overflow-hidden rounded-3xl border border-[var(--color-gls-line)] bg-[#060708]/95 p-2 shadow-2xl backdrop-blur-xl md:hidden"
             >
               <ul className="flex flex-col">
                 {NAV_LINKS.map((l) => (
@@ -288,7 +288,7 @@ export default function GlassSkinLanding() {
         {/* ───── 3 · What is Glass Skin ───── */}
         <motion.section
           id="about"
-          data-ambient="#282723"
+          data-ambient="#0d0c0a"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -342,36 +342,34 @@ export default function GlassSkinLanding() {
 
           {/* imagery — second in DOM = left column in RTL */}
           <motion.div variants={fadeUp} className="relative">
-            <div className="gls-fallback-host gls-float relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
-              <Image
-                src="/glass-skin/koreanglass.png"
-                alt="بشرة نقيّة ومتوهّجة كالزجاج"
-                fill
-                sizes="(max-width: 768px) 90vw, 40vw"
-                className="object-cover"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                  e.currentTarget
-                    .closest(".gls-fallback-host")
-                    ?.classList.add("is-missing");
-                }}
+            <div className="gls-float relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] bg-[#060708] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
+              {/* Vimeo reel (9:16) — oversized + centered so it "object-covers"
+                  the 3:4 card. background=1 → autoplay, muted, looped, no UI. */}
+              <iframe
+                src="https://player.vimeo.com/video/1210474451?background=1&autoplay=1&loop=1&muted=1&autopause=0&title=0&byline=0&portrait=0&badge=0&player_id=0&app_id=58479"
+                title="الجلسة الكورية"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                loading="lazy"
+                className="pointer-events-none absolute left-1/2 top-1/2 aspect-[9/16] w-full -translate-x-1/2 -translate-y-1/2 border-0"
+                aria-label="فيديو الجلسة الكورية للبشرة الزجاجية"
               />
               <span
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(to top, rgba(29,32,35,0.5), transparent 40%)",
+                    "linear-gradient(to top, rgba(6,7,8,0.5), transparent 40%)",
                 }}
                 aria-hidden
               />
               <span
-                className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-sm font-semibold tracking-normal text-[var(--color-gls-accent)]"
+                className="pointer-events-none absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-sm font-semibold tracking-normal text-[var(--color-gls-accent)]"
               >
                 نضارة وإشراقة
               </span>
             </div>
             {/* floating chip */}
-            <div className="absolute -top-5 left-2 rounded-2xl border border-[var(--color-gls-line)] bg-[#1d2023]/85 px-4 py-3 shadow-xl backdrop-blur-md sm:left-6">
+            <div className="absolute -top-5 left-2 rounded-2xl border border-[var(--color-gls-line)] bg-[#060708]/85 px-4 py-3 shadow-xl backdrop-blur-md sm:left-6">
               <span className="block text-xl font-extrabold text-[var(--color-gls-primary-dim)]">
                 ٧٢ ساعة
               </span>
@@ -385,7 +383,7 @@ export default function GlassSkinLanding() {
         {/* ───── 4 · The G.L.O.W. protocol ───── */}
         <section
           id="protocol"
-          data-ambient="#212529"
+          data-ambient="#090b0d"
           className="relative overflow-hidden py-24 md:py-32"
         >
           {/* gold bokeh accent — very low opacity, ambient does the rest */}
@@ -448,7 +446,7 @@ export default function GlassSkinLanding() {
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "linear-gradient(to top, rgba(29,32,35,0.55), transparent 45%)",
+                        "linear-gradient(to top, rgba(6,7,8,0.55), transparent 45%)",
                     }}
                     aria-hidden
                   />
@@ -466,7 +464,7 @@ export default function GlassSkinLanding() {
                   <motion.li
                     key={s.n}
                     variants={fadeUp}
-                    className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--color-gls-line-soft)] bg-[#2c3034]/70 p-6 backdrop-blur-sm transition-colors hover:border-[var(--color-gls-line)]"
+                    className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--color-gls-line-soft)] bg-[#16181b]/70 p-6 backdrop-blur-sm transition-colors hover:border-[var(--color-gls-line)]"
                   >
                     <span className="pointer-events-none absolute -left-2 -top-6 font-[family-name:var(--font-plex-arabic)] text-[5.5rem] font-semibold leading-none text-[var(--color-gls-primary)]/12 transition-colors group-hover:text-[var(--color-gls-primary)]/20">
                       {s.n}
@@ -493,7 +491,7 @@ export default function GlassSkinLanding() {
 
         {/* ───── 5 · Results band ───── */}
         <motion.section
-          data-ambient="#26292c"
+          data-ambient="#0b0c0e"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
@@ -502,7 +500,7 @@ export default function GlassSkinLanding() {
         >
           <motion.div
             variants={fadeUp}
-            className="overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] bg-gradient-to-b from-[#2c3034]/80 to-[#26292c]/40 px-6 py-10 backdrop-blur-sm sm:px-10"
+            className="overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] bg-gradient-to-b from-[#16181b]/80 to-[#0b0c0e]/40 px-6 py-10 backdrop-blur-sm sm:px-10"
           >
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
               {STATS.map((s, i) => (
@@ -533,7 +531,7 @@ export default function GlassSkinLanding() {
         {/* ───── 6 · The doctor ───── */}
         <motion.section
           id="doctor"
-          data-ambient="#2a2623"
+          data-ambient="#0e0c0a"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -627,7 +625,7 @@ export default function GlassSkinLanding() {
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(155deg, rgba(212,175,55,0.32), rgba(169,133,43,0.14) 55%, rgba(29,32,35,0.2))",
+                    "linear-gradient(155deg, rgba(212,175,55,0.32), rgba(169,133,43,0.14) 55%, rgba(6,7,8,0.2))",
                   mixBlendMode: "multiply",
                 }}
                 aria-hidden
@@ -636,7 +634,7 @@ export default function GlassSkinLanding() {
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(to top, rgba(29,32,35,0.8), transparent 42%)",
+                    "linear-gradient(to top, rgba(6,7,8,0.8), transparent 42%)",
                 }}
                 aria-hidden
               />
@@ -656,7 +654,7 @@ export default function GlassSkinLanding() {
 
         {/* ───── 7 · Testimonials ───── */}
         <motion.section
-          data-ambient="#23272b"
+          data-ambient="#0a0b0d"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -678,7 +676,7 @@ export default function GlassSkinLanding() {
               <motion.figure
                 key={t.name}
                 variants={fadeUp}
-                className="flex flex-col rounded-[1.75rem] border border-[var(--color-gls-line-soft)] bg-[#2c3034]/70 p-7 backdrop-blur-sm"
+                className="flex flex-col rounded-[1.75rem] border border-[var(--color-gls-line-soft)] bg-[#16181b]/70 p-7 backdrop-blur-sm"
               >
                 <div className="flex gap-1 text-[var(--color-gls-primary)]" dir="ltr">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -709,7 +707,7 @@ export default function GlassSkinLanding() {
         {/* ───── 8 · FAQ ───── */}
         <motion.section
           id="faq"
-          data-ambient="#26292c"
+          data-ambient="#0b0c0e"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -734,8 +732,8 @@ export default function GlassSkinLanding() {
                   variants={fadeUp}
                   className={`overflow-hidden rounded-2xl border backdrop-blur-sm transition-colors ${
                     open
-                      ? "border-[var(--color-gls-line)] bg-[#2c3034]/80"
-                      : "border-[var(--color-gls-line-soft)] bg-[#2c3034]/45"
+                      ? "border-[var(--color-gls-line)] bg-[#16181b]/80"
+                      : "border-[var(--color-gls-line-soft)] bg-[#16181b]/45"
                   }`}
                 >
                   <button
@@ -778,7 +776,7 @@ export default function GlassSkinLanding() {
         {/* ───── 9 · Booking ───── */}
         <motion.section
           id="book"
-          data-ambient="#1f2225"
+          data-ambient="#08090b"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -864,7 +862,7 @@ export default function GlassSkinLanding() {
         </motion.section>
 
         {/* ───── Footer ───── */}
-        <footer className="border-t border-[var(--color-gls-line-soft)] bg-[#1d2023]/60 py-10 backdrop-blur-sm">
+        <footer className="border-t border-[var(--color-gls-line-soft)] bg-[#060708]/60 py-10 backdrop-blur-sm">
           <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 md:flex-row md:justify-between">
             <div className="flex items-center gap-3">
               <Image

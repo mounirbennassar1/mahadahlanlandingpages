@@ -15,8 +15,8 @@ if (typeof window !== "undefined") {
  *   vignette — subtle edge darkening
  *   grain    — faint film grain (from landing.css)
  *
- * Sections opt in via `data-ambient="#26292c"` — the page keeps ONE unified
- * dark family; only the warmth shifts as you travel between sections.
+ * Sections opt in via `data-ambient="#0b0c0e"` — the page keeps ONE unified
+ * near-black family; only the warmth shifts as you travel between sections.
  */
 export function AmbientLayers() {
   const ambientRef = useRef<HTMLDivElement>(null);
@@ -59,7 +59,7 @@ export function AmbientLayers() {
       <div
         ref={ambientRef}
         className="absolute inset-0"
-        style={{ backgroundColor: "#26292c" }}
+        style={{ backgroundColor: "#0b0c0e" }}
       />
       <div
         className="absolute inset-0"

@@ -18,7 +18,7 @@ export function GlassStickyCTA({ bookHref, waHref }: Props) {
       initial={{ y: 80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.6, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--color-gls-line)] bg-[#1d2023]/92 px-3 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shadow-[0_-14px_36px_-12px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--color-gls-line)] bg-[#060708]/92 px-3 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shadow-[0_-14px_36px_-12px_rgba(0,0,0,0.55)] backdrop-blur-xl md:hidden"
     >
       <div className="grid grid-cols-[1fr_auto] gap-2">
         <a

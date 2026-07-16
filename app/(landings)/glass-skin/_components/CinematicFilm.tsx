@@ -14,7 +14,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const BG = "#26292c";
+const BG = "#0b0c0e";
 
 type Caption = {
   k: string;
@@ -237,7 +237,9 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
       });
 
       /* entrance — text first, film breathes underneath */
-      gsap.set(".gls-line", { yPercent: 112 });
+      // 140 (not ~112): the clip windows carry extra descender padding, so the
+      // lines must start deeper to stay fully hidden before the reveal.
+      gsap.set(".gls-line", { yPercent: 140 });
       gsap.set(".gls-hero-fade", { opacity: 0, y: 20 });
       const tl = gsap.timeline({ delay: 0.2, defaults: { ease: "expo.out" } });
       tl.to(".gls-line", { yPercent: 0, stagger: 0.14, duration: 1.15 })
@@ -262,7 +264,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
     <section
       ref={sectionRef}
       id="film"
-      data-ambient="#26292c"
+      data-ambient="#0b0c0e"
       className={showPoster ? "relative" : "relative h-[330vh] md:h-[460vh]"}
     >
       <div
@@ -329,19 +331,19 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[70%] md:hidden"
           style={{
             background:
-              "linear-gradient(to top, rgba(24,27,30,0.96) 0%, rgba(24,27,30,0.74) 28%, rgba(24,27,30,0.22) 64%, transparent 100%)",
+              "linear-gradient(to top, rgba(5,6,7,0.96) 0%, rgba(5,6,7,0.74) 28%, rgba(5,6,7,0.22) 64%, transparent 100%)",
           }}
           aria-hidden
         />
         {/* desktop: subtle bottom scrim (text sits on the right there) */}
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 hidden h-44 md:block"
-          style={{ background: "linear-gradient(to top, rgba(29,32,35,0.6), transparent)" }}
+          style={{ background: "linear-gradient(to top, rgba(6,7,8,0.6), transparent)" }}
           aria-hidden
         />
         <div
           className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 md:h-28"
-          style={{ background: "linear-gradient(to bottom, rgba(29,32,35,0.5), transparent)" }}
+          style={{ background: "linear-gradient(to bottom, rgba(6,7,8,0.5), transparent)" }}
           aria-hidden
         />
 
@@ -350,7 +352,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
             the subject's face); desktop: floated on the right, centered. */}
         <div ref={heroRef} className="absolute inset-0 z-20">
           <div className="flex h-full w-full flex-col items-center justify-end px-5 pb-28 pt-24 text-center md:absolute md:right-[6%] md:w-[min(38rem,46vw)] md:items-start md:justify-center md:pb-10 md:text-right">
-            <span className="gls-hero-fade inline-flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/55 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-gls-primary-dim)] backdrop-blur-md sm:text-[11px]">
+            <span className="gls-hero-fade inline-flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#060708]/55 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-gls-primary-dim)] backdrop-blur-md sm:text-[11px]">
               <Icon.Sparkles className="size-3.5" />
               عيادات د. مها دحلان · بروتوكول كوري أصيل
             </span>
@@ -362,18 +364,20 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
               <span
                 className="block font-[family-name:var(--font-plex-arabic)] text-[clamp(3rem,15vw,6.8rem)] font-semibold leading-[1.05]"
               >
-                <span className="block overflow-hidden pt-[0.16em] pb-[0.14em]">
+                {/* pb widens the clip window for deep Arabic descenders (ة/ج/ي);
+                    the matching -mb cancels it so line rhythm stays unchanged. */}
+                <span className="-mb-[0.2em] block overflow-hidden pt-[0.16em] pb-[0.34em]">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
                     البشرة
                   </span>
                 </span>
-                <span className="block overflow-hidden pt-[0.16em] pb-[0.14em]">
+                <span className="-mb-[0.2em] block overflow-hidden pt-[0.16em] pb-[0.34em]">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
                     الزجاجية
                   </span>
                 </span>
               </span>
-              <span className="mt-3 block overflow-hidden md:mt-4">
+              <span className="mt-3 -mb-[0.24em] block overflow-hidden pt-[0.12em] pb-[0.24em] md:mt-4">
                 <span className="gls-line block text-[clamp(1.35rem,5.4vw,2.3rem)] font-extrabold leading-snug text-white">
                   بشرةٌ زجاجية… تتوهّج من الداخل
                 </span>
@@ -402,7 +406,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="استشارة عبر واتساب"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/45 px-5 text-sm font-bold text-[var(--color-gls-primary-dim)] backdrop-blur-md transition-colors hover:border-[var(--color-gls-primary)] hover:text-[var(--color-gls-accent)] md:px-6"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#060708]/45 px-5 text-sm font-bold text-[var(--color-gls-primary-dim)] backdrop-blur-md transition-colors hover:border-[var(--color-gls-primary)] hover:text-[var(--color-gls-accent)] md:px-6"
               >
                 <FontAwesomeIcon icon={faWhatsapp} className="text-lg" />
                 <span className="hidden sm:inline">استشارة واتساب</span>
@@ -464,7 +468,7 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
 
         {/* preloader chip */}
         <div
-          className={`pointer-events-none absolute bottom-5 right-5 z-30 flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#1d2023]/70 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-gls-primary-dim)] backdrop-blur-md transition-opacity duration-700 ${
+          className={`pointer-events-none absolute bottom-5 right-5 z-30 flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#060708]/70 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-gls-primary-dim)] backdrop-blur-md transition-opacity duration-700 ${
             phase === "loading" && !reduced ? "opacity-100" : "opacity-0"
           }`}
           aria-hidden

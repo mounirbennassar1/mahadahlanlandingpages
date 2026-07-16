@@ -100,7 +100,7 @@
   inset: 0;
   background:
     radial-gradient(120% 90% at 70% 20%, rgba(212, 175, 55, 0.18), transparent 55%),
-    linear-gradient(160deg, #33383c 0%, #26292c 60%, #1d2023 100%);
+    linear-gradient(160deg, #1d2024 0%, #101215 60%, #060708 100%);
 }
 
 /* ── reduced motion: kill continuous loops ─────────────────── */
