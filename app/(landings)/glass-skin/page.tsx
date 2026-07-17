@@ -9,10 +9,7 @@ import {
   useMotionValueEvent,
   type Variants,
 } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { Icon, SocialIcon } from "@/components/icons";
-import { WhatsAppFAB } from "@/components/usablecomponents/WhatsAppFAB";
 import { SectionEyebrow } from "@/components/usablecomponents/SectionEyebrow";
 import { CinematicFilm } from "./_components/CinematicFilm";
 import { AmbientLayers } from "./_components/AmbientLayers";
@@ -20,15 +17,13 @@ import { GlassStickyCTA } from "./_components/GlassStickyCTA";
 import { ScrollProgress } from "./_components/ScrollProgress";
 import { Marquee } from "./_components/Marquee";
 import { LeadForm } from "./_components/LeadForm";
+import { DoctorsSlider } from "./_components/DoctorsSlider";
 
 /* Frame count of the scroll film — MUST match public/glass-skin/seq/fNNN.jpg */
 const FRAME_COUNT = 121;
 
-const WA_NUMBER = "966503377702";
-const WA_TOPIC = "الجلاس سكين الكوري";
-const WA = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
-  "مرحباً، أرغب بالاستفسار عن جلسة " + WA_TOPIC,
-)}`;
+/* TikTok-ads funnel: form-only lead capture — every CTA anchors here. */
+const FORM_ANCHOR = "#lead-form";
 
 /* house animation variants */
 const fadeUp: Variants = {
@@ -152,7 +147,7 @@ const FAQS = [
 const NAV_LINKS = [
   { href: "#about", label: "عن الجلاس سكين" },
   { href: "#protocol", label: "بروتوكول الجلسة" },
-  { href: "#doctor", label: "الطبيبة" },
+  { href: "#doctor", label: "الأخصائيات" },
   { href: "#faq", label: "أسئلة شائعة" },
 ];
 
@@ -160,7 +155,6 @@ const SOCIAL_LINKS = [
   { name: "instagram", label: "إنستغرام" },
   { name: "tiktok", label: "تيك توك" },
   { name: "snapchat", label: "سناب شات" },
-  { name: "whatsapp", label: "واتساب" },
 ] as const;
 
 /* ─────────────────────────────── page ─────────────────────────────── */
@@ -215,7 +209,7 @@ export default function GlassSkinLanding() {
 
         <div className="flex items-center gap-2">
           <a
-            href="#book"
+            href={FORM_ANCHOR}
             className="hidden items-center gap-2 rounded-full px-5 py-2 text-xs font-extrabold text-[#1d2023] shadow-[0_10px_24px_-10px_rgba(212,175,55,0.55)] transition-transform hover:scale-[1.03] sm:inline-flex"
             style={{
               background:
@@ -260,7 +254,7 @@ export default function GlassSkinLanding() {
                 ))}
                 <li className="p-2">
                   <a
-                    href="#book"
+                    href={FORM_ANCHOR}
                     onClick={() => setMenuOpen(false)}
                     className="flex h-11 items-center justify-center gap-2 rounded-2xl text-sm font-extrabold text-[#1d2023]"
                     style={{
@@ -280,7 +274,7 @@ export default function GlassSkinLanding() {
 
       <main className="relative z-10">
         {/* ───── 1 · The Film (hero + scroll-scrubbed rotation) ───── */}
-        <CinematicFilm frameCount={FRAME_COUNT} waHref={WA} />
+        <CinematicFilm frameCount={FRAME_COUNT} />
 
         {/* ───── 2 · Trust marquee ───── */}
         <Marquee />
@@ -528,7 +522,7 @@ export default function GlassSkinLanding() {
           </motion.div>
         </motion.section>
 
-        {/* ───── 6 · The doctor ───── */}
+        {/* ───── 6 · The specialists (slider) ───── */}
         <motion.section
           id="doctor"
           data-ambient="#0e0c0a"
@@ -536,119 +530,24 @@ export default function GlassSkinLanding() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={stagger}
-          className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-24 md:grid-cols-[1.1fr_0.9fr] md:gap-16 md:py-32"
+          className="mx-auto max-w-6xl px-5 py-24 md:py-32"
         >
-          {/* bio — right column in RTL */}
-          <div>
-            <motion.div variants={fadeUp}>
-              <SectionEyebrow tokenPrefix="gls" icon="Stethoscope">
-                الإشراف الطبي
-              </SectionEyebrow>
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              className="mt-5 text-3xl font-extrabold text-white sm:text-4xl"
-            >
-              د. مها دحلان
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="mt-2 text-sm font-bold tracking-normal text-[var(--color-gls-primary-dim)]"
-            >
-              استشارية الأمراض الجلدية والتجميل في جدة
-            </motion.p>
-            <motion.blockquote
-              variants={fadeUp}
-              className="mt-6 border-r-2 border-[var(--color-gls-primary)] pr-5 text-[15px] leading-8 text-[var(--color-gls-ink-soft)]"
-            >
-              «البشرة الزجاجية ليست فلتراً ولا خدعة إضاءة، بل صحة بشرة
-              حقيقية تُبنى طبقة فوق طبقة. مهمتنا أن نصل ببشرتكِ إلى أنقى
-              نسخة منها، بلطف وبعلم.»
-            </motion.blockquote>
+          <motion.div variants={fadeUp} className="text-center">
+            <SectionEyebrow tokenPrefix="gls" icon="Stethoscope">
+              الإشراف الطبي
+            </SectionEyebrow>
+            <h2 className="mt-5 text-3xl font-extrabold text-white sm:text-4xl">
+              أخصائيات{" "}
+              <em className="gls-gold-text not-italic">الجلاس سكين</em>
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-8 text-[var(--color-gls-ink-soft)]">
+              خبرات معتمدة عالمياً تشرف على كل جلسة، لتصلي إلى أنقى نسخة من
+              بشرتكِ بلطف وبعلم.
+            </p>
+          </motion.div>
 
-            <motion.ul variants={stagger} className="mt-7 flex flex-wrap gap-2.5">
-              {[
-                "زمالة الكلية الملكية البريطانية",
-                "+١٢ سنة خبرة",
-                "+٢٨٠٠ حالة معالجة",
-                "عضوية الجمعية الأوروبية للجلدية",
-              ].map((c) => (
-                <motion.li
-                  key={c}
-                  variants={fadeUp}
-                  className="rounded-full border border-[var(--color-gls-line)] bg-[var(--color-gls-primary)]/8 px-4 py-2 text-xs font-bold text-[var(--color-gls-primary-dim)]"
-                >
-                  {c}
-                </motion.li>
-              ))}
-            </motion.ul>
-
-            <motion.a
-              variants={fadeUp}
-              href={WA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[var(--color-gls-primary-dim)] transition-colors hover:text-[var(--color-gls-accent)]"
-            >
-              <FontAwesomeIcon icon={faWhatsapp} className="text-lg" />
-              استشيري د. مها مباشرة عبر واتساب
-              <Icon.ArrowLeft className="size-4" />
-            </motion.a>
-          </div>
-
-          {/* portrait — left column in RTL */}
-          <motion.div variants={fadeUp} className="relative">
-            <div
-              className="pointer-events-none absolute -inset-6 rounded-[3rem] opacity-60"
-              style={{
-                background:
-                  "radial-gradient(60% 60% at 50% 40%, rgba(212,175,55,0.16), transparent 70%)",
-              }}
-              aria-hidden
-            />
-            <div className="gls-fallback-host relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] bg-[var(--color-gls-surface)] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.85)]">
-              <Image
-                src="/team/dr-maha.avif"
-                alt="د. مها دحلان، استشارية الأمراض الجلدية والتجميل"
-                fill
-                sizes="(max-width: 768px) 90vw, 35vw"
-                className="object-cover object-top [filter:sepia(0.55)_saturate(1.5)_brightness(1.03)_contrast(1.02)]"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                  e.currentTarget
-                    .closest(".gls-fallback-host")
-                    ?.classList.add("is-missing");
-                }}
-              />
-              {/* gold duotone veil — warms the portrait into the theme */}
-              <span
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(155deg, rgba(212,175,55,0.32), rgba(169,133,43,0.14) 55%, rgba(6,7,8,0.2))",
-                  mixBlendMode: "multiply",
-                }}
-                aria-hidden
-              />
-              <span
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(to top, rgba(6,7,8,0.8), transparent 42%)",
-                }}
-                aria-hidden
-              />
-              <div className="absolute bottom-5 right-5 left-5 flex items-center justify-between">
-                <span className="text-sm font-extrabold text-white">
-                  د. مها دحلان
-                </span>
-                <span
-                  className="font-[family-name:var(--font-plex-arabic)] text-[10px] font-semibold tracking-normal text-[var(--color-gls-accent)]"
-                >
-                  عيادات مها دحلان
-                </span>
-              </div>
-            </div>
+          <motion.div variants={fadeUp} className="mt-12 md:mt-16">
+            <DoctorsSlider />
           </motion.div>
         </motion.section>
 
@@ -775,7 +674,7 @@ export default function GlassSkinLanding() {
 
         {/* ───── 9 · Booking ───── */}
         <motion.section
-          id="book"
+          id="lead-form"
           data-ambient="#08090b"
           initial="hidden"
           whileInView="visible"
@@ -809,21 +708,15 @@ export default function GlassSkinLanding() {
             <motion.ul variants={stagger} className="mt-8 space-y-4">
               <motion.li variants={fadeUp} className="flex items-center gap-4">
                 <span className="flex size-11 items-center justify-center rounded-2xl border border-[var(--color-gls-line)] bg-[var(--color-gls-primary)]/10 text-[var(--color-gls-primary-dim)]">
-                  <FontAwesomeIcon icon={faWhatsapp} className="text-lg" />
+                  <Icon.CalendarCheck className="size-5" />
                 </span>
                 <div>
                   <span className="block text-sm font-bold text-white">
-                    واتساب مباشر
+                    استشارة مجانية
                   </span>
-                  <a
-                    href={WA}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    dir="ltr"
-                    className="text-sm font-semibold text-[var(--color-gls-primary-dim)] transition-colors hover:text-[var(--color-gls-accent)]"
-                  >
-                    +966 50 337 7702
-                  </a>
+                  <span className="text-sm text-[var(--color-gls-muted)]">
+                    عبّئي النموذج ونحدّد لكِ الموعد المناسب
+                  </span>
                 </div>
               </motion.li>
               <motion.li variants={fadeUp} className="flex items-center gap-4">
@@ -889,9 +782,7 @@ export default function GlassSkinLanding() {
                 ({ name, label }) => (
                   <a
                     key={name}
-                    href={name === "whatsapp" ? WA : "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="#"
                     aria-label={label}
                     className="flex size-10 items-center justify-center rounded-full border border-[var(--color-gls-line-soft)] text-[var(--color-gls-muted)] transition-colors hover:border-[var(--color-gls-primary)] hover:text-[var(--color-gls-primary-dim)]"
                   >
@@ -912,12 +803,8 @@ export default function GlassSkinLanding() {
         <div className="h-16 md:hidden" aria-hidden />
       </main>
 
-      {/* ───── Floating CTAs ───── */}
-      <WhatsAppFAB
-        whatsappNumber={WA_NUMBER}
-        topicMessage={`مرحباً، أرغب بالاستفسار عن جلسة ${WA_TOPIC}`}
-      />
-      <GlassStickyCTA bookHref="#book" waHref={WA} />
+      {/* ───── Floating CTA (form-only funnel — no WhatsApp) ───── */}
+      <GlassStickyCTA bookHref={FORM_ANCHOR} />
     </>
   );
 }

@@ -48,7 +48,7 @@ export function LeadForm() {
           kind: "error",
           message:
             (data as { error?: string })?.error ??
-            "تعذّر إرسال طلبكِ. حاولي مرة أخرى أو تواصلي معنا عبر واتساب.",
+            "تعذّر إرسال طلبكِ. حاولي مرة أخرى بعد قليل.",
         });
         return;
       }
@@ -61,7 +61,7 @@ export function LeadForm() {
       setStatus({
         kind: "error",
         message:
-          "تعذّر الاتصال. تحققي من اتصالكِ بالإنترنت أو راسلينا على واتساب.",
+          "تعذّر الاتصال. تحققي من اتصالكِ بالإنترنت ثم حاولي مرة أخرى.",
       });
     }
   }
@@ -87,18 +87,9 @@ export function LeadForm() {
               تم استلام طلبكِ
             </h3>
             <p className="max-w-md text-sm leading-7 text-[var(--color-gls-ink-soft)]">
-              سيتواصل معكِ فريقنا خلال ٢٤ ساعة لتحديد موعد استشارتكِ الخاصة.
-              يمكنكِ أيضاً مراسلتنا مباشرة على واتساب لتسريع الحجز.
+              سيتواصل معكِ فريقنا خلال ٢٤ ساعة لتحديد موعد استشارتكِ الخاصة
+              وتخصيص البروتوكول المناسب لبشرتكِ.
             </p>
-            <a
-              href={`https://wa.me/966503377702?text=${encodeURIComponent("مرحباً عندي استفسار عن الجلاس سكين الكوري")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-transform hover:scale-[1.02]"
-            >
-              <Icon.MessageCircle className="size-4" />
-              تواصلي عبر واتساب
-            </a>
           </motion.div>
         ) : (
           <motion.form

@@ -5,8 +5,6 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { Icon } from "@/components/icons";
 import { StatPill } from "@/components/usablecomponents/StatPill";
 
@@ -80,10 +78,9 @@ const getReducedMotion = () => window.matchMedia(REDUCED_QUERY).matches;
 
 type Props = {
   frameCount: number;
-  waHref: string;
 };
 
-export function CinematicFilm({ frameCount, waHref }: Props) {
+export function CinematicFilm({ frameCount }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -390,26 +387,17 @@ export function CinematicFilm({ frameCount, waHref }: Props) {
               نقاهة.
             </p>
 
-            <div className="gls-hero-fade mt-6 flex w-full items-center justify-center gap-2.5 sm:mt-7 sm:gap-3 md:w-auto md:justify-start">
+            <div className="gls-hero-fade mt-6 flex w-full items-center justify-center sm:mt-7 md:w-auto md:justify-start">
+              {/* form-only funnel (TikTok ads) — CTA jumps straight to the lead form */}
               <a
-                href="#book"
-                className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-6 text-sm font-extrabold text-[#1d2023] shadow-[0_12px_30px_-10px_rgba(212,175,55,0.55)] transition-transform hover:scale-[1.03] active:scale-[0.98] md:flex-none md:px-7"
+                href="#lead-form"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-sm font-extrabold text-[#1d2023] shadow-[0_12px_30px_-10px_rgba(212,175,55,0.55)] transition-transform hover:scale-[1.03] active:scale-[0.98] md:w-auto md:px-7"
                 style={{
                   background: "linear-gradient(120deg, #f0d98c 0%, #d4af37 55%, #b8912e 100%)",
                 }}
               >
                 احجزي جلستكِ الآن
                 <Icon.ArrowLeft className="size-4" />
-              </a>
-              <a
-                href={waHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="استشارة عبر واتساب"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#060708]/45 px-5 text-sm font-bold text-[var(--color-gls-primary-dim)] backdrop-blur-md transition-colors hover:border-[var(--color-gls-primary)] hover:text-[var(--color-gls-accent)] md:px-6"
-              >
-                <FontAwesomeIcon icon={faWhatsapp} className="text-lg" />
-                <span className="hidden sm:inline">استشارة واتساب</span>
               </a>
             </div>
 
