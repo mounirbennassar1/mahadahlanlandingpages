@@ -18,8 +18,8 @@ type Doctor = {
   imageAlt: string;
 };
 
-/* NOTE: swap `image` for each specialist's real portrait when provided —
- * /team/dr-maha.avif is a temporary faceless placeholder. */
+/* NOTE: doctor 2 still uses /team/dr-maha.avif, a temporary faceless
+ * placeholder — swap `image` for her real portrait once provided. */
 const DOCTORS: Doctor[] = [
   {
     label: "الأخصائية الأولى",
@@ -35,7 +35,7 @@ const DOCTORS: Doctor[] = [
       "شهادة معتمدة من THALGO الفرنسية",
     ],
     experience: "خبرة أكثر من ١٣ عاماً في مجال التجميل اللاجراحي",
-    image: "/team/dr-maha.avif",
+    image: "/glass-skin/Nidhal.jpg.jpeg",
     imageAlt: "نضال الجريدي، أخصائية التجميل اللاجراحي",
   },
   {

@@ -18,6 +18,7 @@ import { ScrollProgress } from "./_components/ScrollProgress";
 import { Marquee } from "./_components/Marquee";
 import { LeadForm } from "./_components/LeadForm";
 import { DoctorsSlider } from "./_components/DoctorsSlider";
+import { ProtocolSteps } from "./_components/ProtocolSteps";
 
 /* Frame count of the scroll film — MUST match public/glass-skin/seq/fNNN.jpg */
 const FRAME_COUNT = 121;
@@ -53,46 +54,14 @@ const CHECKLIST = [
     text: "تنظيف وتقشير وترطيب وتغذية في جلسة واحدة متكاملة.",
   },
   {
-    icon: Icon.ShieldCheck,
-    title: "نتائج مثبتة تدوم",
-    text: "توهّج ملحوظ من أول جلسة، ويكتمل خلال ثلاث جلسات.",
-  },
-  {
     icon: Icon.Leaf,
     title: "مكوّنات لطيفة وآمنة",
     text: "مناسبة للبشرة الحساسة، بدون إبر وبدون تهيّج.",
   },
   {
-    icon: Icon.Sparkles,
-    title: "عادات تحفظ الإشراقة",
-    text: "خطة منزلية صباحية ومسائية تحافظ على النتيجة بين الجلسات.",
-  },
-];
-
-const STEPS = [
-  {
-    n: "٠١",
-    label: "المرحلة الأولى",
-    title: "تنظيف مزدوج",
-    text: "إزالة الشوائب والمكياج بعمق على الطريقة الكورية، دون المساس بحاجز البشرة الواقي.",
-  },
-  {
-    n: "٠٢",
-    label: "المرحلة الثانية",
-    title: "تقشير إنزيمي لطيف",
-    text: "إذابة الخلايا الميتة وتوحيد لون البشرة وتهيئتها لامتصاص مثالي.",
-  },
-  {
-    n: "٠٣",
-    label: "المرحلة الثالثة",
-    title: "ضخ الأكسجين والسيرومات",
-    text: "هيالورونيك وببتيدات وفيتامينات تُضخّ بتقنية الأكسجين حتى الطبقات العميقة.",
-  },
-  {
-    n: "٠٤",
-    label: "المرحلة الرابعة",
-    title: "قناع التوهّج الزجاجي",
-    text: "ختام مرطّب مكثّف يمنح اللمعان الزجاجي الشهير وملمساً حريرياً.",
+    icon: Icon.BadgeCheck,
+    title: "خبراء معتمدون في العناية بالبشرة",
+    text: "يُجرى البروتوكول على يد مختصين مؤهلين بشهادات معتمدة، لضمان عناية احترافية تناسب احتياجات بشرتكِ.",
   },
 ];
 
@@ -413,73 +382,14 @@ export default function GlassSkinLanding() {
                 خطوة بخطوة
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-8 text-[var(--color-gls-ink-soft)]">
-                أربع مراحل متتالية، كل واحدة تُهيّئ البشرة للتي بعدها، حتى
-                تخرجي واللمعان الزجاجي يسبقكِ.
+                جلستكِ تمرّ بعدة خطوات مدروسة للعناية بالبشرة وتعزيز نضارتها،
+                كل خطوة تُهيّئ بشرتكِ للتي بعدها حتى يكتمل التوهّج الزجاجي.
               </p>
             </motion.div>
 
-            <div className="mt-14 grid gap-10 md:grid-cols-[0.85fr_1.4fr] md:gap-12">
-              {/* ritual still — first in DOM = right in RTL */}
-              <motion.div variants={fadeUp} className="relative hidden md:block">
-                <div className="gls-fallback-host relative h-full min-h-[28rem] overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
-                  <Image
-                    src="/glass-skin/ritual.jpg"
-                    alt="أدوات الطقس الكوري، سيروم وحجر الغوا شا"
-                    fill
-                    sizes="30vw"
-                    className="object-cover"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display =
-                        "none";
-                      e.currentTarget
-                        .closest(".gls-fallback-host")
-                        ?.classList.add("is-missing");
-                    }}
-                  />
-                  <span
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(to top, rgba(6,7,8,0.55), transparent 45%)",
-                    }}
-                    aria-hidden
-                  />
-                  <span
-                    className="absolute bottom-5 right-5 font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-normal text-[var(--color-gls-accent)]"
-                  >
-                    الطقس الكوري
-                  </span>
-                </div>
-              </motion.div>
-
-              {/* steps */}
-              <motion.ol variants={stagger} className="grid gap-5 sm:grid-cols-2">
-                {STEPS.map((s) => (
-                  <motion.li
-                    key={s.n}
-                    variants={fadeUp}
-                    className="group relative overflow-hidden rounded-[1.75rem] border border-[var(--color-gls-line-soft)] bg-[#16181b]/70 p-6 backdrop-blur-sm transition-colors hover:border-[var(--color-gls-line)]"
-                  >
-                    <span className="pointer-events-none absolute -left-2 -top-6 font-[family-name:var(--font-plex-arabic)] text-[5.5rem] font-semibold leading-none text-[var(--color-gls-primary)]/12 transition-colors group-hover:text-[var(--color-gls-primary)]/20">
-                      {s.n}
-                    </span>
-                    <span className="font-[family-name:var(--font-plex-arabic)] text-[11px] font-semibold tracking-normal text-[var(--color-gls-primary)]">
-                      {s.label}
-                    </span>
-                    <h3 className="mt-2 text-lg font-extrabold text-white">
-                      {s.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-7 text-[var(--color-gls-muted)]">
-                      {s.text}
-                    </p>
-                    <span
-                      className="mt-4 block h-px w-12 bg-gradient-to-l from-[var(--color-gls-primary)]/70 to-transparent transition-all group-hover:w-20"
-                      aria-hidden
-                    />
-                  </motion.li>
-                ))}
-              </motion.ol>
-            </div>
+            <motion.div variants={fadeUp} className="mt-14 md:mt-16">
+              <ProtocolSteps />
+            </motion.div>
           </motion.div>
         </section>
 
@@ -537,8 +447,8 @@ export default function GlassSkinLanding() {
               الإشراف الطبي
             </SectionEyebrow>
             <h2 className="mt-5 text-3xl font-extrabold text-white sm:text-4xl">
-              أخصائيات{" "}
-              <em className="gls-gold-text not-italic">الجلاس سكين</em>
+              البشرة الزجاجية الكورية{" "}
+              <em className="gls-gold-text not-italic">في عيادات مها دحلان</em>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-8 text-[var(--color-gls-ink-soft)]">
               خبرات معتمدة عالمياً تشرف على كل جلسة، لتصلي إلى أنقى نسخة من
