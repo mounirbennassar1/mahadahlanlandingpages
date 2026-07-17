@@ -2,13 +2,16 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
 
 type Doctor = {
+  /** Kept for the dot/nav aria-labels; no longer shown as an eyebrow. */
   label: string;
   name: string;
   title: string;
+  /** Flagship credential shown directly under the title, styled distinctly. */
+  highlight?: string;
   /** First credential is the featured one (rendered full-width in gold). */
   credentials: string[];
   experience?: string;
@@ -18,16 +21,14 @@ type Doctor = {
   imageAlt: string;
 };
 
-/* NOTE: doctor 2 still uses /team/dr-maha.avif, a temporary faceless
- * placeholder — swap `image` for her real portrait once provided. */
 const DOCTORS: Doctor[] = [
   {
     label: "الأخصائية الأولى",
     name: "نضال الجريدي",
     title: "أخصائية التجميل اللاجراحي",
+    highlight: "شهادة الأكاديمية الفيدرالية الفرنسية للتجميل اللاجراحي",
     credentials: [
       "شهادة معتمدة من THESERA الكورية",
-      "شهادة الأكاديمية الفيدرالية الفرنسية للتجميل اللاجراحي",
       "شهادة معتمدة من MATIS الفرنسية",
       "شهادة معتمدة من SELVERT الإسبانية",
       "شهادة معتمدة من TOSKANI الإسبانية",
@@ -39,33 +40,23 @@ const DOCTORS: Doctor[] = [
     imageAlt: "نضال الجريدي، أخصائية التجميل اللاجراحي",
   },
   {
-    /* TODO: بيانات الأخصائية الثانية — بانتظار التفاصيل والصورة */
     label: "الأخصائية الثانية",
-    name: "قريباً",
+    name: "فادية المنصور",
     title: "أخصائية التجميل اللاجراحي",
-    credentials: [],
-    note: "سنشارككم ملف الأخصائية الثانية وخبراتها قريباً.",
-    image: "/team/dr-maha.avif",
-    imageAlt: "الأخصائية الثانية في عيادات د. مها دحلان",
+    credentials: [
+      "شهادة معتمدة من THESERA الكورية",
+      "شهادة معتمدة من Premiere Beauty Academy",
+      "شهادة معتمدة من KLEADERM",
+      "شهادة معتمدة من Premiere Center for Coiffure & Beauty",
+      "شهادة معتمدة من Helen Academy",
+    ],
+    experience: "خبرة أكثر من ١٠ سنوات في مجال التجميل اللاجراحي",
+    image: "/glass-skin/Fadia.jpg",
+    imageAlt: "فادية المنصور، أخصائية التجميل اللاجراحي",
   },
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-
-/* dir = 1 → "next" (new slide enters from the left, RTL flow) */
-const slideVariants = {
-  enter: (dir: number) => ({ opacity: 0, x: dir * -72 }),
-  center: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.55, ease: EASE },
-  },
-  exit: (dir: number) => ({
-    opacity: 0,
-    x: dir * 72,
-    transition: { duration: 0.35, ease: EASE },
-  }),
-};
 
 export function DoctorsSlider() {
   const [[index, dir], setSlide] = useState<[number, number]>([0, 0]);
@@ -76,35 +67,45 @@ export function DoctorsSlider() {
     setSlide(([i]) => [(i + delta + count) % count, delta]);
 
   return (
-    <div className="relative">
-      <AnimatePresence mode="wait" initial={false} custom={dir}>
-        <motion.div
-          key={d.name}
-          custom={dir}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.12}
-          onDragEnd={(_, info) => {
-            if (info.offset.x > 64) go(1);
-            else if (info.offset.x < -64) go(-1);
-          }}
-          className="grid cursor-grab items-center gap-7 active:cursor-grabbing sm:gap-9 md:grid-cols-[1.1fr_0.9fr] md:gap-16"
-        >
+    <div className="relative overflow-hidden">
+      {/* Keyed re-mount: each slide animates in on index change (RTL: dir=1
+          enters from the left). No AnimatePresence — a stuck "wait"-mode exit
+          could otherwise leave the new slide unmounted. */}
+      <motion.div
+        key={d.name}
+        initial={{ opacity: 0, x: dir * -64 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, ease: EASE }}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.12}
+        onDragEnd={(_, info) => {
+          if (info.offset.x > 64) go(1);
+          else if (info.offset.x < -64) go(-1);
+        }}
+        className="grid cursor-grab items-center gap-7 active:cursor-grabbing sm:gap-9 md:grid-cols-[1.1fr_0.9fr] md:gap-16"
+      >
           {/* bio — right column on desktop; below the portrait on mobile */}
           <div className="text-center md:text-right">
-            <span className="font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-normal text-[var(--color-gls-primary)]">
-              {d.label}
-            </span>
-            <h3 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
+            <h3 className="text-3xl font-extrabold text-white sm:text-4xl">
               {d.name}
             </h3>
             <p className="mt-2 text-sm font-bold tracking-normal text-[var(--color-gls-primary-dim)]">
               {d.title}
             </p>
+
+            {/* flagship credential — sits right under the title, styled
+                distinctly from the certification list below it */}
+            {d.highlight && (
+              <div className="mt-5 flex items-center gap-3 rounded-2xl border-2 border-[var(--color-gls-primary)]/45 bg-[var(--color-gls-primary)]/[0.08] px-4 py-3.5 text-right shadow-[0_10px_30px_-14px_rgba(212,175,55,0.5)]">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-gls-primary)]/15 text-[var(--color-gls-primary-dim)]">
+                  <Icon.GraduationCap className="size-5" />
+                </span>
+                <span className="text-sm font-extrabold leading-6 text-[var(--color-gls-primary-dim)]">
+                  {d.highlight}
+                </span>
+              </div>
+            )}
 
             {d.credentials.length > 0 ? (
               <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
@@ -204,8 +205,7 @@ export function DoctorsSlider() {
               </div>
             </div>
           </div>
-        </motion.div>
-      </AnimatePresence>
+      </motion.div>
 
       {/* controls — prev renders on the right in RTL, next on the left */}
       <div className="mt-10 flex items-center justify-center gap-5">
