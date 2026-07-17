@@ -304,17 +304,18 @@ export default function GlassSkinLanding() {
           </div>
 
           {/* imagery — second in DOM = left column in RTL */}
-          <motion.div variants={fadeUp} className="relative">
-            <div className="gls-float relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] bg-[#060708] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
-              {/* Vimeo reel (9:16) — oversized + centered so it "object-covers"
-                  the 3:4 card. background=1 → autoplay, muted, looped, no UI. */}
+          <motion.div variants={fadeUp} className="relative mx-auto w-full max-w-[20rem]">
+            <div className="gls-float relative aspect-[9/16] w-full overflow-hidden rounded-[2rem] border border-[var(--color-gls-line)] bg-[#060708] shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
+              {/* Vimeo reel (9:16) — the card is now 9:16 too, so the full
+                  vertical video shows uncropped. background=1 → autoplay,
+                  muted, looped, no UI. */}
               <iframe
                 src="https://player.vimeo.com/video/1210474451?background=1&autoplay=1&loop=1&muted=1&autopause=0&title=0&byline=0&portrait=0&badge=0&player_id=0&app_id=58479"
                 title="الجلسة الكورية"
                 allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 loading="lazy"
-                className="pointer-events-none absolute left-1/2 top-1/2 aspect-[9/16] w-full -translate-x-1/2 -translate-y-1/2 border-0"
+                className="pointer-events-none absolute inset-0 h-full w-full border-0"
                 aria-label="فيديو الجلسة الكورية للبشرة الزجاجية"
               />
               <span

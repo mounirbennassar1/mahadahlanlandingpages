@@ -92,10 +92,10 @@ export function DoctorsSlider() {
             if (info.offset.x > 64) go(1);
             else if (info.offset.x < -64) go(-1);
           }}
-          className="grid cursor-grab items-center gap-10 active:cursor-grabbing md:grid-cols-[1.1fr_0.9fr] md:gap-16"
+          className="grid cursor-grab items-center gap-7 active:cursor-grabbing sm:gap-9 md:grid-cols-[1.1fr_0.9fr] md:gap-16"
         >
-          {/* bio — right column in RTL */}
-          <div>
+          {/* bio — right column on desktop; below the portrait on mobile */}
+          <div className="text-center md:text-right">
             <span className="font-[family-name:var(--font-plex-arabic)] text-xs font-semibold tracking-normal text-[var(--color-gls-primary)]">
               {d.label}
             </span>
@@ -151,8 +151,8 @@ export function DoctorsSlider() {
             )}
           </div>
 
-          {/* portrait — left column in RTL */}
-          <div className="relative">
+          {/* portrait — left column on desktop; on top on mobile */}
+          <div className="relative order-first md:order-none">
             <div
               className="pointer-events-none absolute -inset-6 rounded-[3rem] opacity-60"
               style={{
