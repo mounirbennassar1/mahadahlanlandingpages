@@ -451,7 +451,7 @@ export default function KoreanSpiculesLanding() {
                   <Icon.CalendarCheck className="size-5" />
                 </span>
                 <div>
-                  <span className="block text-sm font-bold text-white">استشارة مجانية</span>
+                  <span className="block text-sm font-bold text-white">حجز سهل وسريع</span>
                   <span className="text-sm text-[var(--color-kos-muted)]">
                     عبّئي النموذج ونحدّد لكِ الموعد المناسب
                   </span>
