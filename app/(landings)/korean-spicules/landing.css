@@ -1,0 +1,155 @@
+/* korean-spicules landing — CSS only for what Tailwind can't express cleanly.
+ *
+ * Palette tokens live inline on `.kos-landing` in layout.tsx.
+ * This file holds: ::selection, @keyframes (marquee, needles, breathe, sheen,
+ * float), the outlined watermark, grain / fallback pseudo-elements, and the
+ * reduced-motion kill-switch.
+ */
+
+.kos-landing ::selection {
+  background: #ff6b1a;
+  color: #180a02;
+}
+
+/* ── trust marquee ─────────────────────────────────────────── */
+@keyframes kos-marquee {
+  from { transform: translate3d(50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+.kos-landing .kos-marquee {
+  animation: kos-marquee 36s linear infinite;
+  will-change: transform;
+}
+.kos-landing .kos-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ── film grain (screen blend over pure black) ─────────────── */
+.kos-landing .kos-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>");
+  opacity: 0.045;
+  mix-blend-mode: screen;
+}
+
+/* ── rising spicule needles (deterministic configs in JSX) ─── */
+@keyframes kos-needle {
+  0%   { transform: translateY(0) rotate(var(--ndl-r, 24deg)); opacity: 0; }
+  12%  { opacity: var(--ndl-o, 0.7); }
+  82%  { opacity: var(--ndl-o, 0.7); }
+  100% { transform: translateY(-52vh) rotate(var(--ndl-r, 24deg)); opacity: 0; }
+}
+.kos-landing .kos-needle {
+  animation: kos-needle var(--ndl-d, 12s) linear infinite;
+  animation-delay: var(--ndl-delay, 0s);
+}
+
+/* ── breathing orange aura behind the hero portrait ────────── */
+@keyframes kos-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.07); }
+}
+.kos-landing .kos-breathe {
+  animation: kos-breathe 6.5s ease-in-out infinite;
+}
+
+/* ── molten-orange sheen sweeping across display words ─────── */
+@keyframes kos-sheen {
+  0%   { background-position: 130% center; }
+  100% { background-position: -30% center; }
+}
+.kos-landing .kos-orange-text {
+  background-image: linear-gradient(
+    100deg,
+    #cf4e00 0%,
+    #ff6b1a 28%,
+    #ffd9ac 47%,
+    #ff6b1a 62%,
+    #cf4e00 100%
+  );
+  background-size: 220% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.kos-landing .kos-orange-text-animated {
+  animation: kos-sheen 7s ease-in-out infinite;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.8));
+}
+
+/* ── outlined latin watermark drifting behind the hero ─────── */
+.kos-landing .kos-outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 107, 26, 0.28);
+  letter-spacing: 0.06em;
+}
+
+/* ── orbit rings behind the hero portrait ──────────────────── */
+@keyframes kos-spin {
+  to { transform: rotate(360deg); }
+}
+.kos-landing .kos-spin {
+  animation: kos-spin var(--spin-d, 26s) linear infinite;
+}
+.kos-landing .kos-spin-rev {
+  animation: kos-spin var(--spin-d, 34s) linear infinite reverse;
+}
+/* thin ring with a glowing conic arc — masked to the circle edge */
+.kos-landing .kos-ring-arc {
+  border-radius: 9999px;
+  background: conic-gradient(
+    from 20deg,
+    transparent 0deg,
+    rgba(255, 107, 26, 0.05) 50deg,
+    rgba(255, 107, 26, 0.6) 100deg,
+    rgba(255, 180, 115, 0.9) 128deg,
+    rgba(255, 107, 26, 0.25) 170deg,
+    transparent 230deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+}
+
+/* ── gentle float for imagery cards ────────────────────────── */
+@keyframes kos-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.kos-landing .kos-float {
+  animation: kos-float 8s ease-in-out infinite;
+}
+
+/* ── graceful asset fallback: gradient shows if an image 404s ─ */
+.kos-landing .kos-fallback-host {
+  position: relative;
+}
+.kos-landing .kos-fallback-host.is-missing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 70% 20%, rgba(255, 107, 26, 0.2), transparent 55%),
+    linear-gradient(160deg, #1c1c1c 0%, #0e0e0e 60%, #000000 100%);
+}
+
+/* ── word-brighten scrub target (spans injected by ScrollSystem) */
+.kos-landing .kos-w {
+  will-change: opacity;
+}
+
+/* ── reduced motion: kill continuous loops ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .kos-landing .kos-marquee,
+  .kos-landing .kos-needle,
+  .kos-landing .kos-breathe,
+  .kos-landing .kos-float,
+  .kos-landing .kos-spin,
+  .kos-landing .kos-spin-rev,
+  .kos-landing .kos-orange-text-animated {
+    animation: none;
+  }
+}
