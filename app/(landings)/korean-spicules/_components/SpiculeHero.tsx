@@ -42,7 +42,6 @@ const STATS = [
  */
 export function SpiculeHero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const copyRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const watermarkRef = useRef<HTMLSpanElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
@@ -104,7 +103,7 @@ export function SpiculeHero() {
             scrub
               .to(".kos-hero-figure", { scale: 1.05, duration: 1 }, 0)
               .to(
-                copyRef.current,
+                ".kos-hero-copy",
                 { y: -50, opacity: 0, duration: 0.45, ease: "power1.in" },
                 0.4,
               )
@@ -117,7 +116,7 @@ export function SpiculeHero() {
             scrub
               .to(".kos-hero-figure", { yPercent: -6, scale: 1.03, duration: 1 }, 0)
               .to(
-                copyRef.current,
+                ".kos-hero-copy",
                 { y: -90, opacity: 0, duration: 0.4, ease: "power1.in" },
                 0.38,
               )
@@ -190,21 +189,33 @@ export function SpiculeHero() {
         </div>
 
         {/* content */}
-        <div className="relative z-20 mx-auto flex h-full w-full max-w-6xl flex-col justify-end gap-4 px-5 pb-24 pt-20 md:grid md:grid-cols-[1.05fr_0.95fr] md:items-center md:justify-normal md:gap-14 md:pb-20 md:pt-28">
-          {/* copy — right column in RTL */}
-          <div ref={copyRef} className="text-center md:text-right">
+        <div className="relative z-20 mx-auto flex h-full w-full max-w-6xl flex-col gap-3 px-5 pb-24 pt-20 md:grid md:grid-cols-[1.05fr_0.95fr] md:grid-rows-[auto_auto] md:items-center md:gap-x-14 md:gap-y-0 md:pb-20 md:pt-28">
+          {/* headline — first on mobile; right column, row 1 on md */}
+          <div className="kos-hero-copy order-1 text-center md:order-none md:col-start-1 md:row-start-1 md:text-right">
             <span className="kos-hero-fade inline-flex items-center gap-2 rounded-full border border-[var(--color-kos-line)] bg-black/55 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-kos-primary-dim)] backdrop-blur-md sm:text-[11px]">
               <Icon.Sparkles className="size-3.5" />
               عيادات د. مها دحلان · تقنية كورية أصيلة
             </span>
 
-            <h1 className="mt-4 md:mt-6">
-              <span className="block text-[clamp(2.5rem,11.5vw,6.6rem)] font-extrabold leading-[1.04] md:text-[clamp(4.5rem,8.5vw,6.6rem)]">
+            <h1 className="mt-3 md:mt-6">
+              {/* mobile: one compact line */}
+              <span className="block text-[clamp(2rem,10vw,2.75rem)] font-extrabold leading-tight md:hidden">
+                <span className="-mb-[0.2em] block overflow-hidden pt-[0.14em] pb-[0.34em]">
+                  <span className="kos-line block">
+                    {/* own pb extends the background-clip:text paint box under
+                        the ز descender (else it renders cut); -mb cancels it. */}
+                    <span className="kos-orange-text kos-orange-text-animated -mb-[0.24em] inline-block pb-[0.24em]">
+                      السبيكولز
+                    </span>{" "}
+                    <span className="text-white">الكوريّة</span>
+                  </span>
+                </span>
+              </span>
+              {/* desktop: two stacked display lines */}
+              <span className="hidden text-[clamp(4.5rem,8.5vw,6.6rem)] font-extrabold leading-[1.04] md:block">
                 {/* pb widens the clip window for deep Arabic descenders;
                     the matching -mb cancels it so line rhythm holds. */}
                 <span className="-mb-[0.2em] block overflow-hidden pt-[0.14em] pb-[0.32em]">
-                  {/* own pb extends the background-clip:text paint box under the
-                      ز descender (else it renders cut); -mb cancels the height. */}
                   <span className="kos-line kos-orange-text kos-orange-text-animated block pb-[0.24em] -mb-[0.24em]">
                     السبيكولز
                   </span>
@@ -213,61 +224,16 @@ export function SpiculeHero() {
                   <span className="kos-line block text-white">الكوريّة</span>
                 </span>
               </span>
-              <span className="mt-3 -mb-[0.24em] block overflow-hidden pt-[0.12em] pb-[0.24em] md:mt-4">
-                <span className="kos-line block text-[clamp(1.25rem,5vw,2.1rem)] font-extrabold leading-snug text-[var(--color-kos-ink-soft)]">
-                  ميكرونيدلينغ طبيعي… بدون جهاز
-                </span>
-              </span>
             </h1>
-
-            <p className="kos-hero-fade mx-auto mt-4 max-w-md text-[13.5px] leading-7 text-[var(--color-kos-ink-soft)] sm:mt-5 sm:text-base sm:leading-8 md:mx-0">
-              إبر مجهرية طبيعية ١٠٠٪ مستخلصة من الإسفنج البحري، تفتح آلاف
-              القنوات الدقيقة وتحفّز الكولاجين — لعلاج آثار الحبوب والمسام
-              الواسعة والبهتان، بنتائج تكتمل خلال أسبوع واحد.
-            </p>
-
-            <div className="kos-hero-fade mt-6 flex w-full flex-col items-center gap-3 sm:mt-7 sm:flex-row sm:justify-center md:justify-start">
-              <a
-                href={FORM_ANCHOR}
-                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-sm font-extrabold text-[#180a02] shadow-[0_12px_32px_-10px_rgba(255,107,26,0.6)] transition-transform hover:scale-[1.03] active:scale-[0.98] sm:w-auto"
-                style={{ background: ORANGE_GRADIENT }}
-              >
-                احجزي جلستكِ الآن
-                <Icon.ArrowLeft className="size-4" />
-              </a>
-              <a
-                href="#about"
-                className="hidden h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--color-kos-line)] bg-black/40 px-6 text-sm font-bold text-[var(--color-kos-ink-soft)] backdrop-blur-sm transition-colors hover:border-[var(--color-kos-primary)] hover:text-[var(--color-kos-primary-dim)] sm:inline-flex sm:w-auto"
-              >
-                كيف تعمل التقنية؟
-                <Icon.ChevronDown className="size-4 text-[var(--color-kos-primary)]" />
-              </a>
-            </div>
-
-            <div className="kos-hero-fade mt-6 flex items-center justify-center gap-5 sm:mt-8 sm:gap-6 md:justify-start md:gap-8">
-              {STATS.map((s, i) => (
-                <div key={s.label} className="flex items-center gap-5 sm:gap-6 md:gap-8">
-                  {i > 0 && (
-                    <span className="h-7 w-px bg-[var(--color-kos-line)] sm:h-8" aria-hidden />
-                  )}
-                  <div className="text-center md:text-right">
-                    <span className="block text-xl font-extrabold text-[var(--color-kos-primary-dim)] sm:text-2xl">
-                      {s.num}
-                    </span>
-                    <span className="mt-0.5 block text-[10px] font-bold tracking-normal text-[var(--color-kos-muted)] sm:text-[11px]">
-                      {s.label}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
-          {/* portrait — above the copy on mobile, left column on md+. No box:
-              the photo's pure black ground melts into the page; orbit rings
-              animate behind her and she opens her eyes + smiles as you scroll. */}
-          <div ref={cardRef} className="relative z-30 order-first md:order-none">
-            <div className="kos-hero-figure relative mx-auto aspect-[3/4] h-[34svh] w-auto md:h-auto md:w-full md:max-w-[26rem]">
+          {/* portrait — under the headline on mobile (flexes to the leftover
+              height so she always fits); left column spanning both rows on md */}
+          <div
+            ref={cardRef}
+            className="relative z-30 order-2 flex min-h-[8rem] flex-1 items-center justify-center md:order-none md:col-start-2 md:row-span-2 md:row-start-1 md:block md:flex-none"
+          >
+            <div className="kos-hero-figure relative mx-auto aspect-[3/4] h-full max-h-[54svh] w-auto md:h-auto md:max-h-none md:w-full md:max-w-[26rem]">
               {/* animated effect behind her */}
               <div
                 className="kos-breathe pointer-events-none absolute left-1/2 top-[26%] -z-10 h-[125%] w-[125%] -translate-x-1/2 -translate-y-1/2 rounded-full"
@@ -340,6 +306,60 @@ export function SpiculeHero() {
               </span>
             </div>
           </div>
+
+          {/* rest of the copy — under the portrait on mobile; right column, row 2 on md */}
+          <div className="kos-hero-copy order-3 text-center md:order-none md:col-start-1 md:row-start-2 md:text-right">
+            <span className="-mb-[0.24em] block overflow-hidden pt-[0.12em] pb-[0.24em] md:mt-3">
+              <span className="kos-line block text-[clamp(1.15rem,4.5vw,2.1rem)] font-extrabold leading-snug text-[var(--color-kos-ink-soft)]">
+                ميكرونيدلينغ طبيعي… بدون جهاز
+              </span>
+            </span>
+
+            <p className="kos-hero-fade mx-auto mt-4 max-w-md text-[13.5px] leading-7 text-[var(--color-kos-ink-soft)] sm:mt-5 sm:text-base sm:leading-8 md:mx-0">
+              إبر مجهرية طبيعية ١٠٠٪ مستخلصة من الإسفنج البحري، تفتح آلاف
+              القنوات الدقيقة وتحفّز الكولاجين — لعلاج آثار الحبوب والمسام
+              الواسعة والبهتان، بنتائج تكتمل خلال أسبوع واحد.
+            </p>
+
+            {/* CTA + stats are desktop-only: the mobile funnel uses the fixed
+                bottom bar, and the freed space goes to the portrait. */}
+            <div className="kos-hero-fade mt-7 hidden w-full items-center gap-3 md:flex md:justify-start">
+              <a
+                href={FORM_ANCHOR}
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-sm font-extrabold text-[#180a02] shadow-[0_12px_32px_-10px_rgba(255,107,26,0.6)] transition-transform hover:scale-[1.03] active:scale-[0.98] sm:w-auto"
+                style={{ background: ORANGE_GRADIENT }}
+              >
+                احجزي جلستكِ الآن
+                <Icon.ArrowLeft className="size-4" />
+              </a>
+              <a
+                href="#about"
+                className="hidden h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--color-kos-line)] bg-black/40 px-6 text-sm font-bold text-[var(--color-kos-ink-soft)] backdrop-blur-sm transition-colors hover:border-[var(--color-kos-primary)] hover:text-[var(--color-kos-primary-dim)] sm:inline-flex sm:w-auto"
+              >
+                كيف تعمل التقنية؟
+                <Icon.ChevronDown className="size-4 text-[var(--color-kos-primary)]" />
+              </a>
+            </div>
+
+            <div className="kos-hero-fade mt-8 hidden items-center gap-6 md:flex md:justify-start md:gap-8">
+              {STATS.map((s, i) => (
+                <div key={s.label} className="flex items-center gap-5 sm:gap-6 md:gap-8">
+                  {i > 0 && (
+                    <span className="h-7 w-px bg-[var(--color-kos-line)] sm:h-8" aria-hidden />
+                  )}
+                  <div className="text-center md:text-right">
+                    <span className="block text-xl font-extrabold text-[var(--color-kos-primary-dim)] sm:text-2xl">
+                      {s.num}
+                    </span>
+                    <span className="mt-0.5 block text-[10px] font-bold tracking-normal text-[var(--color-kos-muted)] sm:text-[11px]">
+                      {s.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
         {/* scroll cue */}
