@@ -312,44 +312,19 @@ export default function KoreanSpiculesLanding() {
             </ul>
           </div>
 
-          {/* imagery — second in DOM = left column in RTL */}
-          <div data-parallax-root className="relative mx-auto w-full max-w-[22rem]">
+          {/* video — second in DOM = left column in RTL */}
+          <div data-parallax-root className="relative mx-auto w-full max-w-xl">
             <div data-reveal="zoom">
               <div data-parallax="6">
-                <div className="kos-fallback-host relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] border border-[var(--color-kos-line)] bg-black shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
-                  <Image
-                    src="/korean-spicules/macro.jpg"
-                    alt="أمبولة السبيكولز الكورية — شويكات مجهرية في سيروم برتقالي متوهّج"
-                    fill
-                    sizes="(max-width: 768px) 90vw, 35vw"
-                    className="object-cover"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = "none";
-                      e.currentTarget
-                        .closest(".kos-fallback-host")
-                        ?.classList.add("is-missing");
-                    }}
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] border-2 border-[var(--color-kos-primary)] bg-black shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
+                  <iframe
+                    src="https://player.vimeo.com/video/1213369725?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    className="absolute inset-0 h-full w-full"
+                    title="سبكيولز"
                   />
-                  <span
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(to top, rgba(0,0,0,0.55), transparent 40%)",
-                    }}
-                    aria-hidden
-                  />
-                  <span className="pointer-events-none absolute bottom-5 right-5 text-sm font-semibold tracking-normal text-[var(--color-kos-accent)]">
-                    ملايين الشويكات في أمبولة واحدة
-                  </span>
-                </div>
-                {/* floating chip */}
-                <div className="kos-float absolute -top-5 left-2 max-w-[13rem] rounded-2xl border border-[var(--color-kos-line)] bg-black/85 px-4 py-3 shadow-xl backdrop-blur-md sm:left-6">
-                  <span className="block text-lg font-extrabold text-[var(--color-kos-primary-dim)]">
-                    ٧٢ ساعة
-                  </span>
-                  <span className="mt-0.5 block text-[11px] leading-snug tracking-normal text-[var(--color-kos-muted)]">
-                    من العمل المتواصل داخل بشرتكِ بعد الجلسة
-                  </span>
                 </div>
               </div>
             </div>
