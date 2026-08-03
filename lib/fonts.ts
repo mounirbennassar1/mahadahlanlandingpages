@@ -2,6 +2,7 @@ import {
   Cairo,
   IBM_Plex_Sans_Arabic,
   Almarai,
+  Amiri,
   Cormorant_Garamond,
   Noto_Kufi_Arabic,
   Noto_Serif,
@@ -34,6 +35,14 @@ export const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+// Serif accent for the `facial-atrophy` landing.
+export const amiri = Amiri({
+  variable: "--font-amiri",
+  subsets: ["arabic"],
+  weight: ["400", "700"],
   display: "swap",
 });
 

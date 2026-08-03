@@ -1,0 +1,135 @@
+/* facial-atrophy landing — only what Tailwind can't express:
+   keyframes, ::selection, placeholder ink, FAQ marker rotation. */
+
+@keyframes faa-shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+@keyframes faa-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes faa-twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes faa-floaty {
+  from {
+    transform: translateY(-9px);
+  }
+  to {
+    transform: translateY(9px);
+  }
+}
+
+@keyframes faa-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes faa-breathe {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes faa-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.faa-landing ::selection {
+  background: rgba(217, 179, 108, 0.35);
+}
+
+.faa-landing input::placeholder {
+  color: rgba(243, 233, 220, 0.32);
+}
+
+/* Serif accent (Amiri) */
+.faa-serif {
+  font-family: var(--font-amiri), serif;
+}
+
+/* Shimmering gold gradient text */
+.faa-gold-text {
+  background: linear-gradient(
+    100deg,
+    #a67c3d,
+    #f0d48a 30%,
+    #d9b36c 55%,
+    #f7e7b3 75%,
+    #a67c3d
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: faa-shimmer 5.5s linear infinite;
+}
+
+/* Marquee rows (duplicated content, translateX loop) */
+.faa-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: faa-marquee var(--faa-marquee-duration, 32s) linear infinite;
+}
+
+.faa-marquee-track.faa-marquee-reverse {
+  animation-direction: reverse;
+}
+
+.faa-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* FAQ accordion marker — pure CSS rotation, no client JS */
+.faa-landing summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .faa-pm {
+  transform: rotate(45deg);
+}
+
+.faa-pm {
+  transition: transform 0.3s;
+}
+
+/* Spotlight cards — gold radial glow that follows the pointer */
+.faa-spot-glow {
+  background: radial-gradient(
+    280px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(240, 212, 138, 0.08),
+    transparent 65%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faa-landing *,
+  .faa-landing *::before,
+  .faa-landing *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
