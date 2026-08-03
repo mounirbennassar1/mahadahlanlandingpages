@@ -1,0 +1,151 @@
+/* neck-lift landing: only what Tailwind can't express cleanly:
+   keyframes, ::selection, placeholder ink, FAQ marker rotation, marquee. */
+
+@keyframes nkl-shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+@keyframes nkl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nkl-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes nkl-floaty {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes nkl-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes nkl-breathe {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes nkl-dot-y {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(34px);
+    opacity: 0;
+  }
+}
+
+@keyframes nkl-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.nkl-landing ::selection {
+  background: rgba(201, 156, 78, 0.28);
+}
+
+.nkl-landing input::placeholder {
+  color: rgba(250, 244, 232, 0.38);
+}
+
+.nkl-serif {
+  font-family: var(--font-amiri), serif;
+}
+
+/* Shimmering bronze-gold gradient text */
+.nkl-gold-text {
+  background: linear-gradient(
+    100deg,
+    #8a6430,
+    #e0be7a 35%,
+    #a67c3d 55%,
+    #c99c4e 75%,
+    #8a6430
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: nkl-shimmer 5.5s linear infinite;
+}
+
+/* Marquee rows */
+.nkl-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: nkl-marquee var(--nkl-marquee-duration, 26s) linear infinite;
+}
+
+.nkl-marquee-track.nkl-marquee-reverse {
+  animation-direction: reverse;
+}
+
+.nkl-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* FAQ accordion marker rotation via pure CSS */
+.nkl-landing summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .nkl-pm {
+  transform: rotate(45deg);
+}
+
+.nkl-pm {
+  transition: transform 0.3s;
+}
+
+/* Spotlight cards */
+.nkl-spot-glow {
+  background: radial-gradient(
+    300px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(201, 156, 78, 0.13),
+    transparent 65%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nkl-landing *,
+  .nkl-landing *::before,
+  .nkl-landing *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
