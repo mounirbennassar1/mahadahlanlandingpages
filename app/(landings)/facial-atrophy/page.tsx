@@ -55,7 +55,7 @@ const SOLUTIONS = [
     num: "٠٢",
     icon: Icon.RefreshCw,
     title: "حقن الدهون الذاتية",
-    body: "نقل دهون من جسمك أنتِ لإعادة بناء وسائد الوجه — الخيار الأقرب للطبيعة وأطولها دواماً.",
+    body: "نقل دهون من جسمك أنتِ لإعادة بناء وسائد الوجه، وهو الخيار الأقرب للطبيعة وأطولها دواماً.",
   },
   {
     num: "٠٣",
@@ -88,7 +88,7 @@ const FAQ = [
   },
   {
     q: "هل يمكن البدء وأنا ما زلت أستخدم إبر التنحيف؟",
-    a: "يعتمد ذلك على استقرار وزنك ومرحلتك من العلاج. تُقيّم الطبيبة حالتك وتحدد التوقيت الأنسب — فبعض الخطوات يمكن البدء بها مبكراً، وبعضها يُفضَّل تأجيله حتى يثبت الوزن.",
+    a: "يعتمد ذلك على استقرار وزنك ومرحلتك من العلاج. تُقيّم الطبيبة حالتك وتحدد التوقيت الأنسب، فبعض الخطوات يمكن البدء بها مبكراً، وبعضها يُفضَّل تأجيله حتى يثبت الوزن.",
   },
   {
     q: "هل ستبدو النتائج طبيعية؟",
@@ -139,7 +139,7 @@ export default function FacialAtrophyPage() {
           <SectionHead
             eyebrow="المشكلة"
             title="ما هو ضمور الوجه بعد إبر التنحيف؟"
-            sub="ما يُعرف اليوم بـ«وجه الأوزمبك» — حين ينعكس نزول الوزن السريع على ملامح وجهك قبل أي مكان آخر."
+            sub="ما يُعرف اليوم بـ«وجه الأوزمبك»، حين ينعكس نزول الوزن السريع على ملامح وجهك قبل أي مكان آخر."
           />
 
           <SpotlightCard
@@ -157,7 +157,7 @@ export default function FacialAtrophyPage() {
                   لماذا يحدث؟
                 </h3>
                 <p className="m-0 text-base font-light text-[rgba(243,233,220,0.72)]">
-                  تعمل إبر التنحيف على إذابة الدهون في الجسم كله — ومنها الدهون
+                  تعمل إبر التنحيف على إذابة الدهون في الجسم كله، ومنها الدهون
                   الداعمة لملامح الوجه. وحين يكون النزول سريعاً، تختفي هذه
                   الوسائد الدهنية قبل أن يتمكن الجلد من التكيّف والانكماش، فتظهر
                   الملامح أنحف وأكبر سناً مما ينبغي.
@@ -210,7 +210,7 @@ export default function FacialAtrophyPage() {
               <span className="text-[var(--color-faa-gold-bright)]">
                 كل ذلك قابل للعلاج
               </span>{" "}
-              — بتدرّج وذوق طبي رفيع.
+              بتدرّج وذوق طبي رفيع.
             </p>
           </Reveal>
         </div>
@@ -226,7 +226,7 @@ export default function FacialAtrophyPage() {
           <SectionHead
             eyebrow="الحلول"
             title="خيارات علاجية متكاملة تحت سقف واحد"
-            sub="لا نبيع إجراءً جاهزاً — بعد الكشف والتقييم، تُبنى خطتك من هذه التقنيات بما يناسب وجهك أنتِ."
+            sub="لا نبيع إجراءً جاهزاً. بعد الكشف والتقييم تُبنى خطتك من هذه التقنيات بما يناسب وجهك أنتِ."
           />
 
           <div className="grid gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
@@ -275,7 +275,7 @@ export default function FacialAtrophyPage() {
                 </h3>
                 <p className="m-0 text-[0.93rem] font-bold opacity-85">
                   تُقيّم الطبيبة درجة الضمور ونوعية بشرتك، ثم تضع البروتوكول
-                  الأنسب — تقنية واحدة أو مزيج مدروس.
+                  الأنسب: تقنية واحدة أو مزيج مدروس.
                 </p>
               </div>
               <a
@@ -296,7 +296,7 @@ export default function FacialAtrophyPage() {
           <SectionHead
             eyebrow="لماذا عيادة مها دحلان"
             title="خبرة تجمع بين علم التشريح وحسّ الجمال"
-            sub="فريق نسائي متخصص في ترميم ملامح الوجه بعد نزول الوزن — فلا يلاحظ من حولك إلا أنكِ أكثر راحة وإشراقاً."
+            sub="فريق نسائي متخصص في ترميم ملامح الوجه بعد نزول الوزن، فلا يلاحظ من حولك إلا أنكِ أكثر راحة وإشراقاً."
           />
 
           <Reveal className="mx-auto mb-12 max-w-[640px]">
@@ -304,7 +304,7 @@ export default function FacialAtrophyPage() {
               style={{ background: SURFACE_GRADIENT }}
             >
               <p className="faa-serif m-0 text-center text-[1.2rem] text-[var(--color-faa-ink-soft)]">
-                «هدفنا أن تعود ملامحكِ كما كانت في أجمل أيامها — لا أن تتغيّري.»
+                «هدفنا أن تعود ملامحكِ كما كانت في أجمل أيامها، لا أن تتغيّري.»
               </p>
             </div>
           </Reveal>
@@ -324,7 +324,7 @@ export default function FacialAtrophyPage() {
         <div className="mx-auto max-w-[1160px]">
           <SectionHead
             eyebrow="النتائج"
-            title="قبل وبعد — اسحبي وشاهدي الفرق"
+            title="قبل وبعد: اسحبي وشاهدي الفرق"
             sub="محاكاة توضيحية لأثر استعادة امتلاء الوجه بعد نزول الوزن."
           />
           <Reveal>
@@ -332,7 +332,7 @@ export default function FacialAtrophyPage() {
           </Reveal>
           <Reveal className="mx-auto mt-[18px] max-w-[560px] text-center">
             <p className="m-0 text-[0.8rem] text-[rgba(243,233,220,0.45)]">
-              صورة توضيحية وليست حالة فعلية — النتائج تختلف من حالة إلى أخرى
+              صورة توضيحية وليست حالة فعلية، والنتائج تختلف من حالة إلى أخرى
               بحسب درجة الضمور ونوعية البشرة والخطة المتبعة.
             </p>
           </Reveal>
@@ -357,7 +357,7 @@ export default function FacialAtrophyPage() {
           <SectionHead
             eyebrow="آراء المراجعات"
             title="قالوا عن تجربتهم"
-            sub="من تقييمات Google الحقيقية لعيادات مها دحلان — ٤٫٨ من ٥ عبر أكثر من ١٢٧٠ تقييم."
+            sub="من تقييمات Google الحقيقية لعيادات مها دحلان: ٤٫٨ من ٥ عبر أكثر من ١٢٧٠ تقييم."
           />
         </div>
         <Testimonials />
@@ -452,7 +452,7 @@ export default function FacialAtrophyPage() {
                 <span>
                   <b className="block text-[0.94rem]">اتصال مباشر</b>
                   <small className="text-[0.78rem] text-[rgba(243,233,220,0.55)]">
-                    {PHONE_DISPLAY} — خلال ساعات العمل
+                    {PHONE_DISPLAY}، خلال ساعات العمل
                   </small>
                 </span>
               </a>
@@ -474,7 +474,7 @@ export default function FacialAtrophyPage() {
         <div className="mb-3.5 flex justify-center">
           <Image
             src="/facial-atrophy/logo.png"
-            alt="MD Clinics — مجمع عيادات د. مها دحلان الطبي"
+            alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
             width={110}
             height={110}
             className="size-[110px] object-contain"
@@ -508,7 +508,7 @@ export default function FacialAtrophyPage() {
           الطبية. النتائج تختلف من حالة إلى أخرى.
         </p>
         <p className="m-0 text-[0.74rem] text-[rgba(243,233,220,0.35)]">
-          © ٢٠٢٦ عيادة مها دحلان — جميع الحقوق محفوظة
+          © ٢٠٢٦ عيادة مها دحلان. جميع الحقوق محفوظة
         </p>
       </footer>
 

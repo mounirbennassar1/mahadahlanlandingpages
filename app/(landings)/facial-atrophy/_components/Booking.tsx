@@ -155,7 +155,7 @@ export function Booking() {
             >
               <h3 className="mb-1.5 text-[1.4rem] font-extrabold">نموذج الحجز</h3>
               <p className="mb-6 text-[0.9rem] font-light text-[rgba(243,233,220,0.6)]">
-                يستغرق أقل من دقيقة — ونتواصل معك في نفس اليوم.
+                يستغرق أقل من دقيقة، ونتواصل معك في نفس اليوم.
               </p>
 
               <div className="mb-4">
