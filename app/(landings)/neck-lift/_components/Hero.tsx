@@ -48,7 +48,8 @@ export function Hero() {
         "-=0.6",
       );
 
-      // scroll response: copy softens out, tiles drift at differing speeds
+      // scroll response: copy softens out; each collage COLUMN drifts as one
+      // unit (per-tile speeds made tiles collide into each other)
       gsap.to(".nkl-copy", {
         y: -40,
         autoAlpha: 0.25,
@@ -61,17 +62,25 @@ export function Hero() {
           scrub: true,
         },
       });
-      gsap.utils.toArray<HTMLElement>(".nkl-tile").forEach((el, i) => {
-        gsap.to(el, {
-          y: [-60, -110, -30, -80][i % 4],
-          ease: "none",
-          scrollTrigger: {
-            trigger: rootRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
+      gsap.to(".nkl-col-a", {
+        y: -34,
+        ease: "none",
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+      gsap.to(".nkl-col-b", {
+        y: -86,
+        ease: "none",
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
       });
     },
     { scope: rootRef },
@@ -195,7 +204,7 @@ export function Hero() {
         {/* ——— collage (left in RTL) ——— */}
         <div className="relative mx-auto w-full max-w-[480px]">
           <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-4">
+            <div className="nkl-col-a flex flex-col gap-4">
               <div className="nkl-tile relative aspect-[3/4] overflow-hidden rounded-[26px] border border-[var(--color-nkl-line-strong)] shadow-[0_36px_70px_-30px_rgba(138,100,48,0.45)]">
                 <Image
                   src="/neck-lift/hero-main.jpg"
@@ -217,7 +226,7 @@ export function Hero() {
                 />
               </div>
             </div>
-            <div className="mt-10 flex flex-col gap-4">
+            <div className="nkl-col-b mt-10 flex flex-col gap-4">
               <div className="nkl-tile relative aspect-square overflow-hidden rounded-full border border-[var(--color-nkl-line-strong)] shadow-[0_30px_60px_-28px_rgba(138,100,48,0.4)]">
                 <Image
                   src="/neck-lift/hero-orb.jpg"
