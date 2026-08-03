@@ -10,51 +10,68 @@ import { GOLD_GRADIENT, WA_LINK } from "./config";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const TWINKLES = [
-  { right: "14%", top: "24%", size: 4, color: "#C99C4E", dur: 3.6, delay: 0 },
-  { right: "26%", top: "14%", size: 3, color: "#A67C3D", dur: 4.4, delay: 0.7 },
-  { left: "12%", top: "20%", size: 3, color: "#C99C4E", dur: 3.9, delay: 0.3 },
-  { left: "24%", top: "38%", size: 2, color: "#8A6430", dur: 4.8, delay: 1.4 },
-  { right: "9%", top: "55%", size: 3, color: "#C99C4E", dur: 3.2, delay: 1 },
-  { left: "8%", top: "62%", size: 4, color: "#A67C3D", dur: 5, delay: 2 },
+const STATS = [
+  { value: "٤٫٨ من ٥", label: "تقييم Google" },
+  { value: "+١٢٧٠", label: "تقييم موثّق" },
+  { value: "+١٣ عاماً", label: "خبرة تجميلية" },
+  { value: "١٠٠٪", label: "طاقم نسائي" },
 ] as const;
 
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
-  const ghostRef = useRef<HTMLSpanElement>(null);
 
   useGSAP(
     () => {
-      // entrance choreography
+      // copy: staggered rise
       const tl = gsap.timeline({
         defaults: { ease: "power3.out", duration: 0.9 },
       });
-      tl.from(".nkl-h", { y: 30, autoAlpha: 0, stagger: 0.14 }).from(
-        ".nkl-pill",
-        { scale: 0.4, autoAlpha: 0, duration: 0.8, ease: "back.out(1.6)" },
-        "-=1.1",
+      tl.from(".nkl-h", { y: 34, autoAlpha: 0, stagger: 0.12 });
+
+      // collage: tiles fly in from directional offsets and assemble
+      tl.from(
+        ".nkl-tile",
+        {
+          x: (i) => [70, -80, 90, -60][i % 4],
+          y: (i) => [90, -70, -90, 80][i % 4],
+          scale: 0.72,
+          autoAlpha: 0,
+          duration: 1.05,
+          ease: "back.out(1.4)",
+          stagger: 0.1,
+        },
+        0.25,
+      );
+      tl.from(
+        ".nkl-float-badge",
+        { scale: 0.5, autoAlpha: 0, ease: "back.out(1.8)", stagger: 0.12 },
+        "-=0.6",
       );
 
-      // scroll parallax: ghost word drifts down, orb drifts up
-      gsap.to(ghostRef.current, {
-        yPercent: 32,
+      // scroll response: copy softens out, tiles drift at differing speeds
+      gsap.to(".nkl-copy", {
+        y: -40,
+        autoAlpha: 0.25,
+        scale: 0.96,
         ease: "none",
         scrollTrigger: {
           trigger: rootRef.current,
-          start: "top top",
+          start: "40% 30%",
           end: "bottom top",
           scrub: true,
         },
       });
-      gsap.to(".nkl-orb", {
-        y: -70,
-        ease: "none",
-        scrollTrigger: {
-          trigger: rootRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
+      gsap.utils.toArray<HTMLElement>(".nkl-tile").forEach((el, i) => {
+        gsap.to(el, {
+          y: [-60, -110, -30, -80][i % 4],
+          ease: "none",
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
       });
     },
     { scope: rootRef },
@@ -63,230 +80,193 @@ export function Hero() {
   return (
     <section
       ref={rootRef}
-      className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-[22px] pt-[150px] pb-[60px] text-center"
+      className="relative overflow-hidden px-[22px] pt-[130px] pb-[80px] lg:min-h-svh lg:pt-[150px]"
     >
-      {/* dotted grid, masked to the center */}
+      {/* dotted grid backdrop */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(166,124,61,.16) 1px, transparent 1px)",
+            "radial-gradient(rgba(166,124,61,.15) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
           maskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 38%, #000 30%, transparent 75%)",
+            "radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 78%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 38%, #000 30%, transparent 75%)",
+            "radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 78%)",
         }}
         aria-hidden
       />
       {/* breathing champagne halo */}
       <div
-        className="pointer-events-none absolute -top-[260px] left-1/2 h-[680px] w-[1000px] -translate-x-1/2 blur-[30px]"
+        className="pointer-events-none absolute -top-[280px] left-1/2 h-[640px] w-[1000px] -translate-x-1/2 blur-[30px]"
         style={{
           background:
-            "radial-gradient(ellipse 50% 50% at 50% 0%, rgba(224,190,122,.4), transparent 70%)",
+            "radial-gradient(ellipse 50% 50% at 50% 0%, rgba(224,190,122,.35), transparent 70%)",
           animation: "nkl-breathe 7s ease-in-out infinite",
         }}
         aria-hidden
       />
+      {/* thin decor circles */}
       <div
-        className="pointer-events-none absolute -right-40 -bottom-[140px] size-[460px] rounded-full blur-[60px]"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(201,156,78,.2), transparent 65%)",
-        }}
+        className="pointer-events-none absolute top-0 left-0 aspect-square w-3/5 max-w-[820px] min-w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[7px] border-[rgba(166,124,61,0.1)]"
         aria-hidden
       />
-      {/* twinkles */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        {TWINKLES.map((t, i) => (
-          <span
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              right: "right" in t ? t.right : undefined,
-              left: "left" in t ? t.left : undefined,
-              top: t.top,
-              width: t.size,
-              height: t.size,
-              background: t.color,
-              boxShadow: `0 0 9px 2px ${t.color}88`,
-              animation: `nkl-twinkle ${t.dur}s ease-in-out ${t.delay}s infinite`,
-            }}
-          />
-        ))}
-      </div>
+      <div
+        className="pointer-events-none absolute right-0 bottom-0 aspect-square w-2/5 max-w-[560px] min-w-[280px] translate-x-1/2 translate-y-1/2 rounded-full border-[7px] border-[rgba(166,124,61,0.1)]"
+        aria-hidden
+      />
 
-      {/* ghost word with scroll parallax */}
-      <div
-        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
-        aria-hidden
-      >
-        <span
-          ref={ghostRef}
-          className="nkl-serif leading-none font-bold whitespace-nowrap text-transparent select-none"
-          style={{
-            fontSize: "clamp(7rem, 24vw, 19rem)",
-            WebkitTextStroke: "1.5px rgba(166,124,61,.13)",
-          }}
-        >
-          شُموخ
-        </span>
-      </div>
-
-      {/* floating orb photo (wide screens) */}
-      <div
-        className="nkl-orb pointer-events-none absolute top-[22%] right-[6%] hidden w-[170px] lg:block"
-        style={{ animation: "nkl-floaty 9s ease-in-out infinite alternate" }}
-        aria-hidden
-      >
-        <div className="aspect-square overflow-hidden rounded-full border border-[var(--color-nkl-line-strong)] shadow-[0_24px_50px_-22px_rgba(138,100,48,0.45)]">
-          <Image
-            src="/neck-lift/hero-orb.jpg"
-            alt=""
-            width={340}
-            height={340}
-            priority
-            className="size-full object-cover"
-          />
-        </div>
-      </div>
-      {/* spinning circular text (wide screens) */}
-      <div
-        className="pointer-events-none absolute top-[52%] left-[5%] hidden w-[170px] lg:block"
-        aria-hidden
-      >
-        <svg
-          viewBox="0 0 200 200"
-          className="block w-full"
-          style={{ animation: "nkl-spin 22s linear infinite" }}
-        >
-          <defs>
-            <path
-              id="nkl-circ"
-              d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"
+      <div className="relative mx-auto grid max-w-[1180px] items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+        {/* ——— copy (right in RTL) ——— */}
+        <div className="nkl-copy flex flex-col items-center text-center lg:items-start lg:text-right">
+          <span className="nkl-h inline-flex items-center gap-2.5 rounded-full border border-[var(--color-nkl-line-strong)] bg-[rgba(255,253,249,0.75)] px-[18px] py-2 text-[0.8rem] font-bold tracking-[0.04em] text-[var(--color-nkl-bronze)] backdrop-blur-lg">
+            <span
+              className="size-1.5 rounded-full bg-[var(--color-nkl-gold-bright)]"
+              style={{ boxShadow: "0 0 8px 2px rgba(201,156,78,.6)" }}
             />
-          </defs>
-          <circle
-            cx="100"
-            cy="100"
-            r="52"
-            fill="none"
-            stroke="rgba(166,124,61,.25)"
-            strokeWidth="1"
-          />
-          <circle cx="100" cy="100" r="4" fill="#C99C4E" />
-          <text
-            style={{
-              fontSize: "13.5px",
-              letterSpacing: "4px",
-              fill: "#8A6430",
-              fontWeight: 700,
-            }}
-          >
-            <textPath href="#nkl-circ">
-              عيادة مها دحلان ✦ جمالٌ يليق بكِ ✦ عيادة مها دحلان ✦
-            </textPath>
-          </text>
-        </svg>
-      </div>
-
-      <div className="relative z-[2] flex max-w-[940px] flex-col items-center">
-        <span className="nkl-h inline-flex items-center gap-2.5 rounded-full border border-[var(--color-nkl-line-strong)] bg-[rgba(255,253,249,0.7)] px-[18px] py-2 text-[0.8rem] font-bold tracking-[0.05em] text-[var(--color-nkl-bronze)] backdrop-blur-lg">
-          <span
-            className="size-1.5 rounded-full bg-[var(--color-nkl-gold-bright)]"
-            style={{ boxShadow: "0 0 8px 2px rgba(201,156,78,.6)" }}
-          />
-          علاج ترهل الرقبة وعلامات التقدم بالسن
-        </span>
-
-        <h1 className="mt-7 flex flex-col items-center gap-1 text-[clamp(2.1rem,5.6vw,3.9rem)] leading-[1.32] font-extrabold">
-          <span className="nkl-h">عمرُكِ سرٌّ لا يعرفه أحد…</span>
-          <span className="nkl-h inline-flex flex-wrap items-center justify-center gap-[clamp(10px,2vw,22px)]">
-            <span>ورقبتُكِ</span>
-            <span className="nkl-pill inline-block w-[clamp(86px,11vw,150px)] shrink-0 overflow-hidden rounded-full border-2 border-[rgba(201,156,78,0.6)] shadow-[0_0_0_7px_rgba(201,156,78,0.12),0_30px_60px_-24px_rgba(138,100,48,0.5)]"
-              style={{ aspectRatio: "3/4" }}
-            >
-              <Image
-                src="/neck-lift/hero-main.jpg"
-                alt="رقبة مشدودة بملامح أنيقة"
-                width={300}
-                height={400}
-                priority
-                className="size-full object-cover"
-              />
-            </span>
-            <span className="nkl-serif nkl-gold-text font-bold">
-              لن تُفشيَه بعد اليوم
-            </span>
+            علاج ترهل الرقبة وعلامات التقدم بالسن، بدون جراحة
           </span>
-        </h1>
 
-        <p className="nkl-h mt-6 max-w-[58ch] text-[1.08rem] font-light text-[rgba(39,28,17,0.68)]">
-          الخطوط الأفقية، الترهل أسفل الذقن، وفقدان تحديد خط الفك: علاماتٌ تظهر
-          على الرقبة قبل الوجه. في عيادة مها دحلان نعالجها بتقنيات غير جراحية
-          دقيقة تُعيد لعنقكِ شدّه وتحديده،{" "}
-          <b className="font-bold text-[var(--color-nkl-ink)]">
-            بنتائج طبيعية وخصوصية تامة
-          </b>
-          .
-        </p>
+          <h1 className="nkl-h mt-6 text-[clamp(2.2rem,5.4vw,3.7rem)] leading-[1.35] font-extrabold tracking-[-0.01em]">
+            استعيدي رقبةً مشدودة
+            <br />
+            <span className="nkl-gold-text">وخطَّ فكٍّ يرسم أناقتك</span>
+          </h1>
 
-        <div className="nkl-h mt-[34px] flex flex-wrap justify-center gap-3.5">
-          <a
-            href="#booking"
-            className="inline-flex items-center gap-2.5 rounded-full px-[34px] py-4 text-base font-extrabold text-[var(--color-nkl-ink)] shadow-[0_18px_44px_-14px_rgba(166,124,61,0.55)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(201,156,78,0.6)]"
-            style={{ background: GOLD_GRADIENT }}
-          >
-            احجزي استشارتك الخاصة
-            <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
-          </a>
-          <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
-            <div
-              className="absolute -inset-[120%]"
-              style={{
-                background:
-                  "conic-gradient(from 0deg, transparent 0 55%, #C99C4E 72%, #8A6430 84%, transparent 96%)",
-                animation: "nkl-spin 3.2s linear infinite",
-              }}
-              aria-hidden
-            />
+          <p className="nkl-h mt-5 max-w-[54ch] text-[1.06rem] font-light text-[rgba(39,28,17,0.68)]">
+            الخطوط الأفقية والترهل أسفل الذقن تظهر على الرقبة قبل الوجه، لكنها
+            اليوم قابلة للعلاج في جلساتٍ لا تتجاوز الساعة. نبني لكِ بروتوكولاً
+            يجمع الخيوط والهايفو والبوتوكس والفيلر بعد تقييمٍ صادق لحالتك،{" "}
+            <b className="font-bold text-[var(--color-nkl-ink)]">
+              بنتيجة طبيعية وعودة فورية ليومك
+            </b>
+            .
+          </p>
+
+          <div className="nkl-h mt-8 flex flex-wrap justify-center gap-3.5 lg:justify-start">
             <a
-              href={WA_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative inline-flex items-center gap-2.5 rounded-full bg-[#FFFDF8] px-[30px] py-[15px] text-base font-extrabold text-[var(--color-nkl-ink)] transition-colors duration-300 hover:bg-[#F7F0E2]"
+              href="#booking"
+              className="inline-flex items-center gap-2.5 rounded-full px-[32px] py-4 text-base font-extrabold text-[var(--color-nkl-ink)] shadow-[0_18px_44px_-14px_rgba(166,124,61,0.55)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(201,156,78,0.6)]"
+              style={{ background: GOLD_GRADIENT }}
             >
-              <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-              استشارة واتساب
+              احجزي استشارتك الخاصة
+              <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
             </a>
+            <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
+              <div
+                className="absolute -inset-[120%]"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, transparent 0 55%, #C99C4E 72%, #8A6430 84%, transparent 96%)",
+                  animation: "nkl-spin 3.2s linear infinite",
+                }}
+                aria-hidden
+              />
+              <a
+                href={WA_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative inline-flex items-center gap-2.5 rounded-full bg-[#FFFDF8] px-7 py-[15px] text-base font-extrabold text-[var(--color-nkl-ink)] transition-colors duration-300 hover:bg-[#F7F0E2]"
+              >
+                <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
+                استشارة واتساب
+              </a>
+            </div>
+          </div>
+
+          {/* proof stats */}
+          <div className="nkl-h mt-9 grid w-full max-w-[520px] grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[var(--color-nkl-line)] bg-[var(--color-nkl-line)] sm:grid-cols-4">
+            {STATS.map((s) => (
+              <div
+                key={s.label}
+                className="flex flex-col items-center gap-0.5 bg-[rgba(255,253,249,0.85)] px-2 py-3.5 backdrop-blur-sm"
+              >
+                <b className="text-[1.05rem] font-extrabold text-[var(--color-nkl-bronze)]">
+                  {s.value}
+                </b>
+                <span className="text-[0.72rem] font-bold text-[rgba(39,28,17,0.55)]">
+                  {s.label}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="nkl-h mt-[30px] flex flex-wrap justify-center gap-x-[26px] gap-y-3 text-[0.84rem] text-[rgba(39,28,17,0.55)]">
-          <span className="inline-flex items-center gap-[7px]">
-            <Icon.CircleCheck className="size-[15px] text-[var(--color-nkl-gold)]" />
+        {/* ——— collage (left in RTL) ——— */}
+        <div className="relative mx-auto w-full max-w-[480px]">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-4">
+              <div className="nkl-tile relative aspect-[3/4] overflow-hidden rounded-[26px] border border-[var(--color-nkl-line-strong)] shadow-[0_36px_70px_-30px_rgba(138,100,48,0.45)]">
+                <Image
+                  src="/neck-lift/hero-main.jpg"
+                  alt="رقبة مشدودة بملامح أنيقة"
+                  fill
+                  sizes="(max-width: 1024px) 46vw, 232px"
+                  priority
+                  className="object-cover"
+                />
+              </div>
+              <div className="nkl-tile relative aspect-square overflow-hidden rounded-[26px] border border-[var(--color-nkl-line-strong)] shadow-[0_30px_60px_-28px_rgba(138,100,48,0.4)]">
+                <Image
+                  src="/neck-lift/detail.jpg"
+                  alt="أجواء العناية في العيادة"
+                  fill
+                  sizes="(max-width: 1024px) 46vw, 232px"
+                  priority
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="mt-10 flex flex-col gap-4">
+              <div className="nkl-tile relative aspect-square overflow-hidden rounded-full border border-[var(--color-nkl-line-strong)] shadow-[0_30px_60px_-28px_rgba(138,100,48,0.4)]">
+                <Image
+                  src="/neck-lift/hero-orb.jpg"
+                  alt="نضارة وشد في منطقة الرقبة"
+                  fill
+                  sizes="(max-width: 1024px) 46vw, 232px"
+                  priority
+                  className="object-cover"
+                />
+              </div>
+              <div className="nkl-tile relative aspect-[3/4] overflow-hidden rounded-[26px] border border-[var(--color-nkl-line-strong)] shadow-[0_36px_70px_-30px_rgba(138,100,48,0.45)]">
+                <Image
+                  src="/neck-lift/hero-front.jpg"
+                  alt="بشرة رقبة ناعمة ومشدودة"
+                  fill
+                  sizes="(max-width: 1024px) 46vw, 232px"
+                  priority
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* floating glass badges */}
+          <span
+            className="nkl-float-badge absolute -top-3 right-3 inline-flex items-center gap-2 rounded-full border border-[var(--color-nkl-line-strong)] bg-[rgba(255,253,249,0.92)] px-4 py-2 text-[0.76rem] font-extrabold whitespace-nowrap text-[var(--color-nkl-bronze)] shadow-[0_14px_30px_-14px_rgba(138,100,48,0.45)] backdrop-blur-lg"
+            style={{ animation: "nkl-floaty 7s ease-in-out infinite alternate" }}
+          >
+            <Icon.Syringe className="size-3.5" />
             بدون جراحة
           </span>
-          <span className="inline-flex items-center gap-[7px]">
-            <Icon.ShieldCheck className="size-[15px] text-[var(--color-nkl-gold)]" />
-            إشراف طبي متخصص
+          <span
+            className="nkl-float-badge absolute bottom-8 -left-2 inline-flex items-center gap-2 rounded-full border border-[var(--color-nkl-line-strong)] bg-[rgba(255,253,249,0.92)] px-4 py-2 text-[0.76rem] font-extrabold whitespace-nowrap text-[var(--color-nkl-bronze)] shadow-[0_14px_30px_-14px_rgba(138,100,48,0.45)] backdrop-blur-lg"
+            style={{
+              animation: "nkl-floaty 8s ease-in-out .6s infinite alternate-reverse",
+            }}
+          >
+            <Icon.Sparkles className="size-3.5" />
+            نتائج تُرى من أولى الجلسات
           </span>
-          <span className="inline-flex items-center gap-[7px]">
-            <Icon.Lock className="size-[15px] text-[var(--color-nkl-gold)]" />
-            خصوصية تامة
-          </span>
-        </div>
-
-        <div className="nkl-h mt-[52px] flex flex-col items-center gap-2">
-          <span className="text-[0.72rem] font-bold tracking-[0.2em] text-[rgba(138,100,48,0.7)]">
-            اكتشفي المزيد
-          </span>
-          <span className="relative block h-10 w-[1.5px] overflow-hidden rounded-sm bg-[rgba(166,124,61,0.25)]">
-            <span
-              className="absolute inset-x-0 top-0 h-2 rounded-sm bg-[var(--color-nkl-gold-bright)]"
-              style={{ animation: "nkl-dot-y 1.8s ease-in-out infinite" }}
-            />
+          <span
+            className="nkl-float-badge absolute top-1/2 -right-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[0.76rem] font-extrabold whitespace-nowrap text-[var(--color-nkl-ink)] shadow-[0_14px_30px_-12px_rgba(138,100,48,0.55)]"
+            style={{
+              background: GOLD_GRADIENT,
+              animation: "nkl-floaty 6s ease-in-out 1.2s infinite alternate",
+            }}
+          >
+            <Icon.Star className="size-3.5" />
+            ٤٫٨ على Google
           </span>
         </div>
       </div>

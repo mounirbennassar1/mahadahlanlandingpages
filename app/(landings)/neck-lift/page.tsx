@@ -75,37 +75,66 @@ const SOLUTIONS = [
     num: "٠١",
     icon: Icon.MoveUpLeft,
     title: "شد الرقبة بالخيوط التجميلية",
-    body: "رفعٌ فوري للجلد المترهل وتحفيزٌ طويل الأمد للكولاجين، بجلسة واحدة ودون جراحة.",
+    tag: "نتيجة فورية بجلسة واحدة",
+    body: "رفعٌ فوري للجلد المترهل وتحفيزٌ طويل الأمد للكولاجين، دون جراحة ودون توقف عن حياتك.",
   },
   {
     num: "٠٢",
     icon: Icon.Radio,
     title: "الهايفو بالموجات المركزة",
+    tag: "شدٌّ يدوم حتى ١٨ شهراً",
     body: "شدٌّ عميق يصل إلى الطبقة العضلية نفسها التي تستهدفها عمليات الشد، بلا تدخل جراحي.",
   },
   {
     num: "٠٣",
     icon: Icon.Crown,
     title: "بوتوكس نفرتيتي",
+    tag: "جلسة أقل من ٣٠ دقيقة",
     body: "إعادة رسم زاوية الفك وتنعيم عضلة الرقبة، لإطلالة مرفوعة أنيقة مستوحاة من اسمها.",
   },
   {
     num: "٠٤",
     icon: Icon.PenTool,
     title: "فيلر تحديد خط الفك",
+    tag: "تحديد فوري متوازن",
     body: "استعادة الحدود الواضحة بين الوجه والرقبة بتوازنٍ محسوب يليق بملامحك.",
   },
   {
     num: "٠٥",
     icon: Icon.Droplet,
     title: "سكين بوستر ومحفزات الكولاجين",
+    tag: "نضارة تتراكم جلسة بعد جلسة",
     body: "ترطيبٌ عميق يعيد للجلد كثافته وملمسه الحريري، ويخفف الخطوط الأفقية الدقيقة.",
   },
   {
     num: "٠٦",
     icon: Icon.Sparkles,
     title: "التقشير والليزر التجميلي",
+    tag: "ملمس متجدد ولون موحّد",
     body: "توحيد اللون وتجديد سطح الجلد، لملمسٍ أكثر نعومة وإشراقٍ يدوم.",
+  },
+];
+
+const WHY_US = [
+  {
+    icon: Icon.HeartHandshake,
+    title: "تقييم صادق",
+    body: "لا نقترح عليكِ إلا ما تحتاجينه فعلاً، وقد نكتفي بتقنية واحدة.",
+  },
+  {
+    icon: Icon.BadgeCheck,
+    title: "مواد أصلية معتمدة",
+    body: "خيوط وفيلر وأجهزة من شركات عالمية موثقة، تُفتح أمامك في الجلسة.",
+  },
+  {
+    icon: Icon.Users,
+    title: "طاقم نسائي بالكامل",
+    body: "خصوصية تامة من الاستقبال حتى غرفة الجلسة وملفك الطبي.",
+  },
+  {
+    icon: Icon.CalendarCheck,
+    title: "متابعة حتى النتيجة",
+    body: "مراجعات دورية مجدولة نطمئن فيها على تطور نتيجتك حتى اكتمالها.",
   },
 ];
 
@@ -148,10 +177,10 @@ function SectionHead({
       <span className="text-[0.78rem] font-extrabold tracking-[0.24em] text-[var(--color-nkl-gold)]">
         {eyebrow}
       </span>
-      <h2 className="nkl-serif m-0 text-[clamp(1.9rem,4vw,2.9rem)] leading-[1.35] font-bold">
+      <h2 className="m-0 text-[clamp(1.8rem,3.8vw,2.7rem)] leading-[1.4] font-extrabold">
         {title}{" "}
         {highlight && (
-          <span className="text-[var(--color-nkl-gold)]">{highlight}</span>
+          <span className="nkl-gold-text">{highlight}</span>
         )}
       </h2>
       {sub && (
@@ -191,7 +220,7 @@ export default function NeckLiftPage() {
                   }}
                   aria-hidden
                 />
-                <span className="nkl-serif text-[2.6rem] leading-none font-bold text-[rgba(166,124,61,0.25)]">
+                <span className="text-[2.4rem] leading-none font-extrabold text-[rgba(166,124,61,0.22)]">
                   {c.num}
                 </span>
                 <h3 className="mt-3.5 mb-2.5 text-[1.15rem] font-extrabold">
@@ -213,7 +242,7 @@ export default function NeckLiftPage() {
             eyebrow="٠٢ ، العلامات"
             title="علامات التقدم بالسن"
             highlight="في الرقبة"
-            sub="تعرّفي على العلامات الست الأكثر شيوعاً، وكلها قابلة للعلاج دون جراحة."
+            sub="حددي علاماتك من الست الأكثر شيوعاً أثناء التصفح، وكلها قابلة للعلاج دون جراحة في جلساتٍ لا تتجاوز الساعة."
           />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SIGNS.map((s, i) => (
@@ -246,10 +275,10 @@ export default function NeckLiftPage() {
         <SectionHead
           eyebrow="٠٣ ، الحلول"
           title="تقنياتٌ دقيقة…"
-          sub="لا توجد تقنية واحدة تناسب الجميع؛ نختار لكِ من هذه الحلول ما يلائم درجة الترهل ونوع بشرتك."
+          sub="لا توجد تقنية واحدة تناسب الجميع؛ بعد التقييم نبني بروتوكولك من هذه الحلول بأقل تدخلٍ ممكن وأعلى أثرٍ يدوم."
         />
         <Reveal className="-mt-12 mb-[54px] text-center">
-          <span className="nkl-serif nkl-gold-text text-[clamp(1.5rem,3vw,2.2rem)] font-bold">
+          <span className="nkl-gold-text text-[clamp(1.5rem,3vw,2.2rem)] font-extrabold">
             ونتائج تُرى ولا تُلاحَظ
           </span>
         </Reveal>
@@ -257,7 +286,7 @@ export default function NeckLiftPage() {
           {SOLUTIONS.map((s, i) => (
             <Reveal key={s.num} delay={(i % 3) * 90}>
               <div className="relative overflow-hidden rounded-3xl border border-[var(--color-nkl-line)] bg-[var(--color-nkl-card)] px-7 py-[34px] transition-all duration-300 hover:-translate-y-1.5 hover:border-[rgba(201,156,78,0.5)] hover:shadow-[0_28px_58px_-26px_rgba(138,100,48,0.38)]">
-                <span className="nkl-serif absolute top-3.5 left-5 text-[3.4rem] leading-none font-bold text-[rgba(166,124,61,0.1)]">
+                <span className="absolute top-3.5 left-5 text-[3.2rem] leading-none font-extrabold text-[rgba(166,124,61,0.1)]">
                   {s.num}
                 </span>
                 <div
@@ -268,6 +297,10 @@ export default function NeckLiftPage() {
                 >
                   <s.icon className="size-6 text-[#FFFDF8]" strokeWidth={1.8} />
                 </div>
+                <span className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[rgba(166,124,61,0.3)] bg-[rgba(201,156,78,0.1)] px-3 py-1 text-[0.72rem] font-extrabold text-[var(--color-nkl-bronze)]">
+                  <Icon.Check className="size-3" strokeWidth={3} />
+                  {s.tag}
+                </span>
                 <h3 className="mb-2.5 text-[1.2rem] font-extrabold">{s.title}</h3>
                 <p className="m-0 text-[0.94rem] font-light text-[var(--color-nkl-muted)]">
                   {s.body}
@@ -276,6 +309,24 @@ export default function NeckLiftPage() {
             </Reveal>
           ))}
         </div>
+
+        {/* لماذا عيادة مها دحلان */}
+        <Reveal delay={120} className="mt-14">
+          <div className="grid gap-px overflow-hidden rounded-3xl border border-[var(--color-nkl-line)] bg-[var(--color-nkl-line)] sm:grid-cols-2 lg:grid-cols-4">
+            {WHY_US.map((u) => (
+              <div
+                key={u.title}
+                className="flex flex-col gap-2 bg-[var(--color-nkl-card)] px-6 py-7"
+              >
+                <u.icon className="size-6 text-[var(--color-nkl-bronze)]" strokeWidth={1.8} />
+                <b className="text-[1rem] font-extrabold">{u.title}</b>
+                <p className="m-0 text-[0.86rem] font-light text-[var(--color-nkl-muted)]">
+                  {u.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
       {/* ——— الأخصائيات ——— */}
@@ -306,7 +357,7 @@ export default function NeckLiftPage() {
                   "linear-gradient(90deg, rgba(201,156,78,.1), transparent 70%)",
               }}
             >
-              <p className="nkl-serif m-0 text-center text-[1.12rem] text-[var(--color-nkl-ink-soft)] italic">
+              <p className="m-0 text-center text-[1.1rem] font-bold text-[var(--color-nkl-ink-soft)]">
                 &#8220;جمال الرقبة في انسجامها مع الوجه؛ نشدّ ونحدّد دون أن
                 نغيّر ملامحك.&#8221;
               </p>
@@ -421,13 +472,17 @@ export default function NeckLiftPage() {
                 <span className="text-[0.78rem] font-extrabold tracking-[0.24em] text-[var(--color-nkl-gold-bright)]">
                   ٠٩ ، الحجز
                 </span>
-                <h2 className="nkl-serif mt-3 mb-0 text-[clamp(1.9rem,4vw,2.9rem)] leading-[1.4] font-bold">
+                <h2 className="mt-3 mb-0 text-[clamp(1.8rem,3.8vw,2.7rem)] leading-[1.4] font-extrabold">
                   استشارتكِ الخاصة{" "}
                   <span className="nkl-gold-text">تبدأ من هنا</span>
                 </h2>
-                <p className="mt-[18px] mb-0 font-light text-[rgba(250,244,232,0.7)]">
-                  اتركي بياناتك وسيتواصل معك فريقنا لتنسيق موعدك في أقرب وقت
-                  يناسبك.
+                <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-[rgba(224,190,122,0.35)] bg-[rgba(224,190,122,0.08)] px-4 py-1.5 text-[0.78rem] font-extrabold text-[var(--color-nkl-champagne)]">
+                  <Icon.Sparkles className="size-3.5" />
+                  مقاعد التقييم محدودة أسبوعياً
+                </span>
+                <p className="mt-3.5 mb-0 font-light text-[rgba(250,244,232,0.7)]">
+                  اتركي بياناتك وسيتواصل معك فريقنا في نفس اليوم لتنسيق موعدك
+                  وتقدير خطتك وتكلفتها بشفافية كاملة.
                 </p>
                 <div className="mt-[26px] flex flex-col gap-3.5">
                   <span className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(250,244,232,0.75)]">

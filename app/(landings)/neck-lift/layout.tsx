@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
-import { almarai, amiri } from "@/lib/fonts";
+import { almarai } from "@/lib/fonts";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -47,7 +47,7 @@ export default function NeckLiftLayout({
     <div
       dir="rtl"
       lang="ar"
-      className={`nkl-landing relative overflow-clip ${almarai.variable} ${amiri.variable}`}
+      className={`nkl-landing relative overflow-clip ${almarai.variable}`}
       style={{
         ...paletteVars,
         fontFamily: "var(--font-almarai), system-ui, sans-serif",

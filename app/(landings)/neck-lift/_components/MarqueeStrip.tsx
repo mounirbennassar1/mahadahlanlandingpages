@@ -27,8 +27,9 @@ function Row() {
 export function MarqueeStrip() {
   return (
     <div className="relative z-[5] -mx-5 mt-[-10px] -rotate-[1.3deg] overflow-hidden border-y border-[rgba(201,156,78,0.35)] bg-[var(--color-nkl-dark)] py-[15px] shadow-[0_24px_50px_-30px_rgba(39,28,17,0.5)]">
+      {/* reversed so the strip flows right-to-left, matching the RTL page */}
       <div
-        className="nkl-marquee-track"
+        className="nkl-marquee-track nkl-marquee-reverse"
         style={{ "--nkl-marquee-duration": "26s" } as React.CSSProperties}
       >
         <Row />

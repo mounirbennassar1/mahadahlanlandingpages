@@ -108,9 +108,7 @@ export function Doctors() {
 
         {/* bio */}
         <div className="min-w-[300px] flex-1 text-center md:max-w-[560px] md:text-right">
-          <h3 className="nkl-serif m-0 text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.35] font-bold">
-            {d.name}
-          </h3>
+          <h3 className="m-0 text-3xl font-extrabold sm:text-4xl">{d.name}</h3>
           <p className="mt-1.5 font-bold text-[var(--color-nkl-bronze)]">
             {d.title}
           </p>

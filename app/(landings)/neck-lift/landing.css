@@ -83,10 +83,6 @@
   color: rgba(250, 244, 232, 0.38);
 }
 
-.nkl-serif {
-  font-family: var(--font-amiri), serif;
-}
-
 /* Shimmering bronze-gold gradient text */
 .nkl-gold-text {
   background: linear-gradient(

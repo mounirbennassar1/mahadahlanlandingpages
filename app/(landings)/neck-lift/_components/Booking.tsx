@@ -105,7 +105,7 @@ export function Booking() {
           >
             <Icon.Check className="size-[30px] text-[var(--color-nkl-ink)]" strokeWidth={2.6} />
           </span>
-          <h3 className="nkl-serif m-0 text-2xl text-[var(--color-nkl-cream)]">
+          <h3 className="m-0 text-2xl font-extrabold text-[var(--color-nkl-cream)]">
             شكراً لثقتك
           </h3>
           <p className="m-0 text-[0.95rem] font-light text-[rgba(250,244,232,0.7)]">
