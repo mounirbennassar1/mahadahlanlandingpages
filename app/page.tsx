@@ -208,7 +208,7 @@ export default function Home() {
 
           {/* ——— proof band ——— */}
           <Section className="bg-[var(--color-md-bg)]">
-            <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-[26px] border border-[var(--color-md-line)] bg-[var(--color-md-line)] lg:grid-cols-4">
+            <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-[26px] border border-[var(--color-md-line)] bg-[var(--color-md-line)] md:grid-cols-4">
               {STATS.map((s) => (
                 <div
                   key={s.label}
@@ -324,7 +324,7 @@ export default function Home() {
               body="فريق نسائي متخصص في التجميل اللاجراحي، يعمل بإشراف د. مها دحلان، استشارية الجلدية والتجميل والليزر."
             />
 
-            <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
               {TEAM.map((member, i) => (
                 <Reveal key={member.name} delay={i * 100}>
                   <article className="group relative h-full overflow-hidden rounded-[26px] border border-[var(--color-md-line)] bg-[var(--color-md-card)]">

@@ -73,7 +73,7 @@ const ROW_B: Review[] = [
 
 function Card({ review }: { review: Review }) {
   return (
-    <div className="w-[340px] flex-none rounded-[22px] border border-[rgba(166,124,61,0.2)] bg-[var(--color-md-card)] px-6 py-[26px] sm:w-[380px]">
+    <div className="w-[268px] flex-none rounded-[22px] border border-[rgba(166,124,61,0.2)] bg-[var(--color-md-card)] px-5 py-[22px] sm:w-[380px] sm:px-6 sm:py-[26px]">
       <div className="mb-3 flex items-center justify-between">
         <Icon.Quote className="size-[26px] fill-[rgba(201,156,78,0.5)] text-[rgba(201,156,78,0.5)]" />
         <span className="flex gap-0.5" aria-hidden>
