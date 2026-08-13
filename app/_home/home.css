@@ -1,0 +1,81 @@
+/* Home page: only what Tailwind can't express cleanly —
+   keyframes, ::selection, gradient text clip, marquee track, spotlight glow. */
+
+@keyframes md-shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+@keyframes md-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes md-breathe {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.md-home ::selection {
+  background: rgba(201, 156, 78, 0.28);
+}
+
+/* Shimmering bronze-gold gradient text.
+   `background-clip: text` only paints inside the inline content box, so Arabic
+   diacritics that rise above it (shadda, tanween) or drop below it (kasratan)
+   lose their fill and look sliced. Padding grows the painted box; the matching
+   negative margin keeps layout identical. */
+.md-gold-text {
+  display: inline-block;
+  padding-block: 0.32em;
+  margin-block: -0.32em;
+  background: linear-gradient(
+    100deg,
+    #8a6430,
+    #e0be7a 35%,
+    #a67c3d 55%,
+    #c99c4e 75%,
+    #8a6430
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: md-shimmer 5.5s linear infinite;
+}
+
+/* Marquee rows */
+.md-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: md-marquee var(--md-marquee-duration, 30s) linear infinite;
+}
+
+.md-marquee-track.md-marquee-reverse {
+  animation-direction: reverse;
+}
+
+.md-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Pointer-following gold glow inside cards */
+.md-spot-glow {
+  background: radial-gradient(
+    300px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(201, 156, 78, 0.16),
+    transparent 65%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-home *,
+  .md-home *::before,
+  .md-home *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
