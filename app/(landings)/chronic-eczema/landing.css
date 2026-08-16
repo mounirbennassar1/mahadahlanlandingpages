@@ -1,0 +1,150 @@
+/* chronic-eczema midnight-editorial landing: only what Tailwind can't
+   express cleanly — keyframes, ::selection, placeholders, gold display text,
+   hairline ticker, FAQ marker, grain, word-scrub spans. */
+
+@keyframes che-shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+@keyframes che-ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes che-floaty {
+  from {
+    transform: translateY(-6px);
+  }
+  to {
+    transform: translateY(6px);
+  }
+}
+
+@keyframes che-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.che-landing ::selection {
+  background: rgba(201, 164, 92, 0.35);
+}
+
+.che-landing input::placeholder {
+  color: rgba(244, 238, 250, 0.35);
+}
+
+/* Shimmering clinic-gold gradient text */
+.che-gold-text {
+  background: linear-gradient(
+    100deg,
+    #9a7434,
+    #e5c77f 35%,
+    #c9a45c 55%,
+    #f0dca2 75%,
+    #9a7434
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: che-shimmer 5.5s linear infinite;
+}
+
+/* Oversized display scale used by hero + section titles */
+.che-display {
+  font-size: clamp(2.4rem, 6.6vw, 4.6rem);
+  line-height: 1.3;
+  letter-spacing: 0; /* tracking breaks connected Arabic script */
+  font-weight: 800;
+}
+
+/* Hero-only display. Leading stays generous (Arabic ascenders/descenders
+   clip below ~1.3 at this weight) and tracking is 0 — any letter-spacing
+   visibly breaks connected Arabic script. */
+.che-display-hero {
+  font-size: clamp(2.5rem, 6.6vw, 4.8rem);
+  line-height: 1.35;
+  letter-spacing: 0;
+  font-weight: 800;
+  padding-block: 0.04em; /* headroom so glyphs never touch the box edge */
+}
+
+/* Aurora glows drifting over the hero video */
+@keyframes che-aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(-4%, -3%, 0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(5%, 4%, 0) scale(1.14);
+    opacity: 1;
+  }
+}
+
+.che-aurora {
+  animation: che-aurora-drift 16s ease-in-out infinite;
+}
+
+.che-aurora-2 {
+  animation: che-aurora-drift 21s ease-in-out infinite reverse;
+}
+
+/* Editorial ticker between hairlines */
+.che-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: che-ticker var(--che-ticker-duration, 42s) linear infinite;
+}
+
+.che-ticker-track.che-ticker-reverse {
+  animation-direction: reverse;
+}
+
+.che-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* FAQ accordion marker rotation via pure CSS */
+.che-landing summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .che-pm {
+  transform: rotate(45deg);
+}
+
+.che-pm {
+  transition: transform 0.3s;
+}
+
+/* Word-scrub paragraphs: spans injected by ScrollSystem */
+.che-w {
+  display: inline-block;
+}
+
+/* Film grain over the fixed midnight ground */
+.che-grain {
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .che-landing *,
+  .che-landing *::before,
+  .che-landing *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

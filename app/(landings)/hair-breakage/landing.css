@@ -1,0 +1,120 @@
+/* hair-breakage landing: only what Tailwind can't express cleanly:
+   keyframes, ::selection, placeholder ink, FAQ marker rotation, marquee,
+   shimmering gold text. Palette tokens live inline in layout.tsx. */
+
+@keyframes hab-shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+@keyframes hab-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hab-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes hab-floaty {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes hab-breathe {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes hab-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.hab-landing ::selection {
+  background: rgba(212, 175, 55, 0.35);
+  color: #0b0b0d;
+}
+
+.hab-landing input::placeholder {
+  color: rgba(245, 239, 224, 0.32);
+}
+
+/* Shimmering liquid-gold gradient text */
+.hab-gold-text {
+  background: linear-gradient(
+    100deg,
+    #8a6430,
+    #f0d48a 35%,
+    #c9a45c 55%,
+    #d4af37 75%,
+    #8a6430
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hab-shimmer 5.5s linear infinite;
+}
+
+/* Marquee rows */
+.hab-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: hab-marquee var(--hab-marquee-duration, 26s) linear infinite;
+}
+
+.hab-marquee-track.hab-marquee-reverse {
+  animation-direction: reverse;
+}
+
+.hab-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* FAQ accordion marker rotation via pure CSS */
+.hab-landing summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .hab-pm {
+  transform: rotate(45deg);
+}
+
+.hab-pm {
+  transition: transform 0.3s;
+}
+
+/* Pointer-following gold glow inside spotlight cards */
+.hab-spot-glow {
+  background: radial-gradient(
+    300px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(212, 175, 55, 0.12),
+    transparent 65%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hab-landing *,
+  .hab-landing *::before,
+  .hab-landing *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

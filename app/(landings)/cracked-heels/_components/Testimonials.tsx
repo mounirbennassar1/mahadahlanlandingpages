@@ -73,33 +73,21 @@ const ROW_B: Review[] = [
 
 function Card({ review }: { review: Review }) {
   return (
-    <div className="w-[268px] flex-none rounded-[22px] border border-[rgba(201,156,78,0.22)] bg-[var(--color-md-card)] px-5 py-[22px] transition-colors duration-300 hover:border-[rgba(232,195,106,0.45)] sm:w-[380px] sm:px-6 sm:py-[26px]">
-      <div className="mb-3 flex items-center justify-between">
-        <Icon.Quote className="size-[26px] fill-[rgba(201,156,78,0.5)] text-[rgba(201,156,78,0.5)]" />
-        <span className="flex gap-0.5" aria-hidden>
-          {Array.from({ length: 5 }, (_, i) => (
-            <Icon.Star
-              key={i}
-              className="size-3.5 fill-[var(--color-md-gold-bright)] text-[var(--color-md-gold-bright)]"
-            />
-          ))}
-        </span>
-      </div>
-      <p className="mb-4 text-[0.95rem] leading-[1.85] font-light text-[rgba(246,238,223,0.72)]">
+    <div className="w-[360px] flex-none rounded-[20px] border border-[var(--color-crh-line)] bg-[var(--color-crh-card)] px-6 py-[26px]">
+      <Icon.Quote className="mb-3 size-[26px] fill-[rgba(212,175,55,0.5)] text-[rgba(212,175,55,0.5)]" />
+      <p className="mb-4 text-[0.95rem] leading-[1.8] font-light text-[rgba(244,233,216,0.78)]">
         {review.quote}
       </p>
       <div className="flex items-center gap-[11px]">
         <span
-          className="flex size-[38px] items-center justify-center rounded-full text-[0.9rem] font-extrabold text-[#FFFDF8]"
-          style={{ background: "linear-gradient(135deg, #8A6430, #E0BE7A)" }}
+          className="flex size-[38px] items-center justify-center rounded-full text-[0.9rem] font-extrabold text-[#1C120C]"
+          style={{ background: "linear-gradient(135deg, #8C6A3F, #E4C87E)" }}
         >
           {review.initial}
         </span>
         <span className="leading-[1.3]">
-          <b className="block text-[0.9rem] text-[var(--color-md-text)]">
-            {review.name}
-          </b>
-          <span className="text-[0.76rem] text-[rgba(246,238,223,0.45)]">
+          <b className="block text-[0.9rem]">{review.name}</b>
+          <span className="text-[0.76rem] text-[rgba(244,233,216,0.5)]">
             {review.caption}
           </span>
         </span>
@@ -129,8 +117,8 @@ function MarqueeRow({
       }}
     >
       <div
-        className={`md-marquee-track gap-5 ${reverse ? "md-marquee-reverse" : ""}`}
-        style={{ "--md-marquee-duration": duration } as CSSProperties}
+        className={`crh-marquee-track gap-5 ${reverse ? "crh-marquee-reverse" : ""}`}
+        style={{ "--crh-marquee-duration": duration } as CSSProperties}
       >
         {[0, 1].map((copy) => (
           <div key={copy} dir="rtl" className="flex gap-5 pe-5">
@@ -148,8 +136,8 @@ function MarqueeRow({
 export function Testimonials() {
   return (
     <div className="flex flex-col gap-5">
-      <MarqueeRow reviews={ROW_A} duration="48s" />
-      <MarqueeRow reviews={ROW_B} duration="56s" reverse />
+      <MarqueeRow reviews={ROW_A} duration="44s" />
+      <MarqueeRow reviews={ROW_B} duration="52s" reverse />
     </div>
   );
 }

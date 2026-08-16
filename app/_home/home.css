@@ -1,5 +1,6 @@
-/* Home page: only what Tailwind can't express cleanly —
-   keyframes, ::selection, gradient text clip, marquee track, spotlight glow. */
+/* Home page (onyx + gold theme): only what Tailwind can't express cleanly —
+   keyframes, ::selection, gradient text clip, marquee track, spotlight glow,
+   neon pulses, grain, and the dark Google-map filter. */
 
 @keyframes md-shimmer {
   to {
@@ -19,11 +20,43 @@
   }
 }
 
-.md-home ::selection {
-  background: rgba(201, 156, 78, 0.28);
+/* Neon-gold pulse for tiny status dots. */
+@keyframes md-neon-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px 1px rgba(255, 223, 142, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 16px 4px rgba(255, 223, 142, 0.85);
+  }
 }
 
-/* Shimmering bronze-gold gradient text.
+/* Sliding sheen on the topbar hairline. */
+@keyframes md-sheen {
+  to {
+    background-position: -220% center;
+  }
+}
+
+/* Nav entrance: clock-based so it always lands on its end state,
+   even when frames are dropped (background tab, occluded window). */
+@keyframes md-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+.md-nav-item {
+  animation: md-drop-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.md-home ::selection {
+  background: rgba(232, 195, 106, 0.32);
+  color: #0b0805;
+}
+
+/* Shimmering champagne-gold gradient text tuned for the black ground.
    `background-clip: text` only paints inside the inline content box, so Arabic
    diacritics that rise above it (shadda, tanween) or drop below it (kasratan)
    lose their fill and look sliced. Padding grows the painted box; the matching
@@ -34,17 +67,66 @@
   margin-block: -0.32em;
   background: linear-gradient(
     100deg,
-    #8a6430,
-    #e0be7a 35%,
-    #a67c3d 55%,
-    #c99c4e 75%,
-    #8a6430
+    #c99c4e,
+    #ffe9a8 35%,
+    #e8c36a 55%,
+    #f0d48a 75%,
+    #c99c4e
   );
   background-size: 220% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: md-shimmer 5.5s linear infinite;
+}
+
+/* Soft neon halo behind gradient-clipped glyphs (text-shadow can't reach them). */
+.md-gold-glow {
+  filter: drop-shadow(0 0 22px rgba(240, 212, 138, 0.28));
+}
+
+/* Neon-gold accent text (topbar, badges). */
+.md-neon-text {
+  color: #ffe9a8;
+  text-shadow: 0 0 14px rgba(255, 223, 142, 0.5);
+}
+
+/* Animated gold hairline (topbar bottom edge, section dividers). */
+.md-sheen-line {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(201, 156, 78, 0.15) 20%,
+    rgba(255, 233, 168, 0.9) 50%,
+    rgba(201, 156, 78, 0.15) 80%,
+    transparent
+  );
+  background-size: 220% auto;
+  animation: md-sheen 4.5s linear infinite;
+}
+
+/* Scroll cue: a gold droplet running down a hairline. */
+@keyframes md-cue-drop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.md-cue-line {
+  animation: md-cue-drop 2.2s ease-in-out infinite;
+}
+
+/* Apple-style mobile carousels: snap scrolling with the scrollbar hidden. */
+.md-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.md-carousel::-webkit-scrollbar {
+  display: none;
 }
 
 /* Marquee rows */
@@ -65,10 +147,27 @@
 /* Pointer-following gold glow inside cards */
 .md-spot-glow {
   background: radial-gradient(
-    300px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(201, 156, 78, 0.16),
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(232, 195, 106, 0.14),
     transparent 65%
   );
+}
+
+/* Film grain over the whole page: keeps the large black fields from banding. */
+.md-home::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Google-map iframe re-graded to the onyx theme. */
+.md-map-frame iframe {
+  filter: invert(0.92) hue-rotate(190deg) saturate(0.22) brightness(0.88)
+    contrast(1.08);
 }
 
 @media (prefers-reduced-motion: reduce) {

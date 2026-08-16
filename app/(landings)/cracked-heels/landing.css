@@ -1,0 +1,118 @@
+/* cracked-heels landing: only what Tailwind can't express cleanly:
+   keyframes, ::selection, placeholder ink, FAQ marker rotation, marquee. */
+
+@keyframes crh-shimmer {
+  to {
+    background-position: 220% center;
+  }
+}
+
+@keyframes crh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes crh-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes crh-floaty {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes crh-breathe {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes crh-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+.crh-landing ::selection {
+  background: rgba(212, 175, 55, 0.3);
+}
+
+.crh-landing input::placeholder {
+  color: rgba(244, 233, 216, 0.35);
+}
+
+/* Shimmering bronze-gold gradient text */
+.crh-gold-text {
+  background: linear-gradient(
+    100deg,
+    #b08d57,
+    #f0dca4 35%,
+    #d4af37 55%,
+    #e4c87e 75%,
+    #b08d57
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: crh-shimmer 5.5s linear infinite;
+}
+
+/* Marquee rows */
+.crh-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: crh-marquee var(--crh-marquee-duration, 26s) linear infinite;
+}
+
+.crh-marquee-track.crh-marquee-reverse {
+  animation-direction: reverse;
+}
+
+.crh-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* FAQ accordion marker rotation via pure CSS */
+.crh-landing summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .crh-pm {
+  transform: rotate(45deg);
+}
+
+.crh-pm {
+  transition: transform 0.3s;
+}
+
+/* Spotlight cards */
+.crh-spot-glow {
+  background: radial-gradient(
+    300px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(212, 175, 55, 0.12),
+    transparent 65%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crh-landing *,
+  .crh-landing *::before,
+  .crh-landing *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

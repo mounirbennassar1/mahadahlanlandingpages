@@ -211,6 +211,44 @@ export function Counter({
   );
 }
 
+/** Gold hairline that draws itself (right to left) as the user scrolls past. */
+export function ScrubLine({ className }: { className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        ref.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 85%",
+            end: "top 35%",
+            scrub: 0.4,
+          },
+        },
+      );
+    },
+    { scope: ref },
+  );
+
+  return (
+    <div
+      ref={ref}
+      className={`origin-right ${className ?? ""}`}
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(201,156,78,.1), #E8C36A 50%, rgba(201,156,78,.1))",
+        boxShadow: "0 0 16px rgba(232,195,106,.5)",
+      }}
+      aria-hidden
+    />
+  );
+}
+
 /** Card with a gold radial glow following the pointer, plus a scroll reveal. */
 export function SpotlightCard({
   children,
@@ -251,7 +289,7 @@ export function BackToTop() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="العودة إلى الأعلى"
-      className={`fixed bottom-24 right-6 z-50 hidden size-11 items-center justify-center rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(255,253,249,0.9)] text-[var(--color-md-bronze)] shadow-[0_14px_30px_-14px_rgba(138,100,48,0.5)] backdrop-blur-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-white md:flex ${
+      className={`fixed bottom-24 right-6 z-50 hidden size-11 items-center justify-center rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.85)] text-[var(--color-md-champagne)] shadow-[0_0_24px_-6px_rgba(232,195,106,0.5)] backdrop-blur-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-[rgba(35,26,15,0.95)] hover:shadow-[0_0_30px_-6px_rgba(255,223,142,0.7)] md:flex ${
         visible ? "opacity-100" : "pointer-events-none translate-y-3 opacity-0"
       }`}
     >

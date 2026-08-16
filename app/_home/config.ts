@@ -22,6 +22,41 @@ export const WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURICompone
 export const GOLD_GRADIENT =
   "linear-gradient(135deg, #8A6430, #E0BE7A 50%, #A67C3D)";
 
+/* ——— clinic info: hours, location, payments ——— */
+
+export const ADDRESS_DISPLAY = "جدة، المملكة العربية السعودية";
+
+const MAPS_QUERY = "عيادات الدكتورة مها دحلان جدة";
+
+export const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  MAPS_QUERY,
+)}`;
+
+export const MAPS_DIRECTIONS_LINK = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+  MAPS_QUERY,
+)}`;
+
+export const MAPS_EMBED_SRC = `https://maps.google.com/maps?q=${encodeURIComponent(
+  MAPS_QUERY,
+)}&hl=ar&z=15&output=embed`;
+
+export type OpeningHours = {
+  label: string;
+  time: string;
+  closed?: boolean;
+};
+
+/** Weekly schedule shown in the hours section and the topbar. */
+export const HOURS: OpeningHours[] = [
+  { label: "السبت إلى الخميس", time: "٢:٠٠ ظهراً حتى ١٠:٠٠ مساءً" },
+  { label: "الجمعة", time: "مغلق", closed: true },
+];
+
+export const HOURS_SHORT = "السبت إلى الخميس · ٢ ظهراً حتى ١٠ مساءً";
+
+/** Open Sat–Thu 14:00–22:00, Riyadh time. Friday = day 5. */
+export const OPENING = { openHour: 14, closeHour: 22, closedDay: 5 };
+
 /** Category filters for the specialties grid. `ALL` is prepended in the UI. */
 export const CATEGORY_ALL = "الكل";
 

@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, SocialIcon, type SocialName } from "@/components/icons";
+import { PayLogo } from "./PayLogo";
 import {
+  HOURS_SHORT,
+  MAPS_LINK,
   PHONE_DISPLAY,
   SPECIALTIES,
   TEL_LINK,
@@ -26,13 +29,11 @@ const SOCIALS: { name: SocialName; href: string; label: string }[] = [
   { name: "x", href: "https://x.com/md_clinics_", label: "إكس" },
 ];
 
-const MAPS_LINK = "https://maps.google.com/maps?q=جدة+المملكة+العربية+السعودية";
-
 const LINK_COLUMNS = CATEGORIES.filter((c) => c !== CATEGORY_ALL);
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[var(--color-md-dark)] pt-16 pb-8 text-[#EFE6D6]">
+    <footer className="relative overflow-hidden border-t border-[rgba(201,156,78,0.18)] bg-[#080604] pt-16 pb-8 text-[#EFE6D6]">
       <div
         className="pointer-events-none absolute -top-40 left-1/2 h-[420px] w-[820px] -translate-x-1/2 blur-[40px]"
         style={{
@@ -100,6 +101,19 @@ export function Footer() {
                 <Icon.MapPin className="size-4 text-[var(--color-md-champagne)]" />
                 جدة، المملكة العربية السعودية
               </a>
+              <span className="inline-flex items-center gap-2.5 font-light text-[#EFE6D6]/70">
+                <Icon.Clock className="size-4 text-[var(--color-md-champagne)]" />
+                {HOURS_SHORT}
+              </span>
+            </div>
+
+            {/* split-payment badges */}
+            <div className="mt-7 flex items-center gap-3">
+              <span className="text-[0.78rem] font-bold text-[#EFE6D6]/50">
+                قسّطي جلساتك مع
+              </span>
+              <PayLogo brand="tabby" height={28} />
+              <PayLogo brand="tamara" height={28} />
             </div>
           </div>
 
