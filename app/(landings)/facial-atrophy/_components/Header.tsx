@@ -26,7 +26,7 @@ export function Header() {
     >
       <div className="mx-auto flex h-[74px] max-w-[1160px] items-center justify-between px-[22px]">
         <Image
-          src="/facial-atrophy/logo.png"
+          src="/facial-atrophy/logo.webp"
           alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
           width={58}
           height={58}

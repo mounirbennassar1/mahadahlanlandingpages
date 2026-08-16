@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       "فقدان الوزن السريع قد يترك ملامحك أنحف وأكثر إرهاقاً مما ينبغي. نعيد التوازن لملامحك بنتائج طبيعية وخصوصية تامة.",
     locale: "ar_SA",
     type: "website",
-    images: [{ url: "/facial-atrophy/hero-center.jpg", width: 1536, height: 2048 }],
+    images: [{ url: "/facial-atrophy/hero-center.webp", width: 1536, height: 2048 }],
   },
 };
 

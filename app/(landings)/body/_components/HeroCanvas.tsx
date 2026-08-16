@@ -1,7 +1,24 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  BufferAttribute,
+  BufferGeometry,
+  Clock,
+  Color,
+  FogExp2,
+  Group,
+  Mesh,
+  MeshBasicMaterial,
+  NormalBlending,
+  PerspectiveCamera,
+  Points,
+  PointsMaterial,
+  Scene,
+  TorusGeometry,
+  Vector2,
+  WebGLRenderer,
+} from "three";
 
 export default function HeroCanvas() {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -20,14 +37,14 @@ export default function HeroCanvas() {
     const width = mount.clientWidth;
     const height = mount.clientHeight;
 
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xf5f1ea, 0.06);
+    const scene = new Scene();
+    scene.fog = new FogExp2(0xf5f1ea, 0.06);
 
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    const camera = new PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 1.1, 7.2);
     camera.lookAt(0, 0.1, 0);
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       alpha: true,
       antialias: true,
       powerPreference: "high-performance",
@@ -37,7 +54,7 @@ export default function HeroCanvas() {
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
-    const group = new THREE.Group();
+    const group = new Group();
     scene.add(group);
 
     const columns = 70;
@@ -60,44 +77,44 @@ export default function HeroCanvas() {
       }
     }
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const geometry = new BufferGeometry();
+    geometry.setAttribute("position", new BufferAttribute(positions, 3));
 
-    const pointMaterial = new THREE.PointsMaterial({
+    const pointMaterial = new PointsMaterial({
       size: 0.028,
-      color: new THREE.Color("#c15f3c"),
+      color: new Color("#c15f3c"),
       transparent: true,
       opacity: 0.85,
       sizeAttenuation: true,
       depthWrite: false,
-      blending: THREE.NormalBlending,
+      blending: NormalBlending,
     });
 
-    const pts = new THREE.Points(geometry, pointMaterial);
+    const pts = new Points(geometry, pointMaterial);
     group.add(pts);
 
-    const ringGeo = new THREE.TorusGeometry(2.4, 0.008, 24, 200);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: new THREE.Color("#8f3f23"),
+    const ringGeo = new TorusGeometry(2.4, 0.008, 24, 200);
+    const ringMat = new MeshBasicMaterial({
+      color: new Color("#8f3f23"),
       transparent: true,
       opacity: 0.5,
     });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
+    const ring = new Mesh(ringGeo, ringMat);
     ring.rotation.x = Math.PI / 2.4;
     ring.position.y = -0.1;
     group.add(ring);
 
     const ring2 = ring.clone();
-    (ring2.material as THREE.MeshBasicMaterial) = ringMat.clone();
-    (ring2.material as THREE.MeshBasicMaterial).opacity = 0.22;
+    (ring2.material as MeshBasicMaterial) = ringMat.clone();
+    (ring2.material as MeshBasicMaterial).opacity = 0.22;
     ring2.scale.setScalar(1.32);
     ring2.rotation.x = Math.PI / 2.6;
     group.add(ring2);
 
     group.rotation.x = -0.25;
 
-    const pointer = new THREE.Vector2(0, 0);
-    const targetRot = new THREE.Vector2(0, 0);
+    const pointer = new Vector2(0, 0);
+    const targetRot = new Vector2(0, 0);
 
     const handlePointerMove = (e: PointerEvent) => {
       const rect = mount.getBoundingClientRect();
@@ -108,11 +125,11 @@ export default function HeroCanvas() {
     };
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
 
-    const clock = new THREE.Clock();
+    const clock = new Clock();
     let raf = 0;
     let running = true;
 
-    const posAttr = geometry.getAttribute("position") as THREE.BufferAttribute;
+    const posAttr = geometry.getAttribute("position") as BufferAttribute;
 
     const animate = () => {
       if (!running) return;
@@ -173,7 +190,7 @@ export default function HeroCanvas() {
       pointMaterial.dispose();
       ringGeo.dispose();
       ringMat.dispose();
-      (ring2.material as THREE.MeshBasicMaterial).dispose();
+      (ring2.material as MeshBasicMaterial).dispose();
       renderer.dispose();
       if (renderer.domElement.parentElement === mount) {
         mount.removeChild(renderer.domElement);

@@ -102,7 +102,7 @@ export function HorizontalProtocol() {
         {/* orange particle texture — very dim, ambient does the rest */}
         <div className="pointer-events-none absolute inset-0 opacity-30">
           <Image
-            src="/korean-spicules/texture.jpg"
+            src="/korean-spicules/texture.webp"
             alt=""
             fill
             sizes="100vw"

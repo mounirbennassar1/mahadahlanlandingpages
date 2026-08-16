@@ -1,7 +1,20 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  Clock,
+  Color,
+  Group,
+  Line,
+  PerspectiveCamera,
+  Points,
+  Scene,
+  ShaderMaterial,
+  WebGLRenderer,
+} from "three";
 
 /**
  * Three.js hero backdrop: flowing golden hair strands (shader-displaced
@@ -22,8 +35,8 @@ export function GoldStrands({ className }: { className?: string }) {
     const POINTS = 140;
     const DUST = isMobile ? 220 : 520;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(
       55,
       Math.max(1, mount.clientWidth) / Math.max(1, mount.clientHeight),
       0.1,
@@ -31,7 +44,7 @@ export function GoldStrands({ className }: { className?: string }) {
     );
     camera.position.z = 14;
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       alpha: true,
       antialias: true,
       powerPreference: "low-power",
@@ -79,7 +92,7 @@ export function GoldStrands({ className }: { className?: string }) {
       }
     `;
 
-    const strandGroup = new THREE.Group();
+    const strandGroup = new Group();
     for (let s = 0; s < STRANDS; s++) {
       const positions = new Float32Array(POINTS * 3);
       const aT = new Float32Array(POINTS);
@@ -91,28 +104,28 @@ export function GoldStrands({ className }: { className?: string }) {
         positions[i * 3 + 2] = (Math.random() - 0.5) * 0.2 - s * 0.12;
         aT[i] = t;
       }
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-      geometry.setAttribute("aT", new THREE.BufferAttribute(aT, 1));
+      const geometry = new BufferGeometry();
+      geometry.setAttribute("position", new BufferAttribute(positions, 3));
+      geometry.setAttribute("aT", new BufferAttribute(aT, 1));
 
-      const material = new THREE.ShaderMaterial({
+      const material = new ShaderMaterial({
         transparent: true,
         depthWrite: false,
-        blending: THREE.AdditiveBlending,
+        blending: AdditiveBlending,
         uniforms: {
           uTime: { value: 0 },
           uPhase: { value: Math.random() * Math.PI * 2 },
           uAmp: { value: 0.5 + Math.random() * 1.5 },
           uSpeed: { value: 0.14 + Math.random() * 0.3 },
           uAlpha: { value: 0.16 + Math.random() * 0.3 },
-          uColorA: { value: new THREE.Color("#F0D48A") },
-          uColorB: { value: new THREE.Color("#8A6430") },
+          uColorA: { value: new Color("#F0D48A") },
+          uColorB: { value: new Color("#8A6430") },
         },
         vertexShader: strandVertex,
         fragmentShader: strandFragment,
       });
 
-      strandGroup.add(new THREE.Line(geometry, material));
+      strandGroup.add(new Line(geometry, material));
       disposables.push(geometry, material);
     }
     scene.add(strandGroup);
@@ -132,25 +145,25 @@ export function GoldStrands({ className }: { className?: string }) {
       dSpeed[i] = 0.22 + Math.random() * 0.8;
       dTint[i] = Math.random();
     }
-    const dustGeometry = new THREE.BufferGeometry();
+    const dustGeometry = new BufferGeometry();
     dustGeometry.setAttribute(
       "position",
-      new THREE.BufferAttribute(dustPositions, 3),
+      new BufferAttribute(dustPositions, 3),
     );
-    dustGeometry.setAttribute("aScale", new THREE.BufferAttribute(dScale, 1));
-    dustGeometry.setAttribute("aPhase", new THREE.BufferAttribute(dPhase, 1));
-    dustGeometry.setAttribute("aSpeed", new THREE.BufferAttribute(dSpeed, 1));
-    dustGeometry.setAttribute("aTint", new THREE.BufferAttribute(dTint, 1));
+    dustGeometry.setAttribute("aScale", new BufferAttribute(dScale, 1));
+    dustGeometry.setAttribute("aPhase", new BufferAttribute(dPhase, 1));
+    dustGeometry.setAttribute("aSpeed", new BufferAttribute(dSpeed, 1));
+    dustGeometry.setAttribute("aTint", new BufferAttribute(dTint, 1));
 
-    const dustMaterial = new THREE.ShaderMaterial({
+    const dustMaterial = new ShaderMaterial({
       transparent: true,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: AdditiveBlending,
       uniforms: {
         uTime: { value: 0 },
         uPixelRatio: { value: dpr() },
-        uColorA: { value: new THREE.Color("#F0D48A") },
-        uColorB: { value: new THREE.Color("#8A6430") },
+        uColorA: { value: new Color("#F0D48A") },
+        uColorB: { value: new Color("#8A6430") },
       },
       vertexShader: /* glsl */ `
         uniform float uTime;
@@ -191,7 +204,7 @@ export function GoldStrands({ className }: { className?: string }) {
         }
       `,
     });
-    const dust = new THREE.Points(dustGeometry, dustMaterial);
+    const dust = new Points(dustGeometry, dustMaterial);
     scene.add(dust);
     disposables.push(dustGeometry, dustMaterial);
 
@@ -215,7 +228,7 @@ export function GoldStrands({ className }: { className?: string }) {
     // First frame synchronously, so the scene shows even without rAF ticks.
     renderer.render(scene, camera);
 
-    const clock = new THREE.Clock();
+    const clock = new Clock();
     let frame = 0;
     const tick = () => {
       frame = requestAnimationFrame(tick);
@@ -223,7 +236,7 @@ export function GoldStrands({ className }: { className?: string }) {
       const elapsed = clock.getElapsedTime();
       dustMaterial.uniforms.uTime.value = elapsed;
       strandGroup.children.forEach((line) => {
-        const mat = (line as THREE.Line).material as THREE.ShaderMaterial;
+        const mat = (line as Line).material as ShaderMaterial;
         mat.uniforms.uTime.value = elapsed;
       });
       easedX += (targetX - easedX) * 0.04;

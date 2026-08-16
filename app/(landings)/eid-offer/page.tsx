@@ -36,14 +36,14 @@ const SERVICES = [
     title: "علاجات الشعر",
     desc: "البلازما الغنية والميزوثيرابي لإيقاف التساقط وتحفيز نمو شعر صحي وكثيف.",
     badge: "خصم ٣٥٪",
-    image: "/eid-offer/hairv1.png",
+    image: "/eid-offer/hairv1.webp",
   },
   {
     slug: "botox",
     title: "البوتوكس",
     desc: "بوتوكس الوجه على يد استشاريين معتمدين، نتائج طبيعية تُخفي علامات التعب فوراً.",
     badge: "خصم ٢٩٪",
-    image: "/eid-offer/botoxv1.png",
+    image: "/eid-offer/botoxv1.webp",
   },
   {
     slug: "filler",
@@ -56,21 +56,21 @@ const SERVICES = [
     title: "علاج الهالات السوداء",
     desc: "بروتوكول متقدم بالميزوثيرابي والبلازما لتفتيح منطقة تحت العين وإشراقتها.",
     badge: "خصم ٣٥٪",
-    image: "/eid-offer/dark-circlev1.png",
+    image: "/eid-offer/dark-circlev1.webp",
   },
   {
     slug: "hyperpigmentation",
     title: "علاج التصبغات",
     desc: "جلسات الليزر والتقشير المتدرج لتوحيد لون البشرة والتخلص من الكلف والبقع.",
     badge: "خصم ٣٥٪",
-    image: "/eid-offer/hyperpigmentation.v1.png",
+    image: "/eid-offer/hyperpigmentation.v1.webp",
   },
   {
     slug: "microneedling-rf",
     title: "ميكرونيدلينغ RF",
     desc: "تجديد البشرة بترددات راديوية وإبر دقيقة لشد المسام وتحفيز الكولاجين بأمان.",
     badge: "خصم ٣٠٪",
-    image: "/eid-offer/microneedling-rfv1.png",
+    image: "/eid-offer/microneedling-rfv1.webp",
   },
   {
     slug: "stretchmarks",
@@ -264,7 +264,7 @@ export default function EidOfferPage() {
       <nav className="eid-nav">
         <div className="shell nav-inner">
           <a href="#home" className="logo" aria-label="عيادة مها دحلان">
-            <Image src="/logo.png" alt="عيادة مها دحلان" width={140} height={44} />
+            <Image src="/logo.webp" alt="عيادة مها دحلان" width={140} height={44} />
           </a>
           <div className="nav-links">
             <a href="#home">الرئيسية</a>
@@ -319,7 +319,7 @@ export default function EidOfferPage() {
 
             <div className="medallion">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/eid-offer/hero.png" alt="إطلالة عيد ذهبية" className="hero-photo" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+              <img src="/eid-offer/hero.webp" alt="إطلالة عيد ذهبية" className="hero-photo" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
             </div>
 
             <div className="float-card fc1">
@@ -400,7 +400,7 @@ export default function EidOfferPage() {
               <article className="svc" key={s.slug}>
                 <div className="svc-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={s.image ?? `/eid-offer/${s.slug}.png`} alt={s.title} loading="lazy" />
+                  <img src={s.image ?? `/eid-offer/${s.slug}.webp`} alt={s.title} loading="lazy" />
                   <span className="badge">{s.badge}</span>
                 </div>
                 <div className="svc-body">
@@ -519,7 +519,7 @@ export default function EidOfferPage() {
           <div className="benefits-wrap">
             <div className="benefits-art reveal">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/eid-offer/benefits-art.png" alt="تجربة فاخرة" />
+              <img src="/eid-offer/benefits-art.webp" alt="تجربة فاخرة" />
               <div className="benefits-art-overlay" />
               <div className="benefits-art-chip">
                 <span className="dot" />
@@ -589,7 +589,7 @@ export default function EidOfferPage() {
           <div className="testi-card reveal">
             <div className="testi-media">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/eid-offer/avatar-sara.png" alt="سارة العتيبي" />
+              <img src="/eid-offer/avatar-sara.webp" alt="سارة العتيبي" />
               <div className="testi-media-glow" />
               <div className="testi-media-badge">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -662,7 +662,7 @@ export default function EidOfferPage() {
           <div className="foot-grid">
             <div className="foot-col">
               <a href="#home" className="logo">
-                <Image src="/logo.png" alt="عيادة مها دحلان" width={140} height={44} />
+                <Image src="/logo.webp" alt="عيادة مها دحلان" width={140} height={44} />
               </a>
               <p>
                 عيادة متخصصة في الطب التجميلي والعناية بالبشرة، نجمع بين الخبرة

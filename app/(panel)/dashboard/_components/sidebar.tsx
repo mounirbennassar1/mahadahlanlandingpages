@@ -143,7 +143,7 @@ export function Sidebar({
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "22px 22px 20px" }}>
         <Image
-          src="/logo.png"
+          src="/logo.webp"
           alt="MD Clinics"
           width={140}
           height={140}

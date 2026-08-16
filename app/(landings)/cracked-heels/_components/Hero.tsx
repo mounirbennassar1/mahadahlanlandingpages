@@ -1,13 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
-import { GoldDust } from "./GoldDust";
+
+// Decorative WebGL only — three.js is ~700KB, so it loads as its own async
+// chunk after hydration instead of blocking first paint.
+const GoldDust = dynamic(() => import("./GoldDust").then((m) => m.GoldDust), {
+  ssr: false,
+});
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -46,7 +52,7 @@ function HeroVideo() {
       loop
       playsInline
       preload="metadata"
-      poster="/cracked-heels/hero.jpg"
+      poster="/cracked-heels/hero.webp"
       onError={() => setFailed(true)}
       className="absolute inset-0 size-full object-cover"
       aria-hidden
@@ -239,7 +245,7 @@ export function Hero() {
             />
             <div className="relative aspect-[3/4] overflow-hidden rounded-t-full rounded-b-[30px] border border-[var(--color-crh-line-strong)] shadow-[0_50px_100px_-40px_rgba(0,0,0,0.9)]">
               <Image
-                src="/cracked-heels/hero.jpg"
+                src="/cracked-heels/hero.webp"
                 alt="عناية فاخرة بالقدمين بزيوت دافئة وأجواء ذهبية"
                 fill
                 sizes="(max-width: 1024px) 88vw, 440px"
@@ -266,7 +272,7 @@ export function Hero() {
           >
             <div className="relative aspect-square">
               <Image
-                src="/cracked-heels/spa-still.jpg"
+                src="/cracked-heels/spa-still.webp"
                 alt="زيوت دافئة ومناشف عناية في أجواء العيادة"
                 fill
                 sizes="150px"

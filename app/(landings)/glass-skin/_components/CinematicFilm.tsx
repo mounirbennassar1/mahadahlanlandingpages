@@ -278,7 +278,7 @@ export function CinematicFilm({ frameCount }: Props) {
         {showPoster && (
           <div className="gls-fallback-host absolute inset-0">
             <Image
-              src="/glass-skin/poster.jpg"
+              src="/glass-skin/poster.webp"
               alt="بشرة زجاجية متوهّجة ببروتوكول الجمال الكوري"
               fill
               priority

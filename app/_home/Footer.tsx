@@ -48,7 +48,7 @@ export function Footer() {
           {/* brand */}
           <div>
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="عيادات د. مها دحلان"
               width={70}
               height={70}

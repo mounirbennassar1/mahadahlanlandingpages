@@ -1,7 +1,7 @@
 import Image from "next/image";
 import BeforeAfter from "./_components/BeforeAfter";
 import ContactForm from "./_components/ContactForm";
-import HeroCanvas from "./_components/HeroCanvas";
+import HeroCanvas from "./_components/HeroCanvasLazy";
 import Nav from "./_components/Nav";
 import ScrollAnimations from "./_components/ScrollAnimations";
 
@@ -60,7 +60,7 @@ export default function HyperpigmentationLanding() {
           <div className="deco-circle c1" />
           <div className="ph-main">
             <Image
-              src="/hyperpigmentation/afterbeforehero.png"
+              src="/hyperpigmentation/afterbeforehero.webp"
               alt="نتائج علاج التصبّغات — قبل وبعد"
               fill
               priority
@@ -131,7 +131,7 @@ export default function HyperpigmentationLanding() {
           <div className="problem-visual parallax-soft">
             <div className="problem-photo">
               <Image
-                src="/hyperpigmentation/zoomin.png"
+                src="/hyperpigmentation/zoomin.webp"
                 alt="دراسة قرب لملمس البشرة وتدرّج اللون"
                 fill
                 sizes="(max-width: 900px) 90vw, 45vw"
@@ -140,7 +140,7 @@ export default function HyperpigmentationLanding() {
             </div>
             <div className="problem-photo small">
               <Image
-                src="/hyperpigmentation/doc.png"
+                src="/hyperpigmentation/doc.webp"
                 alt="تفصيل — قطّارة سيروم ذهبي"
                 fill
                 sizes="(max-width: 900px) 50vw, 22vw"
@@ -216,8 +216,8 @@ export default function HyperpigmentationLanding() {
         <div className="results-grid">
           <div className="result-card">
             <BeforeAfter
-              beforeSrc="/hyperpigmentation/beforeafter/before1.png"
-              afterSrc="/hyperpigmentation/beforeafter/after1.png"
+              beforeSrc="/hyperpigmentation/beforeafter/before1.webp"
+              afterSrc="/hyperpigmentation/beforeafter/after1.webp"
               beforeAlt="قبل — لون غير متجانس"
               afterAlt="بعد — لون موحّد ومُشرق"
             />
@@ -228,8 +228,8 @@ export default function HyperpigmentationLanding() {
           </div>
           <div className="result-card">
             <BeforeAfter
-              beforeSrc="/hyperpigmentation/beforeafter/before2.png"
-              afterSrc="/hyperpigmentation/beforeafter/after2.png"
+              beforeSrc="/hyperpigmentation/beforeafter/before2.webp"
+              afterSrc="/hyperpigmentation/beforeafter/after2.webp"
               beforeAlt="قبل — بقع شمسية"
               afterAlt="بعد — بشرة صافية مشرقة"
             />
@@ -240,8 +240,8 @@ export default function HyperpigmentationLanding() {
           </div>
           <div className="result-card">
             <BeforeAfter
-              beforeSrc="/hyperpigmentation/beforeafter/before3.png"
-              afterSrc="/hyperpigmentation/beforeafter/after3.png"
+              beforeSrc="/hyperpigmentation/beforeafter/before3.webp"
+              afterSrc="/hyperpigmentation/beforeafter/after3.webp"
               beforeAlt="قبل — آثار حبوب"
               afterAlt="بعد — ملمس ولون متجانس"
             />
@@ -259,7 +259,7 @@ export default function HyperpigmentationLanding() {
           <div className="specialist-visual parallax-soft">
             <div className="specialist-photo">
               <Image
-                src="/hyperpigmentation/doc.png"
+                src="/hyperpigmentation/doc.webp"
                 alt="د. مها دهلان"
                 fill
                 sizes="(max-width: 900px) 90vw, 40vw"

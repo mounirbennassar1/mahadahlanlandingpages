@@ -520,7 +520,7 @@ export default function NeckLiftPage() {
       <footer className="border-t border-[var(--color-nkl-line)] px-[22px] pt-11 pb-[120px] text-center md:pb-11">
         <div className="mb-3.5 flex justify-center">
           <Image
-            src="/neck-lift/logo.png"
+            src="/neck-lift/logo.webp"
             alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
             width={110}
             height={110}

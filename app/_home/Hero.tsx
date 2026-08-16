@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
@@ -8,8 +9,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
-import { SilkCloth } from "./SilkCloth";
-import { GoldDust } from "./GoldDust";
+
+// Decorative WebGL only — three.js is ~700KB, so it loads as its own async
+// chunk after hydration instead of blocking first paint.
+const SilkCloth = dynamic(() => import("./SilkCloth").then((m) => m.SilkCloth), {
+  ssr: false,
+});
+const GoldDust = dynamic(() => import("./GoldDust").then((m) => m.GoldDust), {
+  ssr: false,
+});
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -120,7 +128,7 @@ export function Hero() {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
           <Image
-            src="/home/hero-portrait-cutout.png"
+            src="/home/hero-portrait-cutout.webp"
             alt="امرأة ملفوفة بحرير ذهبي يتطاير حولها"
             fill
             priority
@@ -168,7 +176,7 @@ export function Hero() {
           {/* portrait in-flow on mobile: image first, then the buttons */}
           <div className="md-hero-fade relative mx-auto mt-8 aspect-[3/4] w-full max-w-[340px] lg:hidden">
             <Image
-              src="/home/hero-portrait-cutout.png"
+              src="/home/hero-portrait-cutout.webp"
               alt="امرأة ملفوفة بحرير ذهبي يتطاير حولها"
               fill
               sizes="(max-width: 1024px) 88vw, 0px"

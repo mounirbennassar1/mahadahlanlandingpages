@@ -90,10 +90,10 @@ const SnapchatIcon = ({ className }: { className?: string }) => (
 );
 
 const heroImages = [
-  "/acne/acneshow/img1.jpg",
-  "/acne/acneshow/img2.jpg",
-  "/acne/acneshow/img3.jpg",
-  "/acne/acneshow/img4.jpg",
+  "/acne/acneshow/img1.webp",
+  "/acne/acneshow/img2.webp",
+  "/acne/acneshow/img3.webp",
+  "/acne/acneshow/img4.webp",
 ];
 
 const marqueeWords = [

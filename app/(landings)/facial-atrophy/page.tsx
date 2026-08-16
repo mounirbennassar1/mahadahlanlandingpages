@@ -473,7 +473,7 @@ export default function FacialAtrophyPage() {
       <footer className="border-t border-[rgba(217,179,108,0.14)] px-[22px] pt-11 pb-10 text-center">
         <div className="mb-3.5 flex justify-center">
           <Image
-            src="/facial-atrophy/logo.png"
+            src="/facial-atrophy/logo.webp"
             alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
             width={110}
             height={110}

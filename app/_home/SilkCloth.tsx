@@ -1,7 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  Clock,
+  Color,
+  MathUtils,
+  Mesh,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Scene,
+  ShaderMaterial,
+  Vector2,
+  WebGLRenderer,
+} from "three";
 
 /**
  * Full-bleed gold-silk cloth (three.js). A GPU take on the canvasui "cloth"
@@ -19,8 +30,8 @@ export function SilkCloth({ className }: { className?: string }) {
     if (!mount) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(
       45,
       Math.max(1, mount.clientWidth) / Math.max(1, mount.clientHeight),
       0.1,
@@ -28,7 +39,7 @@ export function SilkCloth({ className }: { className?: string }) {
     );
     camera.position.z = 10;
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       alpha: true,
       antialias: false,
       powerPreference: "low-power",
@@ -42,13 +53,13 @@ export function SilkCloth({ className }: { className?: string }) {
 
     // Plane sized to overfill the camera frustum at z=0.
     const sizeFor = () => {
-      const h = 2 * Math.tan(THREE.MathUtils.degToRad(45 / 2)) * 10;
+      const h = 2 * Math.tan(MathUtils.degToRad(45 / 2)) * 10;
       const w = h * camera.aspect;
       return { w: w * 1.5, h: h * 1.6 };
     };
     const { w, h } = sizeFor();
     const isMobile = window.innerWidth < 768;
-    const geometry = new THREE.PlaneGeometry(
+    const geometry = new PlaneGeometry(
       w,
       h,
       isMobile ? 90 : 150,
@@ -58,14 +69,14 @@ export function SilkCloth({ className }: { className?: string }) {
     const uniforms = {
       uTime: { value: 0 },
       uScroll: { value: 0 },
-      uPointer: { value: new THREE.Vector2(0.5, 0.5) },
+      uPointer: { value: new Vector2(0.5, 0.5) },
       uBrush: { value: 0 },
-      uColorDeep: { value: new THREE.Color("#0E0A05") },
-      uColorGold: { value: new THREE.Color("#A6793B") },
-      uColorSheen: { value: new THREE.Color("#F0D48A") },
+      uColorDeep: { value: new Color("#0E0A05") },
+      uColorGold: { value: new Color("#A6793B") },
+      uColorSheen: { value: new Color("#F0D48A") },
     };
 
-    const material = new THREE.ShaderMaterial({
+    const material = new ShaderMaterial({
       uniforms,
       vertexShader: /* glsl */ `
         uniform float uTime;
@@ -142,19 +153,19 @@ export function SilkCloth({ className }: { className?: string }) {
       `,
     });
 
-    const cloth = new THREE.Mesh(geometry, material);
+    const cloth = new Mesh(geometry, material);
     cloth.rotation.x = -0.22;
     scene.add(cloth);
 
     // Pointer brush: eased position, strength ramps on move and damps out.
-    const target = new THREE.Vector2(0.5, 0.5);
+    const target = new Vector2(0.5, 0.5);
     let brushTarget = 0;
     const onPointer = (e: PointerEvent) => {
       const r = mount.getBoundingClientRect();
       if (!r.width || !r.height) return;
       target.set(
-        THREE.MathUtils.clamp((e.clientX - r.left) / r.width, 0, 1),
-        THREE.MathUtils.clamp(1 - (e.clientY - r.top) / r.height, 0, 1),
+        MathUtils.clamp((e.clientX - r.left) / r.width, 0, 1),
+        MathUtils.clamp(1 - (e.clientY - r.top) / r.height, 0, 1),
       );
       brushTarget = 1;
     };
@@ -170,7 +181,7 @@ export function SilkCloth({ className }: { className?: string }) {
     // without) rAF ticks — occluded windows, screenshots, paused renderers.
     renderer.render(scene, camera);
 
-    const clock = new THREE.Clock();
+    const clock = new Clock();
     let frame = 0;
     const tick = () => {
       frame = requestAnimationFrame(tick);
@@ -180,7 +191,7 @@ export function SilkCloth({ className }: { className?: string }) {
       uniforms.uPointer.value.lerp(target, 0.07);
       brushTarget *= 0.955; // damping: ripples settle when the cursor rests
       uniforms.uBrush.value += (brushTarget - uniforms.uBrush.value) * 0.1;
-      uniforms.uScroll.value = THREE.MathUtils.clamp(
+      uniforms.uScroll.value = MathUtils.clamp(
         window.scrollY / Math.max(1, window.innerHeight),
         0,
         1,

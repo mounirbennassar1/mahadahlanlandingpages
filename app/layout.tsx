@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     "عيادات د. مها دحلان — تجربة طبية تجميلية فاخرة في جدة. علاجات البشرة، الشعر، البوتوكس والفيلر، نحت الجسم، وأكثر بأحدث التقنيات وبإشراف نخبة من الاستشاريين.",
   applicationName: "عيادات د. مها دحلان",
   icons: {
-    icon: [{ url: "/logo.png", type: "image/png" }],
-    shortcut: ["/logo.png"],
-    apple: [{ url: "/logo.png" }],
+    icon: [{ url: "/logo.webp", type: "image/png" }],
+    shortcut: ["/logo.webp"],
+    apple: [{ url: "/logo.webp" }],
   },
   openGraph: {
     type: "website",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
       "عيادات د. مها دحلان — تجربة طبية تجميلية فاخرة في جدة. احجزي استشارتك اليوم.",
     images: [
       {
-        url: "/logo.png",
+        url: "/logo.webp",
         width: 800,
         height: 800,
         alt: "شعار عيادات د. مها دحلان",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "عيادات د. مها دحلان | Dr. Maha Dahlan Clinics",
     description:
       "تجربة طبية تجميلية فاخرة في جدة — البشرة، الشعر، البوتوكس والفيلر، نحت الجسم، والمزيد.",
-    images: ["/logo.png"],
+    images: ["/logo.webp"],
   },
   robots: {
     index: true,

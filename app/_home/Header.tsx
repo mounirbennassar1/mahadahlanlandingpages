@@ -56,7 +56,7 @@ export function Header() {
             aria-label="عيادات د. مها دحلان"
           >
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="عيادات د. مها دحلان"
               width={54}
               height={54}

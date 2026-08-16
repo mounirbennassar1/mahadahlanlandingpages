@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       "عمرُكِ سرٌّ لا يعرفه أحد، ورقبتُكِ لن تُفشيَه بعد اليوم. تقنيات غير جراحية تعيد لعنقك شدّه وتحديده بنتائج طبيعية.",
     locale: "ar_SA",
     type: "website",
-    images: [{ url: "/neck-lift/hero-main.jpg", width: 1536, height: 2048 }],
+    images: [{ url: "/neck-lift/hero-main.webp", width: 1536, height: 2048 }],
   },
 };
 

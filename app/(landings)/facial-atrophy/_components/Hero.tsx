@@ -187,7 +187,7 @@ export function Hero() {
             style={{ animation: "faa-floaty 7s ease-in-out .5s infinite alternate" }}
           >
             <Image
-              src="/facial-atrophy/hero-glow.jpg"
+              src="/facial-atrophy/hero-glow.webp"
               alt="نضارة البشرة بعد العلاج"
               width={460}
               height={613}
@@ -202,7 +202,7 @@ export function Hero() {
             style={{ animation: "faa-floaty 7s ease-in-out infinite alternate" }}
           >
             <Image
-              src="/facial-atrophy/hero-center.jpg"
+              src="/facial-atrophy/hero-center.webp"
               alt="ملامح ممتلئة ومشرقة"
               width={600}
               height={800}
@@ -233,7 +233,7 @@ export function Hero() {
             }}
           >
             <Image
-              src="/facial-atrophy/hero-clinic.jpg"
+              src="/facial-atrophy/hero-clinic.webp"
               alt="أجواء العيادة"
               width={460}
               height={613}

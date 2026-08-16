@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       "من التقصف إلى اللمعان: بروتوكول ترميم متكامل يعيد لشعرك قوته وحريره، بعد تشخيص دقيق لسبب التكسر.",
     locale: "ar_SA",
     type: "website",
-    images: [{ url: "/hair-breakage/hero.png", width: 1536, height: 2048 }],
+    images: [{ url: "/hair-breakage/hero.webp", width: 1536, height: 2048 }],
   },
 };
 

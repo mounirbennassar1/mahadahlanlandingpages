@@ -303,7 +303,7 @@ export default function CrackedHeelsPage() {
                 <div className="relative overflow-hidden rounded-[30px] border border-[var(--color-crh-line-strong)] shadow-[0_44px_90px_-40px_rgba(0,0,0,0.9)]">
                   <div className="relative aspect-[4/3]">
                     <Image
-                      src="/cracked-heels/pedicure.jpg"
+                      src="/cracked-heels/pedicure.webp"
                       alt="جلسة عناية طبية بالكعب داخل العيادة"
                       fill
                       sizes="(max-width: 1024px) 92vw, 560px"
@@ -572,7 +572,7 @@ export default function CrackedHeelsPage() {
       <footer className="border-t border-[var(--color-crh-line)] px-[22px] pt-11 pb-[120px] text-center md:pb-11">
         <div className="mb-3.5 flex justify-center">
           <Image
-            src="/cracked-heels/logo.png"
+            src="/cracked-heels/logo.webp"
             alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
             width={110}
             height={110}

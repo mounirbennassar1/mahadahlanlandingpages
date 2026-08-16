@@ -1,13 +1,20 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
-import { GoldStrands } from "./GoldStrands";
+
+// Decorative WebGL only — three.js is ~700KB, so it loads as its own async
+// chunk after hydration instead of blocking first paint.
+const GoldStrands = dynamic(
+  () => import("./GoldStrands").then((m) => m.GoldStrands),
+  { ssr: false },
+);
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -194,7 +201,7 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
           />
           <div className="hab-frame relative aspect-[3/4] overflow-hidden rounded-[30px] border border-[var(--color-hab-line-strong)] bg-[var(--color-hab-card)] shadow-[0_46px_90px_-34px_rgba(212,175,55,0.35)]">
             <Image
-              src="/hair-breakage/hero.png"
+              src="/hair-breakage/hero.webp"
               alt="شعر طويل صحي لامع بإضاءة ذهبية على خلفية سوداء"
               fill
               sizes="(max-width: 1024px) 88vw, 440px"
@@ -205,7 +212,7 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
               <video
                 className="absolute inset-0 size-full object-cover motion-reduce:hidden"
                 src={videoSrc}
-                poster="/hair-breakage/hero.png"
+                poster="/hair-breakage/hero.webp"
                 autoPlay
                 muted
                 loop

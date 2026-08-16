@@ -94,7 +94,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "البوتوكس والفيلر",
     description:
       "جرعات محسوبة بيد استشارية معتمدة تنعّم الخطوط وتعيد توازن الملامح، مع حفاظ كامل على تعابير وجهك.",
-    image: "/botox/botox_about.png",
+    image: "/botox/botox_about.webp",
     category: "تجميل الوجه",
     tag: "نتيجة من أول جلسة",
     icon: Icon.Syringe,
@@ -104,7 +104,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "شد الرقبة وخط الفك",
     description:
       "خيوط وهايفو وبوتوكس نفرتيتي وفيلر خط الفك، لرقبة مشدودة وزاوية فكٍّ محدّدة بلا جراحة.",
-    image: "/neck-lift/hero-main.jpg",
+    image: "/neck-lift/hero-main.webp",
     category: "تجميل الوجه",
     tag: "بدون جراحة",
     icon: Icon.MoveUpLeft,
@@ -114,7 +114,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "علاج ضمور الوجه بعد التنحيف",
     description:
       "خسرتِ الوزن بنجاح؟ نعيد لوجهك امتلاءه وإشراقته بفيلر ومحفزات كولاجين وخيوط، بخطة تُرسم لملامحك وحدها.",
-    image: "/facial-atrophy/hero-center.jpg",
+    image: "/facial-atrophy/hero-center.webp",
     category: "تجميل الوجه",
     tag: "استعادة الامتلاء",
     icon: Icon.Smile,
@@ -124,7 +124,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "الهالات والتصبّغات حول العين",
     description:
       "برنامج دقيق لأكثر مناطق الوجه حساسية، يوحّد اللون ويخفف الغور ويعيد للنظرة إشراقها.",
-    image: "/dark-circles/hero.png",
+    image: "/dark-circles/hero.webp",
     category: "تجميل الوجه",
     tag: "نظرة أكثر إشراقاً",
     icon: Icon.Eye,
@@ -134,7 +134,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "علاج حب الشباب وآثاره",
     description:
       "بروتوكول متدرّج يوقف ظهور الحبوب أولاً ثم يعالج آثارها بأحدث أجهزة الليزر الطبية المعتمدة.",
-    image: "/acne/acneshow/img1.jpg",
+    image: "/acne/acneshow/img1.webp",
     category: "نضارة البشرة",
     tag: "ليزر طبي معتمد",
     icon: Icon.ShieldCheck,
@@ -144,7 +144,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "علاج التصبّغات والكلف",
     description:
       "جلسات هادئة ومكوّنات نقية وخطة شخصية ترسمها طبيبتك، لتعيد إلى بشرتك لونها الصافي المتوازن.",
-    image: "/hyperpigmentation/zoomin.png",
+    image: "/hyperpigmentation/zoomin.webp",
     category: "نضارة البشرة",
     tag: "لون موحّد",
     icon: Icon.Palette,
@@ -154,7 +154,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "الجلاس سكين الكوري",
     description:
       "تنظيف عميق وتقشير لطيف وترطيب مكثّف في جلسة واحدة، لبشرة زجاجية تتوهّج من الداخل.",
-    image: "/glass-skin/koreanglass.png",
+    image: "/glass-skin/koreanglass.webp",
     category: "نضارة البشرة",
     tag: "بدون إبر",
     icon: Icon.Sparkles,
@@ -164,7 +164,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "السبيكولز الكورية",
     description:
       "إبر مجهرية طبيعية من الإسفنج البحري تفتح آلاف القنوات الدقيقة وتحفّز الكولاجين بلا جهاز.",
-    image: "/korean-spicules/hero.jpg",
+    image: "/korean-spicules/hero.webp",
     category: "نضارة البشرة",
     tag: "طبيعي ١٠٠٪",
     icon: Icon.Waves,
@@ -174,7 +174,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "الميكرونيدلينغ بالترددات الراديوية",
     description:
       "حرارة موجّهة تحت سطح الجلد تشدّ من الداخل وتصغّر المسام وتحسّن الملمس جلسةً بعد جلسة.",
-    image: "/microneedling-rf/hero.png",
+    image: "/microneedling-rf/hero.webp",
     category: "نضارة البشرة",
     tag: "شدٌّ من الداخل",
     icon: Icon.Radio,
@@ -205,7 +205,7 @@ export const SPECIALTIES: Specialty[] = [
     description:
       "الجلسة الواحدة تعادل آلاف الانقباضات العضلية، تحرق الدهون الموضعية وتشدّ العضلات بلا جراحة.",
     // Cropped from hero-hifem.png to drop the baked-in English headline.
-    image: "/body/card.jpg",
+    image: "/body/card.webp",
     category: "الجسم",
     tag: "بلا فترة نقاهة",
     icon: Icon.Activity,
@@ -225,7 +225,7 @@ export const SPECIALTIES: Specialty[] = [
     title: "عرض عيد الأضحى",
     description:
       "خصومات ذهبية على الهيدرافيشل والبوتوكس والفيلر وعلاج الهالات وعلاجات الشعر والبشرة.",
-    image: "/eid-offer/hero.png",
+    image: "/eid-offer/hero.webp",
     category: "عروض",
     tag: "خصم حتى ٤٠٪",
     icon: Icon.Gift,
@@ -253,7 +253,7 @@ export const SLIDES: Slide[] = [
     titleGold: "تتوهّج من الداخل",
     body: "تنظيف عميق، تقشير لطيف، وترطيب مكثّف في جلسة واحدة تخرجين بعدها بإشراقة تُرى فوراً، بلا إبر وبلا فترة نقاهة.",
     chips: ["بدون إبر", "٦٠ دقيقة", "نتيجة فورية"],
-    main: "/glass-skin/closeup.jpg",
+    main: "/glass-skin/closeup.webp",
     mainAlt: "بشرة صافية بإشراقة زجاجية",
   },
   {
@@ -263,7 +263,7 @@ export const SLIDES: Slide[] = [
     titleGold: "وخطُّ فكٍّ أنيق",
     body: "خيوط وهايفو وبوتوكس نفرتيتي وفيلر خط الفك، في بروتوكول يُبنى بعد تقييم صادق لحالتك، بنتيجة طبيعية وعودة فورية ليومك.",
     chips: ["بدون جراحة", "أقل من ساعة", "نتيجة طبيعية"],
-    main: "/neck-lift/hero-main.jpg",
+    main: "/neck-lift/hero-main.webp",
     mainAlt: "رقبة مشدودة بملامح أنيقة",
   },
   {
@@ -273,7 +273,7 @@ export const SLIDES: Slide[] = [
     titleGold: "بلا خطوطٍ تُعكّرها",
     body: "جرعات محسوبة بيد استشارية معتمدة تنعّم الخطوط وتعيد التوازن للملامح، مع الحفاظ الكامل على تعابير وجهك الطبيعية.",
     chips: ["مواد أصلية", "تعابير طبيعية", "جلسة سريعة"],
-    main: "/botox/botox_about.png",
+    main: "/botox/botox_about.webp",
     mainAlt: "ملامح متوازنة بعد جلسة بوتوكس",
   },
   {
@@ -283,7 +283,7 @@ export const SLIDES: Slide[] = [
     titleGold: "بلا جراحة ولا نقاهة",
     body: "الجلسة الواحدة تعادل آلاف الانقباضات العضلية، تحرق الدهون الموضعية وتشدّ العضلات، وأنتِ مستلقية في راحة تامة.",
     chips: ["٣٠ دقيقة", "بلا جراحة", "نتائج تُقاس"],
-    main: "/body/card.jpg",
+    main: "/body/card.webp",
     mainAlt: "نحت الجسم بجهاز التحفيز العضلي",
   },
 ];

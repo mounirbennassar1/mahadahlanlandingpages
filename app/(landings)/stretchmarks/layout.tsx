@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "عيادات د. مها دحلان",
     images: [
       {
-        url: "/stretchmarks/logo.png",
+        url: "/stretchmarks/logo.webp",
         width: 1200,
         height: 630,
         alt: "عيادات د. مها دحلان — علاج التشققات وعلامات التمدد",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "د. مها دحلان | علاج التشققات وعلامات التمدد",
-    images: ["/stretchmarks/logo.png"],
+    images: ["/stretchmarks/logo.webp"],
     description:
       "عيادة متخصصة في علاج تشققات الجلد وعلامات التمدد بأحدث التقنيات في جدة.",
   },

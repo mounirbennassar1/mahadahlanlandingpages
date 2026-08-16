@@ -142,7 +142,7 @@ export function Protocol() {
           {/* visual (left in RTL) */}
           <div className="relative aspect-[4/3] overflow-hidden rounded-[28px] border border-[var(--color-hab-line-strong)] shadow-[0_46px_90px_-34px_rgba(212,175,55,0.3)]">
             <Image
-              src="/hair-breakage/treatment.png"
+              src="/hair-breakage/treatment.webp"
               alt="تطبيق سيروم بروتين ذهبي على خصلة شعر داكنة لامعة"
               fill
               sizes="(min-width: 1024px) 480px, 90vw"
@@ -165,7 +165,7 @@ export function Protocol() {
         <Reveal>
           <div className="relative mb-2 aspect-[4/3] overflow-hidden rounded-[24px] border border-[var(--color-hab-line-strong)] shadow-[0_36px_70px_-30px_rgba(212,175,55,0.3)]">
             <Image
-              src="/hair-breakage/treatment.png"
+              src="/hair-breakage/treatment.webp"
               alt="تطبيق سيروم بروتين ذهبي على خصلة شعر داكنة لامعة"
               fill
               sizes="(max-width: 1024px) 92vw, 480px"

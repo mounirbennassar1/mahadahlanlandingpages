@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       "تقنية كورية أصيلة تجدد بشرتكِ خلال أسبوع: إبر طبيعية ١٠٠٪ تحفّز الكولاجين وتعالج آثار الحبوب والمسام. احجزي جلستكِ في عيادات د. مها دحلان.",
     locale: "ar_SA",
     type: "website",
-    images: [{ url: "/korean-spicules/hero.jpg", width: 1152, height: 1536 }],
+    images: [{ url: "/korean-spicules/hero.webp", width: 1152, height: 1536 }],
   },
 };
 

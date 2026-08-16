@@ -27,7 +27,7 @@ export function Header() {
     >
       <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-[22px]">
         <Image
-          src="/chronic-eczema/logo.png"
+          src="/chronic-eczema/logo.webp"
           alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
           width={54}
           height={54}

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     siteName: "عيادات د. مها دحلان",
     images: [
       {
-        url: "/eid-offer/hero.png",
+        url: "/eid-offer/hero.webp",
         width: 1200,
         height: 800,
         alt: "عرض عيد الأضحى — عيادة مها دحلان",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "عيادة مها دحلان | عرض عيد الأضحى",
     description:
       "خصومات ذهبية بمناسبة عيد الأضحى المبارك على خدمات التجميل في عيادة مها دحلان.",
-    images: ["/eid-offer/hero.png"],
+    images: ["/eid-offer/hero.webp"],
   },
 };
 

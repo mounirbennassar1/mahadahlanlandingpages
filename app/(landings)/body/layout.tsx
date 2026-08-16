@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "عيادات د. مها دحلان",
     images: [
       {
-        url: "/body/hero-hifem.png",
+        url: "/body/hero-hifem.webp",
         width: 1200,
         height: 630,
         alt: "عيادات د. مها دحلان — نحت الجسم بتقنية HIFEM",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "نحت الجسم بتقنية التحفيز العضلي — عيادات د. مها دحلان",
     description:
       "جلسات HIFEM لنحت الجسم وشدّ العضلات بدون جراحة في جدة. احجزي تجربتك.",
-    images: ["/body/hero-hifem.png"],
+    images: ["/body/hero-hifem.webp"],
   },
 };
 

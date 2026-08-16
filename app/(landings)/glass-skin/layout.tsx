@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       "بروتوكول كوري أصيل بإشراف طبي في عيادات د. مها دحلان. احجزي جلستكِ الآن.",
     locale: "ar_SA",
     type: "website",
-    images: [{ url: "/glass-skin/poster.jpg", width: 1920, height: 1088 }],
+    images: [{ url: "/glass-skin/poster.webp", width: 1920, height: 1088 }],
   },
 };
 

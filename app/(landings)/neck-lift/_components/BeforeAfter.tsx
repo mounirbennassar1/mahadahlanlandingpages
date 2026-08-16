@@ -49,7 +49,7 @@ export function BeforeAfter() {
     >
       <div className="absolute inset-0">
         <Image
-          src="/neck-lift/after.jpg"
+          src="/neck-lift/after.webp"
           alt="بعد علاج ترهل الرقبة"
           fill
           sizes="(max-width: 1060px) 94vw, 1020px"
@@ -63,7 +63,7 @@ export function BeforeAfter() {
         style={{ clipPath: "inset(0 50% 0 0)" }}
       >
         <Image
-          src="/neck-lift/before.jpg"
+          src="/neck-lift/before.webp"
           alt="قبل علاج ترهل الرقبة"
           fill
           sizes="(max-width: 1060px) 94vw, 1020px"

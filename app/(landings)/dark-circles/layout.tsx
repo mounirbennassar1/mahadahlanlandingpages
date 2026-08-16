@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "عيادات د. مها دحلان",
     images: [
       {
-        url: "/dark-circles/hero.png",
+        url: "/dark-circles/hero.webp",
         width: 1200,
         height: 630,
         alt: "عيادات د. مها دحلان — علاج الهالات والتصبّغات",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "علاج الهالات والتصبّغات حول العين | عيادة د. مها دحلان",
     description:
       "برنامج طبي متخصص في علاج الهالات والتصبّغات بأحدث التقنيات في جدة.",
-    images: ["/dark-circles/hero.png"],
+    images: ["/dark-circles/hero.webp"],
   },
 };
 

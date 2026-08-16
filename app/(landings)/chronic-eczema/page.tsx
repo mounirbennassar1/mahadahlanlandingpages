@@ -353,7 +353,7 @@ export default function ChronicEczemaPage() {
               >
                 <div className="absolute inset-0" data-parallax="8">
                   <Image
-                    src="/chronic-eczema/treatment.jpg"
+                    src="/chronic-eczema/treatment.webp"
                     alt="جلسة عناية علاجية لبشرة متهيجة في العيادة"
                     fill
                     sizes="(max-width: 1024px) 88vw, 430px"
@@ -641,7 +641,7 @@ export default function ChronicEczemaPage() {
         <footer className="border-t border-[var(--color-che-line)] px-[22px] pt-12 pb-[120px] text-center md:pb-12">
           <div className="mb-4 flex justify-center">
             <Image
-              src="/chronic-eczema/logo.png"
+              src="/chronic-eczema/logo.webp"
               alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
               width={100}
               height={100}

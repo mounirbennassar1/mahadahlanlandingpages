@@ -47,7 +47,7 @@ export function BeforeAfter() {
     >
       <div className="absolute inset-0">
         <Image
-          src="/facial-atrophy/before.jpg"
+          src="/facial-atrophy/before.webp"
           alt="قبل علاج ضمور الوجه"
           fill
           sizes="(max-width: 800px) 94vw, 760px"
@@ -57,7 +57,7 @@ export function BeforeAfter() {
       </div>
       <div ref={topRef} className="absolute inset-0" style={{ clipPath: "inset(0 50% 0 0)" }}>
         <Image
-          src="/facial-atrophy/after.jpg"
+          src="/facial-atrophy/after.webp"
           alt="بعد علاج ضمور الوجه"
           fill
           sizes="(max-width: 800px) 94vw, 760px"

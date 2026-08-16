@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "عيادات د. مها دحلان",
     images: [
       {
-        url: "/hyperpigmentation/afterbeforehero.png",
+        url: "/hyperpigmentation/afterbeforehero.webp",
         width: 1200,
         height: 630,
         alt: "عيادات د. مها دحلان — علاج التصبّغات",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     title: "مهادهلان — علاج التصبغات",
     description:
       "برنامج علاج التصبّغات في عيادات د. مها دحلان — خطة شخصية ونتائج موثّقة.",
-    images: ["/hyperpigmentation/afterbeforehero.png"],
+    images: ["/hyperpigmentation/afterbeforehero.webp"],
   },
 };
 

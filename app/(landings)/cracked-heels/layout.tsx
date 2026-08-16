@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       "قدمان ناعمتان تليقان بكِ في كل خطوة. بروتوكول طبي متكامل لعلاج تشقق الكعبين: باديكير طبي، تقشير علاجي، ترطيب عميق ومتابعة حتى النتيجة.",
     locale: "ar_SA",
     type: "website",
-    images: [{ url: "/cracked-heels/hero.jpg", width: 1536, height: 2048 }],
+    images: [{ url: "/cracked-heels/hero.webp", width: 1536, height: 2048 }],
   },
 };
 

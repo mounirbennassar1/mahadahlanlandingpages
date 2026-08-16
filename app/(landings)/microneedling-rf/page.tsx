@@ -88,7 +88,7 @@ export default function MicroneedlingRfLanding() {
       >
         <a href="#" aria-label="MD Clinics" className="flex items-center">
           <Image
-            src="/microneedling-rf/logo.png"
+            src="/microneedling-rf/logo.webp"
             alt="MD Clinics — مجمع عيادات د. مها دحلان الطبي"
             width={56}
             height={56}
@@ -237,7 +237,7 @@ export default function MicroneedlingRfLanding() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                 data-mrf-hero-video
-                poster="/microneedling-rf/poster.jpg"
+                poster="/microneedling-rf/poster.webp"
                 src="/microneedling-rf/video.mp4"
                 autoPlay
                 loop

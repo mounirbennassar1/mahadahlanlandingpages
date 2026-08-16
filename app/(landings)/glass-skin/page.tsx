@@ -155,7 +155,7 @@ export default function GlassSkinLanding() {
       >
         <a href="#film" aria-label="عيادات د. مها دحلان" className="flex items-center">
           <Image
-            src="/glass-skin/logo.png"
+            src="/glass-skin/logo.webp"
             alt="شعار مجمع عيادات د. مها دحلان الطبي"
             width={56}
             height={56}
@@ -672,7 +672,7 @@ export default function GlassSkinLanding() {
           <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 md:flex-row md:justify-between">
             <div className="flex items-center gap-3">
               <Image
-                src="/glass-skin/logo.png"
+                src="/glass-skin/logo.webp"
                 alt="شعار عيادات د. مها دحلان"
                 width={44}
                 height={44}

@@ -26,7 +26,7 @@ export function Header() {
     >
       <div className="mx-auto flex h-[74px] max-w-[1180px] items-center justify-between px-[22px]">
         <Image
-          src="/hair-breakage/logo.png"
+          src="/hair-breakage/logo.webp"
           alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
           width={58}
           height={58}

@@ -359,7 +359,7 @@ export default function BotoxLanding() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
         <Image
-          src="/botox/logo.png"
+          src="/botox/logo.webp"
           alt="MD Clinics - مجمع عيادات د. مها دحلان الطبي"
           width={200}
           height={56}
@@ -666,7 +666,7 @@ export default function BotoxLanding() {
               >
                 <div className="relative w-full h-[420px] sm:h-[520px] lg:h-[600px]">
                   <Image
-                    src="/botox/botox_about.png"
+                    src="/botox/botox_about.webp"
                     alt="داخل العيادة"
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
@@ -755,7 +755,7 @@ export default function BotoxLanding() {
               }
             />
             <ServiceCard
-              img="/botox/filler-treatment.png"
+              img="/botox/filler-treatment.webp"
               alt="تعزيز الامتلاء وتجديد الملامح بالفيلر"
               delay={0.15}
               title="تعزيز الامتلاء وتجديد الملامح بالفيلر"
@@ -768,7 +768,7 @@ export default function BotoxLanding() {
               }
             />
             <ServiceCard
-              img="/botox/filler.png"
+              img="/botox/filler.webp"
               alt="علاجات الإشراقة والنضارة"
               delay={0.3}
               title="علاجات الـ Glow Up"
@@ -854,7 +854,7 @@ export default function BotoxLanding() {
       {/* ══ BOOKING / LOCATION ══ */}
       <section id="book" className="relative py-28 overflow-hidden">
         <Image
-          src="/botox/hero_section_botox.png"
+          src="/botox/hero_section_botox.webp"
           alt="داخل العيادة الفاخرة"
           fill
           sizes="100vw"

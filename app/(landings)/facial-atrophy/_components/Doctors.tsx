@@ -34,7 +34,7 @@ const DOCTORS: Doctor[] = [
       "شهادة معتمدة من THALGO الفرنسية",
     ],
     experience: "خبرة أكثر من ١٣ عاماً في مجال التجميل اللاجراحي",
-    image: "/facial-atrophy/nidhal.jpg",
+    image: "/facial-atrophy/nidhal.webp",
     imageAlt: "نضال الجريدي، أخصائية التجميل اللاجراحي",
   },
   {

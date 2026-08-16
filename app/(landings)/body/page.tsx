@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BeforeAfter from "./_components/BeforeAfter";
-import HeroCanvas from "./_components/HeroCanvas";
+import HeroCanvas from "./_components/HeroCanvasLazy";
 import LeadForm from "./_components/LeadForm";
 import Reveals from "./_components/Reveals";
 
@@ -142,7 +142,7 @@ export default function BodyLanding() {
             aria-label="MD Clinics"
           >
             <Image
-              src="/body/logo.png"
+              src="/body/logo.webp"
               alt="MD Clinics — مجمع عيادات د. مها دحلان الطبي"
               width={300}
               height={300}
@@ -258,7 +258,7 @@ export default function BodyLanding() {
             <div className="card-body relative w-full overflow-hidden lg:mt-16">
               <div className="relative aspect-[3/2] w-full overflow-hidden">
                 <Image
-                  src="/body/hero-hifem.png"
+                  src="/body/hero-hifem.webp"
                   alt="جلسة نحت الجسم بتقنية التحفيز العضلي الكهرومغناطيسي"
                   fill
                   priority
@@ -490,8 +490,8 @@ export default function BodyLanding() {
             ].map((item, i) => (
               <figure key={item.area} className="reveal grid gap-4">
                 <BeforeAfter
-                  beforeSrc="/body/afterbefore/before.png"
-                  afterSrc="/body/afterbefore/after.png"
+                  beforeSrc="/body/afterbefore/before.webp"
+                  afterSrc="/body/afterbefore/after.webp"
                   beforeAlt={`صورة قبل الجلسات — ${item.area}`}
                   afterAlt={`صورة بعد الجلسات — ${item.area}`}
                   delay={i * 0.25}
@@ -692,7 +692,7 @@ export default function BodyLanding() {
               <div className="flex items-center gap-3">
                 <div className="rounded-2xl bg-body-bg/95 p-2">
                   <Image
-                    src="/body/logo.png"
+                    src="/body/logo.webp"
                     alt="عيادة د. مها دحلان"
                     width={300}
                     height={300}

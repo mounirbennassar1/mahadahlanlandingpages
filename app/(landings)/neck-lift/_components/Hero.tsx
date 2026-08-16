@@ -207,7 +207,7 @@ export function Hero() {
             <div className="nkl-col-a flex flex-col gap-4">
               <div className="nkl-tile relative aspect-[3/4] overflow-hidden rounded-[26px] border border-[var(--color-nkl-line-strong)] shadow-[0_36px_70px_-30px_rgba(138,100,48,0.45)]">
                 <Image
-                  src="/neck-lift/hero-main.jpg"
+                  src="/neck-lift/hero-main.webp"
                   alt="رقبة مشدودة بملامح أنيقة"
                   fill
                   sizes="(max-width: 1024px) 46vw, 232px"
@@ -217,7 +217,7 @@ export function Hero() {
               </div>
               <div className="nkl-tile relative aspect-square overflow-hidden rounded-[26px] border border-[var(--color-nkl-line-strong)] shadow-[0_30px_60px_-28px_rgba(138,100,48,0.4)]">
                 <Image
-                  src="/neck-lift/detail.jpg"
+                  src="/neck-lift/detail.webp"
                   alt="أجواء العناية في العيادة"
                   fill
                   sizes="(max-width: 1024px) 46vw, 232px"
@@ -229,7 +229,7 @@ export function Hero() {
             <div className="nkl-col-b mt-10 flex flex-col gap-4">
               <div className="nkl-tile relative aspect-square overflow-hidden rounded-full border border-[var(--color-nkl-line-strong)] shadow-[0_30px_60px_-28px_rgba(138,100,48,0.4)]">
                 <Image
-                  src="/neck-lift/hero-orb.jpg"
+                  src="/neck-lift/hero-orb.webp"
                   alt="نضارة وشد في منطقة الرقبة"
                   fill
                   sizes="(max-width: 1024px) 46vw, 232px"
@@ -239,7 +239,7 @@ export function Hero() {
               </div>
               <div className="nkl-tile relative aspect-[3/4] overflow-hidden rounded-[26px] border border-[var(--color-nkl-line-strong)] shadow-[0_36px_70px_-30px_rgba(138,100,48,0.45)]">
                 <Image
-                  src="/neck-lift/hero-front.jpg"
+                  src="/neck-lift/hero-front.webp"
                   alt="بشرة رقبة ناعمة ومشدودة"
                   fill
                   sizes="(max-width: 1024px) 46vw, 232px"

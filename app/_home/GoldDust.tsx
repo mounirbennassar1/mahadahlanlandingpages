@@ -1,7 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  Clock,
+  Color,
+  PerspectiveCamera,
+  Points,
+  Scene,
+  ShaderMaterial,
+  WebGLRenderer,
+} from "three";
 
 /**
  * Floating gold-dust particle field (three.js) behind the hero.
@@ -19,8 +30,8 @@ export function GoldDust({ className }: { className?: string }) {
 
     const COUNT = window.innerWidth < 768 ? 340 : 900;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
+    const scene = new Scene();
+    const camera = new PerspectiveCamera(
       55,
       Math.max(1, mount.clientWidth) / Math.max(1, mount.clientHeight),
       0.1,
@@ -28,7 +39,7 @@ export function GoldDust({ className }: { className?: string }) {
     );
     camera.position.z = 14;
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       alpha: true,
       antialias: false,
       powerPreference: "low-power",
@@ -55,22 +66,22 @@ export function GoldDust({ className }: { className?: string }) {
       aTint[i] = Math.random();
     }
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("aScale", new THREE.BufferAttribute(aScale, 1));
-    geometry.setAttribute("aPhase", new THREE.BufferAttribute(aPhase, 1));
-    geometry.setAttribute("aSpeed", new THREE.BufferAttribute(aSpeed, 1));
-    geometry.setAttribute("aTint", new THREE.BufferAttribute(aTint, 1));
+    const geometry = new BufferGeometry();
+    geometry.setAttribute("position", new BufferAttribute(positions, 3));
+    geometry.setAttribute("aScale", new BufferAttribute(aScale, 1));
+    geometry.setAttribute("aPhase", new BufferAttribute(aPhase, 1));
+    geometry.setAttribute("aSpeed", new BufferAttribute(aSpeed, 1));
+    geometry.setAttribute("aTint", new BufferAttribute(aTint, 1));
 
-    const material = new THREE.ShaderMaterial({
+    const material = new ShaderMaterial({
       transparent: true,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: AdditiveBlending,
       uniforms: {
         uTime: { value: 0 },
         uPixelRatio: { value: dpr() },
-        uColorA: { value: new THREE.Color("#F0D48A") },
-        uColorB: { value: new THREE.Color("#8A6430") },
+        uColorA: { value: new Color("#F0D48A") },
+        uColorB: { value: new Color("#8A6430") },
       },
       vertexShader: /* glsl */ `
         uniform float uTime;
@@ -112,7 +123,7 @@ export function GoldDust({ className }: { className?: string }) {
       `,
     });
 
-    const points = new THREE.Points(geometry, material);
+    const points = new Points(geometry, material);
     scene.add(points);
 
     let targetX = 0;
@@ -134,7 +145,7 @@ export function GoldDust({ className }: { className?: string }) {
     // First frame synchronously, so the dust shows even without rAF ticks.
     renderer.render(scene, camera);
 
-    const clock = new THREE.Clock();
+    const clock = new Clock();
     let frame = 0;
     const tick = () => {
       frame = requestAnimationFrame(tick);

@@ -82,7 +82,7 @@ export default function DarkCirclesLanding() {
       >
         <a href="#" aria-label="MD Clinics" className="flex items-center">
           <Image
-            src="/dark-circles/logo.png"
+            src="/dark-circles/logo.webp"
             alt="MD Clinics — مجمع عيادات د. مها دحلان الطبي"
             width={56}
             height={56}
@@ -265,7 +265,7 @@ export default function DarkCirclesLanding() {
 
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-[0_30px_60px_-30px_rgba(154,90,78,0.45)] sm:rounded-[2rem] sm:shadow-[0_40px_80px_-30px_rgba(154,90,78,0.45)]">
                 <Image
-                  src="/dark-circles/hero.png"
+                  src="/dark-circles/hero.webp"
                   alt="بشرة موحّدة ومشرقة حول العين"
                   fill
                   priority
@@ -534,7 +534,7 @@ export default function DarkCirclesLanding() {
           <motion.div variants={fadeUp} className="order-1 lg:order-2">
             <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[1.75rem] border-[6px] border-white shadow-[0_30px_70px_-30px_rgba(154,90,78,0.4)] sm:max-w-md sm:rounded-[2rem] sm:border-8">
               <Image
-                src="/dark-circles/hero.png"
+                src="/dark-circles/hero.webp"
                 alt="د. مها دحلان"
                 fill
                 sizes="(max-width: 1024px) 80vw, 480px"

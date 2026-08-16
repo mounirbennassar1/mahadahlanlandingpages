@@ -304,7 +304,7 @@ export default function HairBreakagePage() {
           className="pointer-events-none absolute inset-0 opacity-[0.22]"
         >
           <Image
-            src="/hair-breakage/strands.png"
+            src="/hair-breakage/strands.webp"
             alt=""
             fill
             sizes="100vw"
@@ -591,7 +591,7 @@ export default function HairBreakagePage() {
       <footer className="border-t border-[var(--color-hab-line)] px-[22px] pt-11 pb-[120px] text-center md:pb-11">
         <div className="mb-3.5 flex justify-center">
           <Image
-            src="/hair-breakage/logo.png"
+            src="/hair-breakage/logo.webp"
             alt="MD Clinics | مجمع عيادات د. مها دحلان الطبي"
             width={110}
             height={110}

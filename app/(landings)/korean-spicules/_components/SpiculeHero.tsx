@@ -263,7 +263,7 @@ export function SpiculeHero() {
               </div>
 
               <Image
-                src="/korean-spicules/hero.jpg"
+                src="/korean-spicules/hero.webp"
                 alt="بشرة متوهّجة بإضاءة برتقالية — علاج السبيكولز الكوري"
                 fill
                 priority
@@ -274,7 +274,7 @@ export function SpiculeHero() {
                 }}
               />
               <Image
-                src="/korean-spicules/hero-open.jpg"
+                src="/korean-spicules/hero-open.webp"
                 alt=""
                 fill
                 priority

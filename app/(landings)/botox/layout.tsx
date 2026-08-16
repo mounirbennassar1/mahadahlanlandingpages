@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: "عيادات د. مها دحلان",
     images: [
       {
-        url: "/botox/hero_section_botox.png",
+        url: "/botox/hero_section_botox.webp",
         width: 1200,
         height: 630,
         alt: "عيادات د. مها دحلان — البوتوكس والفيلر",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "عيادة مها دحلان | البوتوكس والفيلر",
     description:
       "بوتوكس، فيلر جلدي، وتجديد البشرة بأيدي خبراء معتمدين في جدة.",
-    images: ["/botox/hero_section_botox.png"],
+    images: ["/botox/hero_section_botox.webp"],
   },
 };
 

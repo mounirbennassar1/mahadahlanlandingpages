@@ -26,7 +26,7 @@ export default async function LoginPage({
       >
         <div className="flex justify-center mb-8">
           <Image
-            src="/logo.png"
+            src="/logo.webp"
             alt="MD Clinics — مجمع عيادات د. مها دحلان الطبي"
             width={160}
             height={160}
