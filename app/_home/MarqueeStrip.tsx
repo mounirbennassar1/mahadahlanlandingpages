@@ -34,7 +34,7 @@ export function MarqueeStrip() {
     // strip is always full; the reversed animation makes it FLOW right-to-left.
     <div
       dir="ltr"
-      className="relative z-[5] -mx-5 -rotate-[1.3deg] overflow-hidden border-y border-[rgba(232,195,106,0.4)] bg-[#120D07] py-[15px] shadow-[0_0_44px_-10px_rgba(232,195,106,0.35)]"
+      className="relative z-[5] -mx-5 -mt-12 -rotate-[1.3deg] overflow-hidden lg:-mt-16 border-y border-[rgba(232,195,106,0.4)] bg-[#120D07] py-[15px] shadow-[0_0_44px_-10px_rgba(232,195,106,0.35)]"
     >
       {/* 4 copies: the -50% loop segment (2 rows) must be wider than any
           viewport, else the reset shows an empty stretch */}

@@ -128,7 +128,7 @@ export function Hero() {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
           <Image
-            src="/home/hero-doctor.webp"
+            src="/home/hero-doctor-gold.webp"
             alt="طبيبة بالبالطو الأبيض في عيادات د. مها دحلان"
             fill
             priority
@@ -176,7 +176,7 @@ export function Hero() {
           {/* portrait in-flow on mobile: image first, then the buttons */}
           <div className="md-hero-fade relative mx-auto mt-8 aspect-[3/4] w-full max-w-[340px] lg:hidden">
             <Image
-              src="/home/hero-doctor.webp"
+              src="/home/hero-doctor-gold.webp"
               alt="طبيبة بالبالطو الأبيض في عيادات د. مها دحلان"
               fill
               sizes="(max-width: 1024px) 88vw, 0px"
@@ -221,7 +221,7 @@ export function Hero() {
       </div>
 
       {/* scroll cue */}
-      <div className="md-hero-cue absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2.5 lg:flex">
+      <div className="md-hero-cue absolute bottom-[86px] left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2.5 lg:flex">
         <span className="text-[0.72rem] font-bold text-[rgba(246,238,223,0.45)]">
           مرّري للاكتشاف
         </span>
