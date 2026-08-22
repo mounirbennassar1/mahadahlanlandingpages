@@ -125,7 +125,7 @@ export function Footer() {
 
               return (
                 <div key={cat}>
-                  <h3 className="mb-4 text-[0.8rem] font-extrabold tracking-[0.16em] text-[#F0D48A]">
+                  <h3 className="mb-4 text-[0.8rem] font-extrabold text-[#F0D48A]">
                     {cat}
                   </h3>
                   <ul className="flex flex-col gap-2.5">

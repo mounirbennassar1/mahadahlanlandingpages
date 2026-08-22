@@ -132,7 +132,7 @@ function SectionHead({
         align === "center" ? "items-center text-center" : "items-start text-right"
       }`}
     >
-      <span className="inline-flex items-center gap-2.5 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.7)] px-[18px] py-2 text-[0.78rem] font-bold tracking-[0.04em] text-[var(--color-md-champagne)]">
+      <span className="inline-flex items-center gap-2.5 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.7)] px-[18px] py-2 text-[0.78rem] font-bold text-[var(--color-md-champagne)]">
         <span
           className="size-1.5 rounded-full bg-[var(--color-md-neon)]"
           style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
@@ -427,7 +427,7 @@ export default function Home() {
                     style={{ background: GOLD_GRADIENT }}
                   >
                     <SocialIcon name="whatsapp" className="text-[19px]" />
-                    استشارة واتساب
+                    تواصلي معنا عبر الواتس آب
                   </a>
                   <a
                     href={TEL_LINK}

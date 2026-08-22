@@ -123,13 +123,13 @@ export function Hero() {
       {/* ——— portrait (left on lg), floating on silk ——— */}
       <div className="md-hero-portrait pointer-events-none absolute inset-y-0 left-0 z-[3] hidden w-[46%] lg:block">
         <motion.div
-          className="absolute inset-x-0 bottom-0 top-[6%]"
+          className="absolute inset-x-0 bottom-0 top-[24%]"
           animate={{ y: [0, -12, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
           <Image
-            src="/home/hero-portrait-cutout.webp"
-            alt="امرأة ملفوفة بحرير ذهبي يتطاير حولها"
+            src="/home/hero-doctor.webp"
+            alt="طبيبة بالبالطو الأبيض في عيادات د. مها دحلان"
             fill
             priority
             sizes="46vw"
@@ -149,7 +149,7 @@ export function Hero() {
               style={{ background: GOLD_GRADIENT }}
               aria-hidden
             />
-            <span className="md-neon-text text-[0.78rem] font-bold tracking-[0.22em]">
+            <span className="md-neon-text text-[0.78rem] font-bold">
               تجربة تجميلية فاخرة في جدة
             </span>
           </div>
@@ -176,8 +176,8 @@ export function Hero() {
           {/* portrait in-flow on mobile: image first, then the buttons */}
           <div className="md-hero-fade relative mx-auto mt-8 aspect-[3/4] w-full max-w-[340px] lg:hidden">
             <Image
-              src="/home/hero-portrait-cutout.webp"
-              alt="امرأة ملفوفة بحرير ذهبي يتطاير حولها"
+              src="/home/hero-doctor.webp"
+              alt="طبيبة بالبالطو الأبيض في عيادات د. مها دحلان"
               fill
               sizes="(max-width: 1024px) 88vw, 0px"
               className="object-contain"
@@ -213,7 +213,7 @@ export function Hero() {
               className="inline-flex items-center justify-center gap-2.5 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(11,8,5,0.5)] px-8 py-[17px] text-base font-extrabold text-[var(--color-md-text)] backdrop-blur-sm transition-colors duration-300 hover:border-[var(--color-md-champagne)]"
             >
               <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-              استشارة واتساب
+              تواصلي معنا عبر الواتس آب
             </motion.a>
           </div>
 
@@ -222,7 +222,7 @@ export function Hero() {
 
       {/* scroll cue */}
       <div className="md-hero-cue absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2.5 lg:flex">
-        <span className="text-[0.72rem] font-bold tracking-[0.2em] text-[rgba(246,238,223,0.45)]">
+        <span className="text-[0.72rem] font-bold text-[rgba(246,238,223,0.45)]">
           مرّري للاكتشاف
         </span>
         <span className="block h-10 w-px overflow-hidden" aria-hidden>
