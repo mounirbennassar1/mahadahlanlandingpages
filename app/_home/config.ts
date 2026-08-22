@@ -48,14 +48,14 @@ export type OpeningHours = {
 
 /** Weekly schedule shown in the hours section and the topbar. */
 export const HOURS: OpeningHours[] = [
-  { label: "السبت إلى الخميس", time: "٢:٠٠ ظهراً حتى ١٠:٠٠ مساءً" },
+  { label: "السبت إلى الخميس", time: "١٢:٠٠ ظهراً حتى ٨:٠٠ مساءً" },
   { label: "الجمعة", time: "مغلق", closed: true },
 ];
 
-export const HOURS_SHORT = "السبت إلى الخميس · ٢ ظهراً حتى ١٠ مساءً";
+export const HOURS_SHORT = "السبت إلى الخميس · ١٢ ظهراً حتى ٨ مساءً";
 
-/** Open Sat–Thu 14:00–22:00, Riyadh time. Friday = day 5. */
-export const OPENING = { openHour: 14, closeHour: 22, closedDay: 5 };
+/** Open Sat–Thu 12:00–20:00, Riyadh time. Friday = day 5. */
+export const OPENING = { openHour: 12, closeHour: 20, closedDay: 5 };
 
 /** Category filters for the specialties grid. `ALL` is prepended in the UI. */
 export const CATEGORY_ALL = "الكل";

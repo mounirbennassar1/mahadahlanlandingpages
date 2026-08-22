@@ -109,10 +109,7 @@ export function Doctors() {
 
         {/* bio — editorial hairline index for the credentials */}
         <div className="min-w-[300px] flex-1 text-center md:max-w-[560px] md:text-right">
-          <span className="text-[0.74rem] font-extrabold text-[var(--color-md-gold-bright)]">
-            {d.label}
-          </span>
-          <h3 className="mt-2 mb-0 text-3xl font-extrabold text-[var(--color-md-text)] sm:text-4xl">
+          <h3 className="mb-0 text-3xl font-extrabold text-[var(--color-md-text)] sm:text-4xl">
             {d.name}
           </h3>
           <p className="mt-1.5 font-bold text-[var(--color-md-champagne)]">
