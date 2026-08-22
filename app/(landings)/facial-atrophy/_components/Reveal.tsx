@@ -42,6 +42,8 @@ type SpotlightCardProps = {
   delay?: number;
   /** Lift the card on hover (default true). */
   hoverLift?: boolean;
+  /** Card surface gradient, painted under the spotlight glow. */
+  background?: string;
 };
 
 /**
@@ -53,6 +55,7 @@ export function SpotlightCard({
   className,
   delay = 0,
   hoverLift = true,
+  background,
 }: SpotlightCardProps) {
   const onPointerMove = useCallback((e: PointerEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -68,6 +71,7 @@ export function SpotlightCard({
       transition={{ duration: 0.85, ease: EASE, delay: delay / 1000 }}
       whileHover={hoverLift ? { y: -6 } : undefined}
       onPointerMove={onPointerMove}
+      style={background ? { background } : undefined}
       className={`group relative overflow-hidden border border-[var(--color-faa-line)] transition-colors duration-300 hover:border-[rgba(240,212,138,0.45)] ${className ?? ""}`}
     >
       <div

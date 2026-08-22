@@ -11,47 +11,47 @@ type Doctor = {
   label: string;
   name: string;
   title: string;
-  highlight?: string;
   credentials: string[];
-  experience?: string;
   image: string;
   imageAlt: string;
 };
 
-/* Same specialists as the glass-skin / korean-spicules landings. */
+/* Same medical team as the home page, in the order the clinic asked for. */
 const DOCTORS: Doctor[] = [
   {
-    label: "الأخصائية الأولى",
-    name: "نضال الجريدي",
-    title: "أخصائية التجميل اللاجراحي",
-    highlight: "شهادة الأكاديمية الفيدرالية الفرنسية للتجميل اللاجراحي",
+    label: "الطبيبة الأولى",
+    name: "د. مها دحلان",
+    title: "استشارية الجلدية والتجميل والليزر",
     credentials: [
-      "شهادة معتمدة من THESERA الكورية",
-      "شهادة معتمدة من MATIS الفرنسية",
-      "شهادة معتمدة من SELVERT الإسبانية",
-      "شهادة معتمدة من TOSKANI الإسبانية",
-      "شهادة معتمدة من SWISS COLOR الألمانية",
-      "شهادة معتمدة من THALGO الفرنسية",
+      "البورد السعودي في طب الأمراض الجلدية والتجميل والليزر",
+      "البورد العربي في طب الأمراض الجلدية والتناسلية",
+      "ماجستير صحة عامة من جامعة بوسطن",
+      "زمالة البرنامج العالمي من جامعة هارفارد للأمراض الجلدية",
     ],
-    experience: "خبرة أكثر من ١٣ عاماً في مجال التجميل اللاجراحي",
-    image: "/facial-atrophy/nidhal.webp",
-    imageAlt: "نضال الجريدي، أخصائية التجميل اللاجراحي",
+    image: "/team/dr-maha.avif",
+    imageAlt: "د. مها دحلان، استشارية الجلدية والتجميل والليزر",
   },
   {
-    label: "الأخصائية الثانية",
-    name: "فادية المنصور",
-    title: "أخصائية التجميل اللاجراحي",
+    label: "الطبيبة الثانية",
+    name: "د. لجين الجرماني",
+    title: "نائب الجلدية والتجميل والليزر",
     credentials: [
-      "دبلوم الأكاديمية البريطانية للتعليم الطبي اللاجراحي BACME",
-      "شهادة معتمدة من THESERA الكورية",
-      "شهادة معتمدة من Premiere Beauty Academy",
-      "شهادة معتمدة من KLEADERM",
-      "شهادة معتمدة من Premiere Center for Coiffure & Beauty",
-      "شهادة معتمدة من Helen Academy",
+      "البورد السوري في طب الأمراض الجلدية",
+      "الدبلوم الأمريكي للجلدية والتجميل والليزر",
     ],
-    experience: "خبرة ١٣ عاماً في مجال التجميل اللاجراحي",
-    image: "/facial-atrophy/fadia.jpg",
-    imageAlt: "فادية المنصور، أخصائية التجميل اللاجراحي",
+    image: "/team/dr-lajin.avif",
+    imageAlt: "د. لجين الجرماني، نائب الجلدية والتجميل والليزر",
+  },
+  {
+    label: "الطبيبة الثالثة",
+    name: "د. إيناس عبدالعزيز",
+    title: "طبيب مقيم الأمراض الجلدية",
+    credentials: [
+      "بكالوريوس طب وجراحة عامة، تخصص الجلدية",
+      "الدبلوم الأمريكي للجلدية والتجميل والليزر",
+    ],
+    image: "/team/dr-inas.avif",
+    imageAlt: "د. إيناس عبدالعزيز، طبيب مقيم الأمراض الجلدية",
   },
 ];
 
@@ -138,23 +138,15 @@ export function Doctors() {
 
         {/* bio */}
         <div className="text-center md:text-right">
-          <h3 className="text-3xl font-extrabold text-[var(--color-faa-ink)] sm:text-4xl">
+          <span className="text-[0.76rem] font-extrabold tracking-[0.14em] text-[var(--color-faa-gold)]">
+            {d.label}
+          </span>
+          <h3 className="mt-2 text-3xl font-extrabold text-[var(--color-faa-ink)] sm:text-4xl">
             {d.name}
           </h3>
           <p className="mt-2 text-base font-extrabold text-[var(--color-faa-gold-bright)]">
             {d.title}
           </p>
-
-          {d.highlight && (
-            <div className="mt-5 flex items-center gap-3 rounded-2xl border-2 border-[rgba(240,212,138,0.45)] bg-[rgba(217,179,108,0.08)] px-4 py-3.5 text-right shadow-[0_10px_30px_-14px_rgba(217,179,108,0.5)]">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[rgba(217,179,108,0.15)] text-[var(--color-faa-gold-bright)]">
-                <Icon.GraduationCap className="size-5" />
-              </span>
-              <span className="text-sm leading-6 font-extrabold text-[var(--color-faa-gold-bright)]">
-                {d.highlight}
-              </span>
-            </div>
-          )}
 
           <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
             {d.credentials.map((c, i) =>
@@ -178,15 +170,6 @@ export function Doctors() {
               ),
             )}
           </ul>
-
-          {d.experience && (
-            <div className="mt-6 inline-flex items-center gap-3 rounded-2xl border border-[var(--color-faa-line)] bg-[rgba(53,16,28,0.7)] px-5 py-3 backdrop-blur-sm">
-              <Icon.Award className="size-5 text-[var(--color-faa-gold-bright)]" />
-              <span className="text-sm font-bold text-[var(--color-faa-ink)]">
-                {d.experience}
-              </span>
-            </div>
-          )}
         </div>
       </motion.div>
 
@@ -195,7 +178,7 @@ export function Doctors() {
         <button
           type="button"
           onClick={() => go(-1)}
-          aria-label="الأخصائية السابقة"
+          aria-label="الطبيبة السابقة"
           className="flex size-11 items-center justify-center rounded-full border border-[var(--color-faa-line)] bg-[rgba(53,16,28,0.8)] text-[var(--color-faa-ink)] transition-colors hover:border-[var(--color-faa-gold)] hover:text-[var(--color-faa-gold-bright)]"
         >
           <Icon.ChevronRight className="size-5" />
@@ -221,7 +204,7 @@ export function Doctors() {
         <button
           type="button"
           onClick={() => go(1)}
-          aria-label="الأخصائية التالية"
+          aria-label="الطبيبة التالية"
           className="flex size-11 items-center justify-center rounded-full border border-[var(--color-faa-line)] bg-[rgba(53,16,28,0.8)] text-[var(--color-faa-ink)] transition-colors hover:border-[var(--color-faa-gold)] hover:text-[var(--color-faa-gold-bright)]"
         >
           <Icon.ChevronLeft className="size-5" />

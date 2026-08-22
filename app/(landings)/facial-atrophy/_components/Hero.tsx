@@ -150,7 +150,7 @@ export function Hero() {
               className="relative inline-flex items-center gap-2.5 rounded-full bg-[#22070F] px-[30px] py-[15px] text-base font-extrabold text-[var(--color-faa-gold-pale)] transition-colors duration-300 hover:bg-[#35101C]"
             >
               <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-              استشارة واتساب
+              تواصلي معنا عبر الواتس آب
             </a>
           </div>
         </motion.div>

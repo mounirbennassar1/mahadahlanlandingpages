@@ -32,8 +32,8 @@ const PROBLEM_CARDS = [
   },
   {
     icon: Icon.Waves,
-    title: "ترهل الجلد",
-    body: "نقص مرونة البشرة وتراخيها حول الفك والرقبة لأنها لم تلحق بسرعة نزول الوزن.",
+    title: "ضمور الخدين",
+    body: "فقدان مرونة البشرة حول المناطق مثل الفك والرقبة والخدين بسبب النزول السريع في الوجه.",
   },
   {
     icon: Icon.Frown,
@@ -53,24 +53,18 @@ const SOLUTIONS = [
   },
   {
     num: "٠٢",
-    icon: Icon.RefreshCw,
-    title: "حقن الدهون الذاتية",
-    body: "نقل دهون من جسمك أنتِ لإعادة بناء وسائد الوجه، وهو الخيار الأقرب للطبيعة وأطولها دواماً.",
-  },
-  {
-    num: "٠٣",
     icon: Icon.Sparkles,
     title: "سكين بوستر ومحفزات الكولاجين",
     body: "إعادة النضارة والمرونة والترطيب العميق للبشرة المتعبة، وتحفيز إنتاج الكولاجين الطبيعي.",
   },
   {
-    num: "٠٤",
+    num: "٠٣",
     icon: Icon.Spline,
     title: "شد الوجه بالخيوط",
     body: "رفع الترهلات الخفيفة وإعادة تحديد خط الفك دون جراحة، بجلسة واحدة وتعافٍ سريع.",
   },
   {
-    num: "٠٥",
+    num: "٠٤",
     icon: Icon.AudioWaveform,
     title: "تقنيات شد البشرة",
     body: "الهايفو والترددات الحرارية لشد عميق غير جراحي وتحفيز طويل الأمد لتماسك الجلد.",
@@ -144,13 +138,9 @@ export default function FacialAtrophyPage() {
 
           <SpotlightCard
             hoverLift={false}
+            background={SURFACE_GRADIENT}
             className="mb-[22px] rounded-3xl p-[clamp(26px,4vw,44px)]"
           >
-            <div
-              className="absolute inset-0 -z-10"
-              style={{ background: SURFACE_GRADIENT }}
-              aria-hidden
-            />
             <div className="flex flex-wrap items-center gap-[34px]">
               <div className="min-w-[280px] flex-[2]">
                 <h3 className="mb-3 text-[1.35rem] font-extrabold text-[var(--color-faa-gold-pale)]">
@@ -186,13 +176,9 @@ export default function FacialAtrophyPage() {
               <SpotlightCard
                 key={c.title}
                 delay={80 + i * 80}
+                background={CARD_GRADIENT}
                 className="rounded-[20px] px-[26px] py-[30px]"
               >
-                <div
-                  className="absolute inset-0 -z-10"
-                  style={{ background: CARD_GRADIENT }}
-                  aria-hidden
-                />
                 <div className="mb-4 flex size-[50px] items-center justify-center rounded-[14px] border border-[rgba(217,179,108,0.3)] bg-[rgba(217,179,108,0.1)] text-[var(--color-faa-gold-bright)]">
                   <c.icon className="size-[23px]" strokeWidth={1.8} />
                 </div>
@@ -206,11 +192,10 @@ export default function FacialAtrophyPage() {
 
           <Reveal className="mt-11 text-center">
             <p className="faa-serif m-0 text-[1.35rem] text-[var(--color-faa-ink-soft)]">
-              الخبر الجيد؟{" "}
+              ولكن لا تقلقي،{" "}
               <span className="text-[var(--color-faa-gold-bright)]">
                 كل ذلك قابل للعلاج
-              </span>{" "}
-              بتدرّج وذوق طبي رفيع.
+              </span>
             </p>
           </Reveal>
         </div>
@@ -234,13 +219,9 @@ export default function FacialAtrophyPage() {
               <SpotlightCard
                 key={s.num}
                 delay={(i % 3) * 70}
+                background={SURFACE_GRADIENT}
                 className="rounded-[20px] px-7 py-[30px]"
               >
-                <div
-                  className="absolute inset-0 -z-10"
-                  style={{ background: SURFACE_GRADIENT }}
-                  aria-hidden
-                />
                 <div className="mb-4 flex items-start justify-between">
                   <div className="flex size-[50px] items-center justify-center rounded-[14px] border border-[rgba(217,179,108,0.3)] bg-[rgba(217,179,108,0.1)] text-[var(--color-faa-gold-bright)]">
                     <s.icon className="size-[22px]" strokeWidth={1.8} />
@@ -259,14 +240,14 @@ export default function FacialAtrophyPage() {
             {/* CTA card */}
             <Reveal
               delay={140}
-              className="flex flex-col justify-between rounded-[20px] px-7 py-[30px] text-[var(--color-faa-cta-ink)] transition-transform duration-300 hover:-translate-y-1.5"
+              className="relative isolate flex flex-col justify-between gap-6 overflow-hidden rounded-[20px] px-7 py-[30px] text-[var(--color-faa-cta-ink)] transition-transform duration-300 hover:-translate-y-1.5 sm:col-span-2 sm:flex-row sm:items-end"
             >
               <div
                 className="absolute inset-0 -z-10 rounded-[20px]"
                 style={{ background: GOLD_GRADIENT }}
                 aria-hidden
               />
-              <div>
+              <div className="sm:max-w-[52ch]">
                 <span className="text-[0.74rem] font-extrabold tracking-[0.18em] opacity-75">
                   الخطوة الأولى
                 </span>
@@ -280,7 +261,7 @@ export default function FacialAtrophyPage() {
               </div>
               <a
                 href="#booking"
-                className="mt-[22px] inline-flex w-fit items-center gap-[9px] rounded-full bg-[var(--color-faa-cta-ink)] px-6 py-[13px] text-[0.92rem] font-extrabold text-[var(--color-faa-gold-bright)] transition-transform duration-300 hover:-translate-x-1"
+                className="mt-[22px] inline-flex w-fit shrink-0 items-center gap-[9px] rounded-full bg-[var(--color-faa-cta-ink)] px-6 py-[13px] text-[0.92rem] font-extrabold text-[var(--color-faa-gold-bright)] transition-transform duration-300 hover:-translate-x-1 sm:mt-0"
               >
                 ابدئي بالتقييم
                 <Icon.ArrowLeft className="size-[15px]" strokeWidth={2.4} />
@@ -290,13 +271,13 @@ export default function FacialAtrophyPage() {
         </div>
       </section>
 
-      {/* ——— الأخصائيات ——— */}
+      {/* ——— الطبيبات ——— */}
       <section id="doctors" className="relative px-[22px] py-[clamp(80px,10vw,120px)]">
         <div className="mx-auto max-w-[1160px]">
           <SectionHead
             eyebrow="لماذا عيادة مها دحلان"
             title="خبرة تجمع بين علم التشريح وحسّ الجمال"
-            sub="فريق نسائي متخصص في ترميم ملامح الوجه بعد نزول الوزن، فلا يلاحظ من حولك إلا أنكِ أكثر راحة وإشراقاً."
+            sub="فريق طبي نسائي متخصص في ترميم ملامح الوجه بعد نزول الوزن، فلا يلاحظ من حولك إلا أنكِ أكثر راحة وإشراقاً."
           />
 
           <Reveal className="mx-auto mb-12 max-w-[640px]">
