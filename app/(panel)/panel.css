@@ -81,3 +81,81 @@
 .panel-root .s-noanswer .dot { background: var(--slate); }
 .panel-root .s-notint { background: var(--notint-bg); color: var(--notint-fg); }
 .panel-root .s-notint .dot { background: var(--notint-dot); }
+
+/* ───────────── Website content forms (dashboard/_components/forms) ───────────── */
+.panel-root .fk-input:focus,
+.panel-root .fk-input:focus-within {
+  border-color: var(--primary-3);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+.panel-root .fk-input[aria-invalid="true"] {
+  border-color: var(--red);
+}
+.panel-root .fk-input::placeholder {
+  color: var(--ink-4);
+}
+.panel-root .fk-btn:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+.panel-root .fk-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.panel-root .fk-link:hover {
+  color: var(--primary);
+}
+.panel-root .fk-row:hover td {
+  background: var(--bg-tint);
+}
+.panel-root details.fk-details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.panel-root details.fk-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Tiptap editor surface */
+.panel-root .fk-editor .ProseMirror {
+  min-height: 360px;
+  padding: 18px 20px;
+  outline: none;
+  direction: rtl;
+  text-align: right;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+.panel-root .fk-editor .ProseMirror p { margin: 0 0 0.9em; }
+.panel-root .fk-editor .ProseMirror h2 { font-size: 1.45em; font-weight: 700; margin: 1.2em 0 0.5em; line-height: 1.35; }
+.panel-root .fk-editor .ProseMirror h3 { font-size: 1.2em; font-weight: 700; margin: 1.1em 0 0.45em; line-height: 1.4; }
+.panel-root .fk-editor .ProseMirror ul { list-style: disc; padding-inline-start: 1.6em; margin: 0 0 0.9em; }
+.panel-root .fk-editor .ProseMirror ol { list-style: decimal; padding-inline-start: 1.6em; margin: 0 0 0.9em; }
+.panel-root .fk-editor .ProseMirror li { margin: 0.2em 0; }
+.panel-root .fk-editor .ProseMirror blockquote {
+  border-inline-start: 3px solid var(--primary-3);
+  background: var(--primary-softer);
+  margin: 0 0 0.9em;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: var(--ink-2);
+}
+.panel-root .fk-editor .ProseMirror hr { border: 0; border-top: 1px solid var(--border-strong); margin: 1.4em 0; }
+.panel-root .fk-editor .ProseMirror a { color: var(--primary); text-decoration: underline; }
+.panel-root .fk-editor .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin: 0.6em 0 1em;
+}
+.panel-root .fk-editor .ProseMirror img.ProseMirror-selectednode { outline: 3px solid var(--primary-3); }
+.panel-root .fk-editor .ProseMirror strong { font-weight: 700; }
+.panel-root .fk-tool.is-active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.panel-root .fk-tool:hover:not(:disabled) {
+  background: var(--surface-2);
+}

@@ -4,6 +4,7 @@ import type { LeadStatus, Prisma } from "@prisma/client";
 import { LeadsFilters } from "./filters";
 import { StatusPill } from "./status-pill";
 import { AssigneePill } from "./assignee-pill";
+import { LeadDetails, hasLeadDetails } from "./lead-details";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,7 @@ export default async function LeadsPage({
     prisma.lead.findMany({
       where,
       orderBy: { submittedAt: "desc" },
-      include: { source: true, assignee: true },
+      include: { source: true, assignee: true, offer: { select: { title: true } } },
       skip: (pageNum - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
     }),
@@ -114,6 +115,7 @@ export default async function LeadsPage({
                 <Th>Phone</Th>
                 <Th>City</Th>
                 <Th>Source</Th>
+                <Th>Details</Th>
                 <Th>Status</Th>
                 <Th>Assigned to</Th>
                 <Th>Submitted</Th>
@@ -122,7 +124,7 @@ export default async function LeadsPage({
             <tbody>
               {leads.length === 0 && (
                 <tr>
-                  <td colSpan={7} style={{ padding: 40, textAlign: "center", color: "var(--ink-3)" }}>
+                  <td colSpan={8} style={{ padding: 40, textAlign: "center", color: "var(--ink-3)" }}>
                     No leads match the current filter.
                   </td>
                 </tr>
@@ -203,6 +205,12 @@ export default async function LeadsPage({
                       >
                         {lead.source.label}
                       </span>
+                      <span style={{ display: "block", fontFamily: "var(--font-data)", fontSize: 11, color: "var(--ink-4)", marginTop: 4 }}>
+                        {lead.source.slug}
+                      </span>
+                    </Td>
+                    <Td>
+                      {hasLeadDetails(lead) ? <LeadDetails data={lead} /> : <span style={{ color: "var(--ink-4)" }}>—</span>}
                     </Td>
                     <Td>
                       <StatusPill leadId={lead.id} status={lead.status} />

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import type { CSSProperties, ReactNode } from "react";
 import { almarai } from "@/lib/fonts";
 import { Icon, SocialIcon } from "@/components/icons";
 import { Providers } from "@/components/providers/Providers";
@@ -14,6 +13,8 @@ import { HoursMap } from "./_home/HoursMap";
 import { Payments } from "./_home/Payments";
 import { StickyBar } from "./_home/StickyBar";
 import { Footer } from "./_home/Footer";
+import { Glow, Section, SectionHead } from "./_home/Sections";
+import { paletteVars } from "./_home/palette";
 import {
   BackToTop,
   Parallax,
@@ -40,28 +41,6 @@ export const metadata: Metadata = {
     "عيادات د. مها دحلان في جدة: البوتوكس والفيلر، شد الرقبة، الجلاس سكين الكوري، علاج التصبّغات وحب الشباب، نحت الجسم وعلاج تساقط الشعر. بإشراف نخبة الاستشاريين وطاقم نسائي بالكامل.",
   alternates: { canonical: "/" },
 };
-
-/* Onyx black ground, champagne / neon-gold accents, warm ivory type —
-   the luxury dark theme of the home page. `--color-md-ink` stays the dark
-   coffee used for text sitting ON gold surfaces. */
-const paletteVars: CSSProperties = {
-  "--color-md-bg": "#0B0805",
-  "--color-md-band": "#100B07",
-  "--color-md-card": "#16100A",
-  "--color-md-ink": "#241A0E",
-  "--color-md-text": "#F6EEDF",
-  "--color-md-muted": "rgba(246,238,223,.6)",
-  "--color-md-bronze": "#A67C3D",
-  "--color-md-gold": "#C99C4E",
-  "--color-md-gold-bright": "#E8C36A",
-  "--color-md-champagne": "#F0D48A",
-  "--color-md-neon": "#FFE9A8",
-  "--color-md-dark": "#0B0805",
-  "--color-md-line": "rgba(201,156,78,.16)",
-  "--color-md-line-strong": "rgba(201,156,78,.34)",
-  background: "#0B0805",
-  color: "#F6EEDF",
-} as CSSProperties;
 
 const WHY_US = [
   {
@@ -112,84 +91,6 @@ const JOURNEY = [
     body: "مواعيد مراجعة مجدولة نطمئن فيها على تطور نتيجتك حتى تكتمل.",
   },
 ];
-
-function SectionHead({
-  eyebrow,
-  title,
-  gold,
-  body,
-  align = "center",
-}: {
-  eyebrow: string;
-  title: string;
-  gold?: string;
-  body?: string;
-  align?: "center" | "start";
-}) {
-  return (
-    <Reveal
-      className={`flex flex-col ${
-        align === "center" ? "items-center text-center" : "items-start text-right"
-      }`}
-    >
-      <span className="inline-flex items-center gap-2.5 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.7)] px-[18px] py-2 text-[0.78rem] font-bold text-[var(--color-md-champagne)]">
-        <span
-          className="size-1.5 rounded-full bg-[var(--color-md-neon)]"
-          style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
-        />
-        {eyebrow}
-      </span>
-      <h2 className="mt-5 text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.55] font-extrabold tracking-[-0.01em] text-[var(--color-md-text)]">
-        {title}
-        {gold ? (
-          <>
-            {" "}
-            {/* glow lives on the wrapper: filter + background-clip:text on the
-                same element makes Chrome paint the gradient as a box */}
-            <span className="md-gold-glow inline-block">
-              <span className="md-gold-text">{gold}</span>
-            </span>
-          </>
-        ) : null}
-      </h2>
-      {body ? (
-        <p className="mt-4 max-w-[62ch] text-[1.02rem] leading-[1.9] font-light text-[rgba(246,238,223,0.6)]">
-          {body}
-        </p>
-      ) : null}
-    </Reveal>
-  );
-}
-
-function Section({
-  id,
-  children,
-  className = "",
-}: {
-  id?: string;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <section id={id} className={`px-[22px] py-[78px] sm:py-[96px] ${className}`}>
-      <div className="mx-auto max-w-[1180px]">{children}</div>
-    </section>
-  );
-}
-
-/** Soft champagne halo used between the dark bands. */
-function Glow({ className }: { className?: string }) {
-  return (
-    <div
-      className={`pointer-events-none absolute blur-[50px] ${className ?? ""}`}
-      style={{
-        background:
-          "radial-gradient(ellipse 50% 50% at 50% 50%, rgba(201,156,78,.14), transparent 70%)",
-      }}
-      aria-hidden
-    />
-  );
-}
 
 export default function Home() {
   return (

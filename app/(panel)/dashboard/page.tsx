@@ -11,6 +11,7 @@ import { StatusDonut } from "./_components/status-donut";
 import { CitiesBar } from "./_components/cities-bar";
 import { TeamBars } from "./_components/team-bars";
 import { Funnel } from "./_components/funnel";
+import { ContentStats, getContentCounts } from "./_components/content-stats";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -33,6 +34,8 @@ export default async function DashboardHome() {
       take: 1,
     }),
   ]);
+
+  const contentCounts = await getContentCounts();
 
   const topRepName =
     topRep.length && topRep[0].assigneeId
@@ -88,6 +91,8 @@ export default async function DashboardHome() {
       </div>
 
       <KpiRow overview={overview} />
+
+      <ContentStats counts={contentCounts} />
 
       <div
         style={{

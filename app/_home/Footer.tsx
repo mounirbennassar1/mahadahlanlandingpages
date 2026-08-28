@@ -31,6 +31,16 @@ const SOCIALS: { name: SocialName; href: string; label: string }[] = [
 
 const LINK_COLUMNS = CATEGORIES.filter((c) => c !== CATEGORY_ALL);
 
+/** Site pages (about, offers, doctors, devices, blog, booking). */
+const SITE_LINKS = [
+  { href: "/about-us", label: "من نحن" },
+  { href: "/offers", label: "العروض" },
+  { href: "/doctors", label: "الأطباء" },
+  { href: "/our-devices", label: "أجهزتنا" },
+  { href: "/news-articles", label: "المقالات" },
+  { href: "/book-now", label: "احجزي موعدك" },
+];
+
 export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-[rgba(201,156,78,0.18)] bg-[#080604] pt-16 pb-8 text-[#EFE6D6]">
@@ -117,8 +127,28 @@ export function Footer() {
             </div>
           </div>
 
-          {/* landing links, grouped by category */}
+          {/* site pages + landing links, grouped by category */}
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div>
+              <h3 className="mb-4 text-[0.8rem] font-extrabold text-[#F0D48A]">
+                الموقع
+              </h3>
+              <ul className="flex flex-col gap-2.5">
+                {SITE_LINKS.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="group inline-flex items-start gap-2 text-[0.88rem] leading-[1.7] font-light text-[#EFE6D6]/70 transition-colors duration-300 hover:text-[#EFE6D6]"
+                    >
+                      <Icon.ChevronLeft className="mt-1 size-3.5 shrink-0 text-[var(--color-md-champagne)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <span className="-mr-[22px] transition-transform duration-300 group-hover:mr-0">
+                        {item.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
             {LINK_COLUMNS.map((cat) => {
               const items = SPECIALTIES.filter((s) => s.category === cat);
               if (!items.length) return null;

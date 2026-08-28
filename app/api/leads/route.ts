@@ -16,7 +16,9 @@ export const dynamic = "force-dynamic";
  *   2. Same-origin clients (our landings) send `source: "<slug>"` in the JSON
  *      body. The source is looked up by slug.
  *
- * In both cases the body must be `{ fullName, phone, city }`.
+ * In both cases the body must be `{ fullName, phone, city }`. The website
+ * booking flows (/book-now, /offers) may also send `email`, `service`,
+ * `message`, `preferredAt`, `paymentMethod` and `offerId`.
  */
 const BodySchema = z.object({
   fullName: z.string().trim().min(2).max(120),
@@ -29,7 +31,21 @@ const BodySchema = z.object({
   utmCampaign: z.string().trim().max(120).optional(),
   utmContent: z.string().trim().max(120).optional(),
   utmTerm: z.string().trim().max(120).optional(),
+  // Website booking extras (book-now page, offers modal). All optional.
+  email: z.string().trim().email().max(160).optional().or(z.literal("")),
+  service: z.string().trim().max(160).optional(),
+  message: z.string().trim().max(1000).optional(),
+  /** ISO date (YYYY-MM-DD) or full ISO datetime. */
+  preferredAt: z.string().trim().max(40).optional(),
+  paymentMethod: z.enum(["COD", "TAMARA", "TABBY", "CARD"]).optional(),
+  offerId: z.string().trim().max(64).optional(),
 });
+
+function parsePreferredAt(value: string | undefined): Date | null {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
 
 const ALLOWED_ORIGINS = (process.env.LANDING_ORIGINS ?? "")
   .split(",")
@@ -103,12 +119,28 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Only attach an offer that actually exists (otherwise the FK would throw).
+  let offerId: string | null = null;
+  if (parsed.data.offerId) {
+    const offer = await prisma.offer.findUnique({
+      where: { id: parsed.data.offerId },
+      select: { id: true },
+    });
+    offerId = offer?.id ?? null;
+  }
+
   const lead = await prisma.lead.create({
     data: {
       fullName: parsed.data.fullName,
       phone: parsed.data.phone,
       city: parsed.data.city,
       sourceId: source.id,
+      email: parsed.data.email || null,
+      service: parsed.data.service || null,
+      message: parsed.data.message || null,
+      preferredAt: parsePreferredAt(parsed.data.preferredAt),
+      paymentMethod: parsed.data.paymentMethod ?? null,
+      offerId,
       utmSource: parsed.data.utmSource || null,
       utmMedium: parsed.data.utmMedium || null,
       utmCampaign: parsed.data.utmCampaign || null,

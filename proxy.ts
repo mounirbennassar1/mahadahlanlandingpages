@@ -5,19 +5,22 @@ import { auth } from "@/auth";
  * Single proxy (Next 16 middleware) handling two concerns:
  *
  * 1. **Subdomain routing.** The admin panel is hosted at `portal.mahadahlan.com`.
- *    - On the portal host: only admin paths (/login, /dashboard, /api/auth) are
- *      allowed; anything else 404s. Root `/` redirects to /login or /dashboard.
+ *    - On the portal host: only admin paths (/login, /dashboard, /api/auth,
+ *      /api/admin) are allowed; anything else 404s. Root `/` redirects to
+ *      /login or /dashboard.
  *    - On the public host: admin paths return 404 so the panel can't be reached
  *      from mahadahlan.com directly.
  *    - Localhost is unrestricted for dev (both panel and landings reachable).
  *
  * 2. **Auth gating** for admin paths. Unauthenticated users hitting an admin
  *    path get redirected to /login; authed users hitting /login get bounced
- *    to /dashboard.
+ *    to /dashboard. Unauthenticated calls to /api/admin/* get a 401 JSON
+ *    response instead of a redirect (they are fetch() calls from the panel).
  */
 
 const ADMIN_PATHS = [/^\/login(\/|$)/, /^\/dashboard(\/|$)/];
 const ADMIN_API = [/^\/api\/auth(\/|$)/];
+const PRIVATE_API = [/^\/api\/admin(\/|$)/];
 const PUBLIC_API = [/^\/api\/leads(\/|$)/];
 
 function isAdminPath(pathname: string) {
@@ -32,6 +35,11 @@ function isPublicApi(pathname: string) {
   return PUBLIC_API.some((r) => r.test(pathname));
 }
 
+/** Session-gated JSON endpoints used by the dashboard (uploads, etc.). */
+function isPrivateApi(pathname: string) {
+  return PRIVATE_API.some((r) => r.test(pathname));
+}
+
 export default auth((req: NextRequest & { auth: unknown }) => {
   const host = (req.headers.get("host") ?? "").toLowerCase();
   const { pathname } = req.nextUrl;
@@ -43,6 +51,7 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   const isLocal = host.startsWith("localhost") || host.startsWith("127.");
   const isAdmin = isAdminPath(pathname);
   const isAuth = isAuthApi(pathname);
+  const isPrivate = isPrivateApi(pathname);
 
   // ── Production host gating ─────────────────────────────────────────────
   if (!isLocal) {
@@ -53,15 +62,20 @@ export default auth((req: NextRequest & { auth: unknown }) => {
         return NextResponse.redirect(new URL(target, req.nextUrl));
       }
       // Block any non-admin path on the portal subdomain.
-      if (!isAdmin && !isAuth) {
+      if (!isAdmin && !isAuth && !isPrivate) {
         return new NextResponse("Not found", { status: 404 });
       }
     } else {
       // On the main domain: admin paths are hidden completely.
-      if (isAdmin || isAuth) {
+      if (isAdmin || isAuth || isPrivate) {
         return new NextResponse("Not found", { status: 404 });
       }
     }
+  }
+
+  // ── Auth gate for the dashboard's JSON API (401, never a redirect) ─────
+  if (isPrivate && !req.auth) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   // ── Auth gate for admin paths ──────────────────────────────────────────

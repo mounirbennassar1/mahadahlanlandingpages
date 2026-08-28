@@ -48,3 +48,6 @@ AGENTS.md
 
 # local dev artifacts
 /screenshots/
+
+# dashboard image uploads (local dev fallback; production uses Vercel Blob)
+/public/uploads/

@@ -6,7 +6,7 @@ import { GOLD_GRADIENT, WA_LINK } from "./config";
 
 /** Home-only mobile sticky bar: black glass with a gold booking button.
  *  (The shared MobileStickyCTA is white glass and belongs to the light landings.) */
-export function StickyBar() {
+export function StickyBar({ bookHref = "#contact" }: { bookHref?: string }) {
   return (
     <motion.div
       initial={{ y: 80, opacity: 0 }}
@@ -16,7 +16,7 @@ export function StickyBar() {
     >
       <div className="grid grid-cols-[1fr_auto] gap-2">
         <a
-          href="#contact"
+          href={bookHref}
           className="flex h-12 items-center justify-center gap-2 rounded-2xl text-sm font-extrabold text-[var(--color-md-ink)] shadow-[0_0_24px_-6px_rgba(232,195,106,0.6)] transition-transform active:scale-[0.98]"
           style={{ background: GOLD_GRADIENT }}
         >
