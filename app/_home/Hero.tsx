@@ -8,7 +8,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
-import { GOLD_GRADIENT, WA_LINK } from "./config";
+import { GOLD_GRADIENT } from "./config";
+import { waLink } from "./i18n/dictionary";
+import { useLocale } from "./i18n/LocaleProvider";
 
 // Decorative WebGL only — three.js is ~700KB, so it loads as its own async
 // chunk after hydration instead of blocking first paint.
@@ -26,9 +28,15 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
  * a Higgsfield-generated silk-veil portrait. GSAP runs the masked-line
  * entrance and the scroll-scrubbed parallax exit; Framer Motion handles the
  * floating portrait and button micro-interactions.
+ *
+ * Composition follows the reading direction: copy on the start side, portrait
+ * on the end side (RTL: copy right / portrait left; LTR: mirrored).
  */
 export function Hero() {
   const scope = useRef<HTMLElement>(null);
+  const { locale, t, isRtl } = useLocale();
+  const copy = t.hero;
+  const Arrow = isRtl ? Icon.ArrowLeft : Icon.ArrowRight;
 
   useGSAP(
     () => {
@@ -107,8 +115,7 @@ export function Hero() {
       <div
         className="pointer-events-none absolute inset-0 z-[2]"
         style={{
-          background:
-            "linear-gradient(to left, rgba(11,8,5,.78), rgba(11,8,5,.3) 48%, rgba(11,8,5,.05) 72%)",
+          background: `linear-gradient(to ${isRtl ? "left" : "right"}, rgba(11,8,5,.78), rgba(11,8,5,.3) 48%, rgba(11,8,5,.05) 72%)`,
         }}
         aria-hidden
       />
@@ -120,28 +127,40 @@ export function Hero() {
         aria-hidden
       />
 
-      {/* ——— portrait (left on lg), floating on silk ——— */}
-      <div className="md-hero-portrait pointer-events-none absolute inset-y-0 left-0 z-[3] hidden w-[46%] lg:block">
+      {/* ——— portrait (end side on lg), floating on silk. Anchored to the inner
+          edge of its column so the doctor stands next to the copy, not at the
+          far edge ——— */}
+      <div
+        className={`md-hero-portrait pointer-events-none absolute inset-y-0 ${
+          isRtl ? "left-0" : "right-0"
+        } z-[3] hidden w-[42%] lg:block`}
+      >
         <motion.div
-          className="absolute inset-x-0 bottom-0 top-[24%]"
+          className="absolute inset-x-0 bottom-0 top-[18%]"
           animate={{ y: [0, -12, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
           <Image
             src="/home/hero-doctor-gold.webp"
-            alt="طبيبة بالبالطو الأبيض في عيادات د. مها دحلان"
+            alt={copy.portraitAlt}
             fill
             priority
             sizes="46vw"
-            className="object-contain object-[left_bottom]"
+            className={`object-contain ${
+              isRtl ? "object-[right_bottom]" : "object-[left_bottom]"
+            }`}
             style={{ filter: "drop-shadow(0 40px 70px rgba(0,0,0,0.65))" }}
           />
         </motion.div>
       </div>
 
-      {/* ——— copy (right in RTL) ——— */}
+      {/* ——— copy (start side) ——— */}
       <div className="relative z-10 mx-auto flex min-h-svh max-w-[1224px] flex-col justify-center px-[22px] pt-[128px] pb-24 lg:pt-[110px]">
-        <div className="md-hero-copy flex w-full flex-col items-center text-center lg:w-[57%] lg:items-start lg:text-right">
+        <div
+          className={`md-hero-copy flex w-full flex-col items-center text-center lg:w-[57%] lg:items-start ${
+            isRtl ? "lg:text-right" : "lg:text-left"
+          }`}
+        >
           {/* eyebrow */}
           <div className="md-hero-fade flex items-center gap-3.5">
             <span
@@ -150,34 +169,44 @@ export function Hero() {
               aria-hidden
             />
             <span className="md-neon-text text-[0.78rem] font-bold">
-              تجربة تجميلية فاخرة في جدة
+              {copy.eyebrow}
             </span>
           </div>
 
-          {/* masked-line headline */}
-          <h1 className="mt-7 text-[clamp(2.6rem,6.4vw,4.5rem)] leading-[1.32] font-extrabold tracking-[-0.015em] text-[var(--color-md-text)]">
+          {/* masked-line headline. Latin glyphs read larger than Arabic at the
+              same size, so the English display scale is stepped down a notch. */}
+          <h1
+            className={`mt-7 ${
+              isRtl
+                ? "text-[clamp(2.6rem,6.4vw,4.5rem)] leading-[1.32] font-extrabold tracking-[-0.015em]"
+                : "text-[clamp(2.3rem,4.8vw,3.5rem)] leading-[1.15] font-extrabold tracking-[-0.02em]"
+            } text-[var(--color-md-text)]`}
+          >
             <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
-              <span className="md-hero-line block">حيثُ يُصاغ الجمال</span>
+              <span className="md-hero-line block">{copy.line1}</span>
             </span>
             {/* glow sits on the mask: a filter INSIDE the clip would get its
                 halo sheared into a visible rectangle */}
             <span className="md-gold-glow block overflow-hidden pb-[0.18em] -mb-[0.18em]">
               <span className="md-hero-line block">
-                <span className="md-gold-text">بلمسةٍ من ذهب</span>
+                <span className="md-gold-text">{copy.line2}</span>
               </span>
             </span>
           </h1>
 
-          <p className="md-hero-fade mt-6 max-w-[52ch] text-[1.08rem] leading-[2] font-light text-[rgba(246,238,223,0.65)]">
-            أربعة عشر برنامجاً علاجياً بإشراف د. مها دحلان، استشارية الجلدية
-            والتجميل والليزر، في أجواءٍ تحفظ خصوصيتك بطاقمٍ نسائي بالكامل.
+          <p
+            className={`md-hero-fade mt-6 max-w-[52ch] text-[1.08rem] ${
+              isRtl ? "leading-[2]" : "leading-[1.8]"
+            } font-light text-[rgba(246,238,223,0.65)]`}
+          >
+            {copy.body}
           </p>
 
           {/* portrait in-flow on mobile: image first, then the buttons */}
           <div className="md-hero-fade relative mx-auto mt-8 aspect-[3/4] w-full max-w-[340px] lg:hidden">
             <Image
               src="/home/hero-doctor-gold.webp"
-              alt="طبيبة بالبالطو الأبيض في عيادات د. مها دحلان"
+              alt={copy.portraitAlt}
               fill
               sizes="(max-width: 1024px) 88vw, 0px"
               className="object-contain"
@@ -201,11 +230,11 @@ export function Hero() {
               className="inline-flex items-center justify-center gap-2.5 rounded-full px-[36px] py-[17px] text-base font-extrabold text-[var(--color-md-ink)] shadow-[0_0_44px_-8px_rgba(232,195,106,0.65)]"
               style={{ background: GOLD_GRADIENT }}
             >
-              احجزي استشارتك
-              <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
+              {copy.book}
+              <Arrow className="size-[17px]" strokeWidth={2.4} />
             </motion.a>
             <motion.a
-              href={WA_LINK}
+              href={waLink(locale)}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ y: -3 }}
@@ -213,7 +242,7 @@ export function Hero() {
               className="inline-flex items-center justify-center gap-2.5 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(11,8,5,0.5)] px-8 py-[17px] text-base font-extrabold text-[var(--color-md-text)] backdrop-blur-sm transition-colors duration-300 hover:border-[var(--color-md-champagne)]"
             >
               <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-              تواصلي معنا عبر الواتس آب
+              {copy.whatsapp}
             </motion.a>
           </div>
 
@@ -223,7 +252,7 @@ export function Hero() {
       {/* scroll cue */}
       <div className="md-hero-cue absolute bottom-[86px] left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2.5 lg:flex">
         <span className="text-[0.72rem] font-bold text-[rgba(246,238,223,0.45)]">
-          مرّري للاكتشاف
+          {copy.scrollCue}
         </span>
         <span className="block h-10 w-px overflow-hidden" aria-hidden>
           <span className="md-cue-line block h-full w-full bg-gradient-to-b from-transparent via-[var(--color-md-champagne)] to-transparent" />

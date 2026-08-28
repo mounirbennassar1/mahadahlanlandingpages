@@ -306,7 +306,7 @@ function Dialog({ offer, onClose }: { offer: OfferItem; onClose: () => void }) {
                 htmlFor={`${uid}-phone`}
                 required
                 error={errors.phone}
-                hint="٩ أرقام تبدأ بـ ٥، بدون الصفر."
+                hint="9 أرقام تبدأ بـ 5، بدون الصفر."
               >
                 <PhoneInput
                   id={`${uid}-phone`}

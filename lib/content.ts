@@ -174,18 +174,25 @@ export function excerptFromHtml(html: string, max = 160) {
 
 const ARABIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 
+/** Numbers are shown in Western digits site-wide (client decision, 2026-08-28).
+ *  Kept under its historical name so the many call sites don't churn: it now
+ *  normalises any Arabic-Indic digits (and ٫ ٬ ٪) in the input to Western forms. */
 export function toArabicDigits(value: string | number) {
-  return String(value).replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)]);
+  return String(value)
+    .replace(/[٠-٩]/g, (d) => String(ARABIC_DIGITS.indexOf(d)))
+    .replace(/٫/g, ".")
+    .replace(/٬/g, ",")
+    .replace(/٪/g, "%");
 }
 
-/** "١٬٢٥٠ ر.س" style price label. */
+/** "1,250 ر.س" style price label. */
 export function formatSar(amount: number) {
   return `${toArabicDigits(amount.toLocaleString("en-US"))} ر.س`;
 }
 
 export function formatArabicDate(date: Date | null | undefined) {
   if (!date) return "";
-  return new Intl.DateTimeFormat("ar-SA-u-nu-arab-ca-gregory", {
+  return new Intl.DateTimeFormat("ar-SA-u-nu-latn-ca-gregory", {
     year: "numeric",
     month: "long",
     day: "numeric",

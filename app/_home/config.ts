@@ -2,14 +2,19 @@ import { Icon } from "@/components/icons";
 
 const ARABIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 
-/** 1270 → "١٢٧٠". Lives here (not in the "use client" Motion module) so
- *  server components can call it instead of getting a client reference. */
+/** Numbers are shown in Western digits site-wide (client decision, 2026-08-28).
+ *  Kept under its historical name so the many call sites don't churn: it now
+ *  normalises any Arabic-Indic digits (and ٫ ٬ ٪) in the input to Western forms. */
 export function toArabicDigits(value: string | number) {
-  return String(value).replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)]);
+  return String(value)
+    .replace(/[٠-٩]/g, (d) => String(ARABIC_DIGITS.indexOf(d)))
+    .replace(/٫/g, ".")
+    .replace(/٬/g, ",")
+    .replace(/٪/g, "%");
 }
 
 export const WHATSAPP_NUMBER = "966503377702";
-export const PHONE_DISPLAY = "٩٢٠٠٠٧٥١٥";
+export const PHONE_DISPLAY = "920007515";
 export const TEL_LINK = "tel:+966920007515";
 
 export const WA_TOPIC_MESSAGE =
@@ -48,11 +53,11 @@ export type OpeningHours = {
 
 /** Weekly schedule shown in the hours section and the topbar. */
 export const HOURS: OpeningHours[] = [
-  { label: "السبت إلى الخميس", time: "١٢:٠٠ ظهراً حتى ٨:٠٠ مساءً" },
+  { label: "السبت إلى الخميس", time: "12:00 ظهراً حتى 8:00 مساءً" },
   { label: "الجمعة", time: "مغلق", closed: true },
 ];
 
-export const HOURS_SHORT = "السبت إلى الخميس · ١٢ ظهراً حتى ٨ مساءً";
+export const HOURS_SHORT = "السبت إلى الخميس · 12 ظهراً حتى 8 مساءً";
 
 /** Open Sat–Thu 12:00–20:00, Riyadh time. Friday = day 5. */
 export const OPENING = { openHour: 12, closeHour: 20, closedDay: 5 };
@@ -166,7 +171,7 @@ export const SPECIALTIES: Specialty[] = [
       "إبر مجهرية طبيعية من الإسفنج البحري تفتح آلاف القنوات الدقيقة وتحفّز الكولاجين بلا جهاز.",
     image: "/korean-spicules/hero.webp",
     category: "نضارة البشرة",
-    tag: "طبيعي ١٠٠٪",
+    tag: "طبيعي 100%",
     icon: Icon.Waves,
   },
   {
@@ -227,7 +232,7 @@ export const SPECIALTIES: Specialty[] = [
       "خصومات ذهبية على الهيدرافيشل والبوتوكس والفيلر وعلاج الهالات وعلاجات الشعر والبشرة.",
     image: "/eid-offer/hero.webp",
     category: "عروض",
-    tag: "خصم حتى ٤٠٪",
+    tag: "خصم حتى 40%",
     icon: Icon.Gift,
   },
 ];
@@ -252,7 +257,7 @@ export const SLIDES: Slide[] = [
     titleTop: "بشرةٌ زجاجية",
     titleGold: "تتوهّج من الداخل",
     body: "تنظيف عميق، تقشير لطيف، وترطيب مكثّف في جلسة واحدة تخرجين بعدها بإشراقة تُرى فوراً، بلا إبر وبلا فترة نقاهة.",
-    chips: ["بدون إبر", "٦٠ دقيقة", "نتيجة فورية"],
+    chips: ["بدون إبر", "60 دقيقة", "نتيجة فورية"],
     main: "/glass-skin/closeup.webp",
     mainAlt: "بشرة صافية بإشراقة زجاجية",
   },
@@ -282,7 +287,7 @@ export const SLIDES: Slide[] = [
     titleTop: "قوامٌ متناسق",
     titleGold: "بلا جراحة ولا نقاهة",
     body: "الجلسة الواحدة تعادل آلاف الانقباضات العضلية، تحرق الدهون الموضعية وتشدّ العضلات، وأنتِ مستلقية في راحة تامة.",
-    chips: ["٣٠ دقيقة", "بلا جراحة", "نتائج تُقاس"],
+    chips: ["30 دقيقة", "بلا جراحة", "نتائج تُقاس"],
     main: "/body/card.webp",
     mainAlt: "نحت الجسم بجهاز التحفيز العضلي",
   },

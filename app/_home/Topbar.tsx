@@ -3,24 +3,15 @@
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { Icon, SocialIcon, type SocialName } from "@/components/icons";
-import { HOURS_SHORT, PHONE_DISPLAY, TEL_LINK } from "./config";
+import { Icon, SocialIcon } from "@/components/icons";
+import { PHONE_DISPLAY, TEL_LINK } from "./config";
+import { useLocale } from "./i18n/LocaleProvider";
 import { PayLogo } from "./PayLogo";
 
-const ANNOUNCEMENTS = [
-  "قسّطي جلساتك مع تابي وتمارا على ٤ دفعات بدون فوائد",
-  "طاقم نسائي بالكامل وخصوصية تامة",
-  "تقييم ٤٫٨ من ٥ بأكثر من ١٢٧٠ تقييماً على Google",
-];
-
-const SOCIALS: { name: SocialName; href: string; label: string }[] = [
-  {
-    name: "instagram",
-    href: "https://www.instagram.com/md_clinics_",
-    label: "إنستغرام",
-  },
-  { name: "tiktok", href: "https://www.tiktok.com/@md.clinics", label: "تيك توك" },
-  { name: "snapchat", href: "https://snapchat.com/t/RI87LsZs", label: "سناب شات" },
+const SOCIAL_LINKS: { name: "instagram" | "tiktok" | "snapchat"; href: string }[] = [
+  { name: "instagram", href: "https://www.instagram.com/md_clinics_" },
+  { name: "tiktok", href: "https://www.tiktok.com/@md.clinics" },
+  { name: "snapchat", href: "https://snapchat.com/t/RI87LsZs" },
 ];
 
 /**
@@ -31,6 +22,8 @@ const SOCIALS: { name: SocialName; href: string; label: string }[] = [
  */
 export function Topbar() {
   const scope = useRef<HTMLDivElement>(null);
+  const { t } = useLocale();
+  const copy = t.topbar;
 
   useGSAP(
     () => {
@@ -54,7 +47,7 @@ export function Topbar() {
   return (
     <div ref={scope} className="relative bg-[#080604]">
       <div className="mx-auto flex h-[38px] max-w-[1180px] items-center justify-between gap-4 px-[22px] text-[0.74rem] font-bold">
-        {/* hours (right in RTL) */}
+        {/* hours (start side) */}
         <span className="hidden shrink-0 items-center gap-2 text-[rgba(246,238,223,0.55)] lg:inline-flex">
           <span
             className="size-1.5 rounded-full bg-[#FFE9A8]"
@@ -62,12 +55,12 @@ export function Topbar() {
             aria-hidden
           />
           <Icon.Clock className="size-3.5 text-[var(--color-md-champagne)]" />
-          {HOURS_SHORT}
+          {copy.hoursShort}
         </span>
 
         {/* rotating announcements */}
         <div className="relative h-full flex-1 overflow-hidden text-center">
-          {ANNOUNCEMENTS.map((text, i) => (
+          {copy.announcements.map((text, i) => (
             <span
               key={text}
               className={`md-announce absolute inset-0 flex items-center justify-center truncate px-2 ${
@@ -79,12 +72,9 @@ export function Topbar() {
           ))}
         </div>
 
-        {/* payments + phone + socials (left in RTL) */}
+        {/* payments + phone + socials (end side) */}
         <span className="hidden shrink-0 items-center gap-4 lg:inline-flex">
-          <span
-            className="flex items-center gap-2"
-            title="قسّطي جلساتك مع تابي وتمارا"
-          >
+          <span className="flex items-center gap-2" title={copy.splitTitle}>
             <PayLogo brand="tabby" height={18} />
             <PayLogo brand="tamara" height={18} />
           </span>
@@ -97,13 +87,13 @@ export function Topbar() {
             <span dir="ltr">{PHONE_DISPLAY}</span>
           </a>
           <span className="flex items-center gap-2.5">
-            {SOCIALS.map((s) => (
+            {SOCIAL_LINKS.map((s) => (
               <a
                 key={s.name}
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={s.label}
+                aria-label={copy.socials[s.name]}
                 className="text-[rgba(246,238,223,0.45)] transition-all duration-300 hover:text-[#FFE9A8] hover:drop-shadow-[0_0_8px_rgba(255,233,168,0.7)]"
               >
                 <SocialIcon name={s.name} />

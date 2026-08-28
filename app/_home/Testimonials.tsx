@@ -1,77 +1,18 @@
 import type { CSSProperties } from "react";
 import { Icon } from "@/components/icons";
-
-type Review = {
-  quote: string;
-  name: string;
-  caption: string;
-  initial: string;
-};
+import {
+  getDict,
+  LANG_META,
+  type Locale,
+  type ReviewEntry,
+} from "./i18n/dictionary";
 
 /* Genuine quotes from the clinic's public Google reviews
    (MD Clinics: 4.8 stars, 1,271+ reviews). Long reviews are split across
-   the two rows; nothing here is invented. */
-const ROW_A: Review[] = [
-  {
-    quote:
-      "الدكتورة مها دحلان من أفضل الدكاترة، يدها خفيفة ورائعة في عملها، وتسمع للمريض وتعطيه شرحاً كاملاً وافياً لما يحتاجه دون مبالغة.",
-    name: "عبير علي",
-    caption: "تقييم Google، ٥ نجوم",
-    initial: "ع",
-  },
-  {
-    quote:
-      "بكل أمانة: الدكتورة مها دحلان من أفضل أطباء واستشاريي الجلدية في جدة بدون مبالغة. تعاملها راقٍ جداً وتشرح الخطوات بكل وضوح.",
-    name: "مصطفى الحاتم",
-    caption: "تقييم Google، ٥ نجوم",
-    initial: "م",
-  },
-  {
-    quote:
-      "أتقدم بجزيل الشكر للدكتورة مها دحلان على احترافيتها العالية وخبرتها المميزة، حرصت على شرح الحالة وخطة العلاج بكل وضوح.",
-    name: "ملك نواوي",
-    caption: "تقييم Google، ٥ نجوم",
-    initial: "م",
-  },
-  {
-    quote:
-      "أكثر من ١٢٧٠ تقييماً على خرائط Google بمتوسط ٤٫٨ من ٥. ثقة تتجدد كل يوم.",
-    name: "عيادات مها دحلان",
-    caption: "خرائط Google",
-    initial: "★",
-  },
-];
+   the two rows; nothing here is invented. The English rows carry faithful
+   translations of the same reviews. Data lives in `i18n/dictionary.ts`. */
 
-const ROW_B: Review[] = [
-  {
-    quote:
-      "تهتم بأدق التفاصيل ولا تقترح إلا ما يحتاجه المريض فعلاً، هذه خلاصة تجربتي معها.",
-    name: "عبير علي",
-    caption: "تقييم Google، ٥ نجوم",
-    initial: "ع",
-  },
-  {
-    quote: "تجاوب على كل الأسئلة بصدر رحب، وتشرح خطوات العلاج قبل البدء.",
-    name: "مصطفى الحاتم",
-    caption: "تقييم Google، ٥ نجوم",
-    initial: "م",
-  },
-  {
-    quote:
-      "أظهرت اهتماماً كبيراً بمتابعة النتائج والاطمئنان على تحسّن الحالة، والطاقم في غاية اللطف.",
-    name: "ملك نواوي",
-    caption: "تقييم Google، ٥ نجوم",
-    initial: "م",
-  },
-  {
-    quote: "دكتورة إيناس عبد العزيز ممتازة وتعامل راقٍ.",
-    name: "زائرة العيادة",
-    caption: "من تحديثات الزوار على Google",
-    initial: "ز",
-  },
-];
-
-function Card({ review }: { review: Review }) {
+function Card({ review }: { review: ReviewEntry }) {
   return (
     <div className="w-[268px] flex-none rounded-[22px] border border-[rgba(201,156,78,0.22)] bg-[var(--color-md-card)] px-5 py-[22px] transition-colors duration-300 hover:border-[rgba(232,195,106,0.45)] sm:w-[380px] sm:px-6 sm:py-[26px]">
       <div className="mb-3 flex items-center justify-between">
@@ -112,11 +53,15 @@ function MarqueeRow({
   reviews,
   duration,
   reverse,
+  locale,
 }: {
-  reviews: Review[];
+  reviews: ReviewEntry[];
   duration: string;
   reverse?: boolean;
+  locale: Locale;
 }) {
+  const dir = LANG_META[locale].dir;
+  const reversed = dir === "rtl" ? reverse : !reverse;
   return (
     <div
       dir="ltr"
@@ -129,11 +74,11 @@ function MarqueeRow({
       }}
     >
       <div
-        className={`md-marquee-track gap-5 ${reverse ? "md-marquee-reverse" : ""}`}
+        className={`md-marquee-track gap-5 ${reversed ? "md-marquee-reverse" : ""}`}
         style={{ "--md-marquee-duration": duration } as CSSProperties}
       >
         {[0, 1].map((copy) => (
-          <div key={copy} dir="rtl" className="flex gap-5 pe-5">
+          <div key={copy} dir={dir} className="flex gap-5 pe-5">
             {reviews.map((r, i) => (
               <Card key={`${copy}-${i}`} review={r} />
             ))}
@@ -145,11 +90,12 @@ function MarqueeRow({
 }
 
 /** Two counter-scrolling marquee rows of real Google-review quotes. */
-export function Testimonials() {
+export function Testimonials({ locale = "ar" }: { locale?: Locale }) {
+  const { rowA, rowB } = getDict(locale).testimonials;
   return (
     <div className="flex flex-col gap-5">
-      <MarqueeRow reviews={ROW_A} duration="48s" />
-      <MarqueeRow reviews={ROW_B} duration="56s" reverse />
+      <MarqueeRow reviews={rowA} duration="48s" locale={locale} />
+      <MarqueeRow reviews={rowB} duration="56s" reverse locale={locale} />
     </div>
   );
 }

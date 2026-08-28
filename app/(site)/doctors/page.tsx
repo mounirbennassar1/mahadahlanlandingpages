@@ -18,15 +18,15 @@ const INTRO =
 export const metadata: Metadata = {
   title: "الأطباء",
   description:
-    "طبيبات وأخصائيات عيادات د. مها دحلان في جدة: فريق نسائي بالكامل بقيادة استشارية الجلدية والتجميل والليزر، بخبرة تتجاوز ١٣ عاماً ورعاية شخصية لكل مراجعة.",
+    "طبيبات وأخصائيات عيادات د. مها دحلان في جدة: فريق نسائي بالكامل بقيادة استشارية الجلدية والتجميل والليزر، بخبرة تتجاوز 13 عاماً ورعاية شخصية لكل مراجعة.",
   alternates: { canonical: "/doctors" },
 };
 
 const PROOF = [
   { icon: Icon.Users, label: "طاقم نسائي بالكامل" },
-  { icon: Icon.Award, label: "خبرة تتجاوز ١٣ عاماً" },
-  { icon: Icon.Star, label: "٤٫٨ من ٥ على Google" },
-  { icon: Icon.MessageCircle, label: "أكثر من ١٢٧٠ تقييماً" },
+  { icon: Icon.Award, label: "خبرة تتجاوز 13 عاماً" },
+  { icon: Icon.Star, label: "4.8 من 5 على Google" },
+  { icon: Icon.MessageCircle, label: "أكثر من 1270 تقييماً" },
 ];
 
 const WHY_TEAM = [

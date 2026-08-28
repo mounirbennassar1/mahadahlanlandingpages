@@ -10,7 +10,7 @@ export function NotFoundView() {
       <Glow className="-top-20 left-1/2 h-[360px] w-[640px] -translate-x-1/2" />
       <div className="relative mx-auto flex max-w-[640px] flex-col items-center text-center">
         <span className="md-gold-glow inline-block">
-          <span className="md-gold-text text-[clamp(4rem,14vw,7rem)] leading-none font-extrabold">٤٠٤</span>
+          <span className="md-gold-text text-[clamp(4rem,14vw,7rem)] leading-none font-extrabold">404</span>
         </span>
         <h1 className="mt-4 text-[clamp(1.6rem,4vw,2.4rem)] leading-[1.5] font-extrabold text-[var(--color-md-text)]">
           هذه الصفحة غير موجودة

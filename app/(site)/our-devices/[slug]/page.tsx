@@ -55,19 +55,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const SESSION = [
   {
-    num: "٠١",
+    num: "01",
     icon: Icon.ScanFace,
     title: "تقييم",
     body: "تفحص الطبيبة بشرتك وتؤكد أن هذا الجهاز هو الخيار الأنسب لحالتك، أو تقترح بديلاً أدق.",
   },
   {
-    num: "٠٢",
+    num: "02",
     icon: Icon.Zap,
     title: "الجلسة",
     body: "تُضبط الإعدادات لدرجة بشرتك، وتُفتح المستهلكات الأصلية أمامك، مع راحة وتبريد طوال الجلسة.",
   },
   {
-    num: "٠٣",
+    num: "03",
     icon: Icon.CalendarCheck,
     title: "المتابعة",
     body: "تعليمات واضحة لما بعد الجلسة، وموعد مراجعة نطمئن فيه على تطور النتيجة ونحدد الجلسة التالية.",

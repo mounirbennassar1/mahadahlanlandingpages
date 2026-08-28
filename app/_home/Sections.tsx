@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Motion";
+import { LANG_META, type Locale } from "./i18n/dictionary";
 
 /** Eyebrow pill + gold-glow headline + optional lede. Shared by the home page
  *  and every site page so section heads stay identical across the site. */
@@ -10,6 +11,7 @@ export function SectionHead({
   body,
   align = "center",
   as: Heading = "h2",
+  locale = "ar",
 }: {
   eyebrow: string;
   title: string;
@@ -18,11 +20,18 @@ export function SectionHead({
   align?: "center" | "start";
   /** Use "h1" for the first head on a page. */
   as?: "h1" | "h2";
+  /** Decides which edge `align="start"` hugs. */
+  locale?: Locale;
 }) {
+  const isRtl = LANG_META[locale].dir === "rtl";
   return (
     <Reveal
       className={`flex flex-col ${
-        align === "center" ? "items-center text-center" : "items-start text-right"
+        align === "center"
+          ? "items-center text-center"
+          : isRtl
+            ? "items-start text-right"
+            : "items-start text-left"
       }`}
     >
       <span className="inline-flex items-center gap-2.5 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.7)] px-[18px] py-2 text-[0.78rem] font-bold text-[var(--color-md-champagne)]">

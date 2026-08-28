@@ -14,12 +14,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon } from "@/components/icons";
 import { toArabicDigits } from "./config";
+import { useLocale } from "./i18n/LocaleProvider";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-/** Fixed top scroll-progress bar (origin right for RTL), scrubbed by GSAP. */
+/** Fixed top scroll-progress bar (grows from the reading-start edge), scrubbed by GSAP. */
 export function ScrollProgress() {
   const ref = useRef<HTMLDivElement>(null);
+  const { isRtl } = useLocale();
 
   useGSAP(() => {
     gsap.to(ref.current, {
@@ -32,7 +34,7 @@ export function ScrollProgress() {
   return (
     <div
       ref={ref}
-      className="fixed inset-x-0 top-0 z-[120] h-[3px] origin-right scale-x-0"
+      className={`fixed inset-x-0 top-0 z-[120] h-[3px] ${isRtl ? "origin-right" : "origin-left"} scale-x-0`}
       style={{ background: "linear-gradient(90deg, #8A6430, #E0BE7A 50%, #A67C3D)" }}
       aria-hidden
     />
@@ -211,9 +213,10 @@ export function Counter({
   );
 }
 
-/** Gold hairline that draws itself (right to left) as the user scrolls past. */
+/** Gold hairline that draws itself from the reading-start edge as the user scrolls past. */
 export function ScrubLine({ className }: { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const { isRtl } = useLocale();
 
   useGSAP(
     () => {
@@ -238,7 +241,7 @@ export function ScrubLine({ className }: { className?: string }) {
   return (
     <div
       ref={ref}
-      className={`origin-right ${className ?? ""}`}
+      className={`${isRtl ? "origin-right" : "origin-left"} ${className ?? ""}`}
       style={{
         background:
           "linear-gradient(90deg, rgba(201,156,78,.1), #E8C36A 50%, rgba(201,156,78,.1))",
@@ -276,6 +279,7 @@ export function SpotlightCard({
 /** Round back-to-top button, fades in after the first viewport. */
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 900);
@@ -288,7 +292,7 @@ export function BackToTop() {
     <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      aria-label="العودة إلى الأعلى"
+      aria-label={t.backToTop}
       className={`fixed bottom-24 right-6 z-50 hidden size-11 items-center justify-center rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.85)] text-[var(--color-md-champagne)] shadow-[0_0_24px_-6px_rgba(232,195,106,0.5)] backdrop-blur-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-[rgba(35,26,15,0.95)] hover:shadow-[0_0_30px_-6px_rgba(255,223,142,0.7)] md:flex ${
         visible ? "opacity-100" : "pointer-events-none translate-y-3 opacity-0"
       }`}

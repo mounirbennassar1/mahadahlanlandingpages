@@ -16,7 +16,7 @@ import { VisitBlock } from "./_components/VisitBlock";
 export const revalidate = 300;
 
 const DESCRIPTION =
-  "تعرّفي على مجمع عيادات د. مها دحلان الطبي في جدة: قصتنا ورؤيتنا ورسالتنا وقيمنا، وفريق نسائي بخبرة تتجاوز ١٣ عاماً في طب الجلدية والتجميل والليزر.";
+  "تعرّفي على مجمع عيادات د. مها دحلان الطبي في جدة: قصتنا ورؤيتنا ورسالتنا وقيمنا، وفريق نسائي بخبرة تتجاوز 13 عاماً في طب الجلدية والتجميل والليزر.";
 
 export const metadata: Metadata = {
   title: "من نحن",
@@ -40,7 +40,7 @@ const STATS: Array<
   | { kind: "static"; value: string; label: string; note: string }
 > = [
   { kind: "count", value: 13, suffix: "+", label: "عاماً من الخبرة", note: "في أعرق المراكز والمستشفيات" },
-  { kind: "static", value: "٤٫٨", label: "من ٥ على Google", note: "متوسط تقييم الزائرات" },
+  { kind: "static", value: "4.8", label: "من 5 على Google", note: "متوسط تقييم الزائرات" },
   { kind: "count", value: 1270, suffix: "+", label: "تقييماً موثّقاً", note: "على خرائط Google" },
   { kind: "count", value: 14, label: "برنامجاً علاجياً", note: "تحت سقفٍ واحد" },
 ];

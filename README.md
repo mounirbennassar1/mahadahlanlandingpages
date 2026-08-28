@@ -20,6 +20,7 @@ Dr. Maha Dahlan clinic (Jeddah):
 - **Tiptap** rich-text editor (dashboard articles), **@vercel/blob** for image uploads
 - Icons: FontAwesome brands (social), Lucide via `@/components/icons`, `react-icons` for the rest
 - Arabic / RTL by default — `<html lang="ar" dir="rtl">`; site pages use Almarai
+- Numbers are always Western digits (client rule); `toArabicDigits()` now normalises TO Western digits
 
 ## Getting started
 
@@ -42,17 +43,22 @@ Login at `http://localhost:3005/login` with `ADMIN_EMAIL` / `ADMIN_PASSWORD`.
 | Route | Source of content |
 | --- | --- |
 | `/` | `app/page.tsx` + `app/_home/*` (static, hero slider, 14 specialties) |
+| `/en` | English home page (`app/en/`, `app/_home/i18n/dictionary.ts`); the header "EN"/"AR" pill switches |
 | `/about-us` | static copy from the old site + doctors from the DB |
+| `/services` | index of the 14 treatment landings (`SPECIALTIES`) + booking services from the DB |
 | `/offers` | `Offer` table; "احجزي العرض" modal posts a lead with `source: "offers"` |
 | `/doctors`, `/doctors/[slug]` | `Doctor` table (+ the doctor's published articles) |
 | `/our-devices`, `/our-devices/[slug]` | `Device` table |
 | `/book-now` | `Service` table for the select; posts a lead with `source: "book-now"`; supports `?service=`, `?doctor=`, `?offer=` |
+| `/careers` | recruiting page; applications post a lead with `source: "careers"` |
 | `/news-articles`, `/news-articles/[slug]` | `Article` + `Category` tables; `?category=`, `?page=` |
 | `/sitemap.xml`, `/robots.txt` | `app/sitemap.ts`, `app/robots.ts` |
 | `/<landing-slug>` | `app/(landings)/<slug>/page.tsx` (untouched campaign pages) |
 
-Shared chrome lives in `app/_home/`: `SiteShell` (providers + palette + header +
-footer + WhatsApp FAB + mobile sticky bar), `Sections` (`SectionHead`, `Section`,
+Shared chrome lives in `app/_home/`: `HomePage` (the home composition, takes a
+`locale`), `SiteShell` (providers + palette + header + footer + WhatsApp FAB +
+mobile sticky bar), `i18n/` (dictionary + `useLocale()`; every visible chrome
+string lives there in Arabic and English), `Sections` (`SectionHead`, `Section`,
 `Glow`), `Motion` (GSAP reveals/counters), `config.ts` (phone, WhatsApp, hours,
 maps, `SPECIALTIES`). Site-only primitives are in `app/(site)/_components/`
 (`PageHero`, `CtaBand`, buttons, monogram fallback) and `app/(site)/_booking/`

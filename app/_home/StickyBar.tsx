@@ -2,11 +2,15 @@
 
 import { motion } from "framer-motion";
 import { Icon, SocialIcon } from "@/components/icons";
-import { GOLD_GRADIENT, WA_LINK } from "./config";
+import { GOLD_GRADIENT } from "./config";
+import { waLink } from "./i18n/dictionary";
+import { useLocale } from "./i18n/LocaleProvider";
 
 /** Home-only mobile sticky bar: black glass with a gold booking button.
  *  (The shared MobileStickyCTA is white glass and belongs to the light landings.) */
 export function StickyBar({ bookHref = "#contact" }: { bookHref?: string }) {
+  const { locale, t } = useLocale();
+
   return (
     <motion.div
       initial={{ y: 80, opacity: 0 }}
@@ -21,13 +25,13 @@ export function StickyBar({ bookHref = "#contact" }: { bookHref?: string }) {
           style={{ background: GOLD_GRADIENT }}
         >
           <Icon.CalendarCheck className="size-4" />
-          احجزي الآن
+          {t.sticky.book}
         </a>
         <a
-          href={WA_LINK}
+          href={waLink(locale)}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="تواصلي عبر واتساب"
+          aria-label={t.sticky.whatsappAria}
           className="relative flex size-12 items-center justify-center rounded-2xl bg-[#25D366] text-white shadow-md transition-transform active:scale-[0.95]"
         >
           <span

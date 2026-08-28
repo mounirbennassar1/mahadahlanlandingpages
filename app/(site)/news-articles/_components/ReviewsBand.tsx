@@ -22,7 +22,7 @@ export function ReviewsBand() {
                   <LuStar key={i} className="size-3 fill-[var(--color-md-gold-bright)] text-[var(--color-md-gold-bright)]" />
                 ))}
               </span>
-              ٤٫٨ من ٥ بأكثر من ١٢٧٠ تقييماً
+              4.8 من 5 بأكثر من 1270 تقييماً
             </span>
             <h2 className="mt-5 text-[clamp(1.6rem,3.6vw,2.3rem)] leading-[1.5] font-extrabold text-[#FDF8EE]">
               هل زرتِ عيادات MD مؤخراً؟

@@ -3,16 +3,14 @@
 import { useEffect, useState } from "react";
 import { Icon, SocialIcon } from "@/components/icons";
 import {
-  ADDRESS_DISPLAY,
   GOLD_GRADIENT,
-  HOURS,
   MAPS_DIRECTIONS_LINK,
-  MAPS_EMBED_SRC,
   OPENING,
   PHONE_DISPLAY,
   TEL_LINK,
-  WA_LINK,
 } from "./config";
+import { mapsEmbedSrc, waLink } from "./i18n/dictionary";
+import { useLocale } from "./i18n/LocaleProvider";
 
 /** Riyadh-time open/closed state; resolved after mount to avoid hydration drift. */
 function useOpenNow() {
@@ -42,13 +40,17 @@ function useOpenNow() {
 /** Working-hours card + dark-graded Google map, side by side. */
 export function HoursMap() {
   const openNow = useOpenNow();
+  const { locale, t, isRtl } = useLocale();
+  const copy = t.hours;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
       {/* hours + contact card */}
       <div className="relative flex flex-col overflow-hidden rounded-[28px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-7 sm:p-9">
         <div
-          className="pointer-events-none absolute -top-24 -left-16 size-64 rounded-full blur-[40px]"
+          className={`pointer-events-none absolute -top-24 ${
+            isRtl ? "-left-16" : "-right-16"
+          } size-64 rounded-full blur-[40px]`}
           style={{
             background:
               "radial-gradient(circle, rgba(232,195,106,.18), transparent 70%)",
@@ -59,7 +61,7 @@ export function HoursMap() {
         <div className="relative flex items-center justify-between gap-3">
           <h3 className="inline-flex items-center gap-2.5 text-[1.2rem] font-extrabold text-[var(--color-md-text)]">
             <Icon.Clock className="size-5 text-[var(--color-md-champagne)]" />
-            ساعات العمل
+            {copy.title}
           </h3>
 
           {/* open-now pill: both states in one node, text swaps after mount */}
@@ -85,12 +87,16 @@ export function HoursMap() {
               }
               aria-hidden
             />
-            {openNow === null ? "الدوام" : openNow ? "مفتوح الآن" : "مغلق الآن"}
+            {openNow === null
+              ? copy.statusPending
+              : openNow
+                ? copy.openNow
+                : copy.closedNow}
           </span>
         </div>
 
         <ul className="relative mt-6 flex flex-col">
-          {HOURS.map((row) => (
+          {copy.rows.map((row) => (
             <li
               key={row.label}
               className="flex items-center justify-between gap-4 border-b border-[var(--color-md-line)] py-4 last:border-b-0"
@@ -114,7 +120,7 @@ export function HoursMap() {
         <div className="relative mt-6 flex flex-col gap-3 border-t border-[var(--color-md-line)] pt-6 text-[0.92rem]">
           <span className="inline-flex items-center gap-2.5 font-bold text-[rgba(246,238,223,0.75)]">
             <Icon.MapPin className="size-4 shrink-0 text-[var(--color-md-champagne)]" />
-            {ADDRESS_DISPLAY}
+            {copy.address}
           </span>
           <a
             href={TEL_LINK}
@@ -124,13 +130,13 @@ export function HoursMap() {
             <span dir="ltr">{PHONE_DISPLAY}</span>
           </a>
           <a
-            href={WA_LINK}
+            href={waLink(locale)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 font-bold text-[rgba(246,238,223,0.75)] transition-colors hover:text-[#FFE9A8]"
           >
             <SocialIcon name="whatsapp" className="text-[#25D366]" />
-            استشارة عبر واتساب
+            {copy.whatsapp}
           </a>
         </div>
 
@@ -142,24 +148,28 @@ export function HoursMap() {
           style={{ background: GOLD_GRADIENT }}
         >
           <Icon.Navigation className="size-[17px]" strokeWidth={2.2} />
-          احصلي على الاتجاهات
+          {copy.directions}
         </a>
       </div>
 
       {/* dark-graded Google map */}
       <div className="md-map-frame relative min-h-[340px] overflow-hidden rounded-[28px] border border-[var(--color-md-line-strong)] shadow-[0_0_50px_-14px_rgba(232,195,106,0.3)] lg:min-h-0">
         <iframe
-          src={MAPS_EMBED_SRC}
-          title="موقع عيادات د. مها دحلان على خرائط Google"
+          src={mapsEmbedSrc(locale)}
+          title={copy.mapTitle}
           loading="lazy"
           allowFullScreen
           referrerPolicy="no-referrer-when-downgrade"
           className="absolute inset-0 size-full border-0"
         />
         {/* gold corner badge over the map */}
-        <span className="pointer-events-none absolute top-4 right-4 inline-flex items-center gap-2 rounded-full border border-[rgba(240,212,138,0.4)] bg-[rgba(11,8,5,0.82)] px-4 py-2 text-[0.78rem] font-extrabold text-[var(--color-md-champagne)] backdrop-blur-md">
+        <span
+          className={`pointer-events-none absolute top-4 ${
+            isRtl ? "right-4" : "left-4"
+          } inline-flex items-center gap-2 rounded-full border border-[rgba(240,212,138,0.4)] bg-[rgba(11,8,5,0.82)] px-4 py-2 text-[0.78rem] font-extrabold text-[var(--color-md-champagne)] backdrop-blur-md`}
+        >
           <Icon.MapPin className="size-3.5" />
-          عيادات د. مها دحلان
+          {copy.mapBadge}
         </span>
       </div>
     </div>

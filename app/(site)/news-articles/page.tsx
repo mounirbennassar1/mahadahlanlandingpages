@@ -139,7 +139,7 @@ export default async function NewsArticlesPage({ searchParams }: { searchParams:
 }
 
 function toAr(n: number) {
-  return String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[Number(d)]);
+  return String(n);
 }
 
 function EmptyState({ category, page }: { category: string | null; page: number }) {

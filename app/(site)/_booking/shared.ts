@@ -21,7 +21,7 @@ export type City = (typeof CITIES)[number];
 export const PAYMENT_METHODS = [
   { value: "COD", label: "نقداً في العيادة", hint: "الدفع عند الاستقبال" },
   { value: "TAMARA", label: "تمارا", hint: "قسّطيها على دفعات" },
-  { value: "TABBY", label: "تابي", hint: "٤ دفعات بدون فوائد" },
+  { value: "TABBY", label: "تابي", hint: "4 دفعات بدون فوائد" },
   { value: "CARD", label: "بطاقة / مدى", hint: "فيزا، ماستركارد، مدى" },
 ] as const;
 
@@ -61,7 +61,7 @@ export function toE164(local: string) {
   return `+966${local}`;
 }
 
-export const PHONE_ERROR = "أدخلي رقم جوال سعودي صحيح من ٩ أرقام يبدأ بـ ٥.";
+export const PHONE_ERROR = "أدخلي رقم جوال سعودي صحيح من 9 أرقام يبدأ بـ 5.";
 
 export const fieldClasses =
   "w-full rounded-xl border border-[var(--color-md-line-strong)] bg-[rgba(246,238,223,0.05)] px-4 py-3.5 text-[0.95rem] text-[var(--color-md-text)] outline-none transition-colors placeholder:text-[rgba(246,238,223,0.35)] focus:border-[var(--color-md-gold-bright)] disabled:opacity-60";

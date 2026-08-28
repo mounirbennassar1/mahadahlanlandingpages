@@ -1,36 +1,23 @@
 import { Icon } from "@/components/icons";
+import { getDict, LANG_META, type Locale } from "./i18n/dictionary";
 import { PayLogo } from "./PayLogo";
-
-const PROVIDERS = [
-  {
-    id: "tabby",
-    title: "قسّطيها مع تابي",
-    body: "قسّمي قيمة جلستك على ٤ دفعات متساوية بدون فوائد وبدون رسوم تأخير خفية.",
-  },
-  {
-    id: "tamara",
-    title: "أو مع تمارا",
-    body: "ادفعي لاحقاً أو على دفعات مرنة، بموافقة فورية داخل العيادة وبلا تعقيد.",
-  },
-] as const;
-
-const PERKS = [
-  "٤ دفعات متساوية بدون فوائد",
-  "موافقة فورية عند الاستقبال",
-  "بدون بطاقة ائتمانية",
-];
+import { PaymentBadges } from "./PaymentBadges";
 
 /** Split-payment section: Tabby + Tamara cards with a perks row. */
-export function Payments() {
+export function Payments({ locale = "ar" }: { locale?: Locale }) {
+  const copy = getDict(locale).payments;
+  const isRtl = LANG_META[locale].dir === "rtl";
   return (
     <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
-      {PROVIDERS.map((p) => (
+      {copy.providers.map((p) => (
         <article
           key={p.id}
           className="group relative overflow-hidden rounded-[26px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-7 transition-all duration-400 hover:-translate-y-1.5 hover:border-[rgba(232,195,106,0.5)] hover:shadow-[0_0_44px_-12px_rgba(232,195,106,0.4)] sm:p-8"
         >
           <div
-            className="pointer-events-none absolute -top-20 -left-14 size-52 rounded-full blur-[36px] opacity-60 transition-opacity duration-500 group-hover:opacity-100"
+            className={`pointer-events-none absolute -top-20 ${
+              isRtl ? "-left-14" : "-right-14"
+            } size-52 rounded-full blur-[36px] opacity-60 transition-opacity duration-500 group-hover:opacity-100`}
             style={{
               background:
                 "radial-gradient(circle, rgba(232,195,106,.2), transparent 70%)",
@@ -61,8 +48,25 @@ export function Payments() {
         </article>
       ))}
 
+      {/* every accepted payment method, incl. cards and Apple Pay */}
+      <div
+        className={`flex flex-col items-center gap-4 rounded-[26px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] px-6 py-6 text-center md:col-span-2 md:flex-row md:justify-between ${
+          isRtl ? "md:text-right" : "md:text-left"
+        }`}
+      >
+        <div>
+          <h3 className="text-[1.05rem] font-extrabold text-[var(--color-md-text)]">
+            {copy.methodsTitle}
+          </h3>
+          <p className="mt-1.5 text-[0.9rem] leading-[1.8] font-light text-[rgba(246,238,223,0.6)]">
+            {copy.methodsBody}
+          </p>
+        </div>
+        <PaymentBadges className="justify-center md:justify-end" locale={locale} />
+      </div>
+
       <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 md:col-span-2">
-        {PERKS.map((perk) => (
+        {copy.perks.map((perk) => (
           <li
             key={perk}
             className="inline-flex items-center gap-2 text-[0.86rem] font-bold text-[rgba(246,238,223,0.65)]"

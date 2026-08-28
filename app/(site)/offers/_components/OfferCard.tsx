@@ -76,7 +76,7 @@ export function OfferCard({
 
         {offer.savePercent ? (
           <span className="absolute top-4 left-4 rounded-full bg-[rgba(11,8,5,0.85)] px-3 py-1.5 text-[0.72rem] font-extrabold text-[#9BE8B0] backdrop-blur-md">
-            وفّري {toArabicDigits(offer.savePercent)}٪
+            وفّري {toArabicDigits(offer.savePercent)}%
           </span>
         ) : null}
       </div>

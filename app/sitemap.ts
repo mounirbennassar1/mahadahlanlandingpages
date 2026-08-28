@@ -12,7 +12,10 @@ export const revalidate = 3600;
 
 const STATIC: { path: string; priority: number; changeFrequency: "daily" | "weekly" | "monthly" }[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
+  { path: "/en", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/services", priority: 0.9, changeFrequency: "weekly" },
   { path: "/offers", priority: 0.9, changeFrequency: "daily" },
+  { path: "/careers", priority: 0.5, changeFrequency: "monthly" },
   { path: "/book-now", priority: 0.9, changeFrequency: "monthly" },
   { path: "/about-us", priority: 0.7, changeFrequency: "monthly" },
   { path: "/doctors", priority: 0.7, changeFrequency: "monthly" },

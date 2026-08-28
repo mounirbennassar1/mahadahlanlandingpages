@@ -27,27 +27,27 @@ export const metadata: Metadata = {
 };
 
 const PROOF = [
-  { icon: Icon.Star, text: "٤٫٨ من ٥ على Google" },
-  { icon: Icon.MessageCircle, text: "أكثر من ١٢٧٠ تقييماً" },
-  { icon: Icon.Award, text: "خبرة تتجاوز ١٣ عاماً" },
+  { icon: Icon.Star, text: "4.8 من 5 على Google" },
+  { icon: Icon.MessageCircle, text: "أكثر من 1270 تقييماً" },
+  { icon: Icon.Award, text: "خبرة تتجاوز 13 عاماً" },
   { icon: Icon.Users, text: "طاقم نسائي بالكامل" },
 ];
 
 const STEPS = [
   {
-    num: "٠١",
+    num: "01",
     icon: Icon.Gift,
     title: "اختاري عرضك",
     body: "تصفّحي العروض حسب الفئة، واضغطي «احجزي العرض» على ما يناسبك. السعر المعلن هو ما ستدفعينه.",
   },
   {
-    num: "٠٢",
+    num: "02",
     icon: Icon.ClipboardCheck,
     title: "أدخلي بياناتك",
     body: "اسمك وجوالك وطريقة الدفع المفضلة، في أقل من دقيقة. لا يُطلب أي دفع عبر الموقع.",
   },
   {
-    num: "٠٣",
+    num: "03",
     icon: Icon.CalendarCheck,
     title: "نؤكد لك الموعد",
     body: "يتصل بك فريق الاستقبال خلال ساعات العمل لتثبيت الموعد، والدفع يتم داخل العيادة.",
@@ -150,7 +150,7 @@ export default async function OffersPage() {
           eyebrow="الدفع على راحتك"
           title="عرضك اليوم،"
           gold="والدفع على دفعات"
-          body="اختاري تابي أو تمارا عند الحجز، وتُقسَّم قيمة العرض على ٤ دفعات متساوية بدون فوائد، بموافقة فورية عند الاستقبال."
+          body="اختاري تابي أو تمارا عند الحجز، وتُقسَّم قيمة العرض على 4 دفعات متساوية بدون فوائد، بموافقة فورية عند الاستقبال."
         />
         <Reveal className="mt-12">
           <Payments />
