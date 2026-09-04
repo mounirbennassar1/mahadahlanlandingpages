@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { WhatsAppFAB } from "@/components/usablecomponents/WhatsAppFAB";
@@ -19,80 +20,23 @@ import {
   WA_TOPIC_MESSAGE,
   WHATSAPP_NUMBER,
 } from "./_components/config";
+import { getPageContent } from "@/lib/pages/get";
+import { FACIAL_ATROPHY } from "./content";
 
 const CARD_GRADIENT = "linear-gradient(160deg, #2E0D18, #1D060D)";
 const SURFACE_GRADIENT = "linear-gradient(160deg, #35101C, #22070F)";
 const SECTION_WASH = "linear-gradient(180deg, #150409, #22070F 45%, #150409)";
 
-const PROBLEM_CARDS = [
-  {
-    icon: Icon.Droplet,
-    title: "فقدان الامتلاء",
-    body: "غور الخدود والصدغين وبروز عظام الوجه، فتفقد الملامح نعومتها الأنثوية.",
-  },
-  {
-    icon: Icon.Waves,
-    title: "ضمور الخدين",
-    body: "فقدان مرونة البشرة حول المناطق مثل الفك والرقبة والخدين بسبب النزول السريع في الوجه.",
-  },
-  {
-    icon: Icon.Frown,
-    title: "ملامح متعبة",
-    body: "تجاعيد أوضح ونظرة مرهقة لا تعكس حيويتك ولا فرحتك بإنجازك.",
-  },
-];
+/** Icons for the "problem" cards, in content order. */
+const PROBLEM_ICONS = [Icon.Droplet, Icon.Waves, Icon.Frown] as const;
 
-const AFFECTED_AREAS = ["الخدود", "الصدغان", "خط الفك", "محيط العينين", "الرقبة"];
-
-const SOLUTIONS = [
-  {
-    num: "٠١",
-    icon: Icon.Droplet,
-    title: "فيلر الوجه",
-    body: "تعويض فوري ومدروس للحجم المفقود في الخدود والصدغين وخط الفك، بمواد آمنة وقابلة للذوبان.",
-  },
-  {
-    num: "٠٢",
-    icon: Icon.Sparkles,
-    title: "سكين بوستر ومحفزات الكولاجين",
-    body: "إعادة النضارة والمرونة والترطيب العميق للبشرة المتعبة، وتحفيز إنتاج الكولاجين الطبيعي.",
-  },
-  {
-    num: "٠٣",
-    icon: Icon.Spline,
-    title: "شد الوجه بالخيوط",
-    body: "رفع الترهلات الخفيفة وإعادة تحديد خط الفك دون جراحة، بجلسة واحدة وتعافٍ سريع.",
-  },
-  {
-    num: "٠٤",
-    icon: Icon.AudioWaveform,
-    title: "تقنيات شد البشرة",
-    body: "الهايفو والترددات الحرارية لشد عميق غير جراحي وتحفيز طويل الأمد لتماسك الجلد.",
-  },
-];
-
-const FAQ = [
-  {
-    q: "هل نتائج العلاج فورية؟",
-    a: "بعض العلاجات كالفيلر تُظهر تحسناً فورياً، بينما تحتاج محفزات الكولاجين والسكين بوستر أسابيع لاكتمال نتيجتها. توضح لكِ الطبيبة الجدول الزمني المتوقع لخطتك في الاستشارة.",
-  },
-  {
-    q: "هل الإجراءات مؤلمة؟",
-    a: "نستخدم كريمات تخدير موضعي وتقنيات حقن لطيفة، ومعظم السيدات يصفن الإحساس بانزعاج بسيط لا أكثر. راحتك خلال الجلسة أولوية ثابتة عندنا.",
-  },
-  {
-    q: "هل يمكن البدء وأنا ما زلت أستخدم إبر التنحيف؟",
-    a: "يعتمد ذلك على استقرار وزنك ومرحلتك من العلاج. تُقيّم الطبيبة حالتك وتحدد التوقيت الأنسب، فبعض الخطوات يمكن البدء بها مبكراً، وبعضها يُفضَّل تأجيله حتى يثبت الوزن.",
-  },
-  {
-    q: "هل ستبدو النتائج طبيعية؟",
-    a: "فلسفتنا إعادة التوازن لملامحك أنتِ، لا تغييرها. نعمل بتدرّج وقياسات دقيقة، ونفضّل دائماً «أقل مما يلزم» على أي مبالغة.",
-  },
-  {
-    q: "كم تدوم النتائج؟",
-    a: "تختلف المدة حسب نوع العلاج واستجابة جسمك؛ من عدة أشهر للفيلر إلى نتائج أطول أمداً للدهون الذاتية ومحفزات الكولاجين. ستحصلين على خطة صيانة واضحة بعد اكتمال العلاج.",
-  },
-];
+/** Icons for the "solutions" cards, in content order. */
+const SOLUTION_ICONS = [
+  Icon.Droplet,
+  Icon.Sparkles,
+  Icon.Spline,
+  Icon.AudioWaveform,
+] as const;
 
 function SectionHead({
   eyebrow,
@@ -120,20 +64,47 @@ function SectionHead({
   );
 }
 
-export default function FacialAtrophyPage() {
+export const revalidate = 300;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(FACIAL_ATROPHY);
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.ogDescription,
+      locale: "ar_SA",
+      type: "website",
+      images: [{ url: "/facial-atrophy/hero-center.webp", width: 1536, height: 2048 }],
+    },
+  };
+}
+
+export default async function FacialAtrophyPage() {
+  const c = await getPageContent(FACIAL_ATROPHY);
+  const problemCards = c.problem.cards.map((card, i) => ({
+    ...card,
+    icon: PROBLEM_ICONS[i],
+  }));
+  const solutions = c.solutions.cards.map((card, i) => ({
+    ...card,
+    icon: SOLUTION_ICONS[i],
+  }));
+
   return (
     <main>
-      <Header />
-      <Hero />
-      <MarqueeStrip />
+      <Header cta={c.cta.header} />
+      <Hero copy={c.hero} />
+      <MarqueeStrip words={c.marquee.items} />
 
       {/* ——— المشكلة ——— */}
       <section id="problem" className="relative px-[22px] py-[clamp(80px,10vw,120px)]">
         <div className="mx-auto max-w-[1160px]">
           <SectionHead
-            eyebrow="المشكلة"
-            title="ما هو ضمور الوجه بعد إبر التنحيف؟"
-            sub="ما يُعرف اليوم بـ«وجه الأوزمبك»، حين ينعكس نزول الوزن السريع على ملامح وجهك قبل أي مكان آخر."
+            eyebrow={c.problem.eyebrow}
+            title={c.problem.title}
+            sub={c.problem.sub}
           />
 
           <SpotlightCard
@@ -144,21 +115,18 @@ export default function FacialAtrophyPage() {
             <div className="flex flex-wrap items-center gap-[34px]">
               <div className="min-w-[280px] flex-[2]">
                 <h3 className="mb-3 text-[1.35rem] font-extrabold text-[var(--color-faa-gold-pale)]">
-                  لماذا يحدث؟
+                  {c.problem.whyTitle}
                 </h3>
                 <p className="m-0 text-base font-light text-[rgba(243,233,220,0.72)]">
-                  تعمل إبر التنحيف على إذابة الدهون في الجسم كله، ومنها الدهون
-                  الداعمة لملامح الوجه. وحين يكون النزول سريعاً، تختفي هذه
-                  الوسائد الدهنية قبل أن يتمكن الجلد من التكيّف والانكماش، فتظهر
-                  الملامح أنحف وأكبر سناً مما ينبغي.
+                  {c.problem.whyBody}
                 </p>
               </div>
               <div className="min-w-[220px] flex-1">
                 <span className="mb-3 block text-[0.78rem] font-extrabold tracking-[0.12em] text-[var(--color-faa-gold)]">
-                  المناطق الأكثر تأثراً
+                  {c.problem.areasLabel}
                 </span>
                 <div className="flex flex-wrap gap-[9px]">
-                  {AFFECTED_AREAS.map((a) => (
+                  {c.problem.areas.map((a) => (
                     <span
                       key={a}
                       className="rounded-full border border-[rgba(217,179,108,0.3)] px-[15px] py-[7px] text-[0.82rem] font-bold text-[var(--color-faa-ink-soft)]"
@@ -172,7 +140,7 @@ export default function FacialAtrophyPage() {
           </SpotlightCard>
 
           <div className="grid gap-[22px] md:grid-cols-3">
-            {PROBLEM_CARDS.map((c, i) => (
+            {problemCards.map((c, i) => (
               <SpotlightCard
                 key={c.title}
                 delay={80 + i * 80}
@@ -192,9 +160,9 @@ export default function FacialAtrophyPage() {
 
           <Reveal className="mt-11 text-center">
             <p className="faa-serif m-0 text-[1.35rem] text-[var(--color-faa-ink-soft)]">
-              ولكن لا تقلقي،{" "}
+              {c.problem.note}{" "}
               <span className="text-[var(--color-faa-gold-bright)]">
-                كل ذلك قابل للعلاج
+                {c.problem.noteHighlight}
               </span>
             </p>
           </Reveal>
@@ -209,13 +177,13 @@ export default function FacialAtrophyPage() {
       >
         <div className="mx-auto max-w-[1160px]">
           <SectionHead
-            eyebrow="الحلول"
-            title="خيارات علاجية متكاملة تحت سقف واحد"
-            sub="لا نبيع إجراءً جاهزاً. بعد الكشف والتقييم تُبنى خطتك من هذه التقنيات بما يناسب وجهك أنتِ."
+            eyebrow={c.solutions.eyebrow}
+            title={c.solutions.title}
+            sub={c.solutions.sub}
           />
 
           <div className="grid gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
-            {SOLUTIONS.map((s, i) => (
+            {solutions.map((s, i) => (
               <SpotlightCard
                 key={s.num}
                 delay={(i % 3) * 70}
@@ -249,21 +217,20 @@ export default function FacialAtrophyPage() {
               />
               <div className="sm:max-w-[52ch]">
                 <span className="text-[0.74rem] font-extrabold tracking-[0.18em] opacity-75">
-                  الخطوة الأولى
+                  {c.solutions.ctaEyebrow}
                 </span>
                 <h3 className="mt-2.5 mb-2 text-[1.35rem] leading-[1.45] font-extrabold">
-                  خطتكِ تُحدَّد بعد الكشف
+                  {c.solutions.ctaTitle}
                 </h3>
                 <p className="m-0 text-[0.93rem] font-bold opacity-85">
-                  تُقيّم الطبيبة درجة الضمور ونوعية بشرتك، ثم تضع البروتوكول
-                  الأنسب: تقنية واحدة أو مزيج مدروس.
+                  {c.solutions.ctaBody}
                 </p>
               </div>
               <a
                 href="#booking"
                 className="mt-[22px] inline-flex w-fit shrink-0 items-center gap-[9px] rounded-full bg-[var(--color-faa-cta-ink)] px-6 py-[13px] text-[0.92rem] font-extrabold text-[var(--color-faa-gold-bright)] transition-transform duration-300 hover:-translate-x-1 sm:mt-0"
               >
-                ابدئي بالتقييم
+                {c.solutions.ctaButton}
                 <Icon.ArrowLeft className="size-[15px]" strokeWidth={2.4} />
               </a>
             </Reveal>
@@ -275,9 +242,9 @@ export default function FacialAtrophyPage() {
       <section id="doctors" className="relative px-[22px] py-[clamp(80px,10vw,120px)]">
         <div className="mx-auto max-w-[1160px]">
           <SectionHead
-            eyebrow="لماذا عيادة مها دحلان"
-            title="خبرة تجمع بين علم التشريح وحسّ الجمال"
-            sub="فريق طبي نسائي متخصص في ترميم ملامح الوجه بعد نزول الوزن، فلا يلاحظ من حولك إلا أنكِ أكثر راحة وإشراقاً."
+            eyebrow={c.doctors.eyebrow}
+            title={c.doctors.title}
+            sub={c.doctors.sub}
           />
 
           <Reveal className="mx-auto mb-12 max-w-[640px]">
@@ -285,13 +252,13 @@ export default function FacialAtrophyPage() {
               style={{ background: SURFACE_GRADIENT }}
             >
               <p className="faa-serif m-0 text-center text-[1.2rem] text-[var(--color-faa-ink-soft)]">
-                «هدفنا أن تعود ملامحكِ كما كانت في أجمل أيامها، لا أن تتغيّري.»
+                {c.doctors.quote}
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={120}>
-            <Doctors />
+            <Doctors copy={c.doctors} />
           </Reveal>
         </div>
       </section>
@@ -304,17 +271,19 @@ export default function FacialAtrophyPage() {
       >
         <div className="mx-auto max-w-[1160px]">
           <SectionHead
-            eyebrow="النتائج"
-            title="قبل وبعد: اسحبي وشاهدي الفرق"
-            sub="محاكاة توضيحية لأثر استعادة امتلاء الوجه بعد نزول الوزن."
+            eyebrow={c.results.eyebrow}
+            title={c.results.title}
+            sub={c.results.sub}
           />
           <Reveal>
-            <BeforeAfter />
+            <BeforeAfter
+              beforeLabel={c.results.before}
+              afterLabel={c.results.after}
+            />
           </Reveal>
           <Reveal className="mx-auto mt-[18px] max-w-[560px] text-center">
             <p className="m-0 text-[0.8rem] text-[rgba(243,233,220,0.45)]">
-              صورة توضيحية وليست حالة فعلية، والنتائج تختلف من حالة إلى أخرى
-              بحسب درجة الضمور ونوعية البشرة والخطة المتبعة.
+              {c.results.disclaimer}
             </p>
           </Reveal>
         </div>
@@ -323,8 +292,8 @@ export default function FacialAtrophyPage() {
       {/* ——— رحلة العلاج ——— */}
       <section id="journey" className="relative px-[22px] py-[clamp(80px,10vw,120px)]">
         <div className="mx-auto max-w-[1160px]">
-          <SectionHead eyebrow="رحلة العلاج" title="أربع خطوات… تفصلك عن ملامحك" />
-          <Journey />
+          <SectionHead eyebrow={c.journey.eyebrow} title={c.journey.title} />
+          <Journey steps={c.journey.steps} />
         </div>
       </section>
 
@@ -335,11 +304,7 @@ export default function FacialAtrophyPage() {
         style={{ background: SECTION_WASH }}
       >
         <div className="mx-auto mb-12 max-w-[700px] px-[22px] text-center">
-          <SectionHead
-            eyebrow="آراء المراجعات"
-            title="قالوا عن تجربتهم"
-            sub="من تقييمات Google الحقيقية لعيادات مها دحلان: ٤٫٨ من ٥ عبر أكثر من ١٢٧٠ تقييم."
-          />
+          <SectionHead {...c.testimonials} />
         </div>
         <Testimonials />
       </section>
@@ -347,9 +312,9 @@ export default function FacialAtrophyPage() {
       {/* ——— الأسئلة الشائعة ——— */}
       <section id="faq" className="relative px-[22px] py-[clamp(80px,10vw,120px)]">
         <div className="mx-auto max-w-[780px]">
-          <SectionHead eyebrow="الأسئلة الشائعة" title="كل ما يدور في ذهنك" />
+          <SectionHead eyebrow={c.faq.eyebrow} title={c.faq.title} />
           <div className="grid gap-[13px]">
-            {FAQ.map((f, i) => (
+            {c.faq.questions.map((f, i) => (
               <Reveal key={f.q} delay={i * 60}>
                 <details
                   className="overflow-hidden rounded-2xl border border-[var(--color-faa-line)]"
@@ -387,18 +352,17 @@ export default function FacialAtrophyPage() {
         <div className="mx-auto grid max-w-[1080px] items-center gap-[clamp(34px,5vw,60px)] md:grid-cols-2">
           <Reveal>
             <span className="text-[0.76rem] font-extrabold tracking-[0.24em] text-[var(--color-faa-gold)]">
-              احجزي الآن
+              {c.booking.eyebrow}
             </span>
             <h2 className="mt-3.5 mb-3.5 text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.35] font-extrabold">
-              استشارتك الخاصة…
+              {c.booking.title}
               <br />
               <span className="faa-serif faa-gold-text font-bold">
-                تبدأ برسالة واحدة
+                {c.booking.highlight}
               </span>
             </h2>
             <p className="mb-[26px] max-w-[46ch] text-[1.02rem] font-light text-[rgba(243,233,220,0.68)]">
-              اتركي بياناتك وسيتواصل معك فريقنا النسائي لتنسيق موعدك، أو راسلينا
-              مباشرة عبر واتساب.
+              {c.booking.body}
             </p>
 
             <div className="grid max-w-[380px] gap-[15px]">
@@ -416,7 +380,7 @@ export default function FacialAtrophyPage() {
                   <Icon.MessageCircle className="size-[21px] text-[#25D366]" />
                 </span>
                 <span>
-                  <b className="block text-[0.94rem]">واتساب العيادة</b>
+                  <b className="block text-[0.94rem]">{c.booking.whatsappTitle}</b>
                   <small dir="ltr" className="text-[0.78rem] text-[rgba(243,233,220,0.55)]">
                     +{WHATSAPP_NUMBER}
                   </small>
@@ -431,21 +395,21 @@ export default function FacialAtrophyPage() {
                   <Icon.Phone className="size-5 text-[var(--color-faa-gold-bright)]" />
                 </span>
                 <span>
-                  <b className="block text-[0.94rem]">اتصال مباشر</b>
+                  <b className="block text-[0.94rem]">{c.booking.callTitle}</b>
                   <small className="text-[0.78rem] text-[rgba(243,233,220,0.55)]">
-                    {PHONE_DISPLAY}، خلال ساعات العمل
+                    {PHONE_DISPLAY}، {c.booking.callNote}
                   </small>
                 </span>
               </a>
               <span className="inline-flex items-center gap-[9px] text-[0.8rem] text-[rgba(243,233,220,0.5)]">
                 <Icon.Lock className="size-[15px] shrink-0 text-[var(--color-faa-gold)]" />
-                بياناتك سرية ولا تُستخدم إلا للتواصل بشأن موعدك.
+                {c.booking.privacy}
               </span>
             </div>
           </Reveal>
 
           <Reveal delay={120}>
-            <Booking />
+            <Booking copy={c.booking} />
           </Reveal>
         </div>
       </section>
@@ -475,21 +439,20 @@ export default function FacialAtrophyPage() {
             rel="noopener noreferrer"
             className="text-[var(--color-faa-gold)] hover:text-[var(--color-faa-gold-bright)]"
           >
-            واتساب
+            {c.footer.whatsapp}
           </a>
           <a
             href="#booking"
             className="text-[var(--color-faa-gold)] hover:text-[var(--color-faa-gold-bright)]"
           >
-            حجز استشارة
+            {c.footer.book}
           </a>
         </div>
         <p className="mx-auto mb-2 max-w-[620px] text-[0.74rem] font-light text-[rgba(243,233,220,0.4)]">
-          المحتوى المعروض في هذه الصفحة لأغراض تعريفية ولا يغني عن الاستشارة
-          الطبية. النتائج تختلف من حالة إلى أخرى.
+          {c.footer.disclaimer}
         </p>
         <p className="m-0 text-[0.74rem] text-[rgba(243,233,220,0.35)]">
-          © ٢٠٢٦ عيادة مها دحلان. جميع الحقوق محفوظة
+          {c.footer.copyright}
         </p>
       </footer>
 
@@ -498,7 +461,7 @@ export default function FacialAtrophyPage() {
         whatsappNumber={WHATSAPP_NUMBER}
         topicMessage={WA_TOPIC_MESSAGE}
       />
-      <StickyBar />
+      <StickyBar label={c.cta.sticky} />
     </main>
   );
 }

@@ -8,6 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { HAIR_BREAKAGE } from "../content";
 
 // Decorative WebGL only — three.js is ~700KB, so it loads as its own async
 // chunk after hydration instead of blocking first paint.
@@ -18,15 +20,17 @@ const GoldStrands = dynamic(
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STATS = [
-  { value: "٤٫٨ من ٥", label: "تقييم Google" },
-  { value: "+١٢٧٠", label: "تقييم موثّق" },
-  { value: "+١٣ عاماً", label: "خبرة تجميلية" },
-  { value: "١٠٠٪", label: "طاقم نسائي" },
-] as const;
+type HeroCopy = ContentOf<typeof HAIR_BREAKAGE>["hero"];
 
 /** Split sales hero: copy right, portrait left, gold strands behind. */
-export function Hero({ videoSrc }: { videoSrc?: string }) {
+export function Hero({
+  copy,
+  videoSrc,
+}: {
+  copy: HeroCopy;
+  videoSrc?: string;
+}) {
+  const STATS = copy.stats;
   const rootRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -121,22 +125,19 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
               className="size-1.5 rounded-full bg-[var(--color-hab-gold)]"
               style={{ boxShadow: "0 0 8px 2px rgba(212,175,55,.7)" }}
             />
-            علاج تكسر وتقصف الشعر، بتشخيص طبي دقيق
+            {copy.badge}
           </span>
 
           <h1 className="hab-h mt-6 text-[clamp(2.2rem,5.4vw,3.7rem)] leading-[1.35] font-extrabold tracking-[-0.01em]">
-            أوقفي تكسر شعرك…
+            {copy.line1}
             <br />
-            <span className="hab-gold-text">واستعيدي حريره ولمعانه</span>
+            <span className="hab-gold-text">{copy.line2}</span>
           </h1>
 
           <p className="hab-h mt-5 max-w-[54ch] text-[1.06rem] font-light text-[rgba(245,239,224,0.68)]">
-            الحرارة اليومية والصبغات ونقص البروتين تُضعف الشعرة من الداخل،
-            فتتكسر في منتصفها وتفقد بريقها. نحدد سبب التكسر بتشخيصٍ رقمي
-            للشعرة والفروة، ثم نبني لكِ بروتوكول ترميمٍ يجمع البروتين العلاجي
-            والميزوثيرابي والعناية المنزلية،{" "}
+            {copy.body}{" "}
             <b className="font-bold text-[var(--color-hab-ink)]">
-              حتى يعود شعرك قوياً يلمع تحت الضوء
+              {copy.bodyStrong}
             </b>
             .
           </p>
@@ -147,7 +148,7 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
               className="inline-flex items-center gap-2.5 rounded-full px-[32px] py-4 text-base font-extrabold text-[#1A1405] shadow-[0_18px_44px_-14px_rgba(212,175,55,0.5)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(240,212,138,0.55)]"
               style={{ background: GOLD_GRADIENT }}
             >
-              احجزي تقييم شعرك
+              {copy.book}
               <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
             </a>
             <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
@@ -170,7 +171,7 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
                   name="whatsapp"
                   className="text-[19px] text-[#25D366]"
                 />
-                استشارة واتساب
+                {copy.whatsapp}
               </a>
             </div>
           </div>
@@ -237,7 +238,7 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
             style={{ animation: "hab-floaty 7s ease-in-out infinite alternate" }}
           >
             <Icon.Microscope className="size-3.5" />
-            تشخيص رقمي للشعرة والفروة
+            {copy.badgeDiagnosis}
           </span>
           <span
             className="hab-float-badge absolute bottom-8 -left-2 inline-flex items-center gap-2 rounded-full border border-[var(--color-hab-line-strong)] bg-[rgba(16,16,20,0.85)] px-4 py-2 text-[0.76rem] font-extrabold whitespace-nowrap text-[var(--color-hab-champagne)] shadow-[0_14px_30px_-14px_rgba(212,175,55,0.5)] backdrop-blur-lg"
@@ -247,7 +248,7 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
             }}
           >
             <Icon.Sparkles className="size-3.5" />
-            لمعان يُرى من أول جلسة
+            {copy.badgeShine}
           </span>
           <span
             className="hab-float-badge absolute top-1/2 -right-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[0.76rem] font-extrabold whitespace-nowrap text-[#1A1405] shadow-[0_14px_30px_-12px_rgba(212,175,55,0.55)]"
@@ -257,7 +258,7 @@ export function Hero({ videoSrc }: { videoSrc?: string }) {
             }}
           >
             <Icon.Star className="size-3.5" />
-            ٤٫٨ على Google
+            {copy.badgeRating}
           </span>
         </div>
       </div>

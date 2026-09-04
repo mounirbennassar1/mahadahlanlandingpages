@@ -6,101 +6,89 @@ import { Glow, Section, SectionHead } from "@/app/_home/Sections";
 import { Counter, Parallax, Reveal, RevealGroup, ScrubLine } from "@/app/_home/Motion";
 import { GOLD_GRADIENT } from "@/app/_home/config";
 import { getActiveDoctors } from "@/lib/content";
+import { getPageContent } from "@/lib/pages/get";
+import { getSpecialtyCopy } from "@/lib/pages/home";
 import { PageHero } from "@/app/(site)/_components/PageHero";
 import { CtaBand } from "@/app/(site)/_components/CtaBand";
 import { CAROUSEL, CAROUSEL_ITEM, GoldLink, OutlineLink } from "@/app/(site)/_components/SiteButtons";
 import { DoctorCard } from "@/app/(site)/doctors/_components/DoctorCard";
 import { SpecialtiesStrip } from "./_components/SpecialtiesStrip";
 import { VisitBlock } from "./_components/VisitBlock";
+import { ABOUT_US } from "./content";
 
 export const revalidate = 300;
 
-const DESCRIPTION =
-  "تعرّفي على مجمع عيادات د. مها دحلان الطبي في جدة: قصتنا ورؤيتنا ورسالتنا وقيمنا، وفريق نسائي بخبرة تتجاوز 13 عاماً في طب الجلدية والتجميل والليزر.";
-
-export const metadata: Metadata = {
-  title: "من نحن",
-  description: DESCRIPTION,
-  alternates: { canonical: "/about-us" },
-  openGraph: {
-    title: "من نحن | عيادات د. مها دحلان",
-    description: DESCRIPTION,
-    images: [{ url: "/site/about/clinic.png", width: 736, height: 1004, alt: "جلسة عناية بالبشرة في عيادات د. مها دحلان" }],
-  },
-};
-
-const STORY = [
-  "تأسس مجمع عيادات د. مها دحلان ليكون منارةً مضيئةً في عالم الطب الجلدي والتجميل، تنير درب الراغبين في العناية المتقنة، وتعكس شغفًا عميقًا بالعلم والجمال. انطلقت من خبرة طويلة اكتسبتها الدكتورة مها في أعرق المراكز الطبية والمستشفيات الحكومية، لتجسيد حلمٍ طال انتظاره، تُقدّم فيه الرعاية بكل احتراف وأمانة، ويكون فيه المريض أولًا، وعنايته غاية قبل أن تكون وسيلة.",
-  "ومنذ بدايتها، أثبتت العيادة مكانتها بين النخبة، إذ أصبحت مقصدًا موثوقًا للمرضى، ومرجعًا يُوصى به الأطباء من مختلف التخصصات، لما لمسوه من جودة في الخدمة، وصدق في التعامل، ونتائج تُلهم الثقة والرضا.",
-  "لسنا مجرد عيادة، بل وعدٌ بالالتزام، وعناية تنطلق من العلم وتمتد إلى راحة المريض ورضاه.",
-];
-
-const STATS: Array<
-  | { kind: "count"; value: number; suffix?: string; label: string; note: string }
-  | { kind: "static"; value: string; label: string; note: string }
+/**
+ * The animated half of each stat: the number, its kind and suffix stay in code
+ * because they drive the count-up. Labels and notes come from the content
+ * registry and are zipped by index.
+ */
+const STAT_VALUES: Array<
+  { kind: "count"; value: number; suffix?: string } | { kind: "static"; value: string }
 > = [
-  { kind: "count", value: 13, suffix: "+", label: "عاماً من الخبرة", note: "في أعرق المراكز والمستشفيات" },
-  { kind: "static", value: "4.8", label: "من 5 على Google", note: "متوسط تقييم الزائرات" },
-  { kind: "count", value: 1270, suffix: "+", label: "تقييماً موثّقاً", note: "على خرائط Google" },
-  { kind: "count", value: 14, label: "برنامجاً علاجياً", note: "تحت سقفٍ واحد" },
+  { kind: "count", value: 13, suffix: "+" },
+  { kind: "static", value: "4.8" },
+  { kind: "count", value: 1270, suffix: "+" },
+  { kind: "count", value: 14 },
 ];
 
-const PILLARS = [
-  {
-    icon: Icon.Eye,
-    title: "رؤيتنا",
-    body: "أن نكون وجهةً رائدةً في طب الجلدية والتجميل، تجمع بين الخبرة والابتكار، وتُعنى بجودة الخدمات وتميّز النتائج.",
-  },
-  {
-    icon: Icon.Target,
-    title: "رسالتنا",
-    body: "تقديم رعاية متخصصة وآمنة في مجال الجلدية والتجميل، ترتكز على العلم والصدق، وتلبي تطلعات المرضى بجودة عالية وثقة.",
-  },
-  {
-    icon: Icon.Gem,
-    title: "قيمنا",
-    body: "ستة مبادئ تحكم كل قرار نتخذه، من أول استشارة حتى آخر مراجعة، وتجدينها في تفاصيل كل زيارة.",
-  },
-];
+/** Icons for the vision / mission / values cards, in content order. */
+const PILLAR_ICONS = [Icon.Eye, Icon.Target, Icon.Gem] as const;
 
-const VALUES = [
-  { icon: Icon.ShieldCheck, title: "الأمانة الطبية", body: "لا نقترح إلا ما تحتاجينه فعلاً." },
-  { icon: Icon.Gem, title: "الجودة والإتقان", body: "مواد أصلية وبروتوكولات معتمدة." },
-  { icon: Icon.HeartHandshake, title: "التقدير الإنساني", body: "كل مريضة فردٌ من العائلة." },
-  { icon: Icon.TrendingUp, title: "التطوير المستمر", body: "تدريب دائم وأحدث التقنيات." },
-  { icon: Icon.Lock, title: "الخصوصية والثقة", body: "ملفك وجلستك في سرّية تامة." },
-  { icon: Icon.Users, title: "العمل بروح الفريق", body: "طاقم نسائي بإشراف استشارية." },
-];
+/** Icons for the six values, in content order. */
+const VALUE_ICONS = [
+  Icon.ShieldCheck,
+  Icon.Gem,
+  Icon.HeartHandshake,
+  Icon.TrendingUp,
+  Icon.Lock,
+  Icon.Users,
+] as const;
 
-const BEAUTY = [
-  "في عيادات MD، لا نرى العناية بالبشرة مجرّد إجراء تجميلي، بل نراها لغةً تعبّر عن الذات، ووسيلةً لاستعادة الثقة، وتجلّيًا لصورة داخلية منسجمة مع الخارج.",
-  "من رؤية الطبيبة الاستشارية د. مها دحلان، وبدافع شغفها العميق بطب الجلد وعلوم الجمال، وُلد هذا المكان ليكون مساحة يتقاطع فيها العلم مع الإحساس، ويُمنَح فيها الجمال ما يستحقه من فهمٍ ورعاية.",
-  "ونعامل كل مريضة كأنها فردٌ من العائلة، تستحق لحظة صادقة من الاهتمام، ونتيجة تُشبهها، وتُشبه ما تطمح إليه.",
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(ABOUT_US);
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: "/about-us" },
+    openGraph: {
+      title: "من نحن | عيادات د. مها دحلان",
+      description: seo.description,
+      images: [{ url: "/site/about/clinic.png", width: 736, height: 1004, alt: "جلسة عناية بالبشرة في عيادات د. مها دحلان" }],
+    },
+  };
+}
 
 export default async function AboutPage() {
+  const c = await getPageContent(ABOUT_US);
   const doctors = await getActiveDoctors();
   const team = doctors.slice(0, 3);
+
+  const stats = STAT_VALUES.map((s, i) => ({ ...s, ...c.stats.items[i] }));
+  const pillars = c.pillars.items.map((p, i) => ({ ...p, icon: PILLAR_ICONS[i] }));
+  const values = c.values.items.map((v, i) => ({ ...v, icon: VALUE_ICONS[i] }));
+  const story = c.story.paragraphs;
+  const beauty = c.beauty.paragraphs;
 
   return (
     <>
       <PageHero
-        crumbs={[{ label: "من نحن" }]}
-        eyebrow="من نحن"
-        title="عن مجمع عيادات"
-        gold="د. مها دحلان الطبي"
-        lede="منارةٌ في عالم الطب الجلدي والتجميل بجدة، انطلقت من خبرة طويلة في أعرق المراكز الطبية، لتقدّم رعاية تضع المريضة أولاً وتُبنى على العلم والصدق. طاقم نسائي بالكامل، وأربعة عشر برنامجاً علاجياً تحت سقفٍ واحد."
+        crumbs={[{ label: c.hero.crumb }]}
+        eyebrow={c.hero.eyebrow}
+        title={c.hero.title}
+        gold={c.hero.gold}
+        lede={c.hero.lede}
         image="/site/about/clinic.png"
         imageAlt="طبيبة تضع قناعاً علاجياً على بشرة مريضة في عيادات د. مها دحلان"
         actions={
           <>
             <GoldLink href="/book-now">
               <Icon.CalendarCheck className="size-[18px]" />
-              احجزي استشارتك
+              {c.hero.book}
             </GoldLink>
             <OutlineLink href="/doctors">
               <Icon.Users className="size-[18px]" />
-              تعرّفي على الفريق
+              {c.hero.team}
             </OutlineLink>
           </>
         }
@@ -112,16 +100,16 @@ export default async function AboutPage() {
           <div>
             <SectionHead
               align="start"
-              eyebrow="قصتنا"
-              title="حلمٌ طال انتظاره،"
-              gold="صار عيادةً تُوصى بها"
+              eyebrow={c.story.eyebrow}
+              title={c.story.title}
+              gold={c.story.gold}
             />
             <Reveal delay={100} className="mt-8 flex flex-col gap-5">
-              {STORY.map((p, i) => (
+              {story.map((p, i) => (
                 <p
                   key={i}
                   className={`leading-[2] ${
-                    i === STORY.length - 1
+                    i === story.length - 1
                       ? "border-r-2 border-[var(--color-md-gold)] pr-5 text-[1.05rem] font-bold text-[var(--color-md-champagne)]"
                       : "text-[1rem] font-light text-[rgba(246,238,223,0.7)]"
                   }`}
@@ -145,10 +133,10 @@ export default async function AboutPage() {
                     className="size-1.5 rounded-full bg-[var(--color-md-neon)]"
                     style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
                   />
-                  بالأرقام
+                  {c.stats.badge}
                 </span>
                 <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-7">
-                  {STATS.map((s) => (
+                  {stats.map((s) => (
                     <div key={s.label} className="border-t border-[var(--color-md-line)] pt-4">
                       <p className="md-gold-glow text-[clamp(2rem,4.6vw,2.7rem)] leading-none font-extrabold">
                         <span className="md-gold-text">
@@ -162,7 +150,7 @@ export default async function AboutPage() {
                 </div>
                 <p className="mt-7 flex items-center gap-2 border-t border-[var(--color-md-line)] pt-5 text-[0.84rem] font-bold text-[rgba(246,238,223,0.6)]">
                   <Icon.Users className="size-4 text-[var(--color-md-champagne)]" />
-                  طاقم نسائي بالكامل، بإشراف استشارية جلدية وتجميل وليزر
+                  {c.stats.note}
                 </p>
               </div>
             </div>
@@ -174,14 +162,14 @@ export default async function AboutPage() {
       <Section id="values" className="relative bg-[var(--color-md-bg)]">
         <Glow className="-top-16 right-1/4 h-[320px] w-[560px]" />
         <SectionHead
-          eyebrow="ما نؤمن به"
-          title="رؤيتنا ورسالتنا"
-          gold="وقيمنا"
-          body="ثلاثة أسس نضعها أمامنا في كل قرار طبي، وتجدينها حاضرة من الاستقبال حتى غرفة الجلسة."
+          eyebrow={c.pillars.eyebrow}
+          title={c.pillars.title}
+          gold={c.pillars.gold}
+          body={c.pillars.body}
         />
 
         <RevealGroup className="mt-12 grid gap-4 sm:gap-6 lg:grid-cols-3">
-          {PILLARS.map((card) => (
+          {pillars.map((card) => (
             <div
               key={card.title}
               className="group rounded-[24px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-7 transition-[transform,border-color,box-shadow] duration-400 hover:-translate-y-1.5 hover:border-[rgba(232,195,106,0.5)] hover:shadow-[0_0_40px_-14px_rgba(232,195,106,0.45)]"
@@ -202,7 +190,7 @@ export default async function AboutPage() {
         <ScrubLine className="mt-12 hidden h-[2px] w-full rounded-full lg:block" />
 
         <RevealGroup className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6" stagger={0.06}>
-          {VALUES.map((v) => (
+          {values.map((v) => (
             <div
               key={v.title}
               className="flex flex-col items-center rounded-[20px] border border-[var(--color-md-line)] bg-[rgba(22,16,10,0.6)] px-3 py-5 text-center transition-colors duration-300 hover:border-[rgba(232,195,106,0.45)]"
@@ -227,12 +215,12 @@ export default async function AboutPage() {
           <div>
             <SectionHead
               align="start"
-              eyebrow="إعادة تعريف الجمال"
-              title="علاجٌ واحدٌ..."
-              gold="يُحدِث الفرق كلّ مرة"
+              eyebrow={c.beauty.eyebrow}
+              title={c.beauty.title}
+              gold={c.beauty.gold}
             />
             <Reveal delay={100} className="mt-8 flex flex-col gap-5">
-              {BEAUTY.slice(0, 2).map((p, i) => (
+              {beauty.slice(0, 2).map((p, i) => (
                 <p key={i} className="text-[1rem] leading-[2] font-light text-[rgba(246,238,223,0.7)]">
                   {p}
                 </p>
@@ -243,13 +231,13 @@ export default async function AboutPage() {
                   aria-hidden
                 />
                 <p className="text-[1.08rem] leading-[1.9] font-extrabold text-[var(--color-md-champagne)]">
-                  هنا، لا نُجمّل الملامح فحسب، بل نُكرّم الحكايات التي تحملها.
+                  {c.beauty.quote}
                 </p>
                 <footer className="mt-3 text-[0.8rem] font-bold text-[rgba(246,238,223,0.5)]">
-                  د. مها دحلان، استشارية الجلدية والتجميل والليزر ومؤسسة العيادة
+                  {c.beauty.quoteBy}
                 </footer>
               </blockquote>
-              <p className="text-[1rem] leading-[2] font-light text-[rgba(246,238,223,0.7)]">{BEAUTY[2]}</p>
+              <p className="text-[1rem] leading-[2] font-light text-[rgba(246,238,223,0.7)]">{beauty[2]}</p>
             </Reveal>
           </div>
 
@@ -274,7 +262,7 @@ export default async function AboutPage() {
                 />
                 <span className="absolute right-5 bottom-5 inline-flex items-center gap-2 rounded-full border border-[rgba(240,212,138,0.4)] bg-[rgba(11,8,5,0.8)] px-4 py-2 text-[0.78rem] font-extrabold text-[var(--color-md-champagne)] backdrop-blur-md">
                   <Icon.Sparkles className="size-3.5" />
-                  العلم يلتقي بالإحساس
+                  {c.beauty.badge}
                 </span>
               </div>
             </Parallax>
@@ -287,10 +275,10 @@ export default async function AboutPage() {
         <Section id="team" className="relative bg-[var(--color-md-bg)]">
           <Glow className="-top-10 left-1/3 h-[300px] w-[560px]" />
           <SectionHead
-            eyebrow="من يقف خلف نتيجتك"
-            title="فريقٌ نسائي"
-            gold="بقيادة استشارية"
-            body="نخبة من طبيبات الجلدية والتجميل بقيادة د. مها دحلان، وكل خطة علاجية تمرّ على عينها قبل أن تبدأ."
+            eyebrow={c.team.eyebrow}
+            title={c.team.title}
+            gold={c.team.gold}
+            body={c.team.body}
           />
           <RevealGroup className={`${CAROUSEL} mt-10 md:grid-cols-2 lg:grid-cols-3`}>
             {team.map((d) => (
@@ -299,7 +287,7 @@ export default async function AboutPage() {
           </RevealGroup>
           <Reveal className="mt-10 flex justify-center">
             <OutlineLink href="/doctors">
-              كل الطبيبات والأخصائيات
+              {c.team.link}
               <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
             </OutlineLink>
           </Reveal>
@@ -310,21 +298,21 @@ export default async function AboutPage() {
       <section id="specialties" className="overflow-hidden bg-[var(--color-md-band)] py-[78px] sm:py-[96px]">
         <div className="mx-auto max-w-[1180px] px-[22px]">
           <SectionHead
-            eyebrow="تخصصاتنا"
-            title="أربعة عشر برنامجاً"
-            gold="تحت سقفٍ واحد"
-            body="من البوتوكس والفيلر إلى نحت الجسم وعلاج تساقط الشعر. كل بطاقة تفتح صفحة كاملة بالتفاصيل وطريقة الحجز."
+            eyebrow={c.specialties.eyebrow}
+            title={c.specialties.title}
+            gold={c.specialties.gold}
+            body={c.specialties.body}
           />
         </div>
         <Reveal className="mt-10">
-          <SpecialtiesStrip />
+          <SpecialtiesStrip overrides={await getSpecialtyCopy('ar')} />
         </Reveal>
         <Reveal className="mt-8 flex justify-center px-[22px]">
           <Link
             href="/#specialties"
             className="inline-flex items-center gap-2 text-[0.9rem] font-extrabold text-[var(--color-md-champagne)] transition-colors hover:text-[var(--color-md-neon)]"
           >
-            استعرضي كل التخصصات
+            {c.specialties.link}
             <Icon.ArrowLeft className="size-4" strokeWidth={2.4} />
           </Link>
         </Reveal>
@@ -333,17 +321,17 @@ export default async function AboutPage() {
       {/* ——— visit ——— */}
       <Section id="visit" className="bg-[var(--color-md-bg)]">
         <SectionHead
-          eyebrow="زورينا في جدة"
-          title="موقعنا"
-          gold="وساعات العمل"
-          body="نستقبلك في أجواء هادئة تحفظ خصوصيتك، في قلب حي الروضة على شارع التحلية."
+          eyebrow={c.visit.eyebrow}
+          title={c.visit.title}
+          gold={c.visit.gold}
+          body={c.visit.body}
         />
         <Reveal className="mt-12">
-          <VisitBlock />
+          <VisitBlock copy={c.visit} />
         </Reveal>
       </Section>
 
-      <CtaBand />
+      <CtaBand {...c.cta} />
     </>
   );
 }

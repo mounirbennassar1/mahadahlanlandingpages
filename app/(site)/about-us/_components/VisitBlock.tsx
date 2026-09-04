@@ -8,12 +8,13 @@ import {
   TEL_LINK,
   WA_LINK,
 } from "@/app/_home/config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { ABOUT_US } from "../content";
 
-export const CLINIC_ADDRESS =
-  "جدة، حي الروضة، شارع الأمير محمد بن عبدالعزيز (التحلية)، مركز بن حمران، الدور الثالث";
+type VisitCopy = ContentOf<typeof ABOUT_US>["visit"];
 
 /** Address, hours and contact in one wide card (about page). */
-export function VisitBlock() {
+export function VisitBlock({ copy }: { copy: VisitCopy }) {
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-7 sm:p-9">
       <div
@@ -26,16 +27,16 @@ export function VisitBlock() {
         <div>
           <h3 className="inline-flex items-center gap-2.5 text-[1.05rem] font-extrabold text-[var(--color-md-text)]">
             <Icon.MapPin className="size-5 text-[var(--color-md-champagne)]" />
-            العنوان
+            {copy.addressTitle}
           </h3>
-          <p className="mt-3 text-[0.92rem] leading-[1.9] font-bold text-[rgba(246,238,223,0.72)]">{CLINIC_ADDRESS}</p>
+          <p className="mt-3 text-[0.92rem] leading-[1.9] font-bold text-[rgba(246,238,223,0.72)]">{copy.address}</p>
           <a
             href={MAPS_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 inline-flex items-center gap-1.5 text-[0.84rem] font-extrabold text-[var(--color-md-champagne)] transition-colors hover:text-[var(--color-md-neon)]"
           >
-            عرض الموقع على الخريطة
+            {copy.mapLink}
             <Icon.ArrowLeft className="size-3.5" strokeWidth={2.4} />
           </a>
         </div>
@@ -43,7 +44,7 @@ export function VisitBlock() {
         <div className="border-t border-[var(--color-md-line)] pt-7 md:border-t-0 md:border-r md:pt-0 md:pr-6">
           <h3 className="inline-flex items-center gap-2.5 text-[1.05rem] font-extrabold text-[var(--color-md-text)]">
             <Icon.Clock className="size-5 text-[var(--color-md-champagne)]" />
-            ساعات العمل
+            {copy.hoursTitle}
           </h3>
           <ul className="mt-3 flex flex-col">
             {HOURS.map((row) => (
@@ -67,7 +68,7 @@ export function VisitBlock() {
         <div className="border-t border-[var(--color-md-line)] pt-7 md:border-t-0 md:border-r md:pt-0 md:pr-6">
           <h3 className="inline-flex items-center gap-2.5 text-[1.05rem] font-extrabold text-[var(--color-md-text)]">
             <Icon.Phone className="size-5 text-[var(--color-md-champagne)]" />
-            التواصل
+            {copy.contactTitle}
           </h3>
           <div className="mt-3 flex flex-col gap-2.5 text-[0.9rem]">
             <a
@@ -84,7 +85,7 @@ export function VisitBlock() {
               className="inline-flex items-center gap-2.5 font-bold text-[rgba(246,238,223,0.75)] transition-colors hover:text-[var(--color-md-neon)]"
             >
               <SocialIcon name="whatsapp" className="text-[#25D366]" />
-              استشارة عبر واتساب
+              {copy.whatsapp}
             </a>
           </div>
           <a
@@ -95,7 +96,7 @@ export function VisitBlock() {
             style={{ background: GOLD_GRADIENT }}
           >
             <Icon.Navigation className="size-4" strokeWidth={2.2} />
-            احصلي على الاتجاهات
+            {copy.directions}
           </a>
         </div>
       </div>

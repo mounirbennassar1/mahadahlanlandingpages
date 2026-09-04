@@ -1,17 +1,7 @@
-const ITEMS = [
-  "شد الرقبة بالخيوط",
-  "الهايفو HIFU",
-  "بوتوكس نفرتيتي",
-  "فيلر خط الفك",
-  "سكين بوستر",
-  "محفزات الكولاجين",
-  "الليزر التجميلي",
-];
-
-function Row() {
+function Row({ items }: { items: string[] }) {
   return (
     <div dir="rtl" className="flex items-center gap-[34px] pe-[34px]">
-      {ITEMS.map((t) => (
+      {items.map((t) => (
         <span key={t} className="flex items-center gap-[34px]">
           <span className="text-[0.95rem] font-bold whitespace-nowrap text-[#F0D48A]">
             {t}
@@ -24,7 +14,7 @@ function Row() {
 }
 
 /** Tilted dark treatments marquee under the hero. */
-export function MarqueeStrip() {
+export function MarqueeStrip({ words }: { words: string[] }) {
   return (
     // LTR wrapper keeps the looping track anchored to the left edge so the
     // strip is always full; the reversed animation makes it FLOW right-to-left.
@@ -38,10 +28,10 @@ export function MarqueeStrip() {
         className="nkl-marquee-track nkl-marquee-reverse"
         style={{ "--nkl-marquee-duration": "40s" } as React.CSSProperties}
       >
-        <Row />
-        <Row />
-        <Row />
-        <Row />
+        <Row items={words} />
+        <Row items={words} />
+        <Row items={words} />
+        <Row items={words} />
       </div>
     </div>
   );

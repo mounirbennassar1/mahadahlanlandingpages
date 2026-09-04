@@ -1,15 +1,7 @@
-const PHRASES = [
-  "استعادة امتلاء الوجه",
-  "نتائج طبيعية بلا مبالغة",
-  "إشراف طبي متخصص",
-  "خصوصية تامة",
-  "عناية تليق بكِ",
-];
-
-function Row() {
+function Row({ words }: { words: string[] }) {
   return (
     <span className="inline-flex items-center gap-11">
-      {PHRASES.map((p) => (
+      {words.map((p) => (
         <span key={p} className="inline-flex items-center gap-11">
           <span
             dir="rtl"
@@ -27,7 +19,7 @@ function Row() {
 }
 
 /** Gold serif keyword marquee between the hero and the problem section. */
-export function MarqueeStrip() {
+export function MarqueeStrip({ words }: { words: string[] }) {
   return (
     <div
       dir="ltr"
@@ -45,8 +37,8 @@ export function MarqueeStrip() {
         className="faa-marquee-track gap-11"
         style={{ "--faa-marquee-duration": "32s" } as React.CSSProperties}
       >
-        <Row />
-        <Row />
+        <Row words={words} />
+        <Row words={words} />
       </div>
     </div>
   );

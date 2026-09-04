@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { almarai } from "@/lib/fonts";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "علاج الاكزيما المزمنة | عيادة د. مها دحلان",
-  description:
-    "الحكة الليلية، الجفاف، والنوبات المتكررة: الاكزيما المزمنة تُدار ولا تُترك للصدفة. خطة علاجية متكاملة في جدة تجمع ترميم حاجز الجلد، تهدئة الالتهاب، العلاج الضوئي وخطة المحفزات، بإشراف استشارية جلدية ومتابعة حتى استقرار بشرتك.",
-  openGraph: {
-    title: "علاج الاكزيما المزمنة | عيادة د. مها دحلان",
-    description:
-      "بشرة هادئة بلا حكة ليست حلماً. خطة علمية للسيطرة على الاكزيما المزمنة: ترميم حاجز الجلد، تهدئة الالتهاب، وعلاج ضوئي متقدم بإشراف طبي متخصص.",
-    locale: "ar_SA",
-    type: "website",
-    images: [{ url: "/chronic-eczema/hero-bg.jpg", width: 1280, height: 720 }],
-  },
-};
 
 // Midnight-aubergine editorial palette: near-black violet ground, warm ink,
 // the clinic gold as the accent thread, hairline rules instead of glows.

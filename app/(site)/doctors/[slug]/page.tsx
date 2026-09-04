@@ -7,6 +7,7 @@ import { Icon } from "@/components/icons";
 import { Glow, Section, SectionHead } from "@/app/_home/Sections";
 import { Reveal, RevealGroup } from "@/app/_home/Motion";
 import { formatArabicDate, getActiveDoctors, getDoctorBySlug } from "@/lib/content";
+import { getPageContent } from "@/lib/pages/get";
 import { PageHero } from "@/app/(site)/_components/PageHero";
 import { CtaBand } from "@/app/(site)/_components/CtaBand";
 import { Monogram } from "@/app/(site)/_components/Monogram";
@@ -20,6 +21,7 @@ import {
 } from "@/app/(site)/_components/SiteButtons";
 import { firstSentence, initialOf, paragraphsOf, safeImageSrc, truncate } from "@/app/(site)/_components/media";
 import { DoctorCard } from "../_components/DoctorCard";
+import { DOCTORS } from "../content";
 
 export const revalidate = 300;
 
@@ -55,19 +57,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DoctorPage({ params }: Props) {
   const { slug } = await params;
-  const [doctor, all] = await Promise.all([loadDoctor(slug), getActiveDoctors()]);
+  const [{ hero, profile, cta }, doctor, all] = await Promise.all([
+    getPageContent(DOCTORS),
+    loadDoctor(slug),
+    getActiveDoctors(),
+  ]);
   if (!doctor) notFound();
 
   const others = all.filter((d) => d.slug !== doctor.slug).slice(0, 3);
   const image = safeImageSrc(doctor.image);
   const bookHref = `/book-now?doctor=${encodeURIComponent(doctor.slug)}`;
   const bio = paragraphsOf(doctor.bio);
-  const lede = firstSentence(doctor.bio) || `${doctor.title} في عيادات د. مها دحلان بجدة.`;
+  const lede = firstSentence(doctor.bio) || `${doctor.title} ${profile.ledeFallback}`;
 
   return (
     <>
       <PageHero
-        crumbs={[{ href: "/doctors", label: "الأطباء" }, { label: doctor.name }]}
+        crumbs={[{ href: "/doctors", label: hero.crumb }, { label: doctor.name }]}
         eyebrow={doctor.title}
         title={doctor.name}
         lede={lede}
@@ -90,7 +96,7 @@ export default async function DoctorPage({ params }: Props) {
           <>
             <GoldLink href={bookHref}>
               <Icon.CalendarCheck className="size-[18px]" />
-              احجزي موعداً مع {doctor.name}
+              {profile.bookHero} {doctor.name}
             </GoldLink>
             <WhatsAppLink />
           </>
@@ -101,7 +107,12 @@ export default async function DoctorPage({ params }: Props) {
       <Section id="bio" className="bg-[var(--color-md-band)]">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <div>
-            <SectionHead align="start" eyebrow="نبذة" title="تعرّفي على" gold={doctor.name} />
+            <SectionHead
+              align="start"
+              eyebrow={profile.bioEyebrow}
+              title={profile.bioTitle}
+              gold={doctor.name}
+            />
 
             {bio.length ? (
               <Reveal delay={100} className="mt-8 flex flex-col gap-5">
@@ -114,7 +125,7 @@ export default async function DoctorPage({ params }: Props) {
             ) : (
               <Reveal delay={100} className="mt-8">
                 <p className="text-[1.02rem] leading-[2] font-light text-[rgba(246,238,223,0.72)]">
-                  {doctor.title} ضمن فريق عيادات د. مها دحلان في جدة، تعمل وفق بروتوكولات العيادة وبإشراف استشارية الجلدية والتجميل والليزر.
+                  {doctor.title} {profile.bioFallback}
                 </p>
               </Reveal>
             )}
@@ -123,7 +134,7 @@ export default async function DoctorPage({ params }: Props) {
               <Reveal delay={160} className="mt-9">
                 <h3 className="inline-flex items-center gap-2.5 text-[1.05rem] font-extrabold text-[var(--color-md-text)]">
                   <Icon.Sparkles className="size-5 text-[var(--color-md-champagne)]" />
-                  التخصصات
+                  {profile.specialtiesTitle}
                 </h3>
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {doctor.specialties.map((s) => (
@@ -145,7 +156,7 @@ export default async function DoctorPage({ params }: Props) {
               />
               <h3 className="relative inline-flex items-center gap-2.5 text-[1.15rem] font-extrabold text-[var(--color-md-text)]">
                 <Icon.GraduationCap className="size-5 text-[var(--color-md-champagne)]" />
-                الشهادات والخبرات
+                {profile.credentialsTitle}
               </h3>
               {doctor.credentials.length ? (
                 <ul className="relative mt-5 list-none p-0">
@@ -159,12 +170,12 @@ export default async function DoctorPage({ params }: Props) {
                 </ul>
               ) : (
                 <p className="relative mt-4 text-[0.92rem] font-light text-[rgba(246,238,223,0.6)]">
-                  عضو في الفريق الطبي لعيادات د. مها دحلان.
+                  {profile.credentialsFallback}
                 </p>
               )}
               <GoldLink href={bookHref} className="relative mt-6 w-full !py-3.5 text-[0.95rem]">
                 <Icon.CalendarCheck className="size-[17px]" />
-                احجزي معها الآن
+                {profile.bookAside}
               </GoldLink>
             </div>
           </Reveal>
@@ -175,7 +186,11 @@ export default async function DoctorPage({ params }: Props) {
       {doctor.articles.length ? (
         <Section id="articles" className="relative bg-[var(--color-md-bg)]">
           <Glow className="-top-16 right-1/4 h-[320px] w-[560px]" />
-          <SectionHead eyebrow="مقالات بقلمها" title="من خبرتها" gold="إلى شاشتك" />
+          <SectionHead
+            eyebrow={profile.articlesEyebrow}
+            title={profile.articlesTitle}
+            gold={profile.articlesGold}
+          />
           <RevealGroup className={`${CAROUSEL} mt-10 md:grid-cols-2 lg:grid-cols-3`}>
             {doctor.articles.map((a) => {
               const cover = safeImageSrc(a.coverImage);
@@ -222,7 +237,7 @@ export default async function DoctorPage({ params }: Props) {
                     <div className="mt-auto flex items-center justify-between pt-4 text-[0.78rem] font-bold text-[rgba(246,238,223,0.5)]">
                       <span>{formatArabicDate(a.publishedAt ?? a.createdAt)}</span>
                       <span className="inline-flex items-center gap-1.5 text-[var(--color-md-champagne)]">
-                        اقرئي المقال
+                        {profile.readArticle}
                         <Icon.ArrowLeft className="size-3.5" strokeWidth={2.4} />
                       </span>
                     </div>
@@ -237,7 +252,12 @@ export default async function DoctorPage({ params }: Props) {
       {/* ——— other doctors ——— */}
       {others.length ? (
         <Section id="others" className={doctor.articles.length ? "bg-[var(--color-md-band)]" : "bg-[var(--color-md-bg)]"}>
-          <SectionHead eyebrow="الفريق" title="طبيبات" gold="أخريات" body="فريق نسائي متكامل، وكل خطة علاجية تمرّ على عين الاستشارية قبل أن تبدأ." />
+          <SectionHead
+            eyebrow={profile.othersEyebrow}
+            title={profile.othersTitle}
+            gold={profile.othersGold}
+            body={profile.othersBody}
+          />
           <RevealGroup className={`${CAROUSEL} mt-10 md:grid-cols-3`}>
             {others.map((d) => (
               <DoctorCard key={d.slug} doctor={d} variant="compact" className={CAROUSEL_ITEM} />
@@ -245,14 +265,18 @@ export default async function DoctorPage({ params }: Props) {
           </RevealGroup>
           <Reveal className="mt-10 flex justify-center">
             <OutlineLink href="/doctors">
-              كل الطبيبات والأخصائيات
+              {profile.allDoctors}
               <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
             </OutlineLink>
           </Reveal>
         </Section>
       ) : null}
 
-      <CtaBand bookHref={bookHref} bookLabel={`احجزي مع ${doctor.name}`} />
+      <CtaBand
+        {...cta}
+        bookHref={bookHref}
+        bookLabel={`${profile.ctaBook} ${doctor.name}`}
+      />
     </>
   );
 }

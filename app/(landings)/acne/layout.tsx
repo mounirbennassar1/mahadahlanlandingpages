@@ -1,59 +1,6 @@
-import type { Metadata } from "next";
 import Script from "next/script";
 import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: {
-    default: "عيادات د. مها دحلان | علاج حب الشباب وآثاره في جدة",
-    template: "%s | عيادات د. مها دحلان",
-  },
-  description:
-    "احجز استشارتك الآن في عيادات د. مها دحلان – الخيار الأول لعلاج حب الشباب وآثاره في جدة بأحدث أجهزة الليزر والتقنيات الطبية العالمية وبإشراف نخبة من استشاريي الجلدية والتجميل. أكثر من 20 عاماً من الخبرة.",
-  keywords: [
-    "علاج حب الشباب جدة",
-    "إزالة آثار حب الشباب",
-    "د. مها دحلان",
-    "عيادات جلدية جدة",
-    "أفضل دكتورة جلدية جدة",
-    "علاج حبوب الوجه",
-    "ليزر حب الشباب",
-    "جلدية وتجميل وليزر جدة",
-    "بشرة صافية",
-    "مجمع عيادات د. مها دحلان الطبي",
-  ],
-  openGraph: {
-    title: "عيادات د. مها دحلان | علاج حب الشباب وآثاره في جدة",
-    description:
-      "استعد ثقتك ببشرتك الصافية مع أحدث التقنيات الطبية العالمية في عيادات د. مها دحلان بجدة. أكثر من 20 عاماً من الخبرة في علاج حب الشباب.",
-    locale: "ar_SA",
-    type: "website",
-    siteName: "عيادات د. مها دحلان",
-    url: "https://acne.mahadahlan.com",
-    images: [
-      {
-        url: "/acne/logo.avif",
-        width: 1200,
-        height: 630,
-        alt: "عيادات د. مها دحلان — علاج حب الشباب",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "عيادات د. مها دحلان | علاج حب الشباب في جدة",
-    description:
-      "استعد ثقتك ببشرتك الصافية مع أحدث التقنيات الطبية العالمية في عيادات د. مها دحلان بجدة.",
-    images: ["/acne/logo.avif"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: "https://acne.mahadahlan.com",
-  },
-};
 
 export default function AcneLayout({
   children,

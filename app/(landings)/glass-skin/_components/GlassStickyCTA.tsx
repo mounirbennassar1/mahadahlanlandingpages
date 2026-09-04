@@ -5,12 +5,13 @@ import { Icon } from "@/components/icons";
 
 type Props = {
   bookHref: string;
+  book: string;
 };
 
 /** Dark-theme mobile sticky bar — local variant of MobileStickyCTA
  *  (the shared component is styled for light landings).
  *  Form-only funnel (TikTok ads) — no WhatsApp button. */
-export function GlassStickyCTA({ bookHref }: Props) {
+export function GlassStickyCTA({ bookHref, book }: Props) {
   return (
     <motion.div
       initial={{ y: 80, opacity: 0 }}
@@ -26,7 +27,7 @@ export function GlassStickyCTA({ bookHref }: Props) {
         }}
       >
         <Icon.CalendarCheck className="size-4" />
-        احجزي الآن
+        {book}
       </a>
     </motion.div>
   );

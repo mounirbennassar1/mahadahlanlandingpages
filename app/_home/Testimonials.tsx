@@ -5,6 +5,7 @@ import {
   LANG_META,
   type Locale,
   type ReviewEntry,
+  type Dict,
 } from "./i18n/dictionary";
 
 /* Genuine quotes from the clinic's public Google reviews
@@ -90,8 +91,8 @@ function MarqueeRow({
 }
 
 /** Two counter-scrolling marquee rows of real Google-review quotes. */
-export function Testimonials({ locale = "ar" }: { locale?: Locale }) {
-  const { rowA, rowB } = getDict(locale).testimonials;
+export function Testimonials({ locale = "ar", dict }: { locale?: Locale; dict?: Dict }) {
+  const { rowA, rowB } = (dict ?? getDict(locale)).testimonials;
   return (
     <div className="flex flex-col gap-5">
       <MarqueeRow reviews={rowA} duration="48s" locale={locale} />

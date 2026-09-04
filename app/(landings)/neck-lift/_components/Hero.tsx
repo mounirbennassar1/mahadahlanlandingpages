@@ -7,17 +7,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { NECK_LIFT } from "../content";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STATS = [
-  { value: "٤٫٨ من ٥", label: "تقييم Google" },
-  { value: "+١٢٧٠", label: "تقييم موثّق" },
-  { value: "+١٣ عاماً", label: "خبرة تجميلية" },
-  { value: "١٠٠٪", label: "طاقم نسائي" },
-] as const;
+type HeroCopy = ContentOf<typeof NECK_LIFT>["hero"];
 
-export function Hero() {
+export function Hero({ copy }: { copy: HeroCopy }) {
+  const STATS = copy.stats;
   const rootRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -133,21 +131,19 @@ export function Hero() {
               className="size-1.5 rounded-full bg-[var(--color-nkl-gold-bright)]"
               style={{ boxShadow: "0 0 8px 2px rgba(201,156,78,.6)" }}
             />
-            علاج ترهل الرقبة وعلامات التقدم بالسن، بدون جراحة
+            {copy.badge}
           </span>
 
           <h1 className="nkl-h mt-6 text-[clamp(2.2rem,5.4vw,3.7rem)] leading-[1.35] font-extrabold tracking-[-0.01em]">
-            استعيدي رقبةً مشدودة
+            {copy.line1}
             <br />
-            <span className="nkl-gold-text">وخطَّ فكٍّ يرسم أناقتك</span>
+            <span className="nkl-gold-text">{copy.line2}</span>
           </h1>
 
           <p className="nkl-h mt-5 max-w-[54ch] text-[1.06rem] font-light text-[rgba(39,28,17,0.68)]">
-            الخطوط الأفقية والترهل أسفل الذقن تظهر على الرقبة قبل الوجه، لكنها
-            اليوم قابلة للعلاج في جلساتٍ لا تتجاوز الساعة. نبني لكِ بروتوكولاً
-            يجمع الخيوط والهايفو والبوتوكس والفيلر بعد تقييمٍ صادق لحالتك،{" "}
+            {copy.body}{" "}
             <b className="font-bold text-[var(--color-nkl-ink)]">
-              بنتيجة طبيعية وعودة فورية ليومك
+              {copy.bodyStrong}
             </b>
             .
           </p>
@@ -158,7 +154,7 @@ export function Hero() {
               className="inline-flex items-center gap-2.5 rounded-full px-[32px] py-4 text-base font-extrabold text-[var(--color-nkl-ink)] shadow-[0_18px_44px_-14px_rgba(166,124,61,0.55)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(201,156,78,0.6)]"
               style={{ background: GOLD_GRADIENT }}
             >
-              احجزي استشارتك الخاصة
+              {copy.book}
               <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
             </a>
             <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
@@ -178,7 +174,7 @@ export function Hero() {
                 className="relative inline-flex items-center gap-2.5 rounded-full bg-[#FFFDF8] px-7 py-[15px] text-base font-extrabold text-[var(--color-nkl-ink)] transition-colors duration-300 hover:bg-[#F7F0E2]"
               >
                 <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-                استشارة واتساب
+                {copy.whatsapp}
               </a>
             </div>
           </div>

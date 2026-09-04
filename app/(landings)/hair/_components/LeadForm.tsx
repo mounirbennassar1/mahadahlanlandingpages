@@ -1,14 +1,18 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { motion } from "framer-motion";
 import { submitHairLead, type LeadFormState } from "../_actions";
 import { readUtmFromUrl } from "@/lib/utm";
+import type { ContentOf } from "@/lib/pages/define";
+import type { HAIR } from "../content";
 
 const initialState: LeadFormState = { status: "idle" };
 
-function SubmitButton() {
+type BookingCopy = ContentOf<typeof HAIR>["booking"];
+
+function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
   const { pending } = useFormStatus();
   return (
     <motion.button
@@ -23,26 +27,29 @@ function SubmitButton() {
           <span className="material-symbols-outlined animate-spin">
             progress_activity
           </span>
-          جاري الإرسال...
+          {pendingLabel}
         </>
       ) : (
         <>
           <span className="material-symbols-outlined">event_available</span>
-          احجزي موعدك الآن
+          {label}
         </>
       )}
     </motion.button>
   );
 }
 
-export default function LeadForm({ id }: { id?: string }) {
+export default function LeadForm({ id, copy }: { id?: string; copy: BookingCopy }) {
   const [state, formAction] = useActionState(submitHairLead, initialState);
-  const [utm, setUtm] = useState<Record<string, string>>({});
 
-  // Capture UTM params on mount so the server action sees them.
-  useEffect(() => {
-    setUtm(readUtmFromUrl());
-  }, []);
+  // Attribution is read at submit time, in the browser, so no effect or extra
+  // render is needed and the values are always the ones on the current URL.
+  function submit(formData: FormData) {
+    for (const [key, value] of Object.entries(readUtmFromUrl())) {
+      formData.set(key, value);
+    }
+    formAction(formData);
+  }
 
   const fieldError = (name: "fullName" | "phone" | "city") =>
     state.issues?.[name];
@@ -60,13 +67,13 @@ export default function LeadForm({ id }: { id?: string }) {
           <span className="material-symbols-outlined text-base">
             calendar_add_on
           </span>
-          احجزي استشارتك المجانية
+          {copy.formBadge}
         </div>
         <h3 className="text-2xl md:text-3xl font-bold text-[#1a3a2a] mb-2">
-          اتركي بياناتك وسنتواصل معك
+          {copy.formTitle}
         </h3>
         <p className="text-slate-500 text-sm">
-          فريقنا الطبي سيتواصل معك لتحديد موعدك خلال أقرب وقت
+          {copy.formSub}
         </p>
       </div>
 
@@ -79,16 +86,13 @@ export default function LeadForm({ id }: { id?: string }) {
         </div>
       )}
 
-      <form action={formAction} className="space-y-5" noValidate>
-        {Object.entries(utm).map(([k, v]) => (
-          <input key={k} type="hidden" name={k} value={v} />
-        ))}
+      <form action={submit} className="space-y-5" noValidate>
         <div>
           <label
             htmlFor="fullName"
             className="block text-sm font-bold text-[#1a3a2a] mb-2"
           >
-            الاسم الكامل
+            {copy.nameLabel}
           </label>
           <input
             id="fullName"
@@ -97,7 +101,7 @@ export default function LeadForm({ id }: { id?: string }) {
             autoComplete="name"
             required
             defaultValue={defaultValue("fullName")}
-            placeholder="مثال: سارة أحمد"
+            placeholder={copy.namePlaceholder}
             aria-invalid={Boolean(fieldError("fullName"))}
             className={`w-full rounded-xl border px-4 py-3 text-[#1a3a2a] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/40 transition-colors ${
               fieldError("fullName")
@@ -118,7 +122,7 @@ export default function LeadForm({ id }: { id?: string }) {
             htmlFor="phone"
             className="block text-sm font-bold text-[#1a3a2a] mb-2"
           >
-            رقم الجوال
+            {copy.phoneLabel}
           </label>
           <input
             id="phone"
@@ -128,7 +132,7 @@ export default function LeadForm({ id }: { id?: string }) {
             autoComplete="tel"
             required
             defaultValue={defaultValue("phone")}
-            placeholder="+966 5X XXX XXXX"
+            placeholder={copy.phonePlaceholder}
             dir="ltr"
             aria-invalid={Boolean(fieldError("phone"))}
             className={`w-full rounded-xl border px-4 py-3 text-[#1a3a2a] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/40 transition-colors text-right ${
@@ -150,7 +154,7 @@ export default function LeadForm({ id }: { id?: string }) {
             htmlFor="city"
             className="block text-sm font-bold text-[#1a3a2a] mb-2"
           >
-            المدينة
+            {copy.cityLabel}
           </label>
           <input
             id="city"
@@ -159,7 +163,7 @@ export default function LeadForm({ id }: { id?: string }) {
             autoComplete="address-level2"
             required
             defaultValue={defaultValue("city")}
-            placeholder="مثال: جدة"
+            placeholder={copy.cityPlaceholder}
             aria-invalid={Boolean(fieldError("city"))}
             className={`w-full rounded-xl border px-4 py-3 text-[#1a3a2a] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/40 transition-colors ${
               fieldError("city")
@@ -175,11 +179,10 @@ export default function LeadForm({ id }: { id?: string }) {
           )}
         </div>
 
-        <SubmitButton />
+        <SubmitButton label={copy.submit} pendingLabel={copy.submitting} />
 
         <p className="text-xs text-slate-400 text-center leading-relaxed">
-          بالنقر على &ldquo;احجزي موعدك الآن&rdquo; فإنك توافقين على تواصلنا
-          معك بخصوص استشارتك.
+          {copy.consent}
         </p>
       </form>
     </div>

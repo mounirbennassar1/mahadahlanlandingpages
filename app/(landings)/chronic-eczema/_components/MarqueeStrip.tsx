@@ -1,17 +1,7 @@
-const ITEMS = [
-  "ترميم حاجز الجلد",
-  "العلاج الضوئي NB-UVB",
-  "تهدئة الحكة الليلية",
-  "خطة المحفزات",
-  "بروتوكول الضمادات الرطبة",
-  "الترطيب الطبي العميق",
-  "متابعة حتى الاستقرار",
-];
-
-function Row() {
+function Row({ words }: { words: string[] }) {
   return (
     <div dir="rtl" className="flex items-center gap-[38px] pe-[38px]">
-      {ITEMS.map((t) => (
+      {words.map((t) => (
         <span key={t} className="flex items-center gap-[38px]">
           <span className="text-[0.82rem] font-extrabold tracking-[0.14em] whitespace-nowrap text-[var(--color-che-gold-bright)]">
             {t}
@@ -24,7 +14,7 @@ function Row() {
 }
 
 /** Editorial ticker: a slim treatments index running between two hairlines. */
-export function MarqueeStrip() {
+export function MarqueeStrip({ words }: { words: string[] }) {
   return (
     // LTR wrapper keeps the looping track anchored to the left edge so the
     // strip is always full; the reversed animation makes it FLOW right-to-left.
@@ -38,10 +28,10 @@ export function MarqueeStrip() {
         className="che-ticker-track che-ticker-reverse"
         style={{ "--che-ticker-duration": "46s" } as React.CSSProperties}
       >
-        <Row />
-        <Row />
-        <Row />
-        <Row />
+        <Row words={words} />
+        <Row words={words} />
+        <Row words={words} />
+        <Row words={words} />
       </div>
     </div>
   );

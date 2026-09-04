@@ -6,39 +6,23 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon } from "@/components/icons";
 import { GOLD_GRADIENT } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { CRACKED_HEELS } from "../content";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STAGES = [
-  {
-    num: "٠١",
-    icon: Icon.Wind,
-    title: "جفاف وخشونة",
-    body: "يفقد جلد الكعب ترطيبه الطبيعي فيصبح ملمسه خشناً جافاً، مع شدٍّ خفيف وخطوط رفيعة على الحواف. هذه أفضل مرحلة للتدخل: جلسات قليلة تعيد النعومة كاملة.",
-    chips: ["شد وجفاف", "ملمس خشن", "خطوط رفيعة"],
-  },
-  {
-    num: "٠٢",
-    icon: Icon.Slice,
-    title: "تشققات سطحية",
-    body: "يتراكم الجلد الميت وتظهر شقوق دقيقة على محيط الكعب مع تقشر واضح. تحتاج المرحلة إلى إزالة طبية للجلد المتصلب مع تقشير علاجي وترطيب مكثف.",
-    chips: ["شقوق دقيقة", "تقشر واضح", "حكة متكررة"],
-  },
-  {
-    num: "٠٣",
-    icon: Icon.TriangleAlert,
-    title: "تشققات عميقة وتصبغات",
-    body: "تتعمق الشقوق حتى تؤلم عند المشي وقد تنزف، ويترك الاحتكاك المزمن تصبغات داكنة حول الكعب. نعالجها ببروتوكول متدرج، وقد نضيف جلسات لتوحيد اللون بعد التئام الجلد.",
-    chips: ["ألم عند المشي", "نزف بسيط", "اسمرار حول الكعب"],
-  },
-] as const;
+/** Icons for the three stage cards, in content order. */
+const STAGE_ICONS = [Icon.Wind, Icon.Slice, Icon.TriangleAlert] as const;
+
+type StagesCopy = ContentOf<typeof CRACKED_HEELS>["stages"];
 
 /**
  * Pinned, scrub-driven stages showcase (desktop): the section pins while the
  * three stages advance with a filling gold rail and a crossfading numeral
  * panel. On mobile and under reduced motion it degrades to a static stack.
  */
-export function Stages() {
+export function Stages({ copy }: { copy: StagesCopy }) {
+  const STAGES = copy.cards.map((card, i) => ({ ...card, icon: STAGE_ICONS[i] }));
   const rootRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -107,15 +91,14 @@ export function Stages() {
       <div className="mx-auto flex min-h-[70svh] max-w-[1180px] flex-col justify-center px-[22px] py-[90px] lg:min-h-svh">
         <div className="mb-[54px] flex flex-col items-center gap-3.5 text-center">
           <span className="text-[0.78rem] font-extrabold tracking-[0.24em] text-[var(--color-crh-gold)]">
-            ٠٢ ، المراحل
+            {copy.eyebrow}
           </span>
           <h2 className="m-0 text-[clamp(1.8rem,3.8vw,2.7rem)] leading-[1.4] font-extrabold">
-            من الجفاف إلى التشقق العميق…{" "}
-            <span className="crh-gold-text">أين وصلتِ؟</span>
+            {copy.title}{" "}
+            <span className="crh-gold-text">{copy.highlight}</span>
           </h2>
           <p className="m-0 max-w-[54ch] font-light text-[var(--color-crh-muted)]">
-            تشقق الكعبين لا يحدث فجأة؛ يتدرج عبر ثلاث مراحل، وكلما بكّرتِ في
-            العلاج كانت الرحلة أقصر والنتيجة أسرع.
+            {copy.sub}
           </p>
         </div>
 

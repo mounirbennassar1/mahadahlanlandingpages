@@ -1,37 +1,7 @@
-import type { Metadata } from "next";
 import Script from "next/script";
 import { plexArabic } from "@/lib/fonts";
 import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "عيادة مها دهلان لمعالجة تساقط الشعر",
-  description:
-    "عيادة د. مها دهلان - حلول طبية متكاملة لعلاج تساقط الشعر وزراعته بأحدث التقنيات في جدة",
-  openGraph: {
-    title: "عيادة مها دهلان لمعالجة تساقط الشعر",
-    description:
-      "عيادة د. مها دهلان - حلول طبية متكاملة لعلاج تساقط الشعر وزراعته بأحدث التقنيات في جدة",
-    locale: "ar_SA",
-    type: "website",
-    siteName: "عيادات د. مها دحلان",
-    images: [
-      {
-        url: "/hair/logo.avif",
-        width: 1200,
-        height: 630,
-        alt: "عيادة د. مها دحلان — معالجة تساقط الشعر",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "عيادة مها دهلان لمعالجة تساقط الشعر",
-    description:
-      "حلول طبية متكاملة لعلاج تساقط الشعر وزراعته بأحدث التقنيات في جدة.",
-    images: ["/hair/logo.avif"],
-  },
-};
 
 export default function HairLayout({
   children,

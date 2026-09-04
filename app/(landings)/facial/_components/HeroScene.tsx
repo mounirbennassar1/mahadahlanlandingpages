@@ -5,8 +5,12 @@ import gsap from "gsap";
 import { useGSAPContext } from "./useGSAPContext";
 import { EASE, DURATION } from "./motion.tokens";
 import { MagneticButton } from "./MagneticButton";
+import type { ContentOf } from "@/lib/pages/define";
+import type { FACIAL } from "../content";
 
-export function HeroScene() {
+type HeroCopy = ContentOf<typeof FACIAL>["hero"];
+
+export function HeroScene({ copy }: { copy: HeroCopy }) {
   const container = useRef<HTMLDivElement>(null);
 
   const bgGlow = useRef<HTMLDivElement>(null);
@@ -108,25 +112,25 @@ export function HeroScene() {
             <div ref={badge}>
               <span className="inline-flex items-center gap-2 py-2 px-6 rounded-full border border-[#D4AF37]/40 bg-black/60 backdrop-blur-md text-[#D4AF37] text-sm tracking-wide font-medium shadow-[0_0_20px_rgba(228,187,81,0.1)]">
                 <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
-                الرعاية الجلدية المتقدمة
+                {copy.badge}
               </span>
             </div>
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.25] tracking-tight mb-8">
             <div className="overflow-hidden py-2">
-              <div ref={titleLine1} className="text-white drop-shadow-xl">في مجمع</div>
+              <div ref={titleLine1} className="text-white drop-shadow-xl">{copy.line1}</div>
             </div>
             <div className="overflow-hidden py-2">
               <div
                 ref={titleLine2}
                 className="text-transparent bg-clip-text bg-gradient-to-r from-[#f4db93] via-[#D4AF37] to-[#B8860B] drop-shadow-2xl"
               >
-                عيادات د. مها
+                {copy.line2}
               </div>
             </div>
             <div className="overflow-hidden py-2">
-              <div ref={titleLine3} className="text-white drop-shadow-xl">دحلان – جدة</div>
+              <div ref={titleLine3} className="text-white drop-shadow-xl">{copy.line3}</div>
             </div>
           </h1>
 
@@ -135,12 +139,9 @@ export function HeroScene() {
               ref={description}
               className="max-w-xl text-lg md:text-2xl text-zinc-300 leading-relaxed font-light drop-shadow-md bg-black/40 backdrop-blur-sm p-4 rounded-2xl md:bg-transparent md:backdrop-blur-none md:p-0"
             >
-              نقدم في مجمع عيادات د. مها دحلان |{" "}
-              <strong className="text-[#D4AF37] font-medium">MD Clinics</strong> مجموعة متقدمة من
-              علاجات البشرة المصممة لتحسين صحة البشرة واستعادة نضارتها. من جلسات تنظيف البشرة
-              المتقدمة إلى تقنيات الهيدرافيشل وتنظيف الفروة، يتم تنفيذ كل إجراء باستخدام{" "}
-              <strong className="text-[#D4AF37] font-medium">أجهزة طبية حديثة</strong> وبروتوكولات
-              معتمدة تناسب احتياجات كل بشرة.
+              {copy.body1}{" "}
+              <strong className="text-[#D4AF37] font-medium">MD Clinics</strong> {copy.body2}{" "}
+              <strong className="text-[#D4AF37] font-medium">{copy.bodyStrong}</strong> {copy.body3}
             </p>
           </div>
 
@@ -155,7 +156,7 @@ export function HeroScene() {
                 rel="noopener noreferrer"
                 className="group relative w-full sm:w-auto px-8 md:px-12 py-5 bg-[#D4AF37] text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 block text-center rounded-2xl"
               >
-                <span className="relative z-10">احجز موعدك الآن</span>
+                <span className="relative z-10">{copy.book}</span>
                 <div className="absolute inset-0 h-full w-full bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-0 rounded-2xl"></div>
               </a>
             </MagneticButton>
@@ -166,7 +167,7 @@ export function HeroScene() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-8 md:px-12 py-5 border border-white/20 hover:border-[#D4AF37]/50 bg-black/40 hover:bg-black/60 text-white font-medium backdrop-blur-md transition-all duration-300 text-lg block text-center rounded-2xl"
               >
-                اكتشف خدماتنا
+                {copy.services}
               </a>
             </MagneticButton>
           </div>

@@ -10,7 +10,8 @@ import { Payments } from "./Payments";
 import { Glow, Section, SectionHead } from "./Sections";
 import { Parallax, Reveal, RevealGroup } from "./Motion";
 import { GOLD_GRADIENT, PHONE_DISPLAY, TEL_LINK } from "./config";
-import { getDict, LANG_META, waLink, type Locale } from "./i18n/dictionary";
+import { LANG_META, waLink, type Locale } from "./i18n/dictionary";
+import { getHomeDict, getSpecialtyCopy } from "@/lib/pages/home";
 
 /** Icons for the four "why us" cards, in dictionary order. */
 const WHY_ICONS = [
@@ -25,16 +26,19 @@ const WHY_ICONS = [
  * visible string comes from the locale dictionary; direction-sensitive bits
  * (arrows, glow placement) follow `LANG_META[locale].dir`.
  */
-export function HomePage({ locale = "ar" }: { locale?: Locale }) {
-  const t = getDict(locale);
+export async function HomePage({ locale = "ar" }: { locale?: Locale }) {
+  const [t, specialties] = await Promise.all([
+    getHomeDict(locale),
+    getSpecialtyCopy(locale),
+  ]);
   const isRtl = LANG_META[locale].dir === "rtl";
   const Arrow = isRtl ? Icon.ArrowLeft : Icon.ArrowRight;
   const wa = waLink(locale);
 
   return (
-    <SiteShell locale={locale} bookHref="#contact">
+    <SiteShell locale={locale} dict={t} specialties={specialties} bookHref="#contact">
       <Hero />
-      <MarqueeStrip locale={locale} />
+      <MarqueeStrip locale={locale} dict={t} />
 
       {/* ——— specialties: every page, flowing ——— */}
       <section
@@ -51,7 +55,7 @@ export function HomePage({ locale = "ar" }: { locale?: Locale }) {
           />
         </div>
         <Reveal className="mt-12">
-          <PagesMarquee locale={locale} />
+          <PagesMarquee locale={locale} overrides={specialties} />
         </Reveal>
       </section>
 
@@ -133,7 +137,7 @@ export function HomePage({ locale = "ar" }: { locale?: Locale }) {
           locale={locale}
         />
         <Parallax className="mt-12" from={18} to={-18}>
-          <Testimonials locale={locale} />
+          <Testimonials locale={locale} dict={t} />
         </Parallax>
       </Section>
 
@@ -162,7 +166,7 @@ export function HomePage({ locale = "ar" }: { locale?: Locale }) {
           locale={locale}
         />
         <Reveal className="mt-12">
-          <Payments locale={locale} />
+          <Payments locale={locale} dict={t} />
         </Reveal>
       </Section>
 

@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { almarai } from "@/lib/fonts";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "علاج ترهل الرقبة وعلامات التقدم بالسن | عيادة مها دحلان",
-  description:
-    "الخطوط الأفقية، الترهل أسفل الذقن، وفقدان تحديد خط الفك: نعالجها بتقنيات غير جراحية دقيقة في جدة. خيوط، هايفو، بوتوكس نفرتيتي، فيلر خط الفك وسكين بوستر، بإشراف طبي متخصص وخصوصية تامة في عيادة د. مها دحلان.",
-  openGraph: {
-    title: "علاج ترهل الرقبة وعلامات التقدم بالسن | عيادة مها دحلان",
-    description:
-      "عمرُكِ سرٌّ لا يعرفه أحد، ورقبتُكِ لن تُفشيَه بعد اليوم. تقنيات غير جراحية تعيد لعنقك شدّه وتحديده بنتائج طبيعية.",
-    locale: "ar_SA",
-    type: "website",
-    images: [{ url: "/neck-lift/hero-main.webp", width: 1536, height: 2048 }],
-  },
-};
 
 // Palette tokens from the imported Claude Design: warm ivory ground,
 // bronze/champagne gold accents, deep coffee ink.

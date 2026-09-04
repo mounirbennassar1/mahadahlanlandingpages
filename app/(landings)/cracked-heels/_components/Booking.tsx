@@ -4,9 +4,12 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Icon } from "@/components/icons";
 import { GOLD_GRADIENT, WHATSAPP_NUMBER } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { CRACKED_HEELS } from "../content";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const TIMES = ["صباحاً", "مساءً", "في أقرب وقت"] as const;
+
+type BookingCopy = ContentOf<typeof CRACKED_HEELS>["booking"];
 
 type Status =
   | { kind: "idle" }
@@ -18,11 +21,12 @@ const fieldClasses =
   "rounded-[14px] border border-[rgba(228,200,126,0.25)] bg-[rgba(244,233,216,0.06)] px-4 py-3.5 text-[0.95rem] text-[var(--color-crh-cream)] outline-none transition-colors focus:border-[var(--color-crh-gold-soft)] focus:bg-[rgba(244,233,216,0.09)] disabled:opacity-60";
 
 /**
- * Booking form inside the dark card. Posts { fullName, phone, city, source }
- * to /api/leads; the preferred time only rides along in the WhatsApp
- * follow-up message.
+ * Booking form inside the dark card. Posts
+ * { fullName, phone, city, source, extra: { time } } to /api/leads; the
+ * preferred time also rides along in the WhatsApp follow-up message.
  */
-export function Booking() {
+export function Booking({ copy }: { copy: BookingCopy }) {
+  const TIMES = copy.times;
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
@@ -52,6 +56,7 @@ export function Booking() {
           phone: `+966${phone.trim().replace(/^0+/, "")}`,
           city: city.trim(),
           source: "cracked-heels",
+          ...(time ? { extra: { time } } : {}),
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -106,11 +111,10 @@ export function Booking() {
             <Icon.Check className="size-[30px] text-[#1C120C]" strokeWidth={2.6} />
           </span>
           <h3 className="m-0 text-2xl font-extrabold text-[var(--color-crh-cream)]">
-            شكراً لثقتك
+            {copy.successTitle}
           </h3>
           <p className="m-0 text-[0.95rem] font-light text-[rgba(244,233,216,0.7)]">
-            استلمنا طلبك وسيتواصل معك فريقنا خلال ساعات العمل. وإن أحببتِ،
-            أكملي الآن عبر واتساب.
+            {copy.successBody}
           </p>
           <a
             href={waFollowUp()}
@@ -119,7 +123,7 @@ export function Booking() {
             className="inline-flex items-center gap-2.5 rounded-full bg-[#25D366] px-8 py-[15px] text-[0.98rem] font-extrabold text-[#0B2B16] transition-transform hover:-translate-y-0.5"
             style={{ animation: "crh-pulse 2s infinite" }}
           >
-            فتح واتساب وإرسال الطلب
+            {copy.successCta}
           </a>
         </motion.div>
       ) : (
@@ -133,11 +137,11 @@ export function Booking() {
           className="flex flex-col gap-4 rounded-3xl border border-[rgba(228,200,126,0.25)] bg-[rgba(244,233,216,0.04)] p-[clamp(24px,4vw,36px)] backdrop-blur-md"
         >
           <label className="flex flex-col gap-2 text-[0.85rem] font-bold text-[rgba(244,233,216,0.85)]">
-            الاسم الكريم
+            {copy.nameLabel}
             <input
               name="name"
               autoComplete="name"
-              placeholder="اسمك الثلاثي"
+              placeholder={copy.namePlaceholder}
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -147,7 +151,7 @@ export function Booking() {
           </label>
 
           <label className="flex flex-col gap-2 text-[0.85rem] font-bold text-[rgba(244,233,216,0.85)]">
-            رقم الجوال
+            {copy.phoneLabel}
             <span
               dir="ltr"
               className="flex items-center gap-2.5 rounded-[14px] border border-[rgba(228,200,126,0.25)] bg-[rgba(244,233,216,0.06)] px-4 transition-colors focus-within:border-[var(--color-crh-gold-soft)]"
@@ -160,7 +164,7 @@ export function Booking() {
                 type="tel"
                 inputMode="tel"
                 autoComplete="tel-national"
-                placeholder="5X XXX XXXX"
+                placeholder={copy.phonePlaceholder}
                 required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -171,11 +175,11 @@ export function Booking() {
           </label>
 
           <label className="flex flex-col gap-2 text-[0.85rem] font-bold text-[rgba(244,233,216,0.85)]">
-            المدينة
+            {copy.cityLabel}
             <input
               name="city"
               autoComplete="address-level2"
-              placeholder="جدة، مكة…"
+              placeholder={copy.cityPlaceholder}
               required
               value={city}
               onChange={(e) => setCity(e.target.value)}
@@ -185,7 +189,7 @@ export function Booking() {
           </label>
 
           <div className="flex flex-col gap-2.5 text-[0.85rem] font-bold text-[rgba(244,233,216,0.85)]">
-            الوقت الأنسب للتواصل
+            {copy.timeLabel}
             <div className="flex flex-wrap gap-2.5">
               {TIMES.map((t) => {
                 const on = time === t;
@@ -221,12 +225,12 @@ export function Booking() {
               className={`items-center justify-center gap-3 ${submitting ? "flex" : "hidden"}`}
             >
               <span className="size-4 animate-spin rounded-full border-2 border-[rgba(28,18,12,0.3)] border-t-[#1C120C]" />
-              <span>جارٍ الإرسال...</span>
+              <span>{copy.sending}</span>
             </span>
             <span
               className={`items-center justify-center gap-3 ${submitting ? "hidden" : "flex"}`}
             >
-              <span>إرسال طلب الحجز</span>
+              <span>{copy.submit}</span>
             </span>
           </button>
 
@@ -245,8 +249,7 @@ export function Booking() {
           </AnimatePresence>
 
           <p className="m-0 text-center text-[0.72rem] text-[rgba(244,233,216,0.4)]">
-            بإرسال الطلب أنتِ توافقين على تواصل العيادة معك هاتفياً أو عبر
-            واتساب.
+            {copy.consent}
           </p>
         </motion.form>
       )}

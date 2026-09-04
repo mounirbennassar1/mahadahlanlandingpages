@@ -8,45 +8,27 @@ import { useGSAP } from "@gsap/react";
 import { Icon } from "@/components/icons";
 import { Reveal } from "./Gsap";
 import { GOLD_GRADIENT } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { HAIR_BREAKAGE } from "../content";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STEPS = [
-  {
-    num: "١",
-    icon: Icon.Microscope,
-    title: "التشخيص الرقمي للشعرة والفروة",
-    body: "كاميرا رقمية مكبّرة تفحص جذع الشعرة والفروة لتحديد مكان الضعف: هل التكسر حراري، كيميائي، أم نقص بروتين؟ لا نبدأ أي علاج قبل أن نعرف السبب.",
-    tag: "الجلسة الأولى",
-  },
-  {
-    num: "٢",
-    icon: Icon.Link2,
-    title: "ترميم الروابط والبروتين العلاجي",
-    body: "جلسات تُعيد بناء الروابط الداخلية للشعرة وتملأ فجوات القشرة المتضررة بالبروتين، ثم تغلقها بطبقة حماية تحبس الترطيب واللمعان.",
-    tag: "جلسات متتالية",
-  },
-  {
-    num: "٣",
-    icon: Icon.Droplets,
-    title: "ميزوثيرابي مغذٍّ للفروة",
-    body: "فيتامينات ومغذيات دقيقة تصل إلى جذور الشعر مباشرة، لتخرج الشعرة الجديدة أقوى وأكثر مرونة وأقل قابلية للتكسر.",
-    tag: "تغذية من الجذور",
-  },
-  {
-    num: "٤",
-    icon: Icon.CalendarCheck,
-    title: "خطة منزلية ومتابعة دورية",
-    body: "قص أطراف علاجي منظم، روتين حماية حرارية، وعناية منزلية مكتوبة لكِ خطوة بخطوة، مع مراجعات نطمئن فيها على تعافي شعرك حتى اكتماله.",
-    tag: "حتى النتيجة",
-  },
-];
+/** Icons for the four protocol steps, in content order. */
+const STEP_ICONS = [
+  Icon.Microscope,
+  Icon.Link2,
+  Icon.Droplets,
+  Icon.CalendarCheck,
+] as const;
+
+type Steps = ContentOf<typeof HAIR_BREAKAGE>["protocol"]["steps"];
 
 /**
  * Treatment protocol. Desktop: the section pins and the four steps scrub
  * in/out while the gold rail fills. Mobile & reduced-motion: stacked reveals.
  */
-export function Protocol() {
+export function Protocol({ steps }: { steps: Steps }) {
+  const STEPS = steps.map((step, i) => ({ ...step, icon: STEP_ICONS[i] }));
   const rootRef = useRef<HTMLDivElement>(null);
 
   useGSAP(

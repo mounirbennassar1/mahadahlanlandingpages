@@ -4,6 +4,7 @@ import { Phone } from "lucide-react";
 
 type Props = {
   whatsappHref: string;
+  book: string;
 };
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -18,7 +19,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export default function MobileStickyCTA({ whatsappHref }: Props) {
+export default function MobileStickyCTA({ whatsappHref, book }: Props) {
   return (
     <div className="acne-mobile-cta md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pt-2 pointer-events-none">
       <div className="pointer-events-auto flex items-stretch gap-2 acne-card !rounded-2xl shadow-2xl shadow-stone-900/15 p-2">
@@ -29,7 +30,7 @@ export default function MobileStickyCTA({ whatsappHref }: Props) {
           className="acne-btn-primary flex-1 !py-3.5 !text-base"
         >
           <WhatsAppIcon className="w-5 h-5" />
-          <span>احجزي الآن</span>
+          <span>{book}</span>
         </a>
         <a
           href="tel:+966920007515"

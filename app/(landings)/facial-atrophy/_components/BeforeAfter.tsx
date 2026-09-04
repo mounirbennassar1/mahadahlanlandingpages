@@ -9,7 +9,13 @@ import { GOLD_GRADIENT } from "./config";
  * Draggable before/after comparison — the after layer is clipped from the
  * left (LTR inset) and a gold handle follows the pointer, as in the design.
  */
-export function BeforeAfter() {
+export function BeforeAfter({
+  beforeLabel,
+  afterLabel,
+}: {
+  beforeLabel: string;
+  afterLabel: string;
+}) {
   const frameRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
   const handleRef = useRef<HTMLDivElement>(null);
@@ -67,13 +73,13 @@ export function BeforeAfter() {
       </div>
 
       <span className="pointer-events-none absolute top-3.5 right-3.5 z-[3] rounded-full border border-[rgba(243,233,220,0.25)] bg-[rgba(21,4,9,0.72)] px-3.5 py-1.5 text-[0.72rem] font-extrabold tracking-[0.08em] text-[var(--color-faa-ink)] backdrop-blur-md">
-        قبل
+        {beforeLabel}
       </span>
       <span
         className="pointer-events-none absolute top-3.5 left-3.5 z-[3] rounded-full px-3.5 py-1.5 text-[0.72rem] font-extrabold tracking-[0.08em] text-[var(--color-faa-cta-ink)]"
         style={{ background: GOLD_GRADIENT }}
       >
-        بعد
+        {afterLabel}
       </span>
 
       <div

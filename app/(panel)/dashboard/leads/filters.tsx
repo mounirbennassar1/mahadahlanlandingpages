@@ -6,6 +6,7 @@ import { STATUS_META, STATUS_ORDER } from "@/lib/status";
 import type { LeadStatus } from "@prisma/client";
 
 type Source = { slug: string; label: string; count: number };
+type Assignable = { id: string; name: string };
 
 export function LeadsFilters({
   sources,
@@ -13,12 +14,27 @@ export function LeadsFilters({
   activeStatus,
   query,
   statusCounts,
+  title = "All leads",
+  hideSource = false,
+  users = [],
+  activeAssignee = null,
+  from = null,
+  to = null,
+  exportHref,
 }: {
   sources: Source[];
   activeSource: string | null;
   activeStatus: LeadStatus | null;
   query: string;
   statusCounts: Record<string, number>;
+  title?: string;
+  /** The per-page Leads tab is already scoped to one source. */
+  hideSource?: boolean;
+  users?: Assignable[];
+  activeAssignee?: string | null;
+  from?: string | null;
+  to?: string | null;
+  exportHref?: string;
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -51,7 +67,7 @@ export function LeadsFilters({
         }}
       >
         <h3 style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 700, margin: 0, letterSpacing: "-0.01em" }}>
-          All leads
+          {title}
         </h3>
         <span
           style={{
@@ -68,6 +84,27 @@ export function LeadsFilters({
         </span>
 
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 10 }}>
+          {exportHref && (
+            <a
+              href={exportHref}
+              className="fk-btn"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "8px 14px",
+                borderRadius: 9,
+                background: "var(--surface)",
+                border: "1px solid var(--hairline)",
+                fontSize: 12.5,
+                fontWeight: 500,
+                color: "var(--ink-2)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Export CSV
+            </a>
+          )}
           <div
             style={{
               display: "inline-flex",
@@ -99,6 +136,7 @@ export function LeadsFilters({
       </div>
 
       {/* Source filter */}
+      {!hideSource && (
       <div
         style={{
           display: "flex",
@@ -124,6 +162,7 @@ export function LeadsFilters({
           />
         ))}
       </div>
+      )}
 
       {/* Status filter */}
       <div
@@ -156,6 +195,68 @@ export function LeadsFilters({
           />
         ))}
       </div>
+      {/* Date range + assignee */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "12px 22px",
+          background: "var(--surface-2)",
+          borderBottom: "1px solid var(--hairline)",
+          flexWrap: "wrap",
+        }}
+      >
+        <span style={labelCapsStyle}>Submitted</span>
+        <input
+          type="date"
+          value={from ?? ""}
+          max={to ?? undefined}
+          onChange={(e) => go({ from: e.target.value || null })}
+          style={dateInputStyle}
+          aria-label="From date"
+        />
+        <span style={{ color: "var(--ink-4)", fontSize: 12 }}>to</span>
+        <input
+          type="date"
+          value={to ?? ""}
+          min={from ?? undefined}
+          onChange={(e) => go({ to: e.target.value || null })}
+          style={dateInputStyle}
+          aria-label="To date"
+        />
+
+        <span style={{ ...labelCapsStyle, marginLeft: 12 }}>Assigned</span>
+        <select
+          value={activeAssignee ?? ""}
+          onChange={(e) => go({ assignee: e.target.value || null })}
+          style={{ ...dateInputStyle, cursor: "pointer" }}
+          aria-label="Assignee"
+        >
+          <option value="">Anyone</option>
+          <option value="none">Unassigned</option>
+          {users.map((u) => (
+            <option key={u.id} value={u.id}>
+              {u.name}
+            </option>
+          ))}
+        </select>
+
+        {(from || to || activeAssignee || query) && (
+          <button
+            onClick={() => go({ from: null, to: null, assignee: null, q: null })}
+            style={{
+              marginLeft: "auto",
+              fontSize: 12.5,
+              color: "var(--primary)",
+              fontWeight: 600,
+            }}
+          >
+            Clear filters
+          </button>
+        )}
+      </div>
+
       {isPending && (
         <div style={{ height: 2, background: "var(--primary-soft)", overflow: "hidden" }}>
           <div style={{ height: "100%", width: "30%", background: "var(--primary)", animation: "progress 0.8s ease-in-out infinite" }} />
@@ -212,3 +313,21 @@ function Chip({
     </button>
   );
 }
+
+const labelCapsStyle: React.CSSProperties = {
+  color: "var(--ink-3)",
+  fontSize: 12,
+  fontWeight: 600,
+  textTransform: "uppercase",
+  letterSpacing: "0.06em",
+};
+
+const dateInputStyle: React.CSSProperties = {
+  padding: "6px 10px",
+  borderRadius: 8,
+  border: "1px solid var(--hairline)",
+  background: "var(--surface)",
+  fontSize: 12.5,
+  color: "var(--ink-2)",
+  fontFamily: "var(--font-data)",
+};

@@ -11,6 +11,7 @@ import {
   SPECIALTIES,
   type Category,
 } from "@/app/_home/config";
+import type { SpecialtyOverrides } from "@/app/_home/i18n/dictionary";
 import { ServiceCard } from "./ServiceCard";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -28,7 +29,16 @@ function countLabel(n: number) {
  * Reads `SPECIALTIES` directly (the entries carry icon components, which
  * cannot cross the server/client boundary as props).
  */
-export function ServicesGrid() {
+export function ServicesGrid({
+  staffNote,
+  assurance,
+  overrides,
+}: {
+  staffNote: string;
+  assurance: string;
+  /** Treatment-card copy edited in the dashboard. */
+  overrides?: SpecialtyOverrides;
+}) {
   const [active, setActive] = useState<Category>(CATEGORY_ALL);
 
   const visible =
@@ -73,7 +83,7 @@ export function ServicesGrid() {
               style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
               aria-hidden
             />
-            طاقم نسائي بالكامل
+            {staffNote}
           </span>
         </div>
       </div>
@@ -89,7 +99,7 @@ export function ServicesGrid() {
           </span>
           <span className="inline-flex items-center gap-2">
             <Icon.ShieldCheck className="size-4 text-[var(--color-md-champagne)]" aria-hidden />
-            كل خدمة تبدأ بتقييم مع الطبيبة وتكلفة واضحة قبل الجلسة
+            {assurance}
           </span>
         </div>
 
@@ -104,7 +114,7 @@ export function ServicesGrid() {
                 exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.18 } }}
                 transition={{ duration: 0.45, ease: EASE, delay: Math.min(i, 8) * 0.04 }}
               >
-                <ServiceCard item={item} />
+                <ServiceCard item={item} overrides={overrides} />
               </motion.div>
             ))}
           </AnimatePresence>

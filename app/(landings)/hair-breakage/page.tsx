@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { WhatsAppFAB } from "@/components/usablecomponents/WhatsAppFAB";
@@ -23,117 +24,40 @@ import {
   WA_TOPIC_MESSAGE,
   WHATSAPP_NUMBER,
 } from "./_components/config";
+import { getPageContent } from "@/lib/pages/get";
+import { HAIR_BREAKAGE } from "./content";
 
-const SIGNS = [
-  "شعيرات قصيرة متطايرة تقف أعلى الرأس مهما مشّطتِ",
-  "أطراف بيضاء متشعّبة تصعد مع الوقت نحو منتصف الخصلة",
-  "خصلات تتقطع على الفرشاة والمخدة دون جذور في نهايتها",
-  "هيشان دائم ولمعان غائب حتى بعد الاستشوار",
-];
+/** Icons for the "causes" cards, in content order. */
+const CAUSE_ICONS = [
+  Icon.Flame,
+  Icon.Palette,
+  Icon.Wheat,
+  Icon.Cable,
+  Icon.Droplet,
+  Icon.Moon,
+] as const;
 
-const CAUSES = [
-  {
-    icon: Icon.Flame,
-    title: "الحرارة اليومية",
-    body: "مكواة وسيشوار بدرجات مرتفعة يبخّران رطوبة الشعرة ويكسران بروتينها تدريجياً، حتى تنقصف عند أبسط شد.",
-  },
-  {
-    icon: Icon.Palette,
-    title: "الصبغات والمواد الكيميائية",
-    body: "التفتيح والصبغ والفرد الكيميائي تفتح قشرة الشعرة لتصل إلى لبّها، وكل جلسة غير مدروسة تُضعف بنيتها الداخلية.",
-  },
-  {
-    icon: Icon.Wheat,
-    title: "نقص البروتين والتغذية",
-    body: "الشعرة تُبنى من الكيراتين؛ نقص البروتين والحديد وفيتامين د يجعلها تخرج من الجذر رقيقة هشة سريعة التكسر.",
-  },
-  {
-    icon: Icon.Cable,
-    title: "الشد والتصفيف القاسي",
-    body: "ربطات الذيل المشدودة والتمشيط العنيف على شعر مبلل يقصف الشعرة عند نقاط الضغط نفسها كل يوم.",
-  },
-  {
-    icon: Icon.Droplet,
-    title: "الجفاف ونقص الترطيب",
-    body: "شمس وماء بحر وكلور ومكيفات… بيئة تسحب الترطيب من شعرك، والشعرة الجافة تنكسر بدل أن تنثني.",
-  },
-  {
-    icon: Icon.Moon,
-    title: "عادات صغيرة تتراكم",
-    body: "النوم على وسادة قطنية خشنة، منشفة تُفرك بقوة، وتمشيط من الجذور إلى الأطراف: تفاصيل تصنع فرقاً كبيراً.",
-  },
-];
+/** Icons for the result milestones, in content order. */
+const MILESTONE_ICONS = [Icon.Sparkles, Icon.TrendingUp, Icon.Crown] as const;
 
-const MILESTONES = [
-  {
-    num: "٠١",
-    title: "بعد أول جلسة",
-    body: "ملمس أنعم ولمعان واضح تحت الضوء، وتمشيط أسهل بشدٍّ أقل.",
-    icon: Icon.Sparkles,
-  },
-  {
-    num: "٠٢",
-    title: "خلال أسابيع البروتوكول",
-    body: "تقصف أقل على الفرشاة، هيشان يتراجع، وأطراف تحافظ على تماسكها.",
-    icon: Icon.TrendingUp,
-  },
-  {
-    num: "٠٣",
-    title: "مع اكتمال الخطة",
-    body: "شعرة أقوى وأكثر مرونة تنثني ولا تنكسر، وعادات عناية ترافقك مدى الحياة.",
-    icon: Icon.Crown,
-  },
-];
+/** Animated proof counters; only their captions are editable. The numerals
+ *  are rendered by <Counter>, so value/prefix/suffix stay in code. */
+const RESULT_COUNTERS = [
+  { value: 1270, prefix: "+", suffix: "" },
+  { value: 13, prefix: "+", suffix: " عاماً" },
+  { value: 100, prefix: "", suffix: "٪" },
+] as const;
 
-const WHY_US = [
-  {
-    icon: Icon.HeartHandshake,
-    title: "تقييم صادق",
-    body: "لا نقترح عليكِ إلا ما يحتاجه شعرك فعلاً، وقد نكتفي بخطة منزلية.",
-  },
-  {
-    icon: Icon.BadgeCheck,
-    title: "مواد أصلية معتمدة",
-    body: "بروتينات ومغذيات من شركات عالمية موثقة، تُفتح أمامك في الجلسة.",
-  },
-  {
-    icon: Icon.Users,
-    title: "طاقم نسائي بالكامل",
-    body: "خصوصية تامة من الاستقبال حتى غرفة الجلسة وملفك الطبي.",
-  },
-  {
-    icon: Icon.CalendarCheck,
-    title: "متابعة حتى النتيجة",
-    body: "مراجعات دورية مجدولة نطمئن فيها على تعافي شعرك حتى اكتماله.",
-  },
-];
+/** Icons for the "why us" strip, in content order. */
+const WHY_US_ICONS = [
+  Icon.HeartHandshake,
+  Icon.BadgeCheck,
+  Icon.Users,
+  Icon.CalendarCheck,
+] as const;
 
-const FAQ = [
-  {
-    q: "ما الفرق بين تساقط الشعر وتكسره؟",
-    a: "التساقط يسقط فيه الشعر من الجذر وتجدين بصيلة بيضاء صغيرة في نهايته، أما التكسر فتنقطع الشعرة في منتصفها أو عند أطرافها وتبقى الجذور سليمة. لكلٍّ منهما برنامج علاجي مختلف في عياداتنا، والتقييم الأول يحدد حالتك بدقة.",
-  },
-  {
-    q: "كم عدد الجلسات التي أحتاجها؟",
-    a: "يختلف حسب درجة التلف وسببه؛ كثير من الحالات تلاحظ الفرق من الجلسة الأولى، بينما يُبنى بروتوكول الترميم الكامل عادة على عدة جلسات متباعدة تحدد الطبيبة عددها بعد التشخيص الرقمي.",
-  },
-  {
-    q: "هل يناسب العلاج الشعر المصبوغ أو المعالج بالكيراتين؟",
-    a: "نعم، بل هو مصمم له؛ الشعر المصبوغ والمفرود كيميائياً أكثر عرضة للتكسر. نختار تركيبات ترميم تناسب حالة شعرك الحالية دون التعارض مع لونه أو معالجاته السابقة.",
-  },
-  {
-    q: "هل جلسات البروتين لدينا تفرد الشعر؟",
-    a: "هدفنا علاجي وليس تغيير شكل الشعر: نعيد بناء الشعرة المتضررة ونغذيها. قد تلاحظين نعومة ولمعاناً أعلى، لكن الكيرلي يبقى كيرلي، ولا نستخدم تركيبات فرد قاسية.",
-  },
-  {
-    q: "متى ألاحظ اختفاء التقصف فعلياً؟",
-    a: "اللمعان والنعومة يظهران مبكراً، أما توقف التكسر فيُقاس مع الأسابيع: شعر أقل على الفرشاة والمخدة، وأطراف تحافظ على كثافتها. النتائج تختلف من حالة إلى أخرى بحسب الالتزام بالخطة المنزلية.",
-  },
-  {
-    q: "هل يمكنني تقسيط تكلفة الجلسات؟",
-    a: "نعم، تتوفر خيارات الدفع الآجل عبر تابي وتمارا داخل العيادة، ويشرح لك فريق الاستقبال التفاصيل عند تأكيد الحجز.",
-  },
-];
+/** Icons for the booking reassurance points, in content order. */
+const BOOKING_POINT_ICONS = [Icon.Lock, Icon.CircleCheck, Icon.Clock] as const;
 
 function SectionHead({
   eyebrow,
@@ -163,31 +87,61 @@ function SectionHead({
   );
 }
 
-export default function HairBreakagePage() {
+export const revalidate = 300;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(HAIR_BREAKAGE);
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.ogDescription,
+      locale: "ar_SA",
+      type: "website",
+      images: [{ url: "/hair-breakage/hero.webp", width: 1536, height: 2048 }],
+    },
+  };
+}
+
+export default async function HairBreakagePage() {
+  const c = await getPageContent(HAIR_BREAKAGE);
+  const causes = c.causes.cards.map((card, i) => ({ ...card, icon: CAUSE_ICONS[i] }));
+  const milestones = c.results.milestones.map((m, i) => ({
+    ...m,
+    icon: MILESTONE_ICONS[i],
+  }));
+  const counters = RESULT_COUNTERS.map((counter, i) => ({
+    ...counter,
+    label: c.results.counters[i] ?? "",
+  }));
+  const whyUs = c.whyUs.cards.map((card, i) => ({ ...card, icon: WHY_US_ICONS[i] }));
+
   return (
     <main>
       <ScrollProgress />
-      <Header />
-      <Hero videoSrc="/hair-breakage/hero-loop.mp4" />
-      <MarqueeStrip />
+      <Header cta={c.cta.header} />
+      <Hero copy={c.hero} videoSrc="/hair-breakage/hero-loop.mp4" />
+      <MarqueeStrip words={c.marquee.items} />
 
       {/* ——— تساقط أم تكسر؟ ——— */}
       <section className="relative mx-auto max-w-[1180px] px-[22px] pt-[110px] pb-[90px]">
         <SectionHead
-          eyebrow="٠١ ، افهمي شعرك"
-          title="هل هو تساقط…"
-          highlight="أم تكسر؟"
-          sub="أكثر ما يؤخر العلاج هو الخلط بينهما. التكسر يقصف الشعرة في منتصفها ويترك الجذور سليمة، وعلاجه يختلف تماماً عن علاج التساقط."
+          eyebrow={c.problem.eyebrow}
+          title={c.problem.title}
+          highlight={c.problem.highlight}
+          sub={c.problem.sub}
         />
         <div className="grid items-start gap-8 lg:grid-cols-2">
           {/* علامات التكسر */}
           <Reveal>
             <div className="rounded-[26px] border border-[var(--color-hab-line)] bg-[var(--color-hab-card)] p-8">
               <h3 className="mt-0 mb-5 text-[1.25rem] font-extrabold">
-                علامات تدل أن شعرك <span className="hab-gold-text">يتكسر</span>
+                {c.problem.signsTitle}{" "}
+                <span className="hab-gold-text">{c.problem.signsHighlight}</span>
               </h3>
               <ul className="m-0 flex list-none flex-col gap-3.5 p-0">
-                {SIGNS.map((s) => (
+                {c.problem.signs.map((s) => (
                   <li key={s} className="flex items-start gap-3">
                     <span className="mt-1 flex size-[22px] shrink-0 items-center justify-center rounded-full border border-[rgba(212,175,55,0.4)] bg-[rgba(212,175,55,0.12)]">
                       <Icon.Check
@@ -211,32 +165,28 @@ export default function HairBreakagePage() {
                 <div className="bg-[var(--color-hab-band)] p-6">
                   <span className="mb-3 inline-flex items-center gap-2 text-[0.8rem] font-extrabold text-[var(--color-hab-champagne)]">
                     <Icon.Scissors className="size-4" />
-                    التكسر
+                    {c.problem.breakageLabel}
                   </span>
                   <p className="m-0 text-[0.9rem] font-light text-[rgba(245,239,224,0.75)]">
-                    الشعرة تنقطع في منتصفها أو عند الأطراف، بلا بصيلة في
-                    نهايتها. السبب في جذع الشعرة نفسه: حرارة، صبغات، أو نقص
-                    بروتين.
+                    {c.problem.breakageBody}
                   </p>
                 </div>
                 <div className="bg-[var(--color-hab-band)] p-6">
                   <span className="mb-3 inline-flex items-center gap-2 text-[0.8rem] font-extrabold text-[rgba(245,239,224,0.55)]">
                     <Icon.ArrowDown className="size-4" />
-                    التساقط
+                    {c.problem.sheddingLabel}
                   </span>
                   <p className="m-0 text-[0.9rem] font-light text-[rgba(245,239,224,0.6)]">
-                    الشعرة تسقط كاملة من الجذر مع بصيلتها البيضاء. السبب في
-                    الجذر والفروة، وعلاجه برنامج مختلف تماماً.
+                    {c.problem.sheddingBody}
                   </p>
                 </div>
               </div>
               <div className="border-t border-[var(--color-hab-line)] bg-[var(--color-hab-card)] px-6 py-5">
                 <p className="m-0 text-[0.88rem] font-light text-[var(--color-hab-muted)]">
                   <b className="font-extrabold text-[var(--color-hab-champagne)]">
-                    هذه الصفحة مخصصة للتكسر والتقصف.
+                    {c.problem.noteStrong}
                   </b>{" "}
-                  وإن أظهر التقييم أن حالتك تساقط من الجذور، نوجهك مباشرة إلى
-                  برنامجنا العلاجي المستقل لتساقط الشعر.
+                  {c.problem.note}
                 </p>
               </div>
             </div>
@@ -248,13 +198,13 @@ export default function HairBreakagePage() {
       <section className="relative border-y border-[rgba(212,175,55,0.14)] bg-[var(--color-hab-band)] px-[22px] py-[100px]">
         <div className="mx-auto max-w-[1180px]">
           <SectionHead
-            eyebrow="٠٢ ، الأسباب"
-            title="ستة أسباب تكسر شعرك"
-            highlight="كل يوم"
-            sub="حددي أسبابك أثناء التصفح؛ غالباً يجتمع أكثر من سبب واحد، ولهذا يبدأ علاجنا دائماً بالتشخيص لا بالمستحضرات."
+            eyebrow={c.causes.eyebrow}
+            title={c.causes.title}
+            highlight={c.causes.highlight}
+            sub={c.causes.sub}
           />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {CAUSES.map((c, i) => (
+            {causes.map((c, i) => (
               <SpotlightCard
                 key={c.title}
                 delay={(i % 3) * 80}
@@ -286,13 +236,13 @@ export default function HairBreakagePage() {
       <section className="relative py-[110px] lg:py-0">
         <div className="px-[22px] pt-0 lg:pt-[110px]">
           <SectionHead
-            eyebrow="٠٣ ، البروتوكول"
-            title="من التقصف إلى اللمعان…"
-            highlight="بأربع خطوات"
-            sub="تابعي الرحلة خطوة بخطوة: تشخيص يحدد السبب، ترميم يعيد البناء، تغذية من الجذور، وخطة تحافظ على النتيجة."
+            eyebrow={c.protocol.eyebrow}
+            title={c.protocol.title}
+            highlight={c.protocol.highlight}
+            sub={c.protocol.sub}
           />
         </div>
-        <Protocol />
+        <Protocol steps={c.protocol.steps} />
       </section>
 
       {/* ——— النتائج ——— */}
@@ -322,13 +272,13 @@ export default function HairBreakagePage() {
         />
         <div className="relative mx-auto max-w-[1180px]">
           <SectionHead
-            eyebrow="٠٤ ، النتائج"
-            title="نتيجة تلمع"
-            highlight="تحت الضوء"
-            sub="لا وعود مبالغاً بها: هذا ما تتوقعينه فعلياً في كل مرحلة من مراحل البروتوكول."
+            eyebrow={c.results.eyebrow}
+            title={c.results.title}
+            highlight={c.results.highlight}
+            sub={c.results.sub}
           />
           <div className="grid gap-[22px] md:grid-cols-3">
-            {MILESTONES.map((m, i) => (
+            {milestones.map((m, i) => (
               <Reveal key={m.num} delay={i * 120}>
                 <div className="relative h-full overflow-hidden rounded-[22px] border border-[var(--color-hab-line)] bg-[rgba(16,16,20,0.82)] px-7 py-[34px] backdrop-blur-md">
                   <div
@@ -360,43 +310,27 @@ export default function HairBreakagePage() {
           {/* proof counters */}
           <Reveal delay={140} className="mt-12">
             <div className="grid gap-px overflow-hidden rounded-3xl border border-[var(--color-hab-line)] bg-[var(--color-hab-line)] sm:grid-cols-3">
-              <div className="flex flex-col items-center gap-1 bg-[rgba(16,16,20,0.85)] px-6 py-8">
-                <Counter
-                  value={1270}
-                  prefix="+"
-                  className="text-[2rem] font-extrabold text-[var(--color-hab-champagne)]"
-                />
-                <span className="text-[0.82rem] font-bold text-[rgba(245,239,224,0.55)]">
-                  تقييم موثق على Google بمتوسط ٤٫٨ من ٥
-                </span>
-              </div>
-              <div className="flex flex-col items-center gap-1 bg-[rgba(16,16,20,0.85)] px-6 py-8">
-                <Counter
-                  value={13}
-                  prefix="+"
-                  suffix=" عاماً"
-                  className="text-[2rem] font-extrabold text-[var(--color-hab-champagne)]"
-                />
-                <span className="text-[0.82rem] font-bold text-[rgba(245,239,224,0.55)]">
-                  من الخبرة في الجلدية والتجميل اللاجراحي
-                </span>
-              </div>
-              <div className="flex flex-col items-center gap-1 bg-[rgba(16,16,20,0.85)] px-6 py-8">
-                <Counter
-                  value={100}
-                  suffix="٪"
-                  className="text-[2rem] font-extrabold text-[var(--color-hab-champagne)]"
-                />
-                <span className="text-[0.82rem] font-bold text-[rgba(245,239,224,0.55)]">
-                  طاقم نسائي وخصوصية تامة داخل العيادة
-                </span>
-              </div>
+              {counters.map((counter) => (
+                <div
+                  key={counter.label}
+                  className="flex flex-col items-center gap-1 bg-[rgba(16,16,20,0.85)] px-6 py-8"
+                >
+                  <Counter
+                    value={counter.value}
+                    prefix={counter.prefix}
+                    suffix={counter.suffix}
+                    className="text-[2rem] font-extrabold text-[var(--color-hab-champagne)]"
+                  />
+                  <span className="text-[0.82rem] font-bold text-[rgba(245,239,224,0.55)]">
+                    {counter.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-[18px] mb-0 text-center text-[0.78rem] text-[rgba(245,239,224,0.4)]">
-              تختلف النتائج من حالة إلى أخرى بحسب درجة التلف والالتزام بالخطة،
-              ويحدد التقييم الطبي ما يناسبك.
+              {c.results.disclaimer}
             </p>
           </Reveal>
         </div>
@@ -414,17 +348,17 @@ export default function HairBreakagePage() {
         />
         <div className="relative mx-auto max-w-[1080px]">
           <SectionHead
-            eyebrow="٠٥ ، بإشراف"
-            title="طبيبة تفهم"
-            highlight="لغة شعرك"
-            sub="فلسفتنا في علاج التكسر تقوم على التشخيص قبل العلاج: نحدد السبب بدقة، ثم نختار أقل الجلسات عدداً وأكثرها أثراً."
+            eyebrow={c.doctor.eyebrow}
+            title={c.doctor.title}
+            highlight={c.doctor.highlight}
+            sub={c.doctor.sub}
           />
-          <Doctor />
+          <Doctor copy={c.doctor} />
 
           {/* لماذا عيادة مها دحلان */}
           <Reveal delay={120} className="mt-14">
             <div className="grid gap-px overflow-hidden rounded-3xl border border-[var(--color-hab-line)] bg-[var(--color-hab-line)] sm:grid-cols-2 lg:grid-cols-4">
-              {WHY_US.map((u) => (
+              {whyUs.map((u) => (
                 <div
                   key={u.title}
                   className="flex flex-col gap-2 bg-[var(--color-hab-card)] px-6 py-7"
@@ -447,12 +381,7 @@ export default function HairBreakagePage() {
       {/* ——— قالوا عنا ——— */}
       <section className="relative overflow-hidden border-y border-[rgba(212,175,55,0.14)] bg-[var(--color-hab-band)] py-[100px]">
         <div className="px-[22px]">
-          <SectionHead
-            eyebrow="٠٦ ، قالوا عنا"
-            title="ثقةٌ تتحدث"
-            highlight="عن نفسها"
-            sub="من تقييمات Google الحقيقية لعيادات مها دحلان: ٤٫٨ من ٥ عبر أكثر من ١٢٧٠ تقييم."
-          />
+          <SectionHead {...c.testimonials} />
         </div>
         <Testimonials />
       </section>
@@ -460,12 +389,12 @@ export default function HairBreakagePage() {
       {/* ——— الأسئلة الشائعة ——— */}
       <section className="relative mx-auto max-w-[780px] px-[22px] pt-[110px] pb-[110px]">
         <SectionHead
-          eyebrow="٠٧ ، الأسئلة الشائعة"
-          title="كل ما يهمّك"
-          highlight="معرفته"
+          eyebrow={c.faq.eyebrow}
+          title={c.faq.title}
+          highlight={c.faq.highlight}
         />
         <div className="flex flex-col gap-3.5">
-          {FAQ.map((f, i) => (
+          {c.faq.questions.map((f, i) => (
             <Reveal key={f.q} delay={i * 60}>
               <details className="overflow-hidden rounded-[18px] border border-[rgba(212,175,55,0.2)] bg-[var(--color-hab-card)]">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-base font-extrabold">
@@ -515,39 +444,38 @@ export default function HairBreakagePage() {
             <div className="relative flex flex-wrap items-center justify-center gap-[46px]">
               <div className="min-w-[290px] max-w-[520px] flex-1 text-[var(--color-hab-ink)]">
                 <span className="text-[0.78rem] font-extrabold tracking-[0.24em] text-[var(--color-hab-champagne)]">
-                  ٠٨ ، الحجز
+                  {c.booking.eyebrow}
                 </span>
                 <h2 className="mt-3 mb-0 text-[clamp(1.8rem,3.8vw,2.7rem)] leading-[1.4] font-extrabold">
-                  تقييم شعرك{" "}
-                  <span className="hab-gold-text">يبدأ من هنا</span>
+                  {c.booking.title}{" "}
+                  <span className="hab-gold-text">{c.booking.highlight}</span>
                 </h2>
                 <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-[rgba(240,212,138,0.35)] bg-[rgba(240,212,138,0.08)] px-4 py-1.5 text-[0.78rem] font-extrabold text-[var(--color-hab-champagne)]">
                   <Icon.Sparkles className="size-3.5" />
-                  مقاعد التقييم محدودة أسبوعياً
+                  {c.booking.badge}
                 </span>
                 <p className="mt-3.5 mb-0 font-light text-[rgba(245,239,224,0.7)]">
-                  اتركي بياناتك وسيتواصل معك فريقنا في نفس اليوم لتنسيق موعدك
-                  وتقدير خطتك وتكلفتها بشفافية كاملة.
+                  {c.booking.body}
                 </p>
                 <div className="mt-[26px] flex flex-col gap-3.5">
-                  <span className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(245,239,224,0.75)]">
-                    <Icon.Lock className="size-4 shrink-0 text-[var(--color-hab-champagne)]" />
-                    خصوصية تامة وملف طبي سرّي
-                  </span>
-                  <span className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(245,239,224,0.75)]">
-                    <Icon.CircleCheck className="size-4 shrink-0 text-[var(--color-hab-champagne)]" />
-                    تقييم صادق دون أي التزام
-                  </span>
-                  <span className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(245,239,224,0.75)]">
-                    <Icon.Clock className="size-4 shrink-0 text-[var(--color-hab-champagne)]" />
-                    ردٌّ سريع خلال ساعات العمل
-                  </span>
+                  {c.booking.points.map((point, i) => {
+                    const PointIcon = BOOKING_POINT_ICONS[i] ?? Icon.CircleCheck;
+                    return (
+                      <span
+                        key={point}
+                        className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(245,239,224,0.75)]"
+                      >
+                        <PointIcon className="size-4 shrink-0 text-[var(--color-hab-champagne)]" />
+                        {point}
+                      </span>
+                    );
+                  })}
                 </div>
 
                 {/* الدفع الآجل */}
                 <div className="mt-7 flex flex-wrap items-center gap-3">
                   <span className="text-[0.82rem] font-bold text-[rgba(245,239,224,0.6)]">
-                    قسّطي جلساتك مع
+                    {c.booking.paymentLabel}
                   </span>
                   <span className="inline-flex items-center gap-2 rounded-full bg-[#F5EFE0] px-3.5 py-1.5">
                     <Image
@@ -576,11 +504,11 @@ export default function HairBreakagePage() {
                   className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-[rgba(37,211,102,0.5)] px-[26px] py-[13px] text-[0.95rem] font-extrabold text-[#25D366] transition-colors duration-300 hover:bg-[rgba(37,211,102,0.1)]"
                 >
                   <Icon.MessageCircle className="size-[18px]" />
-                  أو تحدثي معنا مباشرة عبر واتساب
+                  {c.booking.whatsapp}
                 </a>
               </div>
               <div className="min-w-[290px] max-w-[480px] flex-1">
-                <Booking />
+                <Booking copy={c.booking} />
               </div>
             </div>
           </div>
@@ -613,19 +541,18 @@ export default function HairBreakagePage() {
             rel="noopener noreferrer"
             className="text-[var(--color-hab-gold-soft)] hover:text-[var(--color-hab-champagne)]"
           >
-            واتساب العيادة
+            {c.footer.whatsapp}
           </a>
           <span className="text-[rgba(212,175,55,0.4)]">✦</span>
           <a
             href="#booking"
             className="text-[var(--color-hab-gold-soft)] hover:text-[var(--color-hab-champagne)]"
           >
-            حجز استشارة
+            {c.footer.book}
           </a>
         </div>
         <p className="mt-4 mb-0 text-[0.74rem] text-[rgba(245,239,224,0.35)]">
-          جميع العلاجات تُجرى بعد تقييم طبي متخصص. النتائج تختلف من حالة إلى
-          أخرى.
+          {c.footer.disclaimer}
         </p>
       </footer>
 
@@ -634,7 +561,10 @@ export default function HairBreakagePage() {
         whatsappNumber={WHATSAPP_NUMBER}
         topicMessage={WA_TOPIC_MESSAGE}
       />
-      <StickyBar />
+      <StickyBar
+        bookLabel={c.cta.sticky}
+        whatsappLabel={c.cta.stickyWhatsapp}
+      />
     </main>
   );
 }

@@ -1,47 +1,7 @@
-import type { Metadata } from "next";
 import Script from "next/script";
 import { notoKufiArabic, notoSerif } from "@/lib/fonts";
 import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "د. مها دحلان | علاج التشققات وعلامات التمدد في جدة",
-  description:
-    "عيادة د. مها دحلان المتخصصة في علاج تشققات الجلد وعلامات التمدد بأحدث التقنيات الطبية العالمية — الفيلر الهجين المحفّز للكولاجين وفيلر الكالسيوم. احجزي استشارتك المجانية الآن.",
-  keywords: [
-    "علاج التشققات",
-    "علامات التمدد",
-    "د. مها دحلان",
-    "عيادة جلدية جدة",
-    "فيلر الكولاجين",
-    "فيلر الكالسيوم",
-    "تشققات الحمل",
-    "علاج البشرة جدة",
-  ],
-  openGraph: {
-    title: "د. مها دحلان | علاج التشققات وعلامات التمدد في جدة",
-    description:
-      "متخصصة في علاج تشققات الجلد وعلامات التمدد بأحدث التقنيات الطبية العالمية. احجزي استشارتك المجانية.",
-    locale: "ar_SA",
-    type: "website",
-    siteName: "عيادات د. مها دحلان",
-    images: [
-      {
-        url: "/stretchmarks/logo.webp",
-        width: 1200,
-        height: 630,
-        alt: "عيادات د. مها دحلان — علاج التشققات وعلامات التمدد",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "د. مها دحلان | علاج التشققات وعلامات التمدد",
-    images: ["/stretchmarks/logo.webp"],
-    description:
-      "عيادة متخصصة في علاج تشققات الجلد وعلامات التمدد بأحدث التقنيات في جدة.",
-  },
-};
 
 export default function StretchmarksLayout({
   children,

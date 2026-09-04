@@ -4,18 +4,18 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
 import { GOLD_GRADIENT } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { HAIR_BREAKAGE } from "../content";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const PILLARS = [
-  "تقييم شامل لصحة الشعرة والفروة قبل أي جلسة",
-  "بروتوكولات ترميم تُبنى لكل حالة على حدة",
-  "مواد علاجية أصلية تُفتح أمامك في الجلسة",
-  "متابعة دورية حتى يستعيد شعرك مرونته",
-];
+type DoctorCopy = ContentOf<typeof HAIR_BREAKAGE>["doctor"];
 
-/** Doctor section: Dr. Dina portrait + care philosophy. */
-export function Doctor() {
+/** Doctor section: Dr. Dina portrait + care philosophy. The photo stays in
+ *  code; every line of copy comes from the page content. */
+export function Doctor({ copy }: { copy: DoctorCopy }) {
+  const PILLARS = copy.pillars;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 36 }}
@@ -44,15 +44,15 @@ export function Doctor() {
           className="absolute -right-4 bottom-6 inline-flex items-center gap-[7px] rounded-full border border-[var(--color-hab-line-strong)] bg-[rgba(16,16,20,0.9)] px-4 py-2 text-[0.74rem] font-extrabold whitespace-nowrap text-[var(--color-hab-champagne)] shadow-[0_14px_30px_-14px_rgba(212,175,55,0.5)] backdrop-blur-lg"
           style={{ animation: "hab-floaty 7s ease-in-out infinite alternate" }}
         >
-          تشخيص أولاً… دائماً
+          {copy.badge}
         </span>
       </div>
 
       {/* bio */}
       <div className="min-w-[300px] flex-1 text-center md:max-w-[560px] md:text-right">
-        <h3 className="m-0 text-3xl font-extrabold sm:text-4xl">د. دينا</h3>
+        <h3 className="m-0 text-3xl font-extrabold sm:text-4xl">{copy.name}</h3>
         <p className="mt-1.5 font-bold text-[var(--color-hab-champagne)]">
-          طبيبة الأمراض الجلدية وصحة الشعر والفروة
+          {copy.role}
         </p>
 
         <div
@@ -63,8 +63,7 @@ export function Doctor() {
           }}
         >
           <p className="m-0 text-[1.05rem] font-bold text-[var(--color-hab-ink-soft)]">
-            &#8220;الشعر المتكسر لا يحتاج مزيداً من المستحضرات، بل تشخيصاً
-            يحدد سبب التكسر أولاً. حين نعالج السبب، يعود اللمعان وحده.&#8221;
+            &#8220;{copy.quote}&#8221;
           </p>
         </div>
 
@@ -100,7 +99,7 @@ export function Doctor() {
         >
           <Icon.Award className="size-5 text-[var(--color-hab-gold)]" />
           <span className="text-sm font-bold text-[var(--color-hab-ink)]">
-            ضمن فريق عيادات د. مها دحلان وبإشرافها الطبي
+            {copy.affiliation}
           </span>
         </div>
       </div>

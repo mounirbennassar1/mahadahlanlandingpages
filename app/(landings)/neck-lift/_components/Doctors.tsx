@@ -5,6 +5,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
 import { GOLD_GRADIENT } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { NECK_LIFT } from "../content";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -20,7 +22,7 @@ type Doctor = {
 };
 
 /* Same specialists as the other MahaDahlan landings. */
-const DOCTORS: Doctor[] = [
+const BASE_DOCTORS: Doctor[] = [
   {
     label: "الأخصائية الأولى",
     name: "نضال الجريدي",
@@ -56,7 +58,24 @@ const DOCTORS: Doctor[] = [
   },
 ];
 
-export function Doctors() {
+type PeopleCopy = ContentOf<typeof NECK_LIFT>["doctors"]["people"];
+
+/** Photos and the highlighted credential stay in code; the rest is editable. */
+export function Doctors({ people }: { people: PeopleCopy }) {
+  const DOCTORS: Doctor[] = BASE_DOCTORS.map((doc, i) => {
+    const copy = people[i];
+    return copy
+      ? {
+          ...doc,
+          label: copy.label,
+          name: copy.name,
+          title: copy.title,
+          experience: copy.experience,
+          credentials: copy.credentials.filter(Boolean),
+        }
+      : doc;
+  });
+
   const [[index, dir], setSlide] = useState<[number, number]>([0, 0]);
   const count = DOCTORS.length;
   const d = DOCTORS[index];

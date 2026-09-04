@@ -1,16 +1,8 @@
 "use client";
 
-const ITEMS = [
-  "تقنية كورية أصيلة",
-  "إبر طبيعية ١٠٠٪ من الإسفنج البحري",
-  "بدون جهاز · بدون جراحة",
-  "تحفيز طبيعي للكولاجين",
-  "نتائج خلال أسبوع",
-  "+١٨٠٠ جلسة ناجحة",
-  "إشراف خبيرات معتمدات",
-];
-
-export function Marquee() {
+/** Trust strip; the words come from the page content. */
+export function Marquee({ items }: { items: string[] }) {
+  const ITEMS = items;
   return (
     <div className="relative z-10 overflow-hidden border-y border-[var(--color-kos-line-soft)] bg-black/50 py-4 backdrop-blur-sm">
       <div

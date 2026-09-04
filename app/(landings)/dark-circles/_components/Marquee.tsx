@@ -2,20 +2,12 @@
 
 import { Icon } from "@/components/icons";
 
-const ITEMS = [
-  "إشراف طبي مباشر",
-  "تقنيات معتمدة عالمياً",
-  "خطة شخصية لكل حالة",
-  "نتائج موثّقة",
-  "متابعة بعد العلاج",
-  "بيئة هادئة وراقية",
-];
-
 /**
  * CSS-only marquee, paused on hover. The track is rendered twice back-to-back
  * so that `translateX(-50%)` loops seamlessly.
  */
-export function Marquee() {
+export function Marquee({ items }: { items: string[] }) {
+  const ITEMS = items;
   return (
     <div className="relative overflow-hidden border-y border-[var(--color-dc-line)] bg-[var(--color-dc-surface)]/60 py-5 backdrop-blur-sm sm:py-6">
       {/* edge fades — masks the marquee endings so it never looks abruptly cut */}

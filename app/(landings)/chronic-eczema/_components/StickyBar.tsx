@@ -5,7 +5,13 @@ import { SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
 
 /** Mobile-only sticky CTA bar: midnight glass, gold book button + WhatsApp. */
-export function StickyBar() {
+export function StickyBar({
+  bookLabel,
+  whatsappLabel,
+}: {
+  bookLabel: string;
+  whatsappLabel: string;
+}) {
   return (
     <motion.div
       initial={{ y: 80, opacity: 0 }}
@@ -18,7 +24,7 @@ export function StickyBar() {
         className="inline-flex flex-1 items-center justify-center gap-2 rounded-[4px] py-[13px] text-[0.9rem] font-extrabold text-[#231303]"
         style={{ background: GOLD_GRADIENT }}
       >
-        احجزي موعدك
+        {bookLabel}
       </a>
       <a
         href={WA_LINK}
@@ -27,7 +33,7 @@ export function StickyBar() {
         className="inline-flex flex-1 items-center justify-center gap-2 rounded-[4px] bg-[#25D366] py-[13px] text-[0.9rem] font-extrabold text-[#0B2B16]"
       >
         <SocialIcon name="whatsapp" className="text-base" />
-        واتساب
+        {whatsappLabel}
       </a>
     </motion.div>
   );

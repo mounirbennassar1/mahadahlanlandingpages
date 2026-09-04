@@ -881,11 +881,21 @@ export const SPECIALTIES_EN: Record<string, SpecialtyCopy> = {
   },
 };
 
-/** Card copy for a treatment in the given locale (falls back to the Arabic entry). */
+/** Treatment-card copy edited in /dashboard/pages/specialties, keyed by slug. */
+export type SpecialtyOverrides = Record<string, SpecialtyCopy>;
+
+/**
+ * Card copy for a treatment in the given locale (falls back to the Arabic
+ * entry). `overrides` carries the dashboard edits; pass it wherever the copy is
+ * rendered so an edit reaches every surface that shows these cards.
+ */
 export function specialtyCopy(
   slug: string,
   locale: Locale = DEFAULT_LOCALE,
+  overrides?: SpecialtyOverrides,
 ): SpecialtyCopy {
+  const edited = overrides?.[slug];
+  if (edited) return edited;
   if (locale !== "ar") {
     const en = SPECIALTIES_EN[slug];
     if (en) return en;

@@ -78,6 +78,17 @@ const OVERVIEW_NAV: NavItem[] = [
 
 const WEBSITE_NAV: NavItem[] = [
   {
+    href: "/dashboard/pages",
+    label: "Pages",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={navIconStyle}>
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M3 9h18" />
+        <path d="M9 21V9" />
+      </svg>
+    ),
+  },
+  {
     href: "/dashboard/content/articles",
     label: "Articles",
     icon: (

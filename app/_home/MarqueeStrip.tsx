@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
-import { getDict, LANG_META, type Locale } from "./i18n/dictionary";
+import { getDict, LANG_META, type Locale,
+  type Dict,
+} from "./i18n/dictionary";
 
 function Row({ items, dir }: { items: string[]; dir: "rtl" | "ltr" }) {
   return (
@@ -17,8 +19,8 @@ function Row({ items, dir }: { items: string[]; dir: "rtl" | "ltr" }) {
 }
 
 /** Tilted dark treatments marquee under the hero. */
-export function MarqueeStrip({ locale = "ar" }: { locale?: Locale }) {
-  const items = getDict(locale).marquee;
+export function MarqueeStrip({ locale = "ar", dict }: { locale?: Locale; dict?: Dict }) {
+  const items = (dict ?? getDict(locale)).marquee;
   const dir = LANG_META[locale].dir;
   return (
     // LTR wrapper keeps the looping track anchored to the left edge so the

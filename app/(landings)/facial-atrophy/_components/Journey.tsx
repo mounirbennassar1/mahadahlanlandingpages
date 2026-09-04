@@ -3,37 +3,14 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Reveal } from "./Reveal";
+import type { ContentOf } from "@/lib/pages/define";
+import type { FACIAL_ATROPHY } from "../content";
 
-const STEPS = [
-  {
-    num: "٠١",
-    title: "استشارة وتقييم شامل",
-    body: (
-      <>
-        قراءة دقيقة لملامح وجهك وتاريخ نزول وزنك، وتحديد درجة الضمور في كل
-        منطقة. <i className="text-[var(--color-faa-gold)] not-italic">بسرية تامة.</i>
-      </>
-    ),
-  },
-  {
-    num: "٠٢",
-    title: "خطة مصمّمة لكِ وحدك",
-    body: "نحدد التقنيات والكميات والتسلسل الزمني المناسب لحالتك، مع شفافية كاملة في التكلفة والتوقعات.",
-  },
-  {
-    num: "٠٣",
-    title: "جلسة العلاج",
-    body: "بلطف وتخدير موضعي، وفي أجواء هادئة. غالباً تعودين إلى يومك الطبيعي مباشرة بعد الجلسة.",
-  },
-  {
-    num: "٠٤",
-    title: "متابعة حتى اكتمال النتيجة",
-    body: "مراجعات دورية وضبط دقيق للخطة، لأن النتيجة الطبيعية تُبنى بالتدرّج لا بجلسة واحدة.",
-  },
-];
+type Steps = ContentOf<typeof FACIAL_ATROPHY>["journey"]["steps"];
 
 /** Vertical timeline whose gold rail fills as it scrolls into view. */
-export function Journey() {
+export function Journey({ steps }: { steps: Steps }) {
+  const STEPS = steps;
   const railRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: railRef,
@@ -68,6 +45,14 @@ export function Journey() {
           <h3 className="mt-1 mb-1.5 text-[1.25rem] font-extrabold">{s.title}</h3>
           <p className="max-w-[52ch] text-[0.95rem] font-light text-[rgba(243,233,220,0.65)]">
             {s.body}
+            {s.accent && (
+              <>
+                {" "}
+                <i className="text-[var(--color-faa-gold)] not-italic">
+                  {s.accent}
+                </i>
+              </>
+            )}
           </p>
         </Reveal>
       ))}

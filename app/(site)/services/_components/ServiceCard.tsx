@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import type { Specialty } from "@/app/_home/config";
+import { specialtyCopy, type SpecialtyOverrides } from "@/app/_home/i18n/dictionary";
 import { latinDigits } from "../../_booking/shared";
 
 /** Config copy may carry Arabic-Indic digits; the site shows Western ones. */
@@ -9,7 +10,14 @@ function westernDigits(text: string) {
   return latinDigits(text).replace(/٪/g, "%");
 }
 
-export function ServiceCard({ item }: { item: Specialty }) {
+export function ServiceCard({
+  item,
+  overrides,
+}: {
+  item: Specialty;
+  overrides?: SpecialtyOverrides;
+}) {
+  const copy = specialtyCopy(item.slug, "ar", overrides);
   const CatIcon = item.icon;
   const bookHref = `/book-now?service=${encodeURIComponent(item.slug)}`;
 
@@ -18,13 +26,13 @@ export function ServiceCard({ item }: { item: Specialty }) {
       {/* visual */}
       <Link
         href={`/${item.slug}`}
-        aria-label={item.title}
+        aria-label={copy.title}
         tabIndex={-1}
         className="relative block aspect-[4/3] overflow-hidden"
       >
         <Image
           src={item.image}
-          alt={item.title}
+          alt={copy.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
@@ -40,7 +48,7 @@ export function ServiceCard({ item }: { item: Specialty }) {
             style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
             aria-hidden
           />
-          {westernDigits(item.tag)}
+          {westernDigits(copy.tag)}
         </span>
       </Link>
 
@@ -56,12 +64,12 @@ export function ServiceCard({ item }: { item: Specialty }) {
             href={`/${item.slug}`}
             className="transition-colors duration-300 hover:text-[var(--color-md-champagne)]"
           >
-            {item.title}
+            {copy.title}
           </Link>
         </h3>
 
         <p className="mt-2 text-[0.9rem] leading-[1.85] font-light text-[rgba(246,238,223,0.58)]">
-          {item.description}
+          {copy.description}
         </p>
 
         <div className="mt-auto flex items-center justify-between gap-3 pt-6">

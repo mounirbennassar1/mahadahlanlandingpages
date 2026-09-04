@@ -1,16 +1,75 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import BeforeAfter from "./_components/BeforeAfter";
 import ContactForm from "./_components/ContactForm";
 import HeroCanvas from "./_components/HeroCanvasLazy";
 import Nav from "./_components/Nav";
 import ScrollAnimations from "./_components/ScrollAnimations";
+import { getPageContent } from "@/lib/pages/get";
+import { HYPERPIGMENTATION } from "./content";
 
-export default function HyperpigmentationLanding() {
+/** Before/after pairs + alt text for the results cards, in content order. */
+const RESULT_IMAGES = [
+  {
+    before: "/hyperpigmentation/beforeafter/before1.webp",
+    after: "/hyperpigmentation/beforeafter/after1.webp",
+    beforeAlt: "قبل — لون غير متجانس",
+    afterAlt: "بعد — لون موحّد ومُشرق",
+  },
+  {
+    before: "/hyperpigmentation/beforeafter/before2.webp",
+    after: "/hyperpigmentation/beforeafter/after2.webp",
+    beforeAlt: "قبل — بقع شمسية",
+    afterAlt: "بعد — بشرة صافية مشرقة",
+  },
+  {
+    before: "/hyperpigmentation/beforeafter/before3.webp",
+    after: "/hyperpigmentation/beforeafter/after3.webp",
+    beforeAlt: "قبل — آثار حبوب",
+    afterAlt: "بعد — ملمس ولون متجانس",
+  },
+] as const;
+
+export const revalidate = 300;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(HYPERPIGMENTATION);
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.ogDescription,
+      locale: "ar_SA",
+      type: "website",
+      siteName: "عيادات د. مها دحلان",
+      images: [
+        {
+          url: "/hyperpigmentation/afterbeforehero.webp",
+          width: 1200,
+          height: 630,
+          alt: "عيادات د. مها دحلان — علاج التصبّغات",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.title,
+      description:
+        "برنامج علاج التصبّغات في عيادات د. مها دحلان — خطة شخصية ونتائج موثّقة.",
+      images: ["/hyperpigmentation/afterbeforehero.webp"],
+    },
+  };
+}
+
+export default async function HyperpigmentationLanding() {
+  const c = await getPageContent(HYPERPIGMENTATION);
+
   return (
     <>
       <ScrollAnimations />
 
-      <Nav />
+      <Nav copy={c.nav} />
 
       {/* ════════════ HERO ════════════ */}
       <header className="hero">
@@ -18,41 +77,34 @@ export default function HyperpigmentationLanding() {
 
         <div className="hero-content">
           <div className="hero-eyebrow eyebrow">
-            عيادة مهادهلان · علاج التصبّغات
+            {c.hero.eyebrow}
           </div>
           <h1 className="h-display">
-            علاج <em>التصبّغات</em>
+            {c.hero.titleLead} <em>{c.hero.titleEm}</em>
             <br />
-            بخطة مخصّصة
+            {c.hero.line2}
             <br />
-            لبشرتكِ.
+            {c.hero.line3}
           </h1>
           <p className="lead">
-            نعالج مختلف أنواع التصبّغات باستخدام تقنيات حديثة وخطط علاج مخصّصة
-            حسب نوع البشرة وسبب التصبّغ، بإشراف طبي ومتابعة دقيقة لكل مرحلة.
+            {c.hero.lead}
           </p>
           <div className="hero-actions">
             <a href="#cta" className="btn btn-gold">
-              احجزي استشارتكِ الآن
+              {c.hero.book}
               <span className="arrow" />
             </a>
             <a href="#process" className="btn btn-ghost">
-              استكملي خطة علاجكِ
+              {c.hero.plan}
             </a>
           </div>
           <div className="hero-stats">
-            <div className="stat">
-              <span className="stat-num">٩٤٪</span>
-              <span className="stat-label">رضا العميلات</span>
-            </div>
-            <div className="stat">
-              <span className="stat-num">+١٢</span>
-              <span className="stat-label">سنة خبرة</span>
-            </div>
-            <div className="stat">
-              <span className="stat-num">٢٨٠٠</span>
-              <span className="stat-label">جلسة ناجحة</span>
-            </div>
+            {c.hero.stats.map((stat) => (
+              <div className="stat" key={stat.label}>
+                <span className="stat-num">{stat.value}</span>
+                <span className="stat-label">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -71,13 +123,13 @@ export default function HyperpigmentationLanding() {
           <div className="hero-badge">
             <div className="stars">★★★★★</div>
             <div className="hero-badge-text">
-              <strong>٤٫٩ / ٥</strong>
-              <span>تقييم العميلات</span>
+              <strong>{c.hero.ratingValue}</strong>
+              <span>{c.hero.ratingLabel}</span>
             </div>
           </div>
           <div className="hero-badge-2">
-            <span className="num">+٢٠٠٠</span>
-            <span className="lbl">عميلة سعيدة</span>
+            <span className="num">{c.hero.badgeValue}</span>
+            <span className="lbl">{c.hero.badgeLabel}</span>
           </div>
         </div>
       </header>
@@ -87,45 +139,26 @@ export default function HyperpigmentationLanding() {
         <div className="problem-grid">
           <div className="problem-text">
             <div className="eyebrow reveal" style={{ marginBottom: 28 }}>
-              ما هو التصبّغ
+              {c.problem.eyebrow}
             </div>
             <h2 className="h-section reveal">
-              حدّدي <em>نوع</em> التصبّغ... وابدئي العلاج المناسب.
+              {c.problem.titleLead} <em>{c.problem.titleEm}</em> {c.problem.titleRest}
             </h2>
             <p className="lead reveal">
-              التصبّغات تختلف من حالة لأخرى، لذلك يعتمد العلاج الصحيح على معرفة
-              نوع التصبّغ وسببه قبل اختيار الجلسات أو المنتجات المناسبة.
+              {c.problem.lead}
             </p>
             <ul className="problem-list">
-              <li>
-                <span className="num">١</span>
-                <div>
-                  <strong>الكَلَف (Melasma)</strong>
-                  <p>
-                    تصبّغات مرتبطة غالباً بالهرمونات والتعرّض للشمس، وتظهر
-                    بالخدّين والجبهة.
-                  </p>
-                </div>
-              </li>
-              <li>
-                <span className="num">٢</span>
-                <div>
-                  <strong>التصبّغ الشمسي</strong>
-                  <p>
-                    بقع ناتجة عن التعرّض المستمر للشمس وتظهر بالمناطق المكشوفة.
-                  </p>
-                </div>
-              </li>
-              <li>
-                <span className="num">٣</span>
-                <div>
-                  <strong>التصبّغ بعد الالتهاب</strong>
-                  <p>
-                    آثار تظهر بعد الحبوب أو التهيّج وتحتاج خطة علاج مناسبة
-                    لطبيعة البشرة.
-                  </p>
-                </div>
-              </li>
+              {c.problem.types.map((type) => (
+                <li key={type.num}>
+                  <span className="num">{type.num}</span>
+                  <div>
+                    <strong>{type.title}</strong>
+                    <p>
+                      {type.body}
+                    </p>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="problem-visual parallax-soft">
@@ -154,44 +187,24 @@ export default function HyperpigmentationLanding() {
       {/* ════════════ PROCESS ════════════ */}
       <section id="process">
         <div className="section-head">
-          <div className="eyebrow reveal">مراحل العلاج</div>
+          <div className="eyebrow reveal">{c.process.eyebrow}</div>
           <h2 className="h-section reveal">
-            خطة علاج <em>واضحة</em> من أول جلسة
+            {c.process.titleLead} <em>{c.process.titleEm}</em> {c.process.titleRest}
           </h2>
           <p className="lead reveal">
-            كل مرحلة بالعلاج يتم اختيارها بناءً على احتياج البشرة ونوع التصبّغ
-            للحصول على أفضل نتيجة ممكنة.
+            {c.process.lead}
           </p>
         </div>
         <div className="process-grid">
-          <div className="process-card">
-            <div className="process-num">01</div>
-            <h3>تشخيص وتحليل البشرة</h3>
-            <p>
-              تقييم نوع التصبّغ وعمقه والعوامل المؤثّرة عليه.
-            </p>
-          </div>
-          <div className="process-card">
-            <div className="process-num">02</div>
-            <h3>تصميم الخطة العلاجية</h3>
-            <p>
-              اختيار الجلسات والتقنيات المناسبة حسب حالة البشرة.
-            </p>
-          </div>
-          <div className="process-card">
-            <div className="process-num">03</div>
-            <h3>جلسات علاجية مخصّصة</h3>
-            <p>
-              تقنيات حديثة تساعد على تحسين لون البشرة وتقليل التصبّغات تدريجياً.
-            </p>
-          </div>
-          <div className="process-card">
-            <div className="process-num">04</div>
-            <h3>متابعة واستمرارية</h3>
-            <p>
-              متابعة النتائج وتعديل الخطة حسب استجابة البشرة.
-            </p>
-          </div>
+          {c.process.steps.map((step) => (
+            <div className="process-card" key={step.num}>
+              <div className="process-num">{step.num}</div>
+              <h3>{step.title}</h3>
+              <p>
+                {step.body}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -204,52 +217,29 @@ export default function HyperpigmentationLanding() {
       {/* ════════════ RESULTS ════════════ */}
       <section className="results" id="results">
         <div className="section-head">
-          <div className="eyebrow reveal">قبل وبعد</div>
+          <div className="eyebrow reveal">{c.results.eyebrow}</div>
           <h2 className="h-section reveal">
-            كيف يمكن أن تبدو <em>النتائج</em> بعد الخطة المناسبة
+            {c.results.titleLead} <em>{c.results.titleEm}</em> {c.results.titleRest}
           </h2>
           <p className="lead reveal">
-            نعالج مجموعة متنوّعة من التصبّغات المختلفة بالخطة العلاجية المناسبة
-            لكل حالة، بإشراف طبي ومتابعة دقيقة.
+            {c.results.lead}
           </p>
         </div>
         <div className="results-grid">
-          <div className="result-card">
-            <BeforeAfter
-              beforeSrc="/hyperpigmentation/beforeafter/before1.webp"
-              afterSrc="/hyperpigmentation/beforeafter/after1.webp"
-              beforeAlt="قبل — لون غير متجانس"
-              afterAlt="بعد — لون موحّد ومُشرق"
-            />
-            <div className="result-meta">
-              <strong>الكَلَف الهرموني</strong>
-              <span>٨ أسابيع</span>
+          {c.results.cards.map((card, i) => (
+            <div className="result-card" key={card.title}>
+              <BeforeAfter
+                beforeSrc={RESULT_IMAGES[i].before}
+                afterSrc={RESULT_IMAGES[i].after}
+                beforeAlt={RESULT_IMAGES[i].beforeAlt}
+                afterAlt={RESULT_IMAGES[i].afterAlt}
+              />
+              <div className="result-meta">
+                <strong>{card.title}</strong>
+                <span>{card.duration}</span>
+              </div>
             </div>
-          </div>
-          <div className="result-card">
-            <BeforeAfter
-              beforeSrc="/hyperpigmentation/beforeafter/before2.webp"
-              afterSrc="/hyperpigmentation/beforeafter/after2.webp"
-              beforeAlt="قبل — بقع شمسية"
-              afterAlt="بعد — بشرة صافية مشرقة"
-            />
-            <div className="result-meta">
-              <strong>تصبّغ شمسي</strong>
-              <span>٦ أسابيع</span>
-            </div>
-          </div>
-          <div className="result-card">
-            <BeforeAfter
-              beforeSrc="/hyperpigmentation/beforeafter/before3.webp"
-              afterSrc="/hyperpigmentation/beforeafter/after3.webp"
-              beforeAlt="قبل — آثار حبوب"
-              afterAlt="بعد — ملمس ولون متجانس"
-            />
-            <div className="result-meta">
-              <strong>أثر ما بعد الحبوب</strong>
-              <span>١٠ أسابيع</span>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -268,35 +258,23 @@ export default function HyperpigmentationLanding() {
             </div>
           </div>
           <div className="specialist-text">
-            <div className="eyebrow reveal">الطبيبة المختصة</div>
+            <div className="eyebrow reveal">{c.specialist.eyebrow}</div>
             <h2 className="spec-name reveal">
-              د. <em>مها</em> دهلان
+              {c.specialist.nameLead} <em>{c.specialist.nameEm}</em> {c.specialist.nameRest}
             </h2>
-            <p className="spec-role reveal">استشارية الأمراض الجلدية والتجميل</p>
+            <p className="spec-role reveal">{c.specialist.role}</p>
             <p className="spec-bio reveal">
-              «إيماني الراسخ أنّ العناية بالبشرة هي حوار طويل بين الطبيب
-              والعميلة — ليست وصفة، بل خطة تُرسم بهدوء، وتُطبَّق بصبر، وتُعاش
-              بثقة.»
+              {c.specialist.bio}
             </p>
             <div className="spec-creds">
-              <div className="spec-cred">
-                <strong>+١٢</strong>
-                <span>سنة في علاج التصبّغات</span>
-              </div>
-              <div className="spec-cred">
-                <strong>+٢٨٠٠</strong>
-                <span>حالة تمت متابعتها</span>
-              </div>
-              <div className="spec-cred">
-                <strong>زمالة</strong>
-                <span>الكلية الملكية البريطانية</span>
-              </div>
-              <div className="spec-cred">
-                <strong>عضوة</strong>
-                <span>الجمعية الأوروبية للجلدية</span>
-              </div>
+              {c.specialist.creds.map((cred) => (
+                <div className="spec-cred" key={cred.label}>
+                  <strong>{cred.value}</strong>
+                  <span>{cred.label}</span>
+                </div>
+              ))}
             </div>
-            <div className="spec-sig reveal">— Dr. Maha</div>
+            <div className="spec-sig reveal">{c.specialist.signature}</div>
           </div>
         </div>
       </section>
@@ -304,128 +282,52 @@ export default function HyperpigmentationLanding() {
       {/* ════════════ TESTIMONIALS ════════════ */}
       <section className="testimonials">
         <div className="section-head">
-          <div className="eyebrow reveal">تجارب مرضانا</div>
+          <div className="eyebrow reveal">{c.testimonials.eyebrow}</div>
           <h2 className="h-section reveal">
-            ثقة <em>تُروى</em> بأصواتهنّ
+            {c.testimonials.titleLead} <em>{c.testimonials.titleEm}</em>{" "}
+            {c.testimonials.titleRest}
           </h2>
         </div>
         <div className="testi-grid">
-          <div className="testi-card">
-            <div className="testi-stars">★★★★★</div>
-            <p className="testi-text">
-              تجربة هادئة ومهنية. منذ الجلسة الأولى شعرت أن الطبيبة تستمع لي قبل
-              أن تعالجني. النتيجة بعد شهرين فاقت كل توقعاتي.
-            </p>
-            <div className="testi-meta">
-              <div className="testi-avatar" />
-              <div>
-                <strong>سارة م.</strong>
-                <span>الرياض · علاج الكَلَف</span>
+          {c.testimonials.cards.map((card) => (
+            <div className="testi-card" key={card.name}>
+              <div className="testi-stars">★★★★★</div>
+              <p className="testi-text">
+                {card.body}
+              </p>
+              <div className="testi-meta">
+                <div className="testi-avatar" />
+                <div>
+                  <strong>{card.name}</strong>
+                  <span>{card.meta}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="testi-card">
-            <div className="testi-stars">★★★★★</div>
-            <p className="testi-text">
-              كنت أبحث عن مكان أثق به لسنوات. مهادهلان أعاد لي علاقتي ببشرتي —
-              برنامج مدروس، ومتابعة لا تنقطع.
-            </p>
-            <div className="testi-meta">
-              <div className="testi-avatar" />
-              <div>
-                <strong>نورة ع.</strong>
-                <span>جدة · تصبّغ شمسي</span>
-              </div>
-            </div>
-          </div>
-          <div className="testi-card">
-            <div className="testi-stars">★★★★★</div>
-            <p className="testi-text">
-              أكثر ما أحببته هو الصدق في التشخيص. لم يَعِدوني بمعجزات، بل برحلة
-              واضحة. واليوم أرى الفرق في المرآة كل صباح.
-            </p>
-            <div className="testi-meta">
-              <div className="testi-avatar" />
-              <div>
-                <strong>ريم خ.</strong>
-                <span>الدمام · أثر الحبوب</span>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* ════════════ FAQ ════════════ */}
       <section id="faq">
         <div className="section-head">
-          <div className="eyebrow reveal">أسئلة شائعة</div>
+          <div className="eyebrow reveal">{c.faq.eyebrow}</div>
           <h2 className="h-section reveal">
-            إجابات قبل أن <em>تسألي</em>
+            {c.faq.titleLead} <em>{c.faq.titleEm}</em>
           </h2>
-          <p className="lead reveal">كل ما تحتاجين معرفته قبل العلاج.</p>
+          <p className="lead reveal">{c.faq.lead}</p>
         </div>
         <div className="faq-wrap">
-          <details className="faq-item" open>
-            <summary className="faq-q">
-              كم تستغرق رؤية النتائج الأولى؟
-              <span className="faq-icon" />
-            </summary>
-            <div className="faq-a">
-              تبدأ ملاحظة التحسّن تدريجياً بعد عدة جلسات حسب نوع التصبّغ
-              واستجابة البشرة للخطة العلاجية. تختلف مدة العلاج من حالة لأخرى
-              ويتم تحديدها بعد التقييم.
-            </div>
-          </details>
-          <details className="faq-item">
-            <summary className="faq-q">
-              هل الجلسات مؤلمة؟
-              <span className="faq-icon" />
-            </summary>
-            <div className="faq-a">
-              لا. أغلب الجلسات لطيفة وآمنة، وقد تشعرين بدفء خفيف أو وخز بسيط
-              لحظات قليلة فقط.
-            </div>
-          </details>
-          <details className="faq-item">
-            <summary className="faq-q">
-              هل أحتاج لفترة نقاهة بعد الجلسة؟
-              <span className="faq-icon" />
-            </summary>
-            <div className="faq-a">
-              معظم الجلسات لا تحتاج فترة نقاهة طويلة، يمكنكِ استئناف يومكِ بشكل
-              طبيعي مع الالتزام بواقي الشمس والتعليمات التي تصفها الطبيبة.
-            </div>
-          </details>
-          <details className="faq-item">
-            <summary className="faq-q">
-              هل النتائج دائمة؟
-              <span className="faq-icon" />
-            </summary>
-            <div className="faq-a">
-              نعم، النتائج طويلة الأمد عند الالتزام بالحماية من الشمس والروتين
-              المنزلي للحفاظ على البشرة وتجنّب عودة التصبّغ.
-            </div>
-          </details>
-          <details className="faq-item">
-            <summary className="faq-q">
-              هل البرنامج مناسب لجميع أنواع البشرة؟
-              <span className="faq-icon" />
-            </summary>
-            <div className="faq-a">
-              نعم، الخطة العلاجية تختلف من حالة لأخرى ويتم تخصيصها حسب نوع
-              البشرة وسبب التصبّغ.
-            </div>
-          </details>
-          <details className="faq-item">
-            <summary className="faq-q">
-              كيف أحجز موعد الاستشارة الأولى؟
-              <span className="faq-icon" />
-            </summary>
-            <div className="faq-a">
-              يمكنكِ تعبئة النموذج في الأسفل أو الاتصال بنا مباشرة، وسيتم
-              التواصل معكِ من فريقنا لتحديد الموعد المناسب.
-            </div>
-          </details>
+          {c.faq.questions.map((item, i) => (
+            <details className="faq-item" key={item.q} open={i === 0}>
+              <summary className="faq-q">
+                {item.q}
+                <span className="faq-icon" />
+              </summary>
+              <div className="faq-a">
+                {item.a}
+              </div>
+            </details>
+          ))}
         </div>
       </section>
 
@@ -433,13 +335,13 @@ export default function HyperpigmentationLanding() {
       <section className="cta" id="cta">
         <div className="cta-grid">
           <div>
-            <div className="eyebrow reveal">احجزي استشارتكِ</div>
+            <div className="eyebrow reveal">{c.booking.eyebrow}</div>
             <h2 className="h-section reveal">
-              ابدئي رحلتكِ نحو <em>بشرة صافية</em>.
+              {c.booking.titleLead} <em>{c.booking.titleEm}</em>
+              {c.booking.titleEnd}
             </h2>
             <p className="cta-lead reveal">
-              املئي النموذج وستتواصل معكِ مستشارتنا خلال ٢٤ ساعة لتحديد موعد
-              الاستشارة الأولى ورسم خطتكِ الشخصية.
+              {c.booking.lead}
             </p>
             <div className="cta-contact">
               <div className="cta-contact-item">
@@ -457,8 +359,7 @@ export default function HyperpigmentationLanding() {
                   </svg>
                 </span>
                 <span>
-                  جدة، حي الروضة، شارع الأمير محمد بن عبدالعزيز (التحلية)،
-                  مركز بن حمران - الدور الثالث
+                  {c.booking.address}
                 </span>
               </div>
               <div className="cta-contact-item">
@@ -513,23 +414,25 @@ export default function HyperpigmentationLanding() {
                   dir="ltr"
                 >
                   +966 503377702
-                  <span className="wa-tag">واتساب</span>
+                  <span className="wa-tag">{c.booking.whatsappTag}</span>
                 </a>
               </div>
             </div>
           </div>
 
-          <ContactForm />
+          <ContactForm copy={c.booking} />
         </div>
       </section>
 
       {/* ════════════ FOOTER ════════════ */}
       <footer>
-        <div>© ٢٠٢٦ مهادهلان · جميع الحقوق محفوظة</div>
+        <div>{c.footer.copyright}</div>
         <div>
-          <a href="#">سياسة الخصوصية</a>
-          <a href="#">شروط الاستخدام</a>
-          <a href="#">إنستغرام</a>
+          {c.footer.links.map((link) => (
+            <a href="#" key={link}>
+              {link}
+            </a>
+          ))}
         </div>
       </footer>
     </>

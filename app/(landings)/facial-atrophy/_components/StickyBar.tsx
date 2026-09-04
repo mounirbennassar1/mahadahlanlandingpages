@@ -6,7 +6,7 @@ import { EASE } from "./Reveal";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
 
 /** Mobile-only sticky CTA bar — dark burgundy glass, gold book button. */
-export function StickyBar() {
+export function StickyBar({ label }: { label: string }) {
   return (
     <motion.div
       initial={{ y: 80, opacity: 0 }}
@@ -19,7 +19,7 @@ export function StickyBar() {
         className="inline-flex flex-1 items-center justify-center rounded-full py-3.5 text-[0.95rem] font-extrabold text-[var(--color-faa-cta-ink)]"
         style={{ background: GOLD_GRADIENT }}
       >
-        احجزي استشارتك
+        {label}
       </a>
       <a
         href={WA_LINK}

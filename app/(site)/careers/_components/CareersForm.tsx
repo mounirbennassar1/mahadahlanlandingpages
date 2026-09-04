@@ -23,9 +23,17 @@ import {
   TextInput,
 } from "../../_booking/Fields";
 import { CAREER_FIELDS, EXPERIENCE_LEVELS } from "./fields";
+import type { ContentOf } from "@/lib/pages/define";
+import type { CAREERS } from "../content";
+
+type FormCopy = ContentOf<typeof CAREERS>["form"];
+type FieldLabels = ContentOf<typeof CAREERS>["fields"]["items"];
 
 const ABOUT_MAX = 600;
 const MESSAGE_MAX = 1000;
+
+/** Icons for the reassurance pills under the submit button, in content order. */
+const TRUST_ICONS = [Icon.Lock, Icon.ShieldCheck, Icon.Clock] as const;
 
 /* Western-digit copy of the shared PHONE_ERROR (the site shows Western digits). */
 const PHONE_ERROR = "أدخلي رقم جوال سعودي صحيح من 9 أرقام يبدأ بـ 5.";
@@ -56,7 +64,15 @@ function isValidUrl(value: string) {
   }
 }
 
-export function CareersForm() {
+export function CareersForm({
+  copy,
+  fields,
+}: {
+  /** Editable labels, placeholders and success copy. */
+  copy: FormCopy;
+  /** Career-field labels, paired by index with the values in `fields.ts`. */
+  fields: FieldLabels;
+}) {
   const uid = useId();
   const formRef = useRef<HTMLFormElement>(null);
   // Synchronous re-entry guard: state updates lag a rapid double click.
@@ -74,6 +90,11 @@ export function CareersForm() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
   const sending = status.kind === "sending";
+  const fieldOptions = CAREER_FIELDS.map((value, i) => ({ value, label: fields[i].label }));
+  const experienceOptions = EXPERIENCE_LEVELS.map((value, i) => ({
+    value,
+    label: copy.experience[i].label,
+  }));
   const clear = (key: keyof Errors) =>
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
 
@@ -154,17 +175,14 @@ export function CareersForm() {
 
       {status.kind === "ok" ? (
         <div className="relative py-4">
-          <CareersSuccess
-            waHref={whatsappHref(waText)}
-            points={["سرية تامة للبيانات", "رد خلال أيام العمل", "بيئة عمل نسائية"]}
-          />
+          <CareersSuccess copy={copy} waHref={whatsappHref(waText)} points={copy.successPoints} />
         </div>
       ) : (
         <form ref={formRef} onSubmit={onSubmit} noValidate className="relative flex flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="inline-flex items-center gap-2.5 text-[1.15rem] font-extrabold text-[var(--color-md-text)]">
               <LuBriefcase className="size-5 text-[var(--color-md-champagne)]" aria-hidden />
-              طلب انضمام إلى الفريق
+              {copy.heading}
             </h2>
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-md-line-strong)] px-3 py-1.5 text-[0.72rem] font-extrabold text-[var(--color-md-champagne)]">
               <span
@@ -172,18 +190,18 @@ export function CareersForm() {
                 style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
                 aria-hidden
               />
-              نرد خلال أيام العمل
+              {copy.badge}
             </span>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="الاسم الكريم" htmlFor={`${uid}-name`} required error={errors.name}>
+            <Field label={copy.nameLabel} htmlFor={`${uid}-name`} required error={errors.name}>
               <TextInput
                 id={`${uid}-name`}
                 data-field="name"
                 name="name"
                 autoComplete="name"
-                placeholder="اسمكِ الثلاثي"
+                placeholder={copy.namePlaceholder}
                 value={fullName}
                 invalid={Boolean(errors.name)}
                 aria-describedby={errors.name ? `${uid}-name-error` : undefined}
@@ -195,7 +213,7 @@ export function CareersForm() {
               />
             </Field>
 
-            <Field label="رقم الجوال" htmlFor={`${uid}-phone`} required error={errors.phone}>
+            <Field label={copy.phoneLabel} htmlFor={`${uid}-phone`} required error={errors.phone}>
               <PhoneInput
                 id={`${uid}-phone`}
                 data-field="phone"
@@ -211,7 +229,7 @@ export function CareersForm() {
               />
             </Field>
 
-            <Field label="البريد الإلكتروني" htmlFor={`${uid}-email`} required error={errors.email}>
+            <Field label={copy.emailLabel} htmlFor={`${uid}-email`} required error={errors.email}>
               <TextInput
                 id={`${uid}-email`}
                 data-field="email"
@@ -233,7 +251,7 @@ export function CareersForm() {
               />
             </Field>
 
-            <Field label="المدينة" htmlFor={`${uid}-city`} required>
+            <Field label={copy.cityLabel} htmlFor={`${uid}-city`} required>
               <SelectInput
                 id={`${uid}-city`}
                 name="city"
@@ -250,7 +268,7 @@ export function CareersForm() {
               </SelectInput>
             </Field>
 
-            <Field label="المجال" htmlFor={`${uid}-field`} required error={errors.field}>
+            <Field label={copy.fieldLabel} htmlFor={`${uid}-field`} required error={errors.field}>
               <SelectInput
                 id={`${uid}-field`}
                 data-field="field"
@@ -265,18 +283,18 @@ export function CareersForm() {
                 disabled={sending}
               >
                 <option value="" disabled>
-                  اختاري المجال
+                  {copy.fieldPlaceholder}
                 </option>
-                {CAREER_FIELDS.map((f) => (
-                  <option key={f} value={f}>
-                    {f}
+                {fieldOptions.map((f) => (
+                  <option key={f.value} value={f.value}>
+                    {f.label}
                   </option>
                 ))}
               </SelectInput>
             </Field>
 
             <Field
-              label="سنوات الخبرة"
+              label={copy.experienceLabel}
               htmlFor={`${uid}-experience`}
               required
               error={errors.experience}
@@ -295,21 +313,21 @@ export function CareersForm() {
                 disabled={sending}
               >
                 <option value="" disabled>
-                  اختاري سنوات الخبرة
+                  {copy.experiencePlaceholder}
                 </option>
-                {EXPERIENCE_LEVELS.map((x) => (
-                  <option key={x} value={x}>
-                    {x}
+                {experienceOptions.map((x) => (
+                  <option key={x.value} value={x.value}>
+                    {x.label}
                   </option>
                 ))}
               </SelectInput>
             </Field>
 
             <Field
-              label="رابط السيرة الذاتية"
+              label={copy.cvLabel}
               htmlFor={`${uid}-cv`}
               error={errors.cv}
-              hint="Google Drive أو LinkedIn"
+              hint={copy.cvHint}
               className="sm:col-span-2"
             >
               <TextInput
@@ -334,13 +352,13 @@ export function CareersForm() {
             </Field>
 
             <Field
-              label="نبذة عنكِ"
+              label={copy.aboutLabel}
               htmlFor={`${uid}-about`}
               error={errors.about}
               className="sm:col-span-2"
               hint={
                 <span className="flex justify-between">
-                  <span>خبراتكِ، شهاداتكِ، وما الذي يجعلكِ الأنسب لهذا المجال.</span>
+                  <span>{copy.aboutHint}</span>
                   <span dir="ltr" aria-live="polite">
                     {about.length}/{ABOUT_MAX}
                   </span>
@@ -353,7 +371,7 @@ export function CareersForm() {
                 name="about"
                 rows={4}
                 maxLength={ABOUT_MAX}
-                placeholder="مثال: أخصائية ليزر بخبرة 4 سنوات في عيادات جلدية بجدة، حاصلة على شهادة..."
+                placeholder={copy.aboutPlaceholder}
                 value={about}
                 aria-invalid={errors.about ? true : undefined}
                 onChange={(e) => {
@@ -368,21 +386,18 @@ export function CareersForm() {
 
           {status.kind === "error" ? <FormError message={status.message} /> : null}
 
-          <ApplyButton sending={sending} className="mt-1" />
+          <ApplyButton sending={sending} label={copy.submit} className="mt-1" />
 
           <p className="m-0 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[0.72rem] font-bold text-[rgba(246,238,223,0.45)]">
-            <span className="inline-flex items-center gap-1.5">
-              <Icon.Lock className="size-3.5 text-[var(--color-md-champagne)]" />
-              بياناتكِ سرّية
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Icon.ShieldCheck className="size-3.5 text-[var(--color-md-champagne)]" />
-              لا نشارك ملفكِ مع أي جهة
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Icon.Clock className="size-3.5 text-[var(--color-md-champagne)]" />
-              رد خلال أيام العمل
-            </span>
+            {copy.trust.map((item, i) => {
+              const TrustIcon = TRUST_ICONS[i];
+              return (
+                <span key={item.text} className="inline-flex items-center gap-1.5">
+                  <TrustIcon className="size-3.5 text-[var(--color-md-champagne)]" />
+                  {item.text}
+                </span>
+              );
+            })}
           </p>
         </form>
       )}
@@ -394,7 +409,15 @@ export function CareersForm() {
  * Both labels stay mounted and swap via CSS (mirrors the shared SubmitButton,
  * with a send icon instead of the booking calendar).
  */
-function ApplyButton({ sending, className = "" }: { sending: boolean; className?: string }) {
+function ApplyButton({
+  sending,
+  label,
+  className = "",
+}: {
+  sending: boolean;
+  label: string;
+  className?: string;
+}) {
   return (
     <button
       type="submit"
@@ -409,14 +432,22 @@ function ApplyButton({ sending, className = "" }: { sending: boolean; className?
       </span>
       <span className={`items-center gap-2.5 ${sending ? "hidden" : "flex"}`}>
         <LuSend className="size-[18px]" aria-hidden />
-        <span>أرسلي طلب التقديم</span>
+        <span>{label}</span>
       </span>
     </button>
   );
 }
 
 /** In-place success state (same look as the booking SuccessPanel, careers copy). */
-function CareersSuccess({ waHref, points }: { waHref: string; points: string[] }) {
+function CareersSuccess({
+  copy,
+  waHref,
+  points,
+}: {
+  copy: FormCopy;
+  waHref: string;
+  points: string[];
+}) {
   return (
     <div role="status" aria-live="polite" className="flex flex-col items-center gap-4 text-center">
       <span
@@ -425,9 +456,9 @@ function CareersSuccess({ waHref, points }: { waHref: string; points: string[] }
       >
         <Icon.Check className="size-[30px] text-[var(--color-md-ink)]" strokeWidth={2.8} />
       </span>
-      <h3 className="m-0 text-[1.5rem] font-extrabold text-[var(--color-md-text)]">استلمنا طلبكِ</h3>
+      <h3 className="m-0 text-[1.5rem] font-extrabold text-[var(--color-md-text)]">{copy.successTitle}</h3>
       <p className="m-0 max-w-[40ch] text-[0.95rem] leading-[1.9] font-light text-[rgba(246,238,223,0.7)]">
-        وصل طلبكِ إلى فريق الموارد البشرية. نراجع كل طلب بعناية، وإن كان ملفكِ مناسباً لأحد المجالات نعود إليكِ خلال أيام العمل لتحديد موعد المقابلة.
+        {copy.successBody}
       </p>
 
       <a
@@ -437,12 +468,12 @@ function CareersSuccess({ waHref, points }: { waHref: string; points: string[] }
         className="inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-8 py-3.5 text-[0.98rem] font-extrabold text-[#0B2B16] shadow-[0_0_30px_-8px_rgba(37,211,102,0.6)] transition-transform hover:-translate-y-0.5 sm:w-auto"
       >
         <SocialIcon name="whatsapp" className="text-[19px]" />
-        تواصلي معنا عبر واتساب
+        {copy.successWhatsapp}
       </a>
 
       <p className="m-0 inline-flex flex-wrap items-center justify-center gap-x-2 text-[0.8rem] font-bold text-[rgba(246,238,223,0.55)]">
         <Icon.Clock className="size-3.5 text-[var(--color-md-champagne)]" />
-        نعود إليكِ خلال أيام العمل، من السبت إلى الخميس
+        {copy.successNote}
       </p>
 
       <ul className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-[0.8rem] font-bold text-[rgba(246,238,223,0.6)]">

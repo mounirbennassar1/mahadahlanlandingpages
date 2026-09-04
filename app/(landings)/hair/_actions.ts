@@ -66,7 +66,7 @@ export async function submitHairLead(
       };
     }
 
-    await prisma.lead.create({
+    const lead = await prisma.lead.create({
       data: {
         fullName,
         phone,
@@ -78,6 +78,11 @@ export async function submitHairLead(
         utmContent,
         utmTerm,
       },
+    });
+
+    // Opens the lead's timeline in the panel.
+    await prisma.leadActivity.create({
+      data: { leadId: lead.id, type: "CREATED", meta: { via: "form" } },
     });
   } catch (err) {
     console.error("[submitHairLead] DB error", err);

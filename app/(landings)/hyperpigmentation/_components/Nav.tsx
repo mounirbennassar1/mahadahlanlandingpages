@@ -2,8 +2,15 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import type { ContentOf } from "@/lib/pages/define";
+import type { HYPERPIGMENTATION } from "../content";
 
-export default function Nav() {
+/** Anchors for the nav links, in content order. */
+const NAV_HREFS = ["#problem", "#process", "#results", "#specialist", "#faq"] as const;
+
+type NavCopy = ContentOf<typeof HYPERPIGMENTATION>["nav"];
+
+export default function Nav({ copy }: { copy: NavCopy }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -26,28 +33,18 @@ export default function Nav() {
         />
       </a>
       <ul className="nav-links">
-        <li>
-          <a href="#problem">عن التصبّغ</a>
-        </li>
-        <li>
-          <a href="#process">المراحل</a>
-        </li>
-        <li>
-          <a href="#results">النتائج</a>
-        </li>
-        <li>
-          <a href="#specialist">الطبيبة</a>
-        </li>
-        <li>
-          <a href="#faq">أسئلة شائعة</a>
-        </li>
+        {copy.links.map((link, i) => (
+          <li key={NAV_HREFS[i]}>
+            <a href={NAV_HREFS[i]}>{link.label}</a>
+          </li>
+        ))}
       </ul>
       <div className="nav-cta">
         <a href="tel:+966920007515" className="nav-phone">
           +966 920007515
         </a>
         <a href="#cta" className="btn btn-gold">
-          احجزي الآن
+          {copy.book}
         </a>
       </div>
     </nav>

@@ -8,6 +8,7 @@ import { Glow, Section, SectionHead } from "@/app/_home/Sections";
 import { Reveal, RevealGroup } from "@/app/_home/Motion";
 import { GOLD_GRADIENT, toArabicDigits } from "@/app/_home/config";
 import { getActiveDevices, getDeviceBySlug } from "@/lib/content";
+import { getPageContent } from "@/lib/pages/get";
 import { PageHero } from "@/app/(site)/_components/PageHero";
 import { CtaBand } from "@/app/(site)/_components/CtaBand";
 import {
@@ -21,6 +22,7 @@ import { safeImageSrc, truncate } from "@/app/(site)/_components/media";
 import { DeviceCard } from "../_components/DeviceCard";
 import { DeviceFigure } from "../_components/DeviceFigure";
 import { relatedSpecialties } from "../_components/related";
+import { OUR_DEVICES } from "../content";
 
 export const revalidate = 300;
 
@@ -53,42 +55,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const SESSION = [
-  {
-    num: "01",
-    icon: Icon.ScanFace,
-    title: "تقييم",
-    body: "تفحص الطبيبة بشرتك وتؤكد أن هذا الجهاز هو الخيار الأنسب لحالتك، أو تقترح بديلاً أدق.",
-  },
-  {
-    num: "02",
-    icon: Icon.Zap,
-    title: "الجلسة",
-    body: "تُضبط الإعدادات لدرجة بشرتك، وتُفتح المستهلكات الأصلية أمامك، مع راحة وتبريد طوال الجلسة.",
-  },
-  {
-    num: "03",
-    icon: Icon.CalendarCheck,
-    title: "المتابعة",
-    body: "تعليمات واضحة لما بعد الجلسة، وموعد مراجعة نطمئن فيه على تطور النتيجة ونحدد الجلسة التالية.",
-  },
-];
+/** Icons for the session steps, in content order. */
+const SESSION_ICONS = [Icon.ScanFace, Icon.Zap, Icon.CalendarCheck] as const;
 
 export default async function DevicePage({ params }: Props) {
   const { slug } = await params;
-  const [device, all] = await Promise.all([loadDevice(slug), getActiveDevices()]);
+  const [device, all, c] = await Promise.all([
+    loadDevice(slug),
+    getActiveDevices(),
+    getPageContent(OUR_DEVICES),
+  ]);
   if (!device) notFound();
 
   const others = all.filter((d) => d.slug !== device.slug).slice(0, 4);
   const related = relatedSpecialties(device);
   const bookHref = `/book-now?service=${encodeURIComponent(device.slug)}`;
   const name = toArabicDigits(device.name);
+  const session = c.session.items.map((step, i) => ({ ...step, icon: SESSION_ICONS[i] }));
 
   return (
     <>
       <PageHero
-        crumbs={[{ href: "/our-devices", label: "الأجهزة" }, { label: name }]}
-        eyebrow={device.nameEn ?? "جهاز طبي معتمد"}
+        crumbs={[{ href: "/our-devices", label: c.hero.crumb }, { label: name }]}
+        eyebrow={device.nameEn ?? c.detail.eyebrow}
         title={name}
         gold={device.tagline ?? undefined}
         lede={device.description ?? undefined}
@@ -119,9 +108,9 @@ export default async function DevicePage({ params }: Props) {
           <>
             <GoldLink href={bookHref}>
               <Icon.CalendarCheck className="size-[18px]" />
-              احجزي جلستك
+              {c.detail.book}
             </GoldLink>
-            <WhatsAppLink label="اسألي عن الجهاز" />
+            <WhatsAppLink label={c.detail.whatsapp} />
           </>
         }
       />
@@ -130,7 +119,7 @@ export default async function DevicePage({ params }: Props) {
       <Section id="uses" className="bg-[var(--color-md-band)]">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <SectionHead align="start" eyebrow="ما الذي يعالجه" title="متى نلجأ إلى" gold={name} />
+            <SectionHead align="start" eyebrow={c.detail.usesEyebrow} title={c.detail.usesTitle} gold={name} />
             {device.usedFor.length ? (
               <RevealGroup className="mt-8 flex flex-col gap-3" stagger={0.07}>
                 {device.usedFor.map((u) => (
@@ -152,22 +141,25 @@ export default async function DevicePage({ params }: Props) {
             ) : (
               <Reveal className="mt-8">
                 <p className="text-[1rem] leading-[1.9] font-light text-[rgba(246,238,223,0.65)]">
-                  تحدد الطبيبة في الاستشارة إن كان هذا الجهاز مناسباً لحالتك.
+                  {c.detail.usesEmpty}
                 </p>
               </Reveal>
             )}
             <Reveal delay={120} className="mt-7 flex items-start gap-3 rounded-[18px] border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.6)] p-4 text-[0.86rem] leading-[1.8] font-bold text-[rgba(246,238,223,0.65)]">
               <Icon.ShieldCheck className="mt-0.5 size-5 shrink-0 text-[var(--color-md-champagne)]" />
-              <span>
-                لا يُشغَّل أي جهاز قبل تقييم الطبيبة. قد نكتفي بتقنية واحدة بدل باقة كاملة إن كانت تكفي لحالتك.
-              </span>
+              <span>{c.detail.note}</span>
             </Reveal>
           </div>
 
           <div>
-            <SectionHead align="start" eyebrow="ماذا تتوقعين في الجلسة" title="ثلاث خطوات" gold="من الاستشارة إلى المتابعة" />
+            <SectionHead
+              align="start"
+              eyebrow={c.session.eyebrow}
+              title={c.session.title}
+              gold={c.session.gold}
+            />
             <RevealGroup className="mt-8 flex flex-col gap-4">
-              {SESSION.map((step) => (
+              {session.map((step) => (
                 <div
                   key={step.num}
                   className="relative flex gap-5 rounded-[24px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-6 transition-colors duration-400 hover:border-[rgba(232,195,106,0.45)]"
@@ -197,10 +189,10 @@ export default async function DevicePage({ params }: Props) {
         <Section id="related" className="relative bg-[var(--color-md-bg)]">
           <Glow className="-top-16 right-1/4 h-[320px] w-[560px]" />
           <SectionHead
-            eyebrow="برامج تعتمد على هذا الجهاز"
-            title="اكتشفي البرامج"
-            gold="المرتبطة به"
-            body="كل صفحة تشرح البرنامج كاملاً: لمن يناسب، وكيف تسير الجلسات، وكيف تحجزين."
+            eyebrow={c.detail.relatedEyebrow}
+            title={c.detail.relatedTitle}
+            gold={c.detail.relatedGold}
+            body={c.detail.relatedBody}
           />
           <RevealGroup className={`${CAROUSEL} mt-10 md:grid-cols-3`}>
             {related.map((item) => (
@@ -250,7 +242,11 @@ export default async function DevicePage({ params }: Props) {
       {/* ——— other devices ——— */}
       {others.length ? (
         <Section id="others" className="bg-[var(--color-md-band)]">
-          <SectionHead eyebrow="الأجهزة" title="أجهزة" gold="أخرى في العيادة" />
+          <SectionHead
+            eyebrow={c.detail.othersEyebrow}
+            title={c.detail.othersTitle}
+            gold={c.detail.othersGold}
+          />
           <RevealGroup className={`${CAROUSEL} mt-10 md:grid-cols-2 lg:grid-cols-4`}>
             {others.map((d) => (
               <DeviceCard key={d.slug} device={d} className={CAROUSEL_ITEM} />
@@ -258,7 +254,7 @@ export default async function DevicePage({ params }: Props) {
           </RevealGroup>
           <Reveal className="mt-10 flex justify-center">
             <OutlineLink href="/our-devices">
-              كل الأجهزة
+              {c.detail.allDevices}
               <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
             </OutlineLink>
           </Reveal>
@@ -267,8 +263,8 @@ export default async function DevicePage({ params }: Props) {
 
       <CtaBand
         bookHref={bookHref}
-        bookLabel={`احجزي جلسة ${name}`}
-        body="أخبرينا بما يشغلك، ونؤكد لكِ إن كان هذا الجهاز هو الأنسب لحالتك، مع التكلفة المتوقعة قبل أن تخطي خطوة واحدة نحو العيادة."
+        bookLabel={`${c.detail.ctaBook} ${name}`}
+        body={c.detail.ctaBody}
       />
     </>
   );

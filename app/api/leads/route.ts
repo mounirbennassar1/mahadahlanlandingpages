@@ -20,6 +20,8 @@ export const dynamic = "force-dynamic";
  * booking flows (/book-now, /offers) may also send `email`, `service`,
  * `message`, `preferredAt`, `paymentMethod` and `offerId`.
  */
+const EXTRA_KEY = /^[a-zA-Z][a-zA-Z0-9_]{0,40}$/;
+
 const BodySchema = z.object({
   fullName: z.string().trim().min(2).max(120),
   phone: z.string().trim().min(5).max(32),
@@ -39,6 +41,15 @@ const BodySchema = z.object({
   preferredAt: z.string().trim().max(40).optional(),
   paymentMethod: z.enum(["COD", "TAMARA", "TABBY", "CARD"]).optional(),
   offerId: z.string().trim().max(64).optional(),
+  /**
+   * Extra answers a page's own form collects (e.g. a preferred time slot).
+   * Stored as-is on `Lead.data` and shown in the panel; labels come from the
+   * page's `formFields` in the content registry.
+   */
+  extra: z
+    .record(z.string().regex(EXTRA_KEY), z.string().trim().max(500))
+    .refine((o) => Object.keys(o).length <= 20, "Too many extra fields")
+    .optional(),
 });
 
 function parsePreferredAt(value: string | undefined): Date | null {
@@ -129,6 +140,10 @@ export async function POST(req: NextRequest) {
     offerId = offer?.id ?? null;
   }
 
+  // Drop blank values so an untouched optional input never creates a row.
+  const extraEntries = Object.entries(parsed.data.extra ?? {}).filter(([, v]) => v !== "");
+  const extraData = extraEntries.length > 0 ? Object.fromEntries(extraEntries) : undefined;
+
   const lead = await prisma.lead.create({
     data: {
       fullName: parsed.data.fullName,
@@ -146,8 +161,18 @@ export async function POST(req: NextRequest) {
       utmCampaign: parsed.data.utmCampaign || null,
       utmContent: parsed.data.utmContent || null,
       utmTerm: parsed.data.utmTerm || null,
+      data: extraData,
     },
     select: { id: true, submittedAt: true },
+  });
+
+  // Opens the lead's timeline in the panel.
+  await prisma.leadActivity.create({
+    data: {
+      leadId: lead.id,
+      type: "CREATED",
+      meta: { via: apiKey ? "api-key" : "form" },
+    },
   });
 
   return NextResponse.json(

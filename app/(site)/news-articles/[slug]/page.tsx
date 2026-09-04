@@ -15,6 +15,7 @@ import {
   type ArticleListItem,
 } from "@/lib/content";
 import { SITE_NAME, absoluteUrl } from "@/lib/site";
+import { getPageContent } from "@/lib/pages/get";
 import { PageHero } from "../../_components/PageHero";
 import { CtaBand } from "../../_components/CtaBand";
 import { ArticleCard } from "../_components/ArticleCard";
@@ -22,6 +23,7 @@ import { ArticleCover } from "../_components/ArticleCover";
 import { AuthorAvatar, AuthorMeta } from "../_components/AuthorMeta";
 import { readingLabel } from "../_components/format";
 import { ShareRow } from "./_components/ShareRow";
+import { NEWS_ARTICLES } from "../content";
 import "../prose.css";
 
 export const revalidate = 300;
@@ -90,7 +92,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
-  const related = await relatedFor(article);
+  const [related, c] = await Promise.all([relatedFor(article), getPageContent(NEWS_ARTICLES)]);
 
   const path = `/news-articles/${article.slug}`;
   const url = absoluteUrl(path);
@@ -137,13 +139,13 @@ export default async function ArticlePage({ params }: { params: Params }) {
       <PageHero
         compact
         crumbs={[
-          { href: "/news-articles", label: "المقالات" },
+          { href: "/news-articles", label: c.hero.crumb },
           ...(article.category
             ? [{ href: `/news-articles?category=${article.category.slug}`, label: article.category.name }]
             : []),
           { label: article.title },
         ]}
-        eyebrow={article.category?.name ?? "مقال طبي"}
+        eyebrow={article.category?.name ?? c.detail.eyebrow}
         title={article.title}
         lede={excerpt}
         actions={
@@ -189,7 +191,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
                 className="inline-flex min-h-11 items-center gap-2 text-[0.86rem] font-extrabold text-[var(--color-md-champagne)] transition-colors hover:text-[var(--color-md-neon)]"
               >
                 <Icon.ArrowRight className="size-4" strokeWidth={2.4} />
-                كل المقالات
+                {c.detail.allArticles}
               </Link>
             </div>
           </div>
@@ -198,7 +200,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
           <aside className="flex flex-col gap-5 lg:sticky lg:top-[100px]">
             {article.author ? (
               <Reveal className="rounded-[24px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-6">
-                <span className="text-[0.74rem] font-bold text-[var(--color-md-champagne)]">كاتبة المقال</span>
+                <span className="text-[0.74rem] font-bold text-[var(--color-md-champagne)]">{c.detail.authorLabel}</span>
                 <div className="mt-3 flex items-center gap-4">
                   <AuthorAvatar author={article.author} size={64} />
                   <div className="min-w-0">
@@ -210,7 +212,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
                   href={`/doctors/${article.author.slug}`}
                   className="mt-5 inline-flex min-h-11 items-center gap-1.5 text-[0.86rem] font-extrabold text-[var(--color-md-champagne)] transition-colors hover:text-[var(--color-md-neon)]"
                 >
-                  الملف الشخصي
+                  {c.detail.authorLink}
                   <Icon.ArrowLeft className="size-4" strokeWidth={2.4} />
                 </Link>
               </Reveal>
@@ -228,14 +230,14 @@ export default async function ArticlePage({ params }: { params: Params }) {
                   style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
                   aria-hidden
                 />
-                المواعيد محدودة أسبوعياً
+                {c.detail.ctaBadge}
               </span>
               <h3 className="relative mt-3 text-[1.15rem] leading-[1.5] font-extrabold text-[var(--color-md-text)]">
-                هل ينطبق هذا على حالتك؟
-                <span className="md-gold-text block">احجزي استشارتك</span>
+                {c.detail.ctaTitle}
+                <span className="md-gold-text block">{c.detail.ctaGold}</span>
               </h3>
               <p className="relative mt-2 text-[0.86rem] leading-[1.8] font-light text-[rgba(246,238,223,0.6)]">
-                تقييم صادق مع الطبيبة، وتكلفة واضحة قبل الجلسة، وطاقم نسائي بالكامل.
+                {c.detail.ctaBody}
               </p>
               <div className="relative mt-5 flex flex-col gap-2.5">
                 <Link
@@ -244,7 +246,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
                   style={{ background: GOLD_GRADIENT }}
                 >
                   <Icon.CalendarCheck className="size-4" />
-                  احجزي موعدك
+                  {c.detail.ctaBook}
                 </Link>
                 <a
                   href={WA_LINK}
@@ -253,7 +255,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[rgba(240,212,138,0.35)] px-6 py-3 text-[0.92rem] font-extrabold text-[#F0D48A] transition-colors hover:bg-[rgba(240,212,138,0.1)]"
                 >
                   <SocialIcon name="whatsapp" />
-                  استشارة عبر واتساب
+                  {c.detail.ctaWhatsapp}
                 </a>
               </div>
             </Reveal>
@@ -262,7 +264,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
               <div>
                 <h3 className="mb-4 inline-flex items-center gap-2 text-[0.95rem] font-extrabold text-[var(--color-md-text)]">
                   <LuBookOpen className="size-4 text-[var(--color-md-champagne)]" />
-                  مقالات ذات صلة
+                  {c.detail.related}
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
                   {related.map((a) => (

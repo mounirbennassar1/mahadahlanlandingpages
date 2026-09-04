@@ -72,8 +72,15 @@ up immediately in production.
 
 - **Leads** — every form on the site and the landings posts to `POST /api/leads`
   (`{ fullName, phone, city, source, …utm }`, plus optional `email`, `service`,
-  `message`, `preferredAt`, `paymentMethod`, `offerId` from the website forms).
-  Unknown `source` slugs self-register a `LeadSource` with UTM links.
+  `message`, `preferredAt`, `paymentMethod`, `offerId` from the website forms,
+  and an optional `extra` object for anything a single page asks that the schema
+  does not cover). Unknown `source` slugs self-register a `LeadSource` with UTM
+  links. `/dashboard/leads` filters by page, status, date range, assignee and
+  free text, exports the filtered view as CSV, and each lead has a detail page
+  with notes and a full history of status and assignment changes.
+- **Pages** (`/dashboard/pages`) — the wording of every public page, edited by
+  page and section, plus that page's leads and charts on its own tabs. Text only:
+  no images, no HTML. See `docs/cms-pages.md`.
 - **Website** section (`/dashboard/content/*`) — CRUD for articles (Tiptap
   editor, cover image, category, author, draft/published, featured, SEO),
   categories, doctors, devices, offers (price in SAR, badge, active window),
@@ -92,11 +99,16 @@ optionally `LANDING_ORIGINS`.
 
 ## Adding a new landing page
 
-1. Create `app/(landings)/<slug>/page.tsx` (Lenis + GSAP are mounted by the
-   group layout). Import icons from `@/components/icons`.
-2. Post the form to `/api/leads` with `source: "<slug>"` — the source and its
+1. Create `app/(landings)/<slug>/` with a server `page.tsx` (metadata + content
+   load), a `content.ts` holding the copy, and a `"use client"` body under
+   `_components/Landing.tsx`. Lenis and GSAP are mounted by the group layout;
+   import icons from `@/components/icons`. The `mahadahlan-landing` skill
+   scaffolds all of this.
+2. Register the page in `lib/pages/registry.ts` so it appears in
+   `/dashboard/pages` (the scaffold script does this at its marker comments).
+3. Post the form to `/api/leads` with `source: "<slug>"` — the source and its
    UTM links are created on the first submission.
-3. Add the landing to `SPECIALTIES` in `app/_home/config.ts` so it appears on
+4. Add the landing to `SPECIALTIES` in `app/_home/config.ts` so it appears on
    the home page, the footer, the about page and the sitemap.
 
 ## Project layout
@@ -108,10 +120,11 @@ app/
   (site)/                    # about-us, offers, doctors, our-devices, book-now, news-articles
   (landings)/                # campaign landing pages (one folder each)
   (panel)/login, dashboard/  # admin panel (LTR, English UI)
-  api/leads, api/auth, api/admin/upload
+  api/leads, api/auth, api/admin/upload, api/admin/leads/export
   sitemap.ts, robots.ts, not-found.tsx
 components/icons, providers, usablecomponents, landing
-lib/content.ts (public reads), lib/admin/* (CMS helpers), lib/prisma.ts, lib/utm.ts, lib/gtag.ts
+lib/content.ts (public reads), lib/admin/* (CMS helpers), lib/pages/* (page-copy registry)
+lib/prisma.ts, lib/metrics.ts, lib/utm.ts, lib/gtag.ts
 prisma/schema.prisma, seed.ts, seed-content.ts
 public/site/*                # images migrated from the old website
 ```

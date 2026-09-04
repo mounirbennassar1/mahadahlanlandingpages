@@ -8,6 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { CRACKED_HEELS } from "../content";
 
 // Decorative WebGL only — three.js is ~700KB, so it loads as its own async
 // chunk after hydration instead of blocking first paint.
@@ -17,12 +19,7 @@ const GoldDust = dynamic(() => import("./GoldDust").then((m) => m.GoldDust), {
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STATS = [
-  { value: "٤٫٨ من ٥", label: "تقييم Google" },
-  { value: "+١٢٧٠", label: "تقييم موثّق" },
-  { value: "+١٣ عاماً", label: "خبرة طبية" },
-  { value: "١٠٠٪", label: "طاقم نسائي" },
-] as const;
+type HeroCopy = ContentOf<typeof CRACKED_HEELS>["hero"];
 
 /**
  * Hero background video: plays the generated loop over the hero image and
@@ -62,7 +59,8 @@ function HeroVideo() {
   );
 }
 
-export function Hero() {
+export function Hero({ copy }: { copy: HeroCopy }) {
+  const STATS = copy.stats;
   const rootRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -166,22 +164,19 @@ export function Hero() {
               className="size-1.5 rounded-full bg-[var(--color-crh-gold)]"
               style={{ boxShadow: "0 0 8px 2px rgba(212,175,55,.6)" }}
             />
-            عناية طبية متكاملة بتشقق القدمين والكعبين
+            {copy.badge}
           </span>
 
           <h1 className="crh-h mt-6 text-[clamp(2.2rem,5.4vw,3.7rem)] leading-[1.35] font-extrabold tracking-[-0.01em]">
-            كعبان ناعمان كالحرير
+            {copy.line1}
             <br />
-            <span className="crh-gold-text">في كل خطوة تخطينها</span>
+            <span className="crh-gold-text">{copy.line2}</span>
           </h1>
 
           <p className="crh-h mt-5 max-w-[54ch] text-[1.06rem] font-light text-[var(--color-crh-cream-soft)]">
-            الجفاف والوقوف الطويل والأحذية المفتوحة تترك كعبيكِ خشنين
-            متشققين، وقد يتطور الأمر إلى تشققات عميقة مؤلمة وتصبغات داكنة.
-            نعالج ذلك ببروتوكول طبي يجمع الباديكير الطبي المعقم والتقشير
-            العلاجي والترطيب العميق،{" "}
+            {copy.body}{" "}
             <b className="font-bold text-[var(--color-crh-cream)]">
-              بنعومة تدوم ومتابعة حتى النتيجة
+              {copy.bodyStrong}
             </b>
             .
           </p>
@@ -192,7 +187,7 @@ export function Hero() {
               className="inline-flex items-center gap-2.5 rounded-full px-[32px] py-4 text-base font-extrabold text-[#1C120C] shadow-[0_18px_44px_-14px_rgba(212,175,55,0.5)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(228,200,126,0.6)]"
               style={{ background: GOLD_GRADIENT }}
             >
-              احجزي جلسة التقييم
+              {copy.book}
               <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
             </a>
             <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
@@ -212,7 +207,7 @@ export function Hero() {
                 className="relative inline-flex items-center gap-2.5 rounded-full bg-[#2A1B12] px-7 py-[15px] text-base font-extrabold text-[var(--color-crh-cream)] transition-colors duration-300 hover:bg-[#38251A]"
               >
                 <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-                استشارة واتساب
+                {copy.whatsapp}
               </a>
             </div>
           </div>
@@ -285,7 +280,7 @@ export function Hero() {
             style={{ animation: "crh-floaty 7s ease-in-out infinite alternate" }}
           >
             <Icon.ShieldCheck className="size-3.5" />
-            أدوات معقمة وبروتوكول طبي
+            {copy.badgeSterile}
           </span>
           <span
             className="crh-sat absolute bottom-24 -left-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[0.76rem] font-extrabold whitespace-nowrap text-[#1C120C] shadow-[0_14px_30px_-12px_rgba(212,175,55,0.55)]"
@@ -295,7 +290,7 @@ export function Hero() {
             }}
           >
             <Icon.Sparkles className="size-3.5" />
-            نعومة تلمسينها من أول جلسة
+            {copy.badgeSoftness}
           </span>
           <span
             className="crh-sat absolute top-1/3 -right-4 inline-flex items-center gap-2 rounded-full border border-[var(--color-crh-line-strong)] bg-[rgba(42,27,18,0.9)] px-4 py-2 text-[0.76rem] font-extrabold whitespace-nowrap text-[var(--color-crh-gold-soft)] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.8)] backdrop-blur-lg"
@@ -304,7 +299,7 @@ export function Hero() {
             }}
           >
             <Icon.Star className="size-3.5" />
-            ٤٫٨ على Google
+            {copy.badgeRating}
           </span>
         </div>
       </div>

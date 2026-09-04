@@ -2,52 +2,21 @@
 
 import { motion, type Variants } from "framer-motion";
 import { Icon } from "@/components/icons";
+import type { ContentOf } from "@/lib/pages/define";
+import type { GLASS_SKIN } from "../content";
 
-/* The Korean glass-skin session — six studied steps, client-provided copy. */
-const STEPS = [
-  {
-    n: "٠١",
-    icon: Icon.Droplets,
-    label: "المرحلة الأولى",
-    title: "تنظيف البشرة بعمق",
-    text: "نبدأ بتنظيف البشرة لإزالة الشوائب وبقايا المكياج والدهون، وتهيئة البشرة لاستقبال باقي الخطوات.",
-  },
-  {
-    n: "٠٢",
-    icon: Icon.Pipette,
-    label: "المرحلة الثانية",
-    title: "سيروم الساليسيليك أسيد",
-    text: "يُطبّق سيروم يحتوي على Salicylic Acid للمساعدة في التخلص من خلايا الجلد الميتة وتنقية المسام، كما يساهم في تحسين مظهر حب الشباب الخفيف.",
-  },
-  {
-    n: "٠٣",
-    icon: Icon.Activity,
-    label: "المرحلة الثالثة",
-    title: "رغوة تنشيط البشرة",
-    text: "رغوة خاصة تساعد على تنشيط الدورة الدموية في الوجه وتعزيز امتصاص الترطيب داخل البشرة.",
-  },
-  {
-    n: "٠٤",
-    icon: Icon.Droplet,
-    label: "المرحلة الرابعة",
-    title: "سيروم الترطيب المكثّف",
-    text: "سيروم غني بالمكونات المرطبة لدعم توازن البشرة ومنحها ترطيباً عميقاً وملمساً أكثر نعومة.",
-  },
-  {
-    n: "٠٥",
-    icon: Icon.Flower2,
-    label: "المرحلة الخامسة",
-    title: "ماسك كوري مغذّي",
-    text: "ماسك كوري مميز يحتوي على فيتامين E وميلاتونين طبيعي للمساعدة على ترطيب البشرة وتعزيز إشراقتها ونضارتها.",
-  },
-  {
-    n: "٠٦",
-    icon: Icon.ShieldCheck,
-    label: "المرحلة السادسة",
-    title: "كريم حبس الرطوبة",
-    text: "نختم الجلسة بكريم خفيف يساعد على حبس الرطوبة داخل الجلد وتقوية حاجز البشرة للحفاظ على نعومة وإشراقة تدوم.",
-  },
-];
+/* The Korean glass-skin session — six studied steps; the copy lives in
+   content.ts and each step keeps its icon here, paired by index. */
+const STEP_ICONS = [
+  Icon.Droplets,
+  Icon.Pipette,
+  Icon.Activity,
+  Icon.Droplet,
+  Icon.Flower2,
+  Icon.ShieldCheck,
+] as const;
+
+type StepsCopy = ContentOf<typeof GLASS_SKIN>["protocol"]["steps"];
 
 const GOLD = "linear-gradient(120deg, #f0d98c 0%, #d4af37 55%, #b8912e 100%)";
 
@@ -66,7 +35,8 @@ const stepVar: Variants = {
   },
 };
 
-export function ProtocolSteps() {
+export function ProtocolSteps({ steps }: { steps: StepsCopy }) {
+  const STEPS = steps.map((step, i) => ({ ...step, icon: STEP_ICONS[i] }));
   return (
     <motion.ol
       initial="hidden"

@@ -2,26 +2,30 @@ import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { Section, SectionHead } from "@/app/_home/Sections";
 import { RevealGroup } from "@/app/_home/Motion";
+import type { ContentOf } from "@/lib/pages/define";
+import type { SERVICES } from "../content";
 
 export type OtherServiceGroup = {
   group: string;
   items: { slug: string; name: string }[];
 };
 
+type OtherCopy = ContentOf<typeof SERVICES>["other"];
+
 /**
  * Compact chip list of the booking services that do not have a treatment
  * page of their own. Each chip preselects the service on /book-now.
  */
-export function OtherServices({ groups }: { groups: OtherServiceGroup[] }) {
+export function OtherServices({ groups, copy }: { groups: OtherServiceGroup[]; copy: OtherCopy }) {
   if (!groups.length) return null;
 
   return (
     <Section id="other-services" className="relative bg-[var(--color-md-bg)]">
       <SectionHead
-        eyebrow="خدمات أخرى"
-        title="خدمات أخرى"
-        gold="نقدّمها في العيادة"
-        body="خدمات نقدّمها داخل العيادة ولا تحتاج إلى صفحة مستقلة. اختاري ما يناسبكِ وسنحدد لكِ الموعد مباشرة من نموذج الحجز."
+        eyebrow={copy.eyebrow}
+        title={copy.title}
+        gold={copy.gold}
+        body={copy.body}
       />
 
       <RevealGroup className="mt-12 flex flex-col gap-8" stagger={0.08}>

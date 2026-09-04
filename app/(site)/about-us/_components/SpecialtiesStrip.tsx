@@ -2,8 +2,10 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { GOLD_GRADIENT, SPECIALTIES, type Specialty } from "@/app/_home/config";
+import { specialtyCopy, type SpecialtyOverrides } from "@/app/_home/i18n/dictionary";
 
-function Chip({ item }: { item: Specialty }) {
+function Chip({ item, overrides }: { item: Specialty; overrides?: SpecialtyOverrides }) {
+  const copy = specialtyCopy(item.slug, "ar", overrides);
   return (
     <Link
       href={`/${item.slug}`}
@@ -16,9 +18,9 @@ function Chip({ item }: { item: Specialty }) {
       >
         <item.icon className="size-4" strokeWidth={2.2} />
       </span>
-      <span className="whitespace-nowrap text-[0.9rem] font-extrabold text-[var(--color-md-text)]">{item.title}</span>
+      <span className="whitespace-nowrap text-[0.9rem] font-extrabold text-[var(--color-md-text)]">{copy.title}</span>
       <span className="hidden whitespace-nowrap text-[0.74rem] font-bold text-[rgba(246,238,223,0.45)] sm:inline">
-        {item.tag}
+        {copy.tag}
       </span>
       <Icon.ArrowLeft
         className="size-3.5 shrink-0 text-[var(--color-md-champagne)] transition-transform duration-300 group-hover:-translate-x-1"
@@ -29,7 +31,17 @@ function Chip({ item }: { item: Specialty }) {
   );
 }
 
-function Row({ items, duration, reverse }: { items: Specialty[]; duration: string; reverse?: boolean }) {
+function Row({
+  items,
+  duration,
+  reverse,
+  overrides,
+}: {
+  items: Specialty[];
+  duration: string;
+  reverse?: boolean;
+  overrides?: SpecialtyOverrides;
+}) {
   return (
     <div
       dir="ltr"
@@ -46,7 +58,7 @@ function Row({ items, duration, reverse }: { items: Specialty[]; duration: strin
         {[0, 1].map((copy) => (
           <div key={copy} dir="rtl" className="flex gap-3 pe-3 sm:gap-4 sm:pe-4">
             {items.map((item) => (
-              <Chip key={`${copy}-${item.slug}`} item={item} />
+              <Chip key={`${copy}-${item.slug}`} item={item} overrides={overrides} />
             ))}
           </div>
         ))}
@@ -56,12 +68,12 @@ function Row({ items, duration, reverse }: { items: Specialty[]; duration: strin
 }
 
 /** The 14 treatment landings as linked chips in two counter-scrolling rows. */
-export function SpecialtiesStrip() {
+export function SpecialtiesStrip({ overrides }: { overrides?: SpecialtyOverrides }) {
   const mid = Math.ceil(SPECIALTIES.length / 2);
   return (
     <div className="flex flex-col gap-3 sm:gap-4">
-      <Row items={SPECIALTIES.slice(0, mid)} duration="46s" />
-      <Row items={SPECIALTIES.slice(mid)} duration="54s" reverse />
+      <Row items={SPECIALTIES.slice(0, mid)} duration="46s" overrides={overrides} />
+      <Row items={SPECIALTIES.slice(mid)} duration="54s" reverse overrides={overrides} />
     </div>
   );
 }

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
+import type { ContentOf } from "@/lib/pages/define";
+import type { CHRONIC_ECZEMA } from "../content";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -17,7 +19,7 @@ type Doctor = {
 };
 
 /* Same medical team as the other MahaDahlan landings. */
-const DOCTORS: Doctor[] = [
+const BASE_DOCTORS: Doctor[] = [
   {
     label: "الطبيبة الأولى",
     name: "د. مها دحلان",
@@ -55,7 +57,23 @@ const DOCTORS: Doctor[] = [
   },
 ];
 
-export function Doctors() {
+type DoctorsCopy = ContentOf<typeof CHRONIC_ECZEMA>["doctors"];
+
+/** Photos stay in code; names, titles and credentials are editable. */
+export function Doctors({ copy }: { copy: DoctorsCopy }) {
+  const DOCTORS: Doctor[] = BASE_DOCTORS.map((doc, i) => {
+    const person = copy.people[i];
+    return person
+      ? {
+          ...doc,
+          label: person.label,
+          name: person.name,
+          title: person.title,
+          credentials: person.credentials.filter(Boolean),
+        }
+      : doc;
+  });
+
   const [[index, dir], setSlide] = useState<[number, number]>([0, 0]);
   const count = DOCTORS.length;
   const d = DOCTORS[index];
@@ -101,7 +119,7 @@ export function Doctors() {
               aria-hidden
             />
             <span className="text-[0.74rem] leading-5 font-bold text-[var(--color-che-muted)]">
-              علاج يُدار بعلم ، لا بالتجربة
+              {copy.badge}
             </span>
           </figcaption>
         </div>

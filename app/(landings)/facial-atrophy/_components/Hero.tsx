@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Icon, SocialIcon } from "@/components/icons";
 import { EASE } from "./Reveal";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { FACIAL_ATROPHY } from "../content";
 
 const TWINKLES = [
   { right: "16%", top: "22%", size: 3, dur: 3.4, delay: 0 },
@@ -19,13 +21,20 @@ const TWINKLES = [
   { left: "18%", top: "76%", size: 3, dur: 3.6, delay: 0.4 },
 ] as const;
 
+/** Icons for the trust badges under the CTAs, in content order. */
+const TRUST_ICONS = [Icon.ShieldCheck, Icon.Lock, Icon.CircleCheck] as const;
+
 const fadeUpAt = (delay: number) => ({
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.9, ease: EASE, delay },
 });
 
-export function Hero() {
+type HeroCopy = ContentOf<typeof FACIAL_ATROPHY>["hero"];
+
+export function Hero({ copy }: { copy: HeroCopy }) {
+  const trust = copy.trust.map((item, i) => ({ ...item, icon: TRUST_ICONS[i] }));
+
   return (
     <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-[22px] pt-[130px] pb-[70px] text-center">
       {/* ambient burgundy radials */}
@@ -94,17 +103,17 @@ export function Hero() {
             className="size-1.5 rounded-full bg-[var(--color-faa-gold-bright)]"
             style={{ boxShadow: "0 0 8px 2px rgba(240,212,138,.7)" }}
           />
-          علاج ضمور الوجه بعد إبر التنحيف
+          {copy.badge}
         </motion.span>
 
         <motion.h1
           {...fadeUpAt(0.18)}
           className="mt-[26px] text-[clamp(2.2rem,6vw,4.1rem)] leading-[1.3] font-extrabold tracking-[-0.01em]"
         >
-          خسرتِ الوزن بنجاح…
+          {copy.line1}
           <br />
           <span className="faa-serif faa-gold-text font-bold">
-            فلنُعِد لوجهكِ امتلاءه وإشراقته
+            {copy.line2}
           </span>
         </motion.h1>
 
@@ -112,11 +121,9 @@ export function Hero() {
           {...fadeUpAt(0.32)}
           className="mt-[22px] max-w-[56ch] text-[1.08rem] font-light text-[rgba(243,233,220,0.72)]"
         >
-          فقدان الوزن السريع قد يترك ملامح الوجه أنحف وأكثر إرهاقاً مما ينبغي.
-          في عيادة مها دحلان نعيد التوازن لملامحك بخطة علاجية دقيقة تُصمَّم لكِ
-          وحدك،{" "}
+          {copy.body}{" "}
           <b className="font-bold text-[var(--color-faa-ink)]">
-            بنتائج طبيعية وخصوصية تامة
+            {copy.bodyStrong}
           </b>
           .
         </motion.p>
@@ -130,7 +137,7 @@ export function Hero() {
             className="inline-flex items-center gap-2.5 rounded-full px-[34px] py-4 text-base font-extrabold text-[var(--color-faa-cta-ink)] shadow-[0_18px_44px_-14px_rgba(217,179,108,0.55)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(240,212,138,0.65)]"
             style={{ background: GOLD_GRADIENT }}
           >
-            احجزي استشارتك الخاصة
+            {copy.book}
             <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
           </a>
           <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
@@ -150,7 +157,7 @@ export function Hero() {
               className="relative inline-flex items-center gap-2.5 rounded-full bg-[#22070F] px-[30px] py-[15px] text-base font-extrabold text-[var(--color-faa-gold-pale)] transition-colors duration-300 hover:bg-[#35101C]"
             >
               <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-              تواصلي معنا عبر الواتس آب
+              {copy.whatsapp}
             </a>
           </div>
         </motion.div>
@@ -159,18 +166,12 @@ export function Hero() {
           {...fadeUpAt(0.6)}
           className="mt-7 flex flex-wrap justify-center gap-x-[26px] gap-y-3 text-[0.84rem] text-[rgba(243,233,220,0.6)]"
         >
-          <span className="inline-flex items-center gap-[7px]">
-            <Icon.ShieldCheck className="size-[15px] text-[var(--color-faa-gold)]" />
-            إشراف طبي متخصص
-          </span>
-          <span className="inline-flex items-center gap-[7px]">
-            <Icon.Lock className="size-[15px] text-[var(--color-faa-gold)]" />
-            خصوصية تامة
-          </span>
-          <span className="inline-flex items-center gap-[7px]">
-            <Icon.CircleCheck className="size-[15px] text-[var(--color-faa-gold)]" />
-            نتائج طبيعية بلا مبالغة
-          </span>
+          {trust.map((item) => (
+            <span key={item.label} className="inline-flex items-center gap-[7px]">
+              <item.icon className="size-[15px] text-[var(--color-faa-gold)]" />
+              {item.label}
+            </span>
+          ))}
         </motion.div>
       </div>
 
@@ -216,13 +217,13 @@ export function Hero() {
               animation: "faa-floaty 6s ease-in-out 1s infinite alternate-reverse",
             }}
           >
-            نتائج طبيعية
+            {copy.floatTop}
           </span>
           <span
             className="absolute bottom-[22px] -left-[42px] inline-flex items-center gap-[7px] rounded-full border border-[var(--color-faa-line-strong)] bg-[rgba(21,4,9,0.75)] px-3.5 py-[7px] text-[0.72rem] font-extrabold whitespace-nowrap text-[var(--color-faa-gold-bright)] backdrop-blur-lg"
             style={{ animation: "faa-floaty 8s ease-in-out .3s infinite alternate" }}
           >
-            خصوصية تامة
+            {copy.floatBottom}
           </span>
         </div>
         <div className="z-[1] -me-4 w-[clamp(108px,23vw,220px)] -rotate-8 translate-y-[30px]">

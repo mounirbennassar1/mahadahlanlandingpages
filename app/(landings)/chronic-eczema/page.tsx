@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { WhatsAppFAB } from "@/components/usablecomponents/WhatsAppFAB";
@@ -17,169 +18,41 @@ import {
   WA_TOPIC_MESSAGE,
   WHATSAPP_NUMBER,
 } from "./_components/config";
+import { getPageContent } from "@/lib/pages/get";
+import { CHRONIC_ECZEMA } from "./content";
 
 // Bento order: index 0 and 3 render as the two wide cards stacked on the
 // right column (RTL start); the rest fill the 2×2 on the left.
-const SYMPTOMS = [
-  {
-    icon: Icon.Moon,
-    title: "حكة تشتد ليلاً",
-    body: "تهدأ نهاراً ثم تستيقظ مع الدفء والسكون، فتسرق نومك وتترك أثرها على صباحك كله.",
-  },
-  {
-    icon: Icon.Droplets,
-    title: "جفاف وتقشر مستمر",
-    body: "جلد يشدّ ويتشقق مهما رطبتِ، لأن حاجز البشرة نفسه فقد قدرته على حفظ الماء.",
-  },
-  {
-    icon: Icon.Flame,
-    title: "احمرار والتهاب متكرر",
-    body: "بقع ملتهبة تظهر في ثنيات المرفقين والركبتين والرقبة واليدين، وتشتعل مع كل نوبة.",
-  },
-  {
-    icon: Icon.BedDouble,
-    title: "إرهاق يتجاوز الجلد",
-    body: "نوم متقطع، إحراج من مظهر البشرة، وقلق دائم من النوبة القادمة. الاكزيما تُتعب النفس قبل الجلد.",
-  },
-  {
-    icon: Icon.Layers,
-    title: "سماكة وتغير لون الجلد",
-    body: "مع تكرار الحك يتصبغ الجلد ويتسمك ويصبح ملمسه خشناً، وهي علامة أن الاكزيما أصبحت مزمنة.",
-  },
-  {
-    icon: Icon.RefreshCw,
-    title: "نوبات تعود بلا موعد",
-    body: "صابون، عطر، قماش، غبار، توتر أو تقلب طقس: محفزات صغيرة تشعل نوبة جديدة كل مرة.",
-  },
-];
+/** Icons for the symptom bento cards, in content order. */
+const SYMPTOM_ICONS = [
+  Icon.Moon,
+  Icon.Droplets,
+  Icon.Flame,
+  Icon.BedDouble,
+  Icon.Layers,
+  Icon.RefreshCw,
+] as const;
 
-const CYCLE_CARDS = [
-  {
-    num: "٠١",
-    title: "حاجز جلد ضعيف",
-    body: "خلل وراثي في بروتين الفلاجرين يجعل الجلد يفقد الماء بسرعة ويسمح للمهيجات بالنفاذ إليه.",
-  },
-  {
-    num: "٠٢",
-    title: "مناعة مفرطة الاستجابة",
-    body: "جهاز المناعة يبالغ في رد فعله على المحفزات، فيشعل التهاباً وحكة في جلد هو أصلاً بلا حماية كافية.",
-  },
-  {
-    num: "٠٣",
-    title: "دورة الحكة والخدش",
-    body: "الحكة تدفع للخدش، والخدش يجرح الحاجز فيزيد الالتهاب والحكة. كسر هذه الدورة هو جوهر العلاج.",
-  },
-];
+/** Icons for the treatment index rows, in content order. */
+const TECH_ICONS = [
+  Icon.Sun,
+  Icon.Dna,
+  Icon.Pipette,
+  Icon.Bandage,
+  Icon.TestTubes,
+  Icon.Sparkles,
+] as const;
 
-const TECHS = [
-  {
-    num: "٠١",
-    icon: Icon.Sun,
-    title: "العلاج الضوئي NB-UVB",
-    tag: "للحالات المنتشرة والمستعصية",
-    body: "جلسات ضوء ضيق النطاق بأجهزة طبية معايرة تهدّئ فرط نشاط المناعة في الجلد بأمان ودون أدوية جهازية.",
-  },
-  {
-    num: "٠٢",
-    icon: Icon.Dna,
-    title: "العلاجات البيولوجية الحديثة",
-    tag: "للاكزيما المتوسطة والشديدة",
-    body: "حقن موجهة تستهدف مسارات الالتهاب نفسها المسؤولة عن الاكزيما، بعد تقييم دقيق لأهليتك لها.",
-  },
-  {
-    num: "٠٣",
-    icon: Icon.Pipette,
-    title: "مثبطات JAK الموضعية",
-    tag: "بديل حديث غير ستيرويدي",
-    body: "كريمات الجيل الجديد التي تهدّئ الالتهاب والحكة دون آثار الكورتيزون التراكمية على الجلد.",
-  },
-  {
-    num: "٠٤",
-    icon: Icon.Bandage,
-    title: "بروتوكول الضمادات الرطبة",
-    tag: "تهدئة سريعة للنوبات الشديدة",
-    body: "تقنية علاجية تضاعف فعالية المرطبات والأدوية الموضعية وتكسر نوبة الحكة خلال أيام قليلة.",
-  },
-  {
-    num: "٠٥",
-    icon: Icon.TestTubes,
-    title: "تقصّي المحفزات والحساسية",
-    tag: "خطة شخصية لا تخمين فيها",
-    body: "اختبارات وتحاليل عند الحاجة تكشف محفزاتك الفعلية، فتتجنبين ما يضرك فقط لا كل شيء.",
-  },
-  {
-    num: "٠٦",
-    icon: Icon.Sparkles,
-    title: "الترطيب الطبي العميق",
-    tag: "أساس كل خطة ناجحة",
-    body: "بروتوكول مرطبات علاجية غنية بالسيراميد يعيد بناء حاجز الجلد ويقلل حاجتك للأدوية تدريجياً.",
-  },
-];
+/** Icons for the "why us" strip, in content order. */
+const WHY_US_ICONS = [
+  Icon.HeartHandshake,
+  Icon.Stethoscope,
+  Icon.Users,
+  Icon.CalendarCheck,
+] as const;
 
-const WHY_US = [
-  {
-    icon: Icon.HeartHandshake,
-    title: "صراحة طبية",
-    body: "لا نعدك بشفاء نهائي زائف؛ نعدك بسيطرة حقيقية تدوم.",
-  },
-  {
-    icon: Icon.Stethoscope,
-    title: "إشراف استشارية",
-    body: "خطتك تُبنى وتُراجع بإشراف استشارية جلدية معتمدة.",
-  },
-  {
-    icon: Icon.Users,
-    title: "طاقم نسائي بالكامل",
-    body: "خصوصية تامة من الاستقبال حتى غرفة الجلسة وملفك الطبي.",
-  },
-  {
-    icon: Icon.CalendarCheck,
-    title: "متابعة حتى الاستقرار",
-    body: "مراجعات مجدولة نعدّل فيها الخطة حسب استجابة بشرتك.",
-  },
-];
-
-const RESULTS = [
-  {
-    value: "٧٢ ساعة",
-    label: "غالباً ما تبدأ الحكة بالانحسار خلالها مع بدء الخطة",
-  },
-  {
-    value: "٦ أسابيع",
-    label: "متوسط المدة التي تتباعد فيها النوبات بشكل ملموس",
-  },
-  {
-    value: "٨ من ١٠",
-    label: "من مراجعاتنا يصفن نومهن بأنه أهدأ بعد الشهر الأول",
-  },
-];
-
-const FAQ = [
-  {
-    q: "هل يوجد علاج نهائي يمحو الاكزيما للأبد؟",
-    a: "بكل صراحة: لا يوجد حتى اليوم علاج يمحو الاستعداد للاكزيما نهائياً، ومن يعدك بذلك لا يصارحك. الخبر الجيد أن الاكزيما مرض يُدار بنجاح؛ هدفنا بشرة هادئة معظم الوقت، ونوبات نادرة وخفيفة تعرفين كيف تتعاملين معها فور بدايتها.",
-  },
-  {
-    q: "متى ألاحظ التحسن؟",
-    a: "تهدئة الحكة والالتهاب تبدأ عادة خلال أيام إلى أسبوعين من بدء الخطة، بينما يحتاج ترميم حاجز الجلد وتباعد النوبات من ستة إلى ثمانية أسابيع تقريباً، بحسب شدة الحالة والالتزام بالبروتوكول المنزلي.",
-  },
-  {
-    q: "هل كريمات الكورتيزون خطيرة؟",
-    a: "الكورتيزون الموضعي آمن وفعال عندما يُستخدم بإشراف طبي بجرعة ومدة مدروستين لكل منطقة من الجلد. نضع لك خطة تدرّج واضحة، ونلجأ للبدائل غير الستيرويدية الحديثة متى كانت الأنسب لحالتك.",
-  },
-  {
-    q: "ما هو العلاج الضوئي وهل يناسبني؟",
-    a: "هو جلسات قصيرة من ضوء NB-UVB ضيق النطاق بجهاز طبي معاير، يهدّئ فرط نشاط المناعة في الجلد. خيار فعال للحالات المنتشرة أو التي لم تستجب كفاية للعلاج الموضعي، ويُقرر بعد تقييم حالتك وتاريخك الطبي.",
-  },
-  {
-    q: "هل تعالجون اكزيما الأطفال؟",
-    a: "نعم. نضع للأطفال خططاً مخصصة بجرعات آمنة لأعمارهم، ونركز على تعليم الأهل بروتوكول الترطيب والتعامل مع المحفزات ونوبات الحكة، لأن معظم النجاح في اكزيما الأطفال يصنعه الروتين المنزلي الصحيح.",
-  },
-  {
-    q: "ماذا أفعل عند نوبة مفاجئة؟",
-    a: "تخرجين من عيادتنا بخطة نوبات مكتوبة وواضحة: ما الذي تطبقينه فوراً، ومتى تزيدين الترطيب، ومتى تتواصلين معنا. النوبة التي تُعالج في يومها الأول تنطفئ أسرع بكثير من نوبة تُركت أسبوعاً.",
-  },
-];
+/** Icons for the booking reassurance points, in content order. */
+const BOOKING_POINT_ICONS = [Icon.Lock, Icon.CircleCheck, Icon.Clock] as const;
 
 /** Editorial section head: kicker + hairline, then an asymmetric split —
  *  display title on the right (RTL), standfirst on the left. */
@@ -220,28 +93,53 @@ function SectionHead({
   );
 }
 
-export default function ChronicEczemaPage() {
+export const revalidate = 300;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(CHRONIC_ECZEMA);
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.ogDescription,
+      locale: "ar_SA",
+      type: "website",
+      images: [{ url: "/chronic-eczema/hero-bg.jpg", width: 1280, height: 720 }],
+    },
+  };
+}
+
+export default async function ChronicEczemaPage() {
+  const c = await getPageContent(CHRONIC_ECZEMA);
+  const symptoms = c.symptoms.cards.map((card, i) => ({
+    ...card,
+    icon: SYMPTOM_ICONS[i],
+  }));
+  const techs = c.techs.cards.map((card, i) => ({ ...card, icon: TECH_ICONS[i] }));
+  const whyUs = c.whyUs.cards.map((card, i) => ({ ...card, icon: WHY_US_ICONS[i] }));
+
   return (
     <main className="relative">
       <ScrollSystem />
       <div className="relative z-[1]">
-        <Header />
-        <Hero />
-        <MarqueeStrip />
+        <Header cta={c.cta.header} />
+        <Hero copy={c.hero} />
+        <MarqueeStrip words={c.marquee.items} />
 
         {/* ——— ٠١ الأعراض ، bento grid ——— */}
         <section className="relative mx-auto max-w-[1240px] px-[22px] pt-[110px] pb-[100px]">
           <SectionHead
-            eyebrow="٠١ ، هل هذه بشرتك؟"
-            title="علامات تعرفينها"
-            highlight="أكثر مما يجب"
-            sub="إن اجتمعت لديك ثلاث من هذه العلامات أو أكثر، فبشرتك لا تحتاج كريماً آخر من الصيدلية، بل خطة علاجية تُدار بعلم."
+            eyebrow={c.symptoms.eyebrow}
+            title={c.symptoms.title}
+            highlight={c.symptoms.highlight}
+            sub={c.symptoms.sub}
           />
           <div
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-[repeat(2,minmax(0,1fr))]"
             data-reveal-group
           >
-            {SYMPTOMS.map((s, i) => {
+            {symptoms.map((s, i) => {
               const wide = i === 0 || i === 3;
               return (
                 <div
@@ -255,7 +153,7 @@ export default function ChronicEczemaPage() {
                     className="pointer-events-none absolute top-4 left-5 select-none text-[2rem] leading-none font-extrabold text-[rgba(201,164,92,0.22)]"
                     aria-hidden
                   >
-                    {["٠١", "٠٢", "٠٣", "٠٤", "٠٥", "٠٦"][i]}
+                    {s.num}
                   </span>
                   <span
                     className={`flex items-center justify-center rounded-full border border-[var(--color-che-line-gold)] text-[var(--color-che-gold-bright)] transition-colors duration-300 group-hover:bg-[var(--color-che-gold)] group-hover:text-[#231303] ${
@@ -295,28 +193,27 @@ export default function ChronicEczemaPage() {
             <div>
               <div data-reveal="up">
                 <div className="flex items-center gap-4 text-[0.72rem] font-extrabold tracking-[0.22em] text-[var(--color-che-gold-bright)]">
-                  <span>٠٢ ، افهمي بشرتك</span>
+                  <span>{c.cycle.eyebrow}</span>
                   <span
                     className="h-px w-24 bg-[var(--color-che-line)]"
                     aria-hidden
                   />
                 </div>
                 <h2 className="mt-6 mb-7 text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[1.3] font-extrabold">
-                  لماذا تعود الاكزيما{" "}
-                  <em className="che-gold-text not-italic">كل مرة؟</em>
+                  {c.cycle.title}{" "}
+                  <em className="che-gold-text not-italic">
+                    {c.cycle.highlight}
+                  </em>
                 </h2>
               </div>
               <p
                 className="mb-10 max-w-[58ch] text-[1.08rem] leading-9 font-light text-[var(--color-che-ink-2)]"
                 data-words
               >
-                لأن الاكزيما المزمنة ليست مشكلة سطح الجلد، بل خلل في حاجزه
-                الواقي واستجابة مناعية مفرطة تحته. لهذا يهدأ الكريم الالتهاب
-                أياماً ثم تعود النوبة، فالعلاج الحقيقي يعالج الأسباب الثلاثة
-                معاً لا الطفح وحده.
+                {c.cycle.body}
               </p>
               <div data-reveal-group>
-                {CYCLE_CARDS.map((c) => (
+                {c.cycle.cards.map((c) => (
                   <div
                     key={c.num}
                     data-reveal-child
@@ -375,8 +272,7 @@ export default function ChronicEczemaPage() {
                   aria-hidden
                 />
                 <span className="text-[0.78rem] leading-6 font-bold text-[var(--color-che-muted)]">
-                  بروتوكول الضمادات الرطبة في العيادة ، تهدئة مضاعفة للنوبات
-                  الشديدة.
+                  {c.cycle.caption}
                 </span>
               </figcaption>
             </div>
@@ -384,19 +280,19 @@ export default function ChronicEczemaPage() {
         </section>
 
         {/* ——— ٠٣ المنهج العلاجي (pinned filmstrip) ——— */}
-        <ApproachPin />
+        <ApproachPin copy={c.approach} />
 
         {/* ——— ٠٤ التقنيات ، فهرس تحريري ——— */}
         <section className="relative mx-auto max-w-[1240px] px-[22px] py-[110px]">
           <SectionHead
-            eyebrow="٠٤ ، تقنياتنا"
-            title="ترسانة علاجية"
-            highlight="كاملة"
-            after="تحت سقف واحد"
-            sub="لا توجد تقنية واحدة تناسب الجميع؛ بعد التشخيص نختار من هذه الأدوات ما يناسب شدة حالتك وعمرك ونمط حياتك."
+            eyebrow={c.techs.eyebrow}
+            title={c.techs.title}
+            highlight={c.techs.highlight}
+            after={c.techs.after}
+            sub={c.techs.sub}
           />
           <div data-reveal-group>
-            {TECHS.map((t) => (
+            {techs.map((t) => (
               <div
                 key={t.num}
                 data-reveal-child
@@ -433,7 +329,7 @@ export default function ChronicEczemaPage() {
             className="mt-16 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4"
             data-reveal="up"
           >
-            {WHY_US.map((u) => (
+            {whyUs.map((u) => (
               <div key={u.title} className="flex flex-col gap-2.5">
                 <span className="flex size-11 items-center justify-center rounded-full border border-[var(--color-che-line-gold)] text-[var(--color-che-gold-bright)]">
                   <u.icon className="size-5" strokeWidth={1.7} />
@@ -451,16 +347,16 @@ export default function ChronicEczemaPage() {
         <section className="relative border-y border-[var(--color-che-line)] bg-[var(--color-che-night)] px-[22px] py-[110px]">
           <div className="mx-auto max-w-[1240px]">
             <SectionHead
-              eyebrow="٠٥ ، نتائج تُقاس"
-              title="ماذا يتغير عندما"
-              highlight="تُدار بعلم؟"
-              sub="أرقام من واقع متابعة حالاتنا، لا وعود مطلقة. الاكزيما لا تُمحى، لكنها تنضبط حتى تكاد تُنسى."
+              eyebrow={c.results.eyebrow}
+              title={c.results.title}
+              highlight={c.results.highlight}
+              sub={c.results.sub}
             />
             <div
               className="grid md:grid-cols-3 md:divide-x md:divide-x-reverse md:divide-[var(--color-che-line)]"
               data-reveal-group
             >
-              {RESULTS.map((r) => (
+              {c.results.stats.map((r) => (
                 <div
                   key={r.value}
                   data-reveal-child
@@ -479,8 +375,7 @@ export default function ChronicEczemaPage() {
               className="mt-12 mb-0 border-t border-[var(--color-che-line)] pt-5 text-[0.78rem] text-[rgba(244,238,250,0.45)]"
               data-reveal="fade"
             >
-              النتائج تختلف من حالة إلى أخرى بحسب شدة الاكزيما والعمر والالتزام
-              بالخطة العلاجية والمنزلية.
+              {c.results.disclaimer}
             </p>
           </div>
         </section>
@@ -489,22 +384,21 @@ export default function ChronicEczemaPage() {
         <section className="relative overflow-hidden px-[22px] py-[110px]">
           <div className="relative mx-auto max-w-[1140px]">
             <SectionHead
-              eyebrow="٠٦ ، بإشراف"
-              title="فريق طبي نسائي"
-              highlight="متخصص"
-              after="في الجلدية"
-              sub="فلسفتنا في علاج الاكزيما تقوم على الصراحة والتدرج: نبدأ بأقل الأدوية أثراً وأكثرها أماناً، ونصعّد فقط عندما تحتاج حالتك ذلك."
+              eyebrow={c.doctors.eyebrow}
+              title={c.doctors.title}
+              highlight={c.doctors.highlight}
+              after={c.doctors.after}
+              sub={c.doctors.sub}
             />
             <div data-reveal="up">
-              <Doctors />
+              <Doctors copy={c.doctors} />
             </div>
             <blockquote
               className="mx-auto mt-14 max-w-[620px] border-r-2 border-[var(--color-che-gold)] pr-6 text-right"
               data-reveal="fade"
             >
               <p className="m-0 text-[1.15rem] leading-9 font-bold text-[var(--color-che-ink-2)]">
-                &#8220;نجاح علاج الاكزيما نصفه في العيادة ونصفه في بيتك؛ مهمتنا
-                أن نجعل نصفك أنتِ سهلاً وواضحاً.&#8221;
+                &#8220;{c.doctors.quote}&#8221;
               </p>
             </blockquote>
           </div>
@@ -513,12 +407,7 @@ export default function ChronicEczemaPage() {
         {/* ——— ٠٧ قالوا عنا ——— */}
         <section className="relative border-y border-[var(--color-che-line)] bg-[var(--color-che-bg-2)] py-[100px]">
           <div className="mx-auto max-w-[1240px] px-[22px]">
-            <SectionHead
-              eyebrow="٠٧ ، قالوا عنا"
-              title="قصص سيطرة"
-              highlight="حقيقية"
-              sub="من تقييمات Google الحقيقية لعيادات مها دحلان: ٤٫٨ من ٥ عبر أكثر من ١٢٧٠ تقييم."
-            />
+            <SectionHead {...c.testimonials} />
           </div>
           <Testimonials />
         </section>
@@ -526,12 +415,12 @@ export default function ChronicEczemaPage() {
         {/* ——— ٠٨ الأسئلة الشائعة ——— */}
         <section className="relative mx-auto max-w-[820px] px-[22px] pt-[110px] pb-[110px]">
           <SectionHead
-            eyebrow="٠٨ ، الأسئلة الشائعة"
-            title="أسئلة نسمعها"
-            highlight="كل يوم"
+            eyebrow={c.faq.eyebrow}
+            title={c.faq.title}
+            highlight={c.faq.highlight}
           />
           <div data-reveal-group>
-            {FAQ.map((f) => (
+            {c.faq.questions.map((f) => (
               <div key={f.q} data-reveal-child>
                 <details className="group border-t border-[var(--color-che-line)]">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-[22px] text-base font-extrabold transition-colors hover:text-[var(--color-che-gold-bright)]">
@@ -559,43 +448,42 @@ export default function ChronicEczemaPage() {
             <div className="grid items-start gap-14 lg:grid-cols-[1fr_0.9fr] lg:gap-20">
               <div data-reveal="up">
                 <div className="flex items-center gap-4 text-[0.72rem] font-extrabold tracking-[0.22em] text-[var(--color-che-gold-bright)]">
-                  <span>٠٩ ، الحجز</span>
+                  <span>{c.booking.eyebrow}</span>
                   <span
                     className="h-px flex-1 bg-[var(--color-che-line)]"
                     aria-hidden
                   />
                 </div>
                 <h2 className="mt-6 mb-0 text-[clamp(1.9rem,4.6vw,3.4rem)] leading-[1.28] font-extrabold">
-                  أول خطوة نحو بشرة هادئة{" "}
-                  <em className="che-gold-text not-italic">تبدأ من هنا</em>
+                  {c.booking.title}{" "}
+                  <em className="che-gold-text not-italic">
+                    {c.booking.highlight}
+                  </em>
                 </h2>
                 <p className="mt-5 mb-0 max-w-[52ch] text-[1rem] leading-8 font-light text-[var(--color-che-muted)]">
-                  اتركي بياناتك وسيتواصل معك فريقنا في نفس اليوم لتنسيق موعدك،
-                  وشرح خطوات التقييم وتكلفة الخطة بشفافية كاملة. مواعيد تقييم
-                  الاكزيما محدودة أسبوعياً.
+                  {c.booking.body}
                 </p>
 
                 <div className="mt-9">
-                  {[
-                    { icon: Icon.Lock, t: "خصوصية تامة وملف طبي سرّي" },
-                    { icon: Icon.CircleCheck, t: "تقييم صادق دون أي التزام" },
-                    { icon: Icon.Clock, t: "ردٌّ سريع خلال ساعات العمل" },
-                  ].map((row) => (
-                    <span
-                      key={row.t}
-                      className="flex items-center gap-3 border-t border-[var(--color-che-line)] py-3.5 text-[0.92rem] text-[rgba(244,238,250,0.8)]"
-                    >
-                      <row.icon className="size-4 shrink-0 text-[var(--color-che-gold-bright)]" />
-                      {row.t}
-                    </span>
-                  ))}
+                  {c.booking.points.map((point, i) => {
+                    const PointIcon = BOOKING_POINT_ICONS[i] ?? Icon.CircleCheck;
+                    return (
+                      <span
+                        key={point}
+                        className="flex items-center gap-3 border-t border-[var(--color-che-line)] py-3.5 text-[0.92rem] text-[rgba(244,238,250,0.8)]"
+                      >
+                        <PointIcon className="size-4 shrink-0 text-[var(--color-che-gold-bright)]" />
+                        {point}
+                      </span>
+                    );
+                  })}
                   <div className="h-px bg-[var(--color-che-line)]" aria-hidden />
                 </div>
 
                 {/* payment flexibility */}
                 <div className="mt-8 flex items-center gap-3.5">
                   <span className="text-[0.82rem] font-bold text-[rgba(244,238,250,0.6)]">
-                    قسّمي مدفوعاتك مع
+                    {c.booking.paymentLabel}
                   </span>
                   <span className="flex items-center gap-2.5">
                     <span className="flex h-9 items-center rounded-[4px] bg-white px-2.5">
@@ -626,12 +514,12 @@ export default function ChronicEczemaPage() {
                   className="mt-8 inline-flex items-center gap-2.5 rounded-[4px] border border-[rgba(37,211,102,0.5)] px-[26px] py-[13px] text-[0.95rem] font-extrabold text-[#3BE07E] transition-colors duration-300 hover:bg-[rgba(37,211,102,0.1)]"
                 >
                   <Icon.MessageCircle className="size-[18px]" />
-                  أو تحدثي معنا مباشرة عبر واتساب
+                  {c.booking.whatsapp}
                 </a>
               </div>
 
               <div data-reveal="zoom">
-                <LeadForm />
+                <LeadForm copy={c.booking} />
               </div>
             </div>
           </div>
@@ -663,19 +551,18 @@ export default function ChronicEczemaPage() {
               rel="noopener noreferrer"
               className="text-[var(--color-che-gold)] transition-colors hover:text-[var(--color-che-gold-bright)]"
             >
-              واتساب العيادة
+              {c.footer.whatsapp}
             </a>
             <span className="text-[0.6rem] text-[rgba(201,164,92,0.4)]">✦</span>
             <a
               href="#booking"
               className="text-[var(--color-che-gold)] transition-colors hover:text-[var(--color-che-gold-bright)]"
             >
-              حجز استشارة
+              {c.footer.book}
             </a>
           </div>
           <p className="mx-auto mt-5 mb-0 max-w-[60ch] text-[0.74rem] leading-6 text-[rgba(244,238,250,0.4)]">
-            جميع العلاجات تُجرى بعد تقييم طبي متخصص. الاكزيما المزمنة حالة
-            تُدار ويُسيطر عليها، والنتائج تختلف من حالة إلى أخرى.
+            {c.footer.disclaimer}
           </p>
         </footer>
 
@@ -684,7 +571,10 @@ export default function ChronicEczemaPage() {
           whatsappNumber={WHATSAPP_NUMBER}
           topicMessage={WA_TOPIC_MESSAGE}
         />
-        <StickyBar />
+        <StickyBar
+          bookLabel={c.cta.sticky}
+          whatsappLabel={c.cta.stickyWhatsapp}
+        />
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-import type { PaymentMethod } from "@prisma/client";
+import type { PaymentMethod, Prisma } from "@prisma/client";
 
 const PAYMENT_LABEL: Record<PaymentMethod, string> = {
   COD: "Cash at clinic",
@@ -14,10 +14,38 @@ export type LeadDetailsData = {
   preferredAt: Date | null;
   paymentMethod: PaymentMethod | null;
   message: string | null;
+  /** Extra answers a page's form collected, e.g. { time: "مساءً" }. */
+  data?: Prisma.JsonValue | null;
 };
 
+/** `Lead.data` as label/value pairs, ignoring anything that is not a string. */
+export function extraEntries(
+  data: Prisma.JsonValue | null | undefined,
+  labels: Record<string, string> = {},
+): { key: string; label: string; value: string }[] {
+  if (!data || typeof data !== "object" || Array.isArray(data)) return [];
+  return Object.entries(data as Record<string, unknown>)
+    .filter(([, v]) => typeof v === "string" && v.trim() !== "")
+    .map(([key, v]) => ({ key, label: labels[key] ?? humanizeKey(key), value: String(v) }));
+}
+
+function humanizeKey(key: string) {
+  return key
+    .replace(/[_-]+/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/^./, (c) => c.toUpperCase());
+}
+
 export function hasLeadDetails(d: LeadDetailsData) {
-  return Boolean(d.service || d.offer || d.email || d.preferredAt || d.paymentMethod || d.message);
+  return Boolean(
+    d.service ||
+      d.offer ||
+      d.email ||
+      d.preferredAt ||
+      d.paymentMethod ||
+      d.message ||
+      extraEntries(d.data).length > 0,
+  );
 }
 
 function truncate(text: string, max = 120) {
@@ -49,6 +77,9 @@ export function LeadDetails({ data }: { data: LeadDetailsData }) {
     });
   if (data.paymentMethod) rows.push({ label: "Payment", value: PAYMENT_LABEL[data.paymentMethod] });
   if (data.message) rows.push({ label: "Message", value: <Ar>{truncate(data.message)}</Ar>, title: data.message });
+  for (const extra of extraEntries(data.data)) {
+    rows.push({ label: extra.label, value: <Ar>{truncate(extra.value)}</Ar>, title: extra.value });
+  }
 
   return (
     <details className="fk-details" style={{ position: "relative" }}>
@@ -89,8 +120,8 @@ export function LeadDetails({ data }: { data: LeadDetailsData }) {
           maxWidth: 360,
         }}
       >
-        {rows.map((r) => (
-          <FragmentRow key={r.label} label={r.label} title={r.title}>
+        {rows.map((r, i) => (
+          <FragmentRow key={`${r.label}-${i}`} label={r.label} title={r.title}>
             {r.value}
           </FragmentRow>
         ))}

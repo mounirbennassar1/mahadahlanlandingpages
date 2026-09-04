@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { almarai } from "@/lib/fonts";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "علاج تشقق القدمين والكعبين | عيادة مها دحلان",
-  description:
-    "جفاف وخشونة وتشققات عميقة في الكعبين؟ بروتوكول عناية طبية متكامل في جدة: باديكير طبي معقم، تقشير علاجي، ترطيب عميق وعلاج التصبغات، بإشراف طبي متخصص وطاقم نسائي بالكامل في عيادة د. مها دحلان.",
-  openGraph: {
-    title: "علاج تشقق القدمين والكعبين | عيادة مها دحلان",
-    description:
-      "قدمان ناعمتان تليقان بكِ في كل خطوة. بروتوكول طبي متكامل لعلاج تشقق الكعبين: باديكير طبي، تقشير علاجي، ترطيب عميق ومتابعة حتى النتيجة.",
-    locale: "ar_SA",
-    type: "website",
-    images: [{ url: "/cracked-heels/hero.webp", width: 1536, height: 2048 }],
-  },
-};
 
 // Palette: warm espresso/chocolate ground, bronze + gold accents, warm cream
 // ink. A "spa luxury, warm oils and silk" mood for foot care and renewal.

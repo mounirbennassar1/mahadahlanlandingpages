@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Icon } from "@/components/icons";
 import { WhatsAppFAB } from "@/components/usablecomponents/WhatsAppFAB";
@@ -18,148 +19,39 @@ import {
   WA_TOPIC_MESSAGE,
   WHATSAPP_NUMBER,
 } from "./_components/config";
+import { getPageContent } from "@/lib/pages/get";
+import { NECK_LIFT } from "./content";
 
-const WHY_CARDS = [
-  {
-    num: "٠١",
-    title: "جلدٌ أرقّ وأكثر حساسية",
-    body: "طبقة الجلد في الرقبة أرقّ من الوجه وأقلّ كولاجيناً، فتظهر عليها الخطوط والترهل مبكراً.",
-  },
-  {
-    num: "٠٢",
-    title: "غددٌ دهنية أقل",
-    body: "ترطيبها الطبيعي محدود، فتجفّ أسرع وتصبح أكثر عرضة للتجاعيد الرقيقة وتغيّر الملمس.",
-  },
-  {
-    num: "٠٣",
-    title: "حركةٌ دائمة وإهمالٌ شائع",
-    body: "آلاف الحركات يومياً ونظرٌ مستمر إلى الشاشات، وقلّما تنال من العناية ما نمنحه للوجه.",
-  },
-];
+/** Icons for the "signs" cards, in content order. */
+const SIGN_ICONS = [
+  Icon.AlignJustify,
+  Icon.Waves,
+  Icon.Spline,
+  Icon.Smartphone,
+  Icon.Grip,
+  Icon.Columns2,
+] as const;
 
-const SIGNS = [
-  {
-    icon: Icon.AlignJustify,
-    title: "الخطوط الأفقية",
-    body: "حلقاتٌ دقيقة تحيط بالرقبة وتزداد وضوحاً مع الوقت، وقد تظهر مبكراً بسبب وضعيات النوم والجوال.",
-  },
-  {
-    icon: Icon.Waves,
-    title: "ترهل الجلد",
-    body: "ارتخاءٌ تدريجي أسفل الذقن وعلى جانبي الرقبة يُفقد المنطقة شدّها ونعومة انحنائها.",
-  },
-  {
-    icon: Icon.Spline,
-    title: "فقدان تحديد خط الفك",
-    body: "تلاشي الزاوية الواضحة بين الوجه والرقبة، وظهور ما يُعرف بالذقن المزدوج.",
-  },
-  {
-    icon: Icon.Smartphone,
-    title: "رقبة التقنية",
-    body: "تجاعيد مبكرة يسبّبها الانحناء المتكرر نحو الشاشات ساعاتٍ طويلة كل يوم.",
-  },
-  {
-    icon: Icon.Grip,
-    title: "تغيّر ملمس الجلد",
-    body: "رقّةٌ وتجعّد يشبه ورق الكريب، نتيجة تراجع الكولاجين والإيلاستين مع السنوات.",
-  },
-  {
-    icon: Icon.Columns2,
-    title: "الخطوط العمودية العضلية",
-    body: "بروز حوافّ عضلة الرقبة الأمامية مع الوقت وظهور خطوط عمودية عند الشدّ أو الكلام.",
-  },
-];
+/** Icons for the "solutions" cards, in content order. */
+const SOLUTION_ICONS = [
+  Icon.MoveUpLeft,
+  Icon.Radio,
+  Icon.Crown,
+  Icon.PenTool,
+  Icon.Droplet,
+  Icon.Sparkles,
+] as const;
 
-const SOLUTIONS = [
-  {
-    num: "٠١",
-    icon: Icon.MoveUpLeft,
-    title: "شد الرقبة بالخيوط التجميلية",
-    tag: "نتيجة فورية بجلسة واحدة",
-    body: "رفعٌ فوري للجلد المترهل وتحفيزٌ طويل الأمد للكولاجين، دون جراحة ودون توقف عن حياتك.",
-  },
-  {
-    num: "٠٢",
-    icon: Icon.Radio,
-    title: "الهايفو بالموجات المركزة",
-    tag: "شدٌّ يدوم حتى ١٨ شهراً",
-    body: "شدٌّ عميق يصل إلى الطبقة العضلية نفسها التي تستهدفها عمليات الشد، بلا تدخل جراحي.",
-  },
-  {
-    num: "٠٣",
-    icon: Icon.Crown,
-    title: "بوتوكس نفرتيتي",
-    tag: "جلسة أقل من ٣٠ دقيقة",
-    body: "إعادة رسم زاوية الفك وتنعيم عضلة الرقبة، لإطلالة مرفوعة أنيقة مستوحاة من اسمها.",
-  },
-  {
-    num: "٠٤",
-    icon: Icon.PenTool,
-    title: "فيلر تحديد خط الفك",
-    tag: "تحديد فوري متوازن",
-    body: "استعادة الحدود الواضحة بين الوجه والرقبة بتوازنٍ محسوب يليق بملامحك.",
-  },
-  {
-    num: "٠٥",
-    icon: Icon.Droplet,
-    title: "سكين بوستر ومحفزات الكولاجين",
-    tag: "نضارة تتراكم جلسة بعد جلسة",
-    body: "ترطيبٌ عميق يعيد للجلد كثافته وملمسه الحريري، ويخفف الخطوط الأفقية الدقيقة.",
-  },
-  {
-    num: "٠٦",
-    icon: Icon.Sparkles,
-    title: "التقشير والليزر التجميلي",
-    tag: "ملمس متجدد ولون موحّد",
-    body: "توحيد اللون وتجديد سطح الجلد، لملمسٍ أكثر نعومة وإشراقٍ يدوم.",
-  },
-];
+/** Icons for the booking reassurance points, in content order. */
+const BOOKING_POINT_ICONS = [Icon.Lock, Icon.CircleCheck, Icon.Clock] as const;
 
-const WHY_US = [
-  {
-    icon: Icon.HeartHandshake,
-    title: "تقييم صادق",
-    body: "لا نقترح عليكِ إلا ما تحتاجينه فعلاً، وقد نكتفي بتقنية واحدة.",
-  },
-  {
-    icon: Icon.BadgeCheck,
-    title: "مواد أصلية معتمدة",
-    body: "خيوط وفيلر وأجهزة من شركات عالمية موثقة، تُفتح أمامك في الجلسة.",
-  },
-  {
-    icon: Icon.Users,
-    title: "طاقم نسائي بالكامل",
-    body: "خصوصية تامة من الاستقبال حتى غرفة الجلسة وملفك الطبي.",
-  },
-  {
-    icon: Icon.CalendarCheck,
-    title: "متابعة حتى النتيجة",
-    body: "مراجعات دورية مجدولة نطمئن فيها على تطور نتيجتك حتى اكتمالها.",
-  },
-];
-
-const FAQ = [
-  {
-    q: "متى تظهر النتائج؟",
-    a: "بعض التقنيات كالخيوط والفيلر تمنح نتيجة فورية، بينما تتحسن نتائج الهايفو ومحفزات الكولاجين تدريجياً خلال شهرين إلى ثلاثة مع استمرار بناء الكولاجين.",
-  },
-  {
-    q: "هل الإجراءات مؤلمة؟",
-    a: "نستخدم كريمات التخدير الموضعي قبل كل جلسة، وتصف معظم مراجعاتنا الإحساس بأنه وخزٌ خفيف محتمل لا يستدعي القلق.",
-  },
-  {
-    q: "هل أحتاج فترة تعافٍ؟",
-    a: "معظم الإجراءات لا تتطلب انقطاعاً عن حياتك اليومية؛ قد يظهر احمرار أو تورّم خفيف يزول خلال أيام قليلة، ونزوّدك بتعليمات عناية واضحة بعد كل جلسة.",
-  },
-  {
-    q: "كم تدوم النتائج؟",
-    a: "بحسب التقنية: من أربعة إلى ستة أشهر للبوتوكس، وحتى اثني عشر إلى ثمانية عشر شهراً للخيوط والهايفو، مع إمكانية جلسات محافظة تطيل النتيجة.",
-  },
-  {
-    q: "كيف أعرف العلاج المناسب لي؟",
-    a: "هذا تحديداً دور الاستشارة؛ نقيّم حالتك ونصارحك بما تحتاجينه فعلاً، وقد تكفي تقنية واحدة فقط للوصول إلى النتيجة التي تتمنينها.",
-  },
-];
+/** Icons for the "why us" strip, in content order. */
+const WHY_US_ICONS = [
+  Icon.HeartHandshake,
+  Icon.BadgeCheck,
+  Icon.Users,
+  Icon.CalendarCheck,
+] as const;
 
 function SectionHead({
   eyebrow,
@@ -192,24 +84,41 @@ function SectionHead({
   );
 }
 
-export default function NeckLiftPage() {
+export const revalidate = 300;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(NECK_LIFT);
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.ogDescription,
+      locale: "ar_SA",
+      type: "website",
+      images: [{ url: "/neck-lift/hero-main.webp", width: 1536, height: 2048 }],
+    },
+  };
+}
+
+export default async function NeckLiftPage() {
+  const c = await getPageContent(NECK_LIFT);
+  const signs = c.signs.cards.map((card, i) => ({ ...card, icon: SIGN_ICONS[i] }));
+  const solutions = c.solutions.cards.map((card, i) => ({ ...card, icon: SOLUTION_ICONS[i] }));
+  const whyUs = c.whyUs.cards.map((card, i) => ({ ...card, icon: WHY_US_ICONS[i] }));
+
   return (
     <main>
       <ScrollProgress />
       <Header />
-      <Hero />
-      <MarqueeStrip />
+      <Hero copy={c.hero} />
+      <MarqueeStrip words={c.marquee.items} />
 
       {/* ——— لماذا الرقبة أولاً ——— */}
       <section className="relative mx-auto max-w-[1180px] px-[22px] pt-[110px] pb-[90px]">
-        <SectionHead
-          eyebrow="٠١ ، لماذا الرقبة أولاً؟"
-          title="لماذا تُفصِح الرقبة عن العمر"
-          highlight="قبل الوجه؟"
-          sub="نمنح وجوهنا عنايةً يومية… وننسى أن الرقبة تحمل خصائص تجعلها أسرع تأثراً بمرور الوقت."
-        />
+        <SectionHead {...c.why} />
         <div className="grid gap-[22px] md:grid-cols-3">
-          {WHY_CARDS.map((c, i) => (
+          {c.why.cards.map((c, i) => (
             <Reveal key={c.num} delay={i * 120}>
               <div className="relative overflow-hidden rounded-[22px] border border-[var(--color-nkl-line)] bg-[var(--color-nkl-card)] px-7 py-[34px] transition-all duration-300 hover:-translate-y-[5px] hover:border-[rgba(166,124,61,0.4)] hover:shadow-[0_26px_54px_-26px_rgba(138,100,48,0.35)]">
                 <div
@@ -238,14 +147,9 @@ export default function NeckLiftPage() {
       {/* ——— العلامات ——— */}
       <section className="relative border-y border-[rgba(166,124,61,0.15)] bg-[var(--color-nkl-band)] px-[22px] py-[100px]">
         <div className="mx-auto max-w-[1180px]">
-          <SectionHead
-            eyebrow="٠٢ ، العلامات"
-            title="علامات التقدم بالسن"
-            highlight="في الرقبة"
-            sub="حددي علاماتك من الست الأكثر شيوعاً أثناء التصفح، وكلها قابلة للعلاج دون جراحة في جلساتٍ لا تتجاوز الساعة."
-          />
+          <SectionHead {...c.signs} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {SIGNS.map((s, i) => (
+            {signs.map((s, i) => (
               <SpotlightCard
                 key={s.title}
                 delay={(i % 3) * 80}
@@ -273,17 +177,17 @@ export default function NeckLiftPage() {
       {/* ——— الحلول ——— */}
       <section className="relative mx-auto max-w-[1180px] px-[22px] py-[110px]">
         <SectionHead
-          eyebrow="٠٣ ، الحلول"
-          title="تقنياتٌ دقيقة…"
-          sub="لا توجد تقنية واحدة تناسب الجميع؛ بعد التقييم نبني بروتوكولك من هذه الحلول بأقل تدخلٍ ممكن وأعلى أثرٍ يدوم."
+          eyebrow={c.solutions.eyebrow}
+          title={c.solutions.title}
+          sub={c.solutions.sub}
         />
         <Reveal className="-mt-12 mb-[54px] text-center">
           <span className="nkl-gold-text text-[clamp(1.5rem,3vw,2.2rem)] font-extrabold">
-            ونتائج تُرى ولا تُلاحَظ
+            {c.solutions.highlight}
           </span>
         </Reveal>
         <div className="grid gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
-          {SOLUTIONS.map((s, i) => (
+          {solutions.map((s, i) => (
             <Reveal key={s.num} delay={(i % 3) * 90}>
               <div className="relative overflow-hidden rounded-3xl border border-[var(--color-nkl-line)] bg-[var(--color-nkl-card)] px-7 py-[34px] transition-all duration-300 hover:-translate-y-1.5 hover:border-[rgba(201,156,78,0.5)] hover:shadow-[0_28px_58px_-26px_rgba(138,100,48,0.38)]">
                 <span className="absolute top-3.5 left-5 text-[3.2rem] leading-none font-extrabold text-[rgba(166,124,61,0.1)]">
@@ -313,7 +217,7 @@ export default function NeckLiftPage() {
         {/* لماذا عيادة مها دحلان */}
         <Reveal delay={120} className="mt-14">
           <div className="grid gap-px overflow-hidden rounded-3xl border border-[var(--color-nkl-line)] bg-[var(--color-nkl-line)] sm:grid-cols-2 lg:grid-cols-4">
-            {WHY_US.map((u) => (
+            {whyUs.map((u) => (
               <div
                 key={u.title}
                 className="flex flex-col gap-2 bg-[var(--color-nkl-card)] px-6 py-7"
@@ -341,13 +245,13 @@ export default function NeckLiftPage() {
         />
         <div className="relative mx-auto max-w-[1080px]">
           <SectionHead
-            eyebrow="٠٤ ، بإشراف"
-            title="فريق نسائي"
-            highlight="متخصص"
-            sub="فلسفتنا في علاج الرقبة تقوم على التدرّج والدقة: نبدأ بتقييمٍ صادق، ثم نختار أقلّ التقنيات تدخلاً وأكثرها أثراً."
+            eyebrow={c.doctors.eyebrow}
+            title={c.doctors.title}
+            highlight={c.doctors.highlight}
+            sub={c.doctors.sub}
           />
           <Reveal delay={120}>
-            <Doctors />
+            <Doctors people={c.doctors.people} />
           </Reveal>
           <Reveal delay={200} className="mx-auto mt-10 max-w-[560px]">
             <div
@@ -358,8 +262,7 @@ export default function NeckLiftPage() {
               }}
             >
               <p className="m-0 text-center text-[1.1rem] font-bold text-[var(--color-nkl-ink-soft)]">
-                &#8220;جمال الرقبة في انسجامها مع الوجه؛ نشدّ ونحدّد دون أن
-                نغيّر ملامحك.&#8221;
+                &#8220;{c.doctors.quote}&#8221;
               </p>
             </div>
           </Reveal>
@@ -369,10 +272,10 @@ export default function NeckLiftPage() {
       {/* ——— قبل وبعد ——— */}
       <section className="relative mx-auto max-w-[1020px] px-[22px] py-[110px]">
         <SectionHead
-          eyebrow="٠٥ ، النتائج"
-          title="شاهدي الفرق"
-          highlight="بنفسك"
-          sub="اسحبي المؤشر لمقارنة الحالة قبل العلاج وبعده."
+          eyebrow={c.results.eyebrow}
+          title={c.results.title}
+          highlight={c.results.highlight}
+          sub={c.results.sub}
         />
         <Parallax from={30} to={-30}>
           <Reveal delay={120}>
@@ -381,8 +284,7 @@ export default function NeckLiftPage() {
         </Parallax>
         <Reveal delay={200}>
           <p className="mt-[18px] mb-0 text-center text-[0.78rem] text-[rgba(39,28,17,0.45)]">
-            الصور توضيحية بمحاكاة تقريبية وليست حالة فعلية، وتختلف النتائج من
-            حالة إلى أخرى بحسب التقييم الطبي.
+            {c.results.disclaimer}
           </p>
         </Reveal>
       </section>
@@ -391,23 +293,18 @@ export default function NeckLiftPage() {
       <section className="relative border-y border-[rgba(166,124,61,0.15)] bg-[var(--color-nkl-band)] px-[22px] py-[100px]">
         <div className="mx-auto max-w-[1180px]">
           <SectionHead
-            eyebrow="٠٦ ، الرحلة"
-            title="رحلتكِ معنا…"
-            highlight="خطوة بخطوة"
+            eyebrow={c.journey.eyebrow}
+            title={c.journey.title}
+            highlight={c.journey.highlight}
           />
-          <Journey />
+          <Journey steps={c.journey.steps} />
         </div>
       </section>
 
       {/* ——— قالت مراجعاتنا ——— */}
       <section className="relative overflow-hidden py-[110px]">
         <div className="px-[22px]">
-          <SectionHead
-            eyebrow="٠٧ ، قالوا عنا"
-            title="ثقةٌ تتحدث"
-            highlight="عن نفسها"
-            sub="من تقييمات Google الحقيقية لعيادات مها دحلان: ٤٫٨ من ٥ عبر أكثر من ١٢٧٠ تقييم."
-          />
+          <SectionHead {...c.testimonials} />
         </div>
         <Testimonials />
       </section>
@@ -415,12 +312,12 @@ export default function NeckLiftPage() {
       {/* ——— الأسئلة الشائعة ——— */}
       <section className="relative mx-auto max-w-[780px] px-[22px] pt-5 pb-[110px]">
         <SectionHead
-          eyebrow="٠٨ ، الأسئلة الشائعة"
-          title="كل ما يهمّك"
-          highlight="معرفته"
+          eyebrow={c.faq.eyebrow}
+          title={c.faq.title}
+          highlight={c.faq.highlight}
         />
         <div className="flex flex-col gap-3.5">
-          {FAQ.map((f, i) => (
+          {c.faq.questions.map((f, i) => (
             <Reveal key={f.q} delay={i * 60}>
               <details className="overflow-hidden rounded-[18px] border border-[rgba(166,124,61,0.2)] bg-[var(--color-nkl-card)]">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-base font-extrabold">
@@ -470,33 +367,32 @@ export default function NeckLiftPage() {
             <div className="relative flex flex-wrap items-center justify-center gap-[46px]">
               <div className="min-w-[290px] max-w-[520px] flex-1 text-[var(--color-nkl-cream)]">
                 <span className="text-[0.78rem] font-extrabold tracking-[0.24em] text-[var(--color-nkl-gold-bright)]">
-                  ٠٩ ، الحجز
+                  {c.booking.eyebrow}
                 </span>
                 <h2 className="mt-3 mb-0 text-[clamp(1.8rem,3.8vw,2.7rem)] leading-[1.4] font-extrabold">
-                  استشارتكِ الخاصة{" "}
-                  <span className="nkl-gold-text">تبدأ من هنا</span>
+                  {c.booking.title}{" "}
+                  <span className="nkl-gold-text">{c.booking.highlight}</span>
                 </h2>
                 <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-[rgba(224,190,122,0.35)] bg-[rgba(224,190,122,0.08)] px-4 py-1.5 text-[0.78rem] font-extrabold text-[var(--color-nkl-champagne)]">
                   <Icon.Sparkles className="size-3.5" />
-                  مقاعد التقييم محدودة أسبوعياً
+                  {c.booking.badge}
                 </span>
                 <p className="mt-3.5 mb-0 font-light text-[rgba(250,244,232,0.7)]">
-                  اتركي بياناتك وسيتواصل معك فريقنا في نفس اليوم لتنسيق موعدك
-                  وتقدير خطتك وتكلفتها بشفافية كاملة.
+                  {c.booking.body}
                 </p>
                 <div className="mt-[26px] flex flex-col gap-3.5">
-                  <span className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(250,244,232,0.75)]">
-                    <Icon.Lock className="size-4 shrink-0 text-[var(--color-nkl-gold-bright)]" />
-                    خصوصية تامة وملف طبي سرّي
-                  </span>
-                  <span className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(250,244,232,0.75)]">
-                    <Icon.CircleCheck className="size-4 shrink-0 text-[var(--color-nkl-gold-bright)]" />
-                    تقييم صادق دون أي التزام
-                  </span>
-                  <span className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(250,244,232,0.75)]">
-                    <Icon.Clock className="size-4 shrink-0 text-[var(--color-nkl-gold-bright)]" />
-                    ردٌّ سريع خلال ساعات العمل
-                  </span>
+                  {c.booking.points.map((point, i) => {
+                    const PointIcon = BOOKING_POINT_ICONS[i] ?? Icon.CircleCheck;
+                    return (
+                      <span
+                        key={point}
+                        className="inline-flex items-center gap-2.5 text-[0.9rem] text-[rgba(250,244,232,0.75)]"
+                      >
+                        <PointIcon className="size-4 shrink-0 text-[var(--color-nkl-gold-bright)]" />
+                        {point}
+                      </span>
+                    );
+                  })}
                 </div>
                 <a
                   href={WA_LINK}
@@ -505,7 +401,7 @@ export default function NeckLiftPage() {
                   className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-[rgba(37,211,102,0.5)] px-[26px] py-[13px] text-[0.95rem] font-extrabold text-[#25D366] transition-colors duration-300 hover:bg-[rgba(37,211,102,0.1)]"
                 >
                   <Icon.MessageCircle className="size-[18px]" />
-                  أو تحدثي معنا مباشرة عبر واتساب
+                  {c.booking.whatsapp}
                 </a>
               </div>
               <div className="min-w-[290px] max-w-[480px] flex-1">
@@ -542,19 +438,18 @@ export default function NeckLiftPage() {
             rel="noopener noreferrer"
             className="text-[var(--color-nkl-bronze)] hover:text-[var(--color-nkl-gold)]"
           >
-            واتساب العيادة
+            {c.footer.whatsapp}
           </a>
           <span className="text-[rgba(166,124,61,0.4)]">✦</span>
           <a
             href="#booking"
             className="text-[var(--color-nkl-bronze)] hover:text-[var(--color-nkl-gold)]"
           >
-            حجز استشارة
+            {c.footer.book}
           </a>
         </div>
         <p className="mt-4 mb-0 text-[0.74rem] text-[rgba(39,28,17,0.4)]">
-          جميع العلاجات تُجرى بعد تقييم طبي متخصص. النتائج تختلف من حالة إلى
-          أخرى.
+          {c.footer.disclaimer}
         </p>
       </footer>
 

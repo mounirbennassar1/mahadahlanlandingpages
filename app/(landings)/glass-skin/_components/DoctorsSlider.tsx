@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
+import type { ContentOf } from "@/lib/pages/define";
+import type { GLASS_SKIN } from "../content";
 
 type Doctor = {
   /** Kept for the dot/nav aria-labels; no longer shown as an eyebrow. */
@@ -21,7 +23,7 @@ type Doctor = {
   imageAlt: string;
 };
 
-const DOCTORS: Doctor[] = [
+const BASE_DOCTORS: Doctor[] = [
   {
     label: "الأخصائية الأولى",
     name: "نضال الجريدي",
@@ -59,7 +61,24 @@ const DOCTORS: Doctor[] = [
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-export function DoctorsSlider() {
+type PeopleCopy = ContentOf<typeof GLASS_SKIN>["doctors"]["people"];
+
+/** Photos and the highlighted credential stay in code; the rest is editable. */
+export function DoctorsSlider({ people }: { people: PeopleCopy }) {
+  const DOCTORS: Doctor[] = BASE_DOCTORS.map((doc, i) => {
+    const copy = people[i];
+    return copy
+      ? {
+          ...doc,
+          label: copy.label,
+          name: copy.name,
+          title: copy.title,
+          experience: copy.experience,
+          credentials: copy.credentials.filter(Boolean),
+        }
+      : doc;
+  });
+
   const [[index, dir], setSlide] = useState<[number, number]>([0, 0]);
   const count = DOCTORS.length;
   const d = DOCTORS[index];

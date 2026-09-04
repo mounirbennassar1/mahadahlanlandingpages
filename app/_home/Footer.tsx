@@ -15,8 +15,10 @@ import {
   getDict,
   LANG_META,
   specialtyCopy,
+  type SpecialtyOverrides,
   waLink,
   type Locale,
+  type Dict,
 } from "./i18n/dictionary";
 
 const SOCIAL_LINKS: { name: "instagram" | "tiktok" | "snapchat" | "x"; href: string }[] = [
@@ -28,8 +30,17 @@ const SOCIAL_LINKS: { name: "instagram" | "tiktok" | "snapchat" | "x"; href: str
 
 const LINK_COLUMNS = CATEGORIES.filter((c) => c !== CATEGORY_ALL);
 
-export function Footer({ locale = "ar" }: { locale?: Locale }) {
-  const t = getDict(locale);
+export function Footer({
+  locale = "ar",
+  dict,
+  specialties,
+}: {
+  locale?: Locale;
+  dict?: Dict;
+  /** Treatment-card copy edited in the dashboard. */
+  specialties?: SpecialtyOverrides;
+}) {
+  const t = dict ?? getDict(locale);
   const copy = t.footer;
   const isRtl = LANG_META[locale].dir === "rtl";
   // Hover chevron slides in from the reading-start edge; the label is pulled
@@ -159,7 +170,7 @@ export function Footer({ locale = "ar" }: { locale?: Locale }) {
                         >
                           <Chevron className="mt-1 size-3.5 shrink-0 text-[var(--color-md-champagne)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                           <span className={slide}>
-                            {specialtyCopy(item.slug, locale).title}
+                            {specialtyCopy(item.slug, locale, specialties).title}
                           </span>
                         </Link>
                       </li>

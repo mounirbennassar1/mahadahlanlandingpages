@@ -3,9 +3,13 @@ import { Icon } from "@/components/icons";
 import { Reveal } from "@/app/_home/Motion";
 import { Section } from "@/app/_home/Sections";
 import { GOLD_GRADIENT, MAPS_LINK } from "@/app/_home/config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { NEWS_ARTICLES } from "../content";
+
+type ReviewsCopy = ContentOf<typeof NEWS_ARTICLES>["reviews"];
 
 /** "Visited us recently? Leave a review" band linking to the Google listing. */
-export function ReviewsBand() {
+export function ReviewsBand({ copy }: { copy: ReviewsCopy }) {
   return (
     <Section className="bg-[var(--color-md-bg)]">
       <Reveal className="relative overflow-hidden rounded-[32px] border border-[var(--color-md-line-strong)] bg-[#120D07] px-7 py-12 sm:px-12">
@@ -22,17 +26,17 @@ export function ReviewsBand() {
                   <LuStar key={i} className="size-3 fill-[var(--color-md-gold-bright)] text-[var(--color-md-gold-bright)]" />
                 ))}
               </span>
-              4.8 من 5 بأكثر من 1270 تقييماً
+              {copy.badge}
             </span>
             <h2 className="mt-5 text-[clamp(1.6rem,3.6vw,2.3rem)] leading-[1.5] font-extrabold text-[#FDF8EE]">
-              هل زرتِ عيادات MD مؤخراً؟
+              {copy.title}
               <br />
               <span className="md-gold-glow inline-block">
-                <span className="md-gold-text">يسعدنا سماع رأيك</span>
+                <span className="md-gold-text">{copy.gold}</span>
               </span>
             </h2>
             <p className="mt-4 max-w-[52ch] text-[0.98rem] leading-[1.9] font-light text-[#EFE6D6]/70">
-              تقييمك على خرائط Google يساعد زائرة أخرى على اتخاذ قرارها بثقة، ويساعدنا على أن نكون أفضل في كل زيارة.
+              {copy.body}
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-stretch">
@@ -44,14 +48,14 @@ export function ReviewsBand() {
               style={{ background: GOLD_GRADIENT }}
             >
               <LuStar className="size-[18px] fill-current" />
-              قيّمي زيارتك على Google
+              {copy.review}
             </a>
             <a
               href="/book-now"
               className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full border border-[rgba(240,212,138,0.35)] px-8 py-4 text-base font-extrabold text-[#F0D48A] transition-all duration-300 hover:bg-[rgba(240,212,138,0.1)]"
             >
               <Icon.CalendarCheck className="size-[18px]" />
-              احجزي زيارتك الأولى
+              {copy.book}
             </a>
           </div>
         </div>

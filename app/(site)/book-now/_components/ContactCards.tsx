@@ -8,55 +8,59 @@ import {
   WA_LINK,
 } from "@/app/_home/config";
 import { CLINIC_ADDRESS, CLINIC_EMAIL } from "../../_booking/shared";
+import type { ContentOf } from "@/lib/pages/define";
+import type { BOOK_NOW } from "../content";
 
-const CARDS = [
-  {
-    key: "phone",
-    title: "اتصلي بنا",
-    body: "الاستقبال يرد خلال ساعات العمل ويؤكد لك الموعد مباشرة.",
-    value: PHONE_DISPLAY,
-    valueDir: "ltr" as const,
-    href: TEL_LINK,
-    external: false,
-    icon: <Icon.Phone className="size-[22px]" strokeWidth={1.9} />,
-  },
-  {
-    key: "whatsapp",
-    title: "واتساب",
-    body: "أرسلي سؤالك أو صورة حالتك، ونرد عليك بتقييم مبدئي.",
-    value: "ابدئي المحادثة",
-    valueDir: "rtl" as const,
-    href: WA_LINK,
-    external: true,
-    icon: <SocialIcon name="whatsapp" className="text-[22px]" />,
-  },
-  {
-    key: "email",
-    title: "البريد الإلكتروني",
-    body: "للاستفسارات العامة والتعاون. نرد خلال يوم عمل.",
-    value: CLINIC_EMAIL,
-    valueDir: "ltr" as const,
-    href: `mailto:${CLINIC_EMAIL}`,
-    external: false,
-    icon: <LuMail className="size-[22px]" />,
-  },
-  {
-    key: "address",
-    title: "العنوان",
-    body: CLINIC_ADDRESS,
-    value: "احصلي على الاتجاهات",
-    valueDir: "rtl" as const,
-    href: MAPS_DIRECTIONS_LINK,
-    external: true,
-    icon: <Icon.MapPin className="size-[22px]" strokeWidth={1.9} />,
-  },
-];
+type ContactCopy = ContentOf<typeof BOOK_NOW>["contact"];
 
 /** Four contact tiles: phone, WhatsApp, email, address. */
-export function ContactCards() {
+export function ContactCards({ copy }: { copy: ContactCopy }) {
+  const cards = [
+    {
+      key: "phone",
+      title: copy.phoneTitle,
+      body: copy.phoneBody,
+      value: PHONE_DISPLAY,
+      valueDir: "ltr" as const,
+      href: TEL_LINK,
+      external: false,
+      icon: <Icon.Phone className="size-[22px]" strokeWidth={1.9} />,
+    },
+    {
+      key: "whatsapp",
+      title: copy.whatsappTitle,
+      body: copy.whatsappBody,
+      value: copy.whatsappAction,
+      valueDir: "rtl" as const,
+      href: WA_LINK,
+      external: true,
+      icon: <SocialIcon name="whatsapp" className="text-[22px]" />,
+    },
+    {
+      key: "email",
+      title: copy.emailTitle,
+      body: copy.emailBody,
+      value: CLINIC_EMAIL,
+      valueDir: "ltr" as const,
+      href: `mailto:${CLINIC_EMAIL}`,
+      external: false,
+      icon: <LuMail className="size-[22px]" />,
+    },
+    {
+      key: "address",
+      title: copy.addressTitle,
+      body: CLINIC_ADDRESS,
+      value: copy.addressAction,
+      valueDir: "rtl" as const,
+      href: MAPS_DIRECTIONS_LINK,
+      external: true,
+      icon: <Icon.MapPin className="size-[22px]" strokeWidth={1.9} />,
+    },
+  ];
+
   return (
     <RevealGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-      {CARDS.map((c) => (
+      {cards.map((c) => (
         <a
           key={c.key}
           href={c.href}

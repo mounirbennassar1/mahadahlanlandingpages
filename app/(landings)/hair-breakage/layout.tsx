@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { almarai } from "@/lib/fonts";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "علاج تكسر وتقصف الشعر | عيادة مها دحلان",
-  description:
-    "شعر يتكسر عند التمشيط وأطراف متقصفة ولمعان غائب؟ نعالج تكسر الشعر من جذوره: تشخيص رقمي للشعرة والفروة، بروتوكولات ترميم وبروتين علاجي، وميزوثيرابي مغذٍ للفروة في جدة، بإشراف طبي متخصص وطاقم نسائي بالكامل.",
-  openGraph: {
-    title: "علاج تكسر وتقصف الشعر | عيادة مها دحلان",
-    description:
-      "من التقصف إلى اللمعان: بروتوكول ترميم متكامل يعيد لشعرك قوته وحريره، بعد تشخيص دقيق لسبب التكسر.",
-    locale: "ar_SA",
-    type: "website",
-    images: [{ url: "/hair-breakage/hero.webp", width: 1536, height: 2048 }],
-  },
-};
 
 // Palette: "liquid gold on black silk" — obsidian grounds, radiant gold
 // accents, warm ivory ink. Unique identity for the hair-breakage landing.

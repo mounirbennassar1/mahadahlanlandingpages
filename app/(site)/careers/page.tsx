@@ -3,56 +3,41 @@ import { Icon } from "@/components/icons";
 import { Glow, Section, SectionHead } from "@/app/_home/Sections";
 import { RevealGroup, ScrubLine } from "@/app/_home/Motion";
 import { GOLD_GRADIENT } from "@/app/_home/config";
+import { getPageContent } from "@/lib/pages/get";
 import { PageHero } from "../_components/PageHero";
 import { CtaBand } from "../_components/CtaBand";
 import { whatsappHref } from "../_booking/shared";
 import { CareersForm } from "./_components/CareersForm";
-import { CAREER_FIELDS } from "./_components/fields";
+import { CAREERS } from "./content";
 
-const DESCRIPTION =
-  "انضمي إلى فريق عيادات د. مها دحلان في جدة: بيئة نسائية محترمة، تدريب مستمر على أجهزة عالمية، وفريق بقيادة استشارية جلدية وتجميل. نستقبل السير الذاتية باستمرار للطبيبات والأخصائيات والممرضات وموظفات الاستقبال والتسويق.";
+export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: "الوظائف",
-  description: DESCRIPTION,
-  alternates: { canonical: "/careers" },
-  openGraph: {
-    title: "الوظائف | عيادات د. مها دحلان",
-    description: DESCRIPTION,
-    url: "/careers",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(CAREERS);
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: "/careers" },
+    openGraph: {
+      title: "الوظائف | عيادات د. مها دحلان",
+      description: seo.ogDescription,
+      url: "/careers",
+    },
+  };
+}
 
-const PROOF = [
-  { icon: Icon.Users, text: "طاقم نسائي بالكامل" },
-  { icon: Icon.Award, text: "خبرة تتجاوز 13 عاماً" },
-  { icon: Icon.Star, text: "4.8 من 5 على Google" },
-  { icon: Icon.MessageCircle, text: "أكثر من 1270 تقييماً" },
-];
+/** Icons for the hero proof pills, in content order. */
+const PROOF_ICONS = [Icon.Users, Icon.Award, Icon.Star, Icon.MessageCircle] as const;
 
-const PERKS = [
-  {
-    icon: Icon.HeartHandshake,
-    title: "بيئة نسائية محترمة",
-    body: "فريق نسائي بالكامل من الاستقبال حتى غرفة الجلسة، وثقافة عمل تقوم على الاحترام والتقدير لكل زميلة.",
-  },
-  {
-    icon: Icon.GraduationCap,
-    title: "تدريب مستمر وأجهزة عالمية",
-    body: "تدريب دوري على أحدث البروتوكولات والأجهزة الطبية المعتمدة، لتظل مهاراتكِ في المقدمة دائماً.",
-  },
-  {
-    icon: Icon.Stethoscope,
-    title: "فريق بقيادة استشارية",
-    body: "تعملين تحت إشراف مباشر من استشارية جلدية وتجميل وليزر بخبرة تتجاوز 13 عاماً، وتتعلمين من كل حالة.",
-  },
-  {
-    icon: Icon.TrendingUp,
-    title: "نمو مهني حقيقي",
-    body: "مسار واضح للتطور داخل العيادة، ومسؤوليات تكبر مع خبرتكِ، لا وظيفة تقفين عندها.",
-  },
-];
+/** Icons for the perks cards, in content order. */
+const PERK_ICONS = [
+  Icon.HeartHandshake,
+  Icon.GraduationCap,
+  Icon.Stethoscope,
+  Icon.TrendingUp,
+] as const;
 
+/** Icons for the career-field chips, in content order. */
 const FIELD_ICONS = [
   Icon.Stethoscope,
   Icon.Zap,
@@ -63,41 +48,28 @@ const FIELD_ICONS = [
   Icon.Plus,
 ];
 
-const STEPS = [
-  {
-    num: "01",
-    icon: Icon.ClipboardCheck,
-    title: "أرسلي طلبكِ",
-    body: "عبّئي النموذج في أعلى الصفحة وأضيفي رابط سيرتكِ الذاتية إن وُجد. لا يستغرق الأمر أكثر من دقيقتين.",
-  },
-  {
-    num: "02",
-    icon: Icon.ScanSearch,
-    title: "مراجعة خلال أيام عمل",
-    body: "يطّلع فريق الموارد البشرية على طلبكِ بعناية، ويتواصل معكِ إن كان ملفكِ مناسباً لأحد المجالات.",
-  },
-  {
-    num: "03",
-    icon: Icon.MapPin,
-    title: "مقابلة في العيادة",
-    body: "نلتقي بكِ في العيادة بجدة للتعرف عليكِ عن قرب، وتعريفكِ بالفريق وبيئة العمل قبل أي قرار.",
-  },
-];
+/** Icons for the application steps, in content order. */
+const STEP_ICONS = [Icon.ClipboardCheck, Icon.ScanSearch, Icon.MapPin] as const;
 
 const WA_CAREERS = whatsappHref("مرحباً، أرغب بالاستفسار عن التقديم للعمل في عيادات د. مها دحلان");
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const c = await getPageContent(CAREERS);
+  const proof = c.proof.items.map((p, i) => ({ ...p, icon: PROOF_ICONS[i] }));
+  const perks = c.perks.items.map((p, i) => ({ ...p, icon: PERK_ICONS[i] }));
+  const steps = c.steps.items.map((s, i) => ({ ...s, icon: STEP_ICONS[i] }));
+
   return (
     <>
       <PageHero
-        crumbs={[{ label: "الوظائف" }]}
-        eyebrow="انضمي إلى فريقنا"
-        title="مكانكِ بيننا،"
-        gold="إن كنتِ تشاركيننا الشغف"
-        lede="فريق نسائي بالكامل بقيادة استشارية جلدية وتجميل، تدريب مستمر على أحدث الأجهزة، وبيئة عمل تحترمكِ وتقدّر جهدكِ. نستقبل السير الذاتية باستمرار، وإن كان ملفكِ مناسباً نعود إليكِ خلال أيام العمل."
+        crumbs={[{ label: c.hero.crumb }]}
+        eyebrow={c.hero.eyebrow}
+        title={c.hero.title}
+        gold={c.hero.gold}
+        lede={c.hero.lede}
         actions={
           <ul className="flex flex-wrap gap-2.5">
-            {PROOF.map((p) => (
+            {proof.map((p) => (
               <li
                 key={p.text}
                 className="inline-flex items-center gap-2 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.7)] px-4 py-2 text-[0.8rem] font-bold text-[rgba(246,238,223,0.82)]"
@@ -108,20 +80,20 @@ export default function CareersPage() {
             ))}
           </ul>
         }
-        aside={<CareersForm />}
+        aside={<CareersForm copy={c.form} fields={c.fields.items} />}
       />
 
       {/* why us */}
       <Section className="relative bg-[var(--color-md-band)]">
         <Glow className="-top-16 right-1/4 h-[320px] w-[560px]" />
         <SectionHead
-          eyebrow="لماذا عيادات د. مها دحلان"
-          title="مكان عمل"
-          gold="يشبه طموحكِ"
-          body="نؤمن أن التجربة الراقية التي نقدمها لمراجعاتنا تبدأ من فريق يشعر بالتقدير، ويتعلم كل يوم، ويجد مساحة للنمو."
+          eyebrow={c.perks.eyebrow}
+          title={c.perks.title}
+          gold={c.perks.gold}
+          body={c.perks.body}
         />
         <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-          {PERKS.map((perk) => (
+          {perks.map((perk) => (
             <div
               key={perk.title}
               className="flex flex-col rounded-[24px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-7 transition-[transform,border-color,box-shadow] duration-400 hover:-translate-y-1.5 hover:border-[rgba(232,195,106,0.5)] hover:shadow-[0_0_40px_-14px_rgba(232,195,106,0.45)]"
@@ -146,13 +118,13 @@ export default function CareersPage() {
       <Section id="fields" className="relative bg-[var(--color-md-bg)]">
         <Glow className="-top-10 left-1/4 h-[300px] w-[520px]" />
         <SectionHead
-          eyebrow="نستقبل السير الذاتية باستمرار"
-          title="المجالات التي نستقبل فيها"
-          gold="السير الذاتية"
-          body="لا نعلن عن شواغر محددة، بل نحتفظ بالسير الذاتية المناسبة ونتواصل معكِ عند توفر فرصة في مجالكِ. اختاري مجالكِ وابدئي طلبكِ."
+          eyebrow={c.fields.eyebrow}
+          title={c.fields.title}
+          gold={c.fields.gold}
+          body={c.fields.body}
         />
         <RevealGroup className="mt-12 flex flex-wrap justify-center gap-3 sm:gap-4" stagger={0.06}>
-          {CAREER_FIELDS.map((label, i) => {
+          {c.fields.items.map(({ label }, i) => {
             const FieldIcon = FIELD_ICONS[i] ?? Icon.Plus;
             return (
               <a
@@ -182,14 +154,14 @@ export default function CareersPage() {
       {/* process */}
       <Section className="relative bg-[var(--color-md-band)]">
         <SectionHead
-          eyebrow="كيف تتم عملية التقديم"
-          title="ثلاث خطوات"
-          gold="حتى المقابلة"
-          body="بسيطة وواضحة. نقرأ كل طلب، ونحترم وقتكِ بردٍّ خلال أيام العمل."
+          eyebrow={c.steps.eyebrow}
+          title={c.steps.title}
+          gold={c.steps.gold}
+          body={c.steps.body}
         />
         <ScrubLine className="mt-12 hidden h-[2px] w-full rounded-full lg:block" />
         <RevealGroup className="mt-8 grid gap-5 md:grid-cols-3 md:gap-6">
-          {STEPS.map((step) => (
+          {steps.map((step) => (
             <div
               key={step.num}
               className="relative flex flex-col rounded-[24px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-7 transition-colors duration-400 hover:border-[rgba(232,195,106,0.45)]"
@@ -217,14 +189,9 @@ export default function CareersPage() {
 
       <CtaBand
         id="apply"
-        eyebrow="نقرأ كل طلب"
-        title="أرسلي طلبكِ اليوم،"
-        gold="ونعود إليكِ قريباً"
-        body="لا نعد بوظيفة فورية، لكننا نعد بقراءة طلبكِ بعناية والرد عليكِ خلال أيام العمل إن كان ملفكِ مناسباً لأحد مجالاتنا."
+        {...c.cta}
         bookHref="#careers-form"
-        bookLabel="التقديم الآن"
         whatsappHref={WA_CAREERS}
-        points={["سرية تامة للبيانات", "رد خلال أيام العمل", "بيئة عمل نسائية"]}
       />
     </>
   );

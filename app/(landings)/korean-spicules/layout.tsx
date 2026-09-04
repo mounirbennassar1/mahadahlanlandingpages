@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { almarai } from "@/lib/fonts";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "السبيكولز الكورية | عيادة د. مها دحلان",
-  description:
-    "علاج السبيكولز الكوري في جدة — إبر مجهرية طبيعية من الإسفنج البحري تفتح آلاف القنوات الدقيقة وتحفّز الكولاجين، لعلاج آثار الحبوب والمسام الواسعة والبهتان. نتائج الميكرونيدلينغ بدون جهاز وبإشراف خبيرات معتمدات.",
-  openGraph: {
-    title: "السبيكولز الكورية — ميكرونيدلينغ طبيعي بدون جهاز",
-    description:
-      "تقنية كورية أصيلة تجدد بشرتكِ خلال أسبوع: إبر طبيعية ١٠٠٪ تحفّز الكولاجين وتعالج آثار الحبوب والمسام. احجزي جلستكِ في عيادات د. مها دحلان.",
-    locale: "ar_SA",
-    type: "website",
-    images: [{ url: "/korean-spicules/hero.webp", width: 1152, height: 1536 }],
-  },
-};
 
 // Palette tokens — 100% black ground (#000), vivid orange accents, white ink.
 // Declared inline so JSX reads them as CSS variables; shared usablecomponents

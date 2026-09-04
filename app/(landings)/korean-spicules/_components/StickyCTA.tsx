@@ -5,10 +5,11 @@ import { Icon } from "@/components/icons";
 
 type Props = {
   bookHref: string;
+  label: string;
 };
 
 /** Black-glass mobile sticky bar — form-only funnel (ads traffic), no WhatsApp. */
-export function StickyCTA({ bookHref }: Props) {
+export function StickyCTA({ bookHref, label }: Props) {
   return (
     <motion.div
       initial={{ y: 80, opacity: 0 }}
@@ -25,7 +26,7 @@ export function StickyCTA({ bookHref }: Props) {
         }}
       >
         <Icon.CalendarCheck className="size-4" />
-        احجزي جلستكِ الآن
+        {label}
       </a>
     </motion.div>
   );

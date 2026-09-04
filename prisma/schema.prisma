@@ -49,6 +49,13 @@ enum PaymentMethod {
   CARD
 }
 
+enum LeadActivityType {
+  CREATED
+  NOTE
+  STATUS
+  ASSIGN
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -59,7 +66,9 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  assignedLeads Lead[] @relation("AssignedLeads")
+  assignedLeads  Lead[]         @relation("AssignedLeads")
+  pageEdits      PageContent[]
+  leadActivities LeadActivity[]
 }
 
 model LeadSource {
@@ -139,8 +148,14 @@ model Lead {
   offerId       String?
   offer         Offer?         @relation(fields: [offerId], references: [id], onDelete: SetNull)
 
+  // Extra per-page form answers, e.g. { "time": "مساءً" }. Written by
+  // /api/leads from the optional `extra` body field; rendered in the panel.
+  data Json?
+
   submittedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  activities LeadActivity[]
 
   @@index([sourceId, submittedAt])
   @@index([status])
@@ -264,4 +279,36 @@ model Service {
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+/// One row per lead event: creation, a staff note, a status change or a
+/// reassignment. Powers the timeline on /dashboard/leads/[id].
+model LeadActivity {
+  id     String @id @default(cuid())
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  type LeadActivityType
+  body String?
+  meta Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([leadId, createdAt])
+}
+
+/// Editable copy for a public page, keyed by the registry slug in
+/// `lib/pages/registry.ts`. `data` holds ONLY the fields an admin changed,
+/// as a flat map of "section.field" -> string | string[] | object[]; every
+/// other field falls back to the default declared in the page's content.ts.
+model PageContent {
+  slug String @id
+  data Json   @default("{}")
+
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+  updatedBy   User?    @relation(fields: [updatedById], references: [id], onDelete: SetNull)
 }

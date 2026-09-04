@@ -25,6 +25,10 @@ import {
   SuccessPanel,
   TextInput,
 } from "../../_booking/Fields";
+import type { ContentOf } from "@/lib/pages/define";
+import type { BOOK_NOW } from "../content";
+
+type FormCopy = ContentOf<typeof BOOK_NOW>["form"];
 
 export type ServiceGroup = {
   group: string;
@@ -32,6 +36,8 @@ export type ServiceGroup = {
 };
 
 export type BookingFormProps = {
+  /** Editable labels, placeholders and success copy. */
+  copy: FormCopy;
   groups: ServiceGroup[];
   /** Service slug from `?service=`; preselected when it exists. */
   initialService?: string | null;
@@ -42,7 +48,6 @@ export type BookingFormProps = {
 };
 
 const CONSULT_VALUE = "consultation";
-const CONSULT_LABEL = "لست متأكدة، أريد استشارة";
 const NOTES_MAX = 500;
 
 type Status =
@@ -52,6 +57,9 @@ type Status =
   | { kind: "error"; message: string };
 
 type Errors = Partial<Record<"name" | "phone" | "email" | "service" | "notes", string>>;
+
+/** Icons for the reassurance pills under the submit button, in content order. */
+const TRUST_ICONS = [Icon.ShieldCheck, Icon.Lock, Icon.Clock] as const;
 
 const subscribeNoop = () => () => {};
 const getServerMinDate = () => "";
@@ -63,7 +71,7 @@ function todayIso() {
   return local.toISOString().slice(0, 10);
 }
 
-export function BookingForm({ groups, initialService, doctor, offer }: BookingFormProps) {
+export function BookingForm({ copy, groups, initialService, doctor, offer }: BookingFormProps) {
   const uid = useId();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -72,9 +80,9 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
     const map = new Map<string, string>();
     if (offer) map.set(`offer:${offer.slug}`, offer.title);
     for (const g of groups) for (const s of g.items) map.set(`svc:${s.slug}`, s.name);
-    map.set(CONSULT_VALUE, CONSULT_LABEL);
+    map.set(CONSULT_VALUE, copy.consultLabel);
     return map;
-  }, [groups, offer]);
+  }, [groups, offer, copy.consultLabel]);
 
   const initialValue = offer
     ? `offer:${offer.slug}`
@@ -166,11 +174,11 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
       {status.kind === "ok" ? (
         <div className="relative py-4">
           <SuccessPanel
-            title="تم استلام طلب حجزك"
-            body="سيتصل بك فريق الاستقبال لتأكيد الموعد وشرح الخطة والتكلفة المتوقعة قبل الجلسة. وإن أحببتِ، أكملي الآن عبر واتساب."
+            title={copy.successTitle}
+            body={copy.successBody}
             waHref={whatsappHref(waText)}
-            waLabel="متابعة الحجز عبر واتساب"
-            points={["تكلفة واضحة قبل الجلسة", "طاقم نسائي بالكامل", "خصوصية تامة"]}
+            waLabel={copy.successWhatsapp}
+            points={copy.successPoints}
           />
         </div>
       ) : (
@@ -178,7 +186,7 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="inline-flex items-center gap-2.5 text-[1.15rem] font-extrabold text-[var(--color-md-text)]">
               <Icon.CalendarCheck className="size-5 text-[var(--color-md-champagne)]" />
-              طلب حجز موعد
+              {copy.heading}
             </h2>
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-md-line-strong)] px-3 py-1.5 text-[0.72rem] font-extrabold text-[var(--color-md-champagne)]">
               <span
@@ -186,25 +194,25 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
                 style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
                 aria-hidden
               />
-              نرد خلال ساعات العمل
+              {copy.badge}
             </span>
           </div>
 
           {doctor ? (
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[rgba(240,212,138,0.4)] bg-[rgba(232,195,106,0.1)] px-3.5 py-1.5 text-[0.8rem] font-extrabold text-[var(--color-md-champagne)]">
               <Icon.Stethoscope className="size-4" strokeWidth={2} />
-              طلب موعد مع {doctor.name}
+              {copy.doctorPrefix} {doctor.name}
             </span>
           ) : null}
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="الاسم الكريم" htmlFor={`${uid}-name`} required error={errors.name}>
+            <Field label={copy.nameLabel} htmlFor={`${uid}-name`} required error={errors.name}>
               <TextInput
                 id={`${uid}-name`}
                 data-field="name"
                 name="name"
                 autoComplete="name"
-                placeholder="اسمك الثلاثي"
+                placeholder={copy.namePlaceholder}
                 value={fullName}
                 invalid={Boolean(errors.name)}
                 aria-describedby={errors.name ? `${uid}-name-error` : undefined}
@@ -216,7 +224,7 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
               />
             </Field>
 
-            <Field label="رقم الجوال" htmlFor={`${uid}-phone`} required error={errors.phone}>
+            <Field label={copy.phoneLabel} htmlFor={`${uid}-phone`} required error={errors.phone}>
               <PhoneInput
                 id={`${uid}-phone`}
                 data-field="phone"
@@ -232,7 +240,7 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
               />
             </Field>
 
-            <Field label="البريد الإلكتروني" htmlFor={`${uid}-email`} error={errors.email}>
+            <Field label={copy.emailLabel} htmlFor={`${uid}-email`} error={errors.email}>
               <TextInput
                 id={`${uid}-email`}
                 data-field="email"
@@ -254,7 +262,7 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
               />
             </Field>
 
-            <Field label="المدينة" htmlFor={`${uid}-city`} required>
+            <Field label={copy.cityLabel} htmlFor={`${uid}-city`} required>
               <SelectInput
                 id={`${uid}-city`}
                 name="city"
@@ -272,7 +280,7 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
             </Field>
 
             <Field
-              label="الخدمة"
+              label={copy.serviceLabel}
               htmlFor={`${uid}-service`}
               required
               error={errors.service}
@@ -292,10 +300,10 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
                 disabled={sending}
               >
                 <option value="" disabled>
-                  اختاري الخدمة
+                  {copy.servicePlaceholder}
                 </option>
                 {offer ? (
-                  <optgroup label="العرض المختار">
+                  <optgroup label={copy.offerGroupLabel}>
                     <option value={`offer:${offer.slug}`}>{offer.title}</option>
                   </optgroup>
                 ) : null}
@@ -308,17 +316,13 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
                     ))}
                   </optgroup>
                 ))}
-                <optgroup label="غير متأكدة؟">
-                  <option value={CONSULT_VALUE}>{CONSULT_LABEL}</option>
+                <optgroup label={copy.unsureGroupLabel}>
+                  <option value={CONSULT_VALUE}>{copy.consultLabel}</option>
                 </optgroup>
               </SelectInput>
             </Field>
 
-            <Field
-              label="التاريخ المفضل"
-              htmlFor={`${uid}-date`}
-              hint="نقترح عليك أقرب موعد متاح إن لم يتوفر هذا اليوم."
-            >
+            <Field label={copy.dateLabel} htmlFor={`${uid}-date`} hint={copy.dateHint}>
               <TextInput
                 id={`${uid}-date`}
                 name="preferredAt"
@@ -332,13 +336,13 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
             </Field>
 
             <Field
-              label="ملاحظات"
+              label={copy.notesLabel}
               htmlFor={`${uid}-notes`}
               error={errors.notes}
               className="sm:col-span-2"
               hint={
                 <span className="flex justify-between">
-                  <span>أخبرينا بما يشغلك أو بالوقت الأنسب للاتصال.</span>
+                  <span>{copy.notesHint}</span>
                   <span dir="ltr" aria-live="polite">
                     {toArabicDigits(notes.length)}/{toArabicDigits(NOTES_MAX)}
                   </span>
@@ -351,7 +355,7 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
                 name="message"
                 rows={3}
                 maxLength={NOTES_MAX}
-                placeholder="مثال: أفضّل الاتصال بعد العصر"
+                placeholder={copy.notesPlaceholder}
                 value={notes}
                 aria-invalid={errors.notes ? true : undefined}
                 onChange={(e) => {
@@ -366,21 +370,18 @@ export function BookingForm({ groups, initialService, doctor, offer }: BookingFo
 
           {status.kind === "error" ? <FormError message={status.message} /> : null}
 
-          <SubmitButton sending={sending} label="أرسلي طلب الحجز" className="mt-1" />
+          <SubmitButton sending={sending} label={copy.submit} className="mt-1" />
 
           <p className="m-0 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[0.72rem] font-bold text-[rgba(246,238,223,0.45)]">
-            <span className="inline-flex items-center gap-1.5">
-              <Icon.ShieldCheck className="size-3.5 text-[var(--color-md-champagne)]" />
-              تكلفة واضحة قبل الجلسة
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Icon.Lock className="size-3.5 text-[var(--color-md-champagne)]" />
-              بياناتك سرّية
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Icon.Clock className="size-3.5 text-[var(--color-md-champagne)]" />
-              المواعيد محدودة أسبوعياً
-            </span>
+            {copy.trust.map((item, i) => {
+              const TrustIcon = TRUST_ICONS[i];
+              return (
+                <span key={item.text} className="inline-flex items-center gap-1.5">
+                  <TrustIcon className="size-3.5 text-[var(--color-md-champagne)]" />
+                  {item.text}
+                </span>
+              );
+            })}
           </p>
         </form>
       )}

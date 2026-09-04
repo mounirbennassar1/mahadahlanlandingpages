@@ -1,15 +1,7 @@
 "use client";
 
-const ITEMS = [
-  "زمالة الكلية الملكية البريطانية",
-  "+١٢ سنة خبرة",
-  "+٢٨٠٠ حالة معالجة",
-  "عضوة الجمعية الأوروبية للجلدية",
-  "تقييم ٤.٩ / ٥",
-  "متابعة شخصية لكل حالة",
-];
-
-export function Marquee() {
+export function Marquee({ items }: { items: string[] }) {
+  const ITEMS = items;
   // The track must be ≥ 2× the viewport so the visible area is
   // always populated as content scrolls. Render the list once inside
   // a "set" wrapper, then duplicate that wrapper. The keyframe slides

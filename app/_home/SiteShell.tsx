@@ -8,7 +8,12 @@ import { StickyBar } from "./StickyBar";
 import { BackToTop, ScrollProgress } from "./Motion";
 import { paletteVars } from "./palette";
 import { WHATSAPP_NUMBER } from "./config";
-import { LANG_META, type Locale } from "./i18n/dictionary";
+import {
+  LANG_META,
+  type Dict,
+  type Locale,
+  type SpecialtyOverrides,
+} from "./i18n/dictionary";
 import { LocaleProvider } from "./i18n/LocaleProvider";
 import "./home.css";
 
@@ -29,14 +34,20 @@ export function SiteShell({
   children,
   bookHref = "/book-now",
   locale = "ar",
+  dict,
+  specialties,
 }: {
   children: ReactNode;
   /** Where the sticky mobile "احجزي الآن" button points. */
   bookHref?: string;
   locale?: Locale;
+  /** Copy with the dashboard overrides applied; defaults to the shipped copy. */
+  dict?: Dict;
+  /** Treatment-card copy, used by the footer's category columns. */
+  specialties?: SpecialtyOverrides;
 }) {
   return (
-    <LocaleProvider locale={locale}>
+    <LocaleProvider locale={locale} dict={dict}>
       <Providers>
         <div
           className={`md-home relative flex-1 overflow-clip ${almarai.variable}`}
@@ -51,7 +62,7 @@ export function SiteShell({
 
           <main>{children}</main>
 
-          <Footer locale={locale} />
+          <Footer locale={locale} dict={dict} specialties={specialties} />
 
           <WhatsAppFAB
             whatsappNumber={WHATSAPP_NUMBER}

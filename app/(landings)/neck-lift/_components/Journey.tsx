@@ -6,34 +6,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Reveal } from "./Gsap";
 import { GOLD_GRADIENT } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { NECK_LIFT } from "../content";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STEPS = [
-  {
-    num: "١",
-    title: "الاستشارة والتقييم",
-    body: "جلسة خاصة نستمع فيها إليكِ، ونقيّم درجة الترهل ونوع البشرة بدقة.",
-  },
-  {
-    num: "٢",
-    title: "الخطة المخصصة",
-    body: "برنامج علاجي يجمع التقنيات الأنسب لحالتك، بوضوح تام في التفاصيل.",
-  },
-  {
-    num: "٣",
-    title: "جلسات العلاج",
-    body: "جلسات مريحة بتخدير موضعي عند الحاجة، تعودين بعدها ليومك غالباً.",
-  },
-  {
-    num: "٤",
-    title: "المتابعة والاطمئنان",
-    body: "مواعيد مراجعة دورية نتابع فيها تطوّر النتيجة حتى اكتمالها.",
-  },
-];
 
 /** Horizontal journey rail whose gold line fills as it scrolls into view. */
-export function Journey() {
+export function Journey({ steps }: { steps: ContentOf<typeof NECK_LIFT>["journey"]["steps"] }) {
+  const STEPS = steps;
   const railRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
 

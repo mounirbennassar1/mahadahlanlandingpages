@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
 import { EASE } from "./Reveal";
 import { GOLD_GRADIENT } from "./config";
+import type { ContentOf } from "@/lib/pages/define";
+import type { FACIAL_ATROPHY } from "../content";
 
 type Doctor = {
   label: string;
@@ -17,7 +19,7 @@ type Doctor = {
 };
 
 /* Same medical team as the home page, in the order the clinic asked for. */
-const DOCTORS: Doctor[] = [
+const BASE_DOCTORS: Doctor[] = [
   {
     label: "الطبيبة الأولى",
     name: "د. مها دحلان",
@@ -55,7 +57,23 @@ const DOCTORS: Doctor[] = [
   },
 ];
 
-export function Doctors() {
+type DoctorsCopy = ContentOf<typeof FACIAL_ATROPHY>["doctors"];
+
+/** Photos stay in code; names, titles and credentials are editable. */
+export function Doctors({ copy }: { copy: DoctorsCopy }) {
+  const DOCTORS: Doctor[] = BASE_DOCTORS.map((doc, i) => {
+    const person = copy.people[i];
+    return person
+      ? {
+          ...doc,
+          label: person.label,
+          name: person.name,
+          title: person.title,
+          credentials: person.credentials.filter(Boolean),
+        }
+      : doc;
+  });
+
   const [[index, dir], setSlide] = useState<[number, number]>([0, 0]);
   const count = DOCTORS.length;
   const d = DOCTORS[index];
@@ -111,7 +129,7 @@ export function Doctors() {
                 {d.name}
               </span>
               <span className="text-[10px] font-semibold text-[var(--color-faa-gold-bright)]">
-                عيادة مها دحلان
+                {copy.clinicTag}
               </span>
             </div>
           </div>
@@ -127,10 +145,10 @@ export function Doctors() {
             </div>
             <div>
               <b className="block text-[0.86rem] text-[var(--color-faa-gold-pale)]">
-                عيادة نسائية بالكامل
+                {copy.badgeTitle}
               </b>
               <small className="text-[0.7rem] text-[rgba(243,233,220,0.6)]">
-                راحتك وخصوصيتك أولاً
+                {copy.badgeSub}
               </small>
             </div>
           </div>

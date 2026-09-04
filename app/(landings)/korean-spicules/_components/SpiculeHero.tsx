@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon } from "@/components/icons";
+import type { ContentOf } from "@/lib/pages/define";
+import type { KOREAN_SPICULES } from "../content";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -28,11 +30,7 @@ const NEEDLES = [
   { l: "90%", h: 13, d: "13.5s", delay: "2s", o: 0.45, r: "-18deg", mobile: false },
 ];
 
-const STATS = [
-  { num: "٩٧٪", label: "رضا العميلات" },
-  { num: "+١٨٠٠", label: "جلسة ناجحة" },
-  { num: "٧ أيام", label: "لبشرة جديدة" },
-];
+type HeroCopy = ContentOf<typeof KOREAN_SPICULES>["hero"];
 
 /**
  * Pinned cinematic hero: entrance choreography (masked headline lines,
@@ -40,7 +38,8 @@ const STATS = [
  * portrait parallaxes and everything dissolves into the pure-black ground.
  * Sticky-positioning does the pinning (no pin-spacer jank on mobile).
  */
-export function SpiculeHero() {
+export function SpiculeHero({ copy }: { copy: HeroCopy }) {
+  const STATS = copy.stats;
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const watermarkRef = useRef<HTMLSpanElement>(null);
@@ -194,7 +193,7 @@ export function SpiculeHero() {
           <div className="kos-hero-copy order-1 text-center md:order-none md:col-start-1 md:row-start-1 md:text-right">
             <span className="kos-hero-fade inline-flex items-center gap-2 rounded-full border border-[var(--color-kos-line)] bg-black/55 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-kos-primary-dim)] backdrop-blur-md sm:text-[11px]">
               <Icon.Sparkles className="size-3.5" />
-              عيادات د. مها دحلان · تقنية كورية أصيلة
+              {copy.badge}
             </span>
 
             <h1 className="mt-3 md:mt-6">
@@ -205,9 +204,9 @@ export function SpiculeHero() {
                     {/* own pb extends the background-clip:text paint box under
                         the ز descender (else it renders cut); -mb cancels it. */}
                     <span className="kos-orange-text kos-orange-text-animated -mb-[0.24em] inline-block pb-[0.24em]">
-                      السبيكولز
+                      {copy.line1}
                     </span>{" "}
-                    <span className="text-white">الكوريّة</span>
+                    <span className="text-white">{copy.line2}</span>
                   </span>
                 </span>
               </span>
@@ -217,11 +216,11 @@ export function SpiculeHero() {
                     the matching -mb cancels it so line rhythm holds. */}
                 <span className="-mb-[0.2em] block overflow-hidden pt-[0.14em] pb-[0.32em]">
                   <span className="kos-line kos-orange-text kos-orange-text-animated block pb-[0.24em] -mb-[0.24em]">
-                    السبيكولز
+                    {copy.line1}
                   </span>
                 </span>
                 <span className="-mb-[0.2em] block overflow-hidden pt-[0.14em] pb-[0.32em]">
-                  <span className="kos-line block text-white">الكوريّة</span>
+                  <span className="kos-line block text-white">{copy.line2}</span>
                 </span>
               </span>
             </h1>
@@ -290,19 +289,19 @@ export function SpiculeHero() {
             {/* floating chips — z-raised so they sit IN FRONT of the text layer */}
             <div className="kos-float absolute -top-3 -right-4 z-40 hidden rounded-2xl border border-[var(--color-kos-line)] bg-black/85 px-4 py-3 shadow-xl backdrop-blur-md md:block lg:-right-10">
               <span className="block text-base font-extrabold text-[var(--color-kos-primary-dim)]">
-                بدون جهاز · بدون جراحة
+                {copy.chipOneTitle}
               </span>
               <span className="mt-0.5 block text-[11px] leading-snug tracking-normal text-[var(--color-kos-muted)]">
-                تدليك لطيف يفتح آلاف القنوات المجهرية
+                {copy.chipOneText}
               </span>
             </div>
             <div className="absolute -bottom-4 left-0 z-40 hidden rounded-2xl border border-[var(--color-kos-line)] bg-black/85 px-4 py-3 shadow-xl backdrop-blur-md md:block lg:-left-4">
               <span className="flex items-center gap-2 text-sm font-extrabold text-white">
                 <Icon.Leaf className="size-4 text-[var(--color-kos-primary-dim)]" />
-                إبر طبيعية ١٠٠٪
+                {copy.chipTwoTitle}
               </span>
               <span className="mt-0.5 block text-[11px] tracking-normal text-[var(--color-kos-muted)]">
-                مستخلصة من الإسفنج البحري
+                {copy.chipTwoText}
               </span>
             </div>
           </div>
@@ -311,14 +310,12 @@ export function SpiculeHero() {
           <div className="kos-hero-copy order-3 text-center md:order-none md:col-start-1 md:row-start-2 md:text-right">
             <span className="-mb-[0.24em] block overflow-hidden pt-[0.12em] pb-[0.24em] md:mt-3">
               <span className="kos-line block text-[clamp(1.15rem,4.5vw,2.1rem)] font-extrabold leading-snug text-[var(--color-kos-ink-soft)]">
-                ميكرونيدلينغ طبيعي… بدون جهاز
+                {copy.subtitle}
               </span>
             </span>
 
             <p className="kos-hero-fade mx-auto mt-4 max-w-md text-[13.5px] leading-7 text-[var(--color-kos-ink-soft)] sm:mt-5 sm:text-base sm:leading-8 md:mx-0">
-              إبر مجهرية طبيعية ١٠٠٪ مستخلصة من الإسفنج البحري، تفتح آلاف
-              القنوات الدقيقة وتحفّز الكولاجين — لعلاج آثار الحبوب والمسام
-              الواسعة والبهتان، بنتائج تكتمل خلال أسبوع واحد.
+              {copy.body}
             </p>
 
             {/* CTA + stats are desktop-only: the mobile funnel uses the fixed
@@ -329,14 +326,14 @@ export function SpiculeHero() {
                 className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-sm font-extrabold text-[#180a02] shadow-[0_12px_32px_-10px_rgba(255,107,26,0.6)] transition-transform hover:scale-[1.03] active:scale-[0.98] sm:w-auto"
                 style={{ background: ORANGE_GRADIENT }}
               >
-                احجزي جلستكِ الآن
+                {copy.book}
                 <Icon.ArrowLeft className="size-4" />
               </a>
               <a
                 href="#about"
                 className="hidden h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--color-kos-line)] bg-black/40 px-6 text-sm font-bold text-[var(--color-kos-ink-soft)] backdrop-blur-sm transition-colors hover:border-[var(--color-kos-primary)] hover:text-[var(--color-kos-primary-dim)] sm:inline-flex sm:w-auto"
               >
-                كيف تعمل التقنية؟
+                {copy.learnMore}
                 <Icon.ChevronDown className="size-4 text-[var(--color-kos-primary)]" />
               </a>
             </div>
@@ -369,7 +366,7 @@ export function SpiculeHero() {
           aria-hidden
         >
           <span className="text-[10px] font-bold tracking-normal text-[var(--color-kos-muted)]">
-            مرّري للأسفل
+            {copy.scrollCue}
           </span>
           <span className="block h-10 w-px bg-gradient-to-b from-[var(--color-kos-primary)] to-transparent" />
           <Icon.ChevronDown className="size-4 animate-bounce text-[var(--color-kos-primary)]" />

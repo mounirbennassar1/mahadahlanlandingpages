@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon } from "@/components/icons";
 import { SectionEyebrow } from "@/components/usablecomponents/SectionEyebrow";
+import type { ContentOf } from "@/lib/pages/define";
+import type { KOREAN_SPICULES } from "../content";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,51 +17,25 @@ if (typeof window !== "undefined") {
 const ORANGE_GRADIENT =
   "linear-gradient(120deg, #ffb473 0%, #ff6b1a 55%, #e35500 100%)";
 
-const STEPS = [
-  {
-    n: "٠١",
-    icon: Icon.ScanFace,
-    title: "تحليل البشرة وتنظيف عميق",
-    text: "نقيّم بشرتكِ ونحدد كثافة السبيكولز المناسبة لحالتها، ثم تنظيف مزدوج يزيل الشوائب ويهيّئ البشرة للتقنية.",
-  },
-  {
-    n: "٠٢",
-    icon: Icon.FlaskConical,
-    title: "تحضير الأمبولة الكورية",
-    text: "نمزج السبيكولز الطبيعية المستخلصة من الإسفنج البحري مع سيروم مخصّص يناسب هدف جلستكِ.",
-  },
-  {
-    n: "٠٣",
-    icon: Icon.Hand,
-    title: "تدليك السبيكولز",
-    text: "تدليك مدروس يوجّه ملايين الشويكات المجهرية لفتح قنوات دقيقة وإيصال المكوّنات إلى أعماق الجلد.",
-  },
-  {
-    n: "٠٤",
-    icon: Icon.Droplets,
-    title: "سيروم مهدئ ومغذٍّ",
-    text: "ببتيدات ومهدئات كورية تمتصها البشرة عبر القنوات المفتوحة بفعالية مضاعفة، فتعمل بعمق لمدة ٧٢ ساعة.",
-  },
-  {
-    n: "٠٥",
-    icon: Icon.ShieldCheck,
-    title: "حماية وخطة منزلية",
-    text: "واقي شمس وتعليمات بسيطة لأيام التجدد، مع متابعة فريقنا معكِ حتى تكتمل النتيجة خلال أسبوع.",
-  },
-];
+/** Icons for the protocol steps, in content order. */
+const STEP_ICONS = [
+  Icon.ScanFace,
+  Icon.FlaskConical,
+  Icon.Hand,
+  Icon.Droplets,
+  Icon.ShieldCheck,
+] as const;
 
-const WEEK = [
-  { d: "اليوم ١-٢", t: "وخز خفيف ودفء، السبيكولز تعمل في العمق" },
-  { d: "اليوم ٣-٤", t: "تقشّر خفيف، البشرة الباهتة تودّعكِ" },
-  { d: "اليوم ٥-٧", t: "بشرة جديدة، نقاء ونعومة وتوهّج" },
-];
+type ProtocolCopy = ContentOf<typeof KOREAN_SPICULES>["protocol"];
 
 /**
  * Session protocol. Desktop: the section pins and vertical scroll scrubs the
  * step track horizontally (RTL → the track translates to +x). Mobile: no pin,
  * plain vertical cards revealed by the ScrollSystem (lighter & smoother).
  */
-export function HorizontalProtocol() {
+export function HorizontalProtocol({ copy }: { copy: ProtocolCopy }) {
+  const STEPS = copy.steps.map((step, i) => ({ ...step, icon: STEP_ICONS[i] }));
+  const WEEK = copy.week;
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -122,15 +98,14 @@ export function HorizontalProtocol() {
         {/* header */}
         <div className="relative mx-auto w-full max-w-6xl px-5 text-center" data-reveal="up">
           <SectionEyebrow tokenPrefix="kos" icon="Route">
-            بروتوكول الجلسة · ٤٥ دقيقة
+            {copy.eyebrow}
           </SectionEyebrow>
           <h2 className="mt-5 text-3xl font-extrabold text-white sm:text-4xl">
-            جلسة السبيكولز{" "}
-            <em className="kos-orange-text not-italic">خطوة بخطوة</em>
+            {copy.title}{" "}
+            <em className="kos-orange-text not-italic">{copy.highlight}</em>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-8 text-[var(--color-kos-ink-soft)]">
-            خمس خطوات مدروسة تمرّ بها جلستكِ، كل خطوة تُهيّئ بشرتكِ للتي
-            بعدها حتى يكتمل التجدد.
+            {copy.sub}
           </p>
         </div>
 
@@ -176,7 +151,7 @@ export function HorizontalProtocol() {
             {/* week-journey finale card */}
             <article className="relative flex w-[23rem] shrink-0 flex-col justify-center rounded-[1.75rem] border border-[var(--color-kos-line)] bg-[var(--color-kos-primary)]/[0.07] p-7 backdrop-blur-sm">
               <h3 className="text-xl font-extrabold text-[var(--color-kos-primary-dim)]">
-                رحلة الأسبوع بعد الجلسة
+                {copy.weekTitle}
               </h3>
               <ul className="mt-5 space-y-4">
                 {WEEK.map((w) => (
@@ -220,7 +195,7 @@ export function HorizontalProtocol() {
               </span>
               <div>
                 <span className="text-[10px] font-bold tracking-normal text-[var(--color-kos-primary-dim)]">
-                  الخطوة {s.n}
+                  {copy.stepPrefix} {s.n}
                 </span>
                 <h3 className="mt-0.5 text-base font-extrabold leading-snug text-white">
                   {s.title}
@@ -236,7 +211,7 @@ export function HorizontalProtocol() {
             className="rounded-3xl border border-[var(--color-kos-line)] bg-[var(--color-kos-primary)]/[0.07] p-5"
           >
             <h3 className="text-base font-extrabold text-[var(--color-kos-primary-dim)]">
-              رحلة الأسبوع بعد الجلسة
+              {copy.weekTitle}
             </h3>
             <ul className="mt-3 space-y-3">
               {WEEK.map((w) => (

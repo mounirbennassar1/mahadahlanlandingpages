@@ -1,11 +1,13 @@
 import { Icon } from "@/components/icons";
-import { getDict, LANG_META, type Locale } from "./i18n/dictionary";
+import { getDict, LANG_META, type Locale,
+  type Dict,
+} from "./i18n/dictionary";
 import { PayLogo } from "./PayLogo";
 import { PaymentBadges } from "./PaymentBadges";
 
 /** Split-payment section: Tabby + Tamara cards with a perks row. */
-export function Payments({ locale = "ar" }: { locale?: Locale }) {
-  const copy = getDict(locale).payments;
+export function Payments({ locale = "ar", dict }: { locale?: Locale; dict?: Dict }) {
+  const copy = (dict ?? getDict(locale)).payments;
   const isRtl = LANG_META[locale].dir === "rtl";
   return (
     <div className="grid gap-5 md:grid-cols-2 lg:gap-6">

@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { plexArabic } from "@/lib/fonts";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "الجلاس سكين الكوري | عيادة د. مها دحلان",
-  description:
-    "بروتوكول الجلاس سكين الكوري الأصيل في جدة لتنظيف عميق، وتقشير لطيف، وترطيب مكثّف لبشرة زجاجية تتوهّج من الداخل. بدون إبر وبدون فترة نقاهة.",
-  openGraph: {
-    title: "الجلاس سكين الكوري، بشرة زجاجية تتوهّج من الداخل",
-    description:
-      "بروتوكول كوري أصيل بإشراف طبي في عيادات د. مها دحلان. احجزي جلستكِ الآن.",
-    locale: "ar_SA",
-    type: "website",
-    images: [{ url: "/glass-skin/poster.webp", width: 1920, height: 1088 }],
-  },
-};
 
 // Palette tokens — near-black ground (#0b0c0e), gold accents, white ink.
 // Declared inline so JSX can read them as CSS variables without a

@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { almarai, amiri } from "@/lib/fonts";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "علاج ضمور الوجه بعد إبر التنحيف | عيادة مها دحلان",
-  description:
-    "خسرتِ الوزن بنجاح؟ نعيد لوجهكِ امتلاءه وإشراقته. علاج ضمور الوجه (وجه الأوزمبك) في جدة: فيلر، دهون ذاتية، محفزات كولاجين، خيوط وشد بالهايفو، بخطة تُصمَّم لكِ وحدك وبخصوصية تامة في عيادة د. مها دحلان.",
-  openGraph: {
-    title: "علاج ضمور الوجه بعد إبر التنحيف | عيادة مها دحلان",
-    description:
-      "فقدان الوزن السريع قد يترك ملامحك أنحف وأكثر إرهاقاً مما ينبغي. نعيد التوازن لملامحك بنتائج طبيعية وخصوصية تامة.",
-    locale: "ar_SA",
-    type: "website",
-    images: [{ url: "/facial-atrophy/hero-center.webp", width: 1536, height: 2048 }],
-  },
-};
 
 // Palette tokens from the imported Claude Design — deep burgundy ground,
 // antique-gold accents, warm ivory ink.

@@ -4,6 +4,8 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import type { ContentOf } from "@/lib/pages/define";
+import type { KOREAN_SPICULES } from "../content";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -11,21 +13,29 @@ if (typeof window !== "undefined") {
 
 type Stat = { value: number; prefix?: string; suffix?: string; label: string };
 
-const STATS: Stat[] = [
-  { value: 97, suffix: "٪", label: "نسبة رضا العميلات" },
-  { value: 1800, prefix: "+", label: "جلسة سبيكولز ناجحة" },
-  { value: 7, suffix: " أيام", label: "لاكتمال تجدد البشرة" },
-  { value: 45, suffix: " د", label: "مدة الجلسة الواحدة" },
+/** The counted values drive the animation, so they stay in code; only the
+ *  captions under them are editable. */
+const BASE_STATS: Omit<Stat, "label">[] = [
+  { value: 97, suffix: "٪" },
+  { value: 1800, prefix: "+" },
+  { value: 7, suffix: " أيام" },
+  { value: 45, suffix: " د" },
 ];
 
 const toArabicDigits = (n: number) =>
   String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[+d]);
 
-const format = (s: Stat, v: number) =>
+const format = (s: Omit<Stat, "label">, v: number) =>
   `${s.prefix ?? ""}${toArabicDigits(Math.round(v))}${s.suffix ?? ""}`;
 
+type StatsCopy = ContentOf<typeof KOREAN_SPICULES>["stats"];
+
 /** Numbers count up (Arabic-Indic digits) when the band scrolls into view. */
-export function StatCounters() {
+export function StatCounters({ copy }: { copy: StatsCopy }) {
+  const STATS: Stat[] = BASE_STATS.map((stat, i) => ({
+    ...stat,
+    label: copy.labels[i]?.label ?? "",
+  }));
   const rootRef = useRef<HTMLDivElement>(null);
   const numRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
@@ -85,8 +95,7 @@ export function StatCounters() {
         ))}
       </div>
       <p className="mt-9 border-t border-[var(--color-kos-line-soft)] pt-7 text-center text-sm leading-7 text-[var(--color-kos-ink-soft)]">
-        وخز اليوم الأول… توهّج اليوم السابع. نتيجة تشعرين بها من أول جلسة
-        وتكتمل بإشراف طبي كامل.
+        {copy.note}
       </p>
     </div>
   );

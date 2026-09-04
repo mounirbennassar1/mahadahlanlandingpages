@@ -1,37 +1,7 @@
-import type { Metadata } from "next";
 import Script from "next/script";
 import { plexArabic } from "@/lib/fonts";
 import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "علاج الهالات والتصبّغات حول العين | عيادة د. مها دحلان",
-  description:
-    "برنامج طبي متخصص في علاج الهالات السوداء والتصبّغات حول العين بأحدث التقنيات في جدة. بشرة موحّدة، نظرة أكثر إشراقاً، ونتائج حقيقية تدوم.",
-  openGraph: {
-    title: "علاج الهالات والتصبّغات حول العين | عيادة د. مها دحلان",
-    description:
-      "برنامج طبي متخصص في علاج الهالات والتصبّغات حول العين بأحدث التقنيات في جدة.",
-    locale: "ar_SA",
-    type: "website",
-    siteName: "عيادات د. مها دحلان",
-    images: [
-      {
-        url: "/dark-circles/hero.webp",
-        width: 1200,
-        height: 630,
-        alt: "عيادات د. مها دحلان — علاج الهالات والتصبّغات",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "علاج الهالات والتصبّغات حول العين | عيادة د. مها دحلان",
-    description:
-      "برنامج طبي متخصص في علاج الهالات والتصبّغات بأحدث التقنيات في جدة.",
-    images: ["/dark-circles/hero.webp"],
-  },
-};
 
 export default function DarkCirclesLayout({
   children,

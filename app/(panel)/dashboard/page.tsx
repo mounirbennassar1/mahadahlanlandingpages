@@ -1,9 +1,11 @@
 import {
   getLeadsByCity,
+  getLeadsBySource,
   getLeadsOverTime,
   getOverviewMetrics,
   getTeamPerformance,
 } from "@/lib/metrics";
+import { PAGES } from "@/lib/pages/registry";
 import { auth } from "@/auth";
 import { KpiRow } from "./_components/kpi-row";
 import { LeadsOverTimeChart } from "./_components/leads-over-time";
@@ -12,6 +14,7 @@ import { CitiesBar } from "./_components/cities-bar";
 import { TeamBars } from "./_components/team-bars";
 import { Funnel } from "./_components/funnel";
 import { ContentStats, getContentCounts } from "./_components/content-stats";
+import { BarList } from "./_components/bar-list";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -20,11 +23,12 @@ export default async function DashboardHome() {
   const session = await auth();
   const firstName = session?.user.name?.split(" ")[0] ?? "there";
 
-  const [overview, overTime, cities, team, totalSources, topRep] = await Promise.all([
+  const [overview, overTime, cities, team, bySource, totalSources, topRep] = await Promise.all([
     getOverviewMetrics(),
     getLeadsOverTime(30),
     getLeadsByCity(6),
     getTeamPerformance(7),
+    getLeadsBySource(),
     prisma.leadSource.count({ where: { active: true } }),
     prisma.lead.groupBy({
       by: ["assigneeId"],
@@ -46,6 +50,20 @@ export default async function DashboardHome() {
   const funnelInquiry = overview.byStatus.INQUIRY + overview.byStatus.CONFIRMED + overview.byStatus.BOOKED;
   const funnelConfirmed = overview.byStatus.CONFIRMED + overview.byStatus.BOOKED;
   const funnelBooked = overview.byStatus.BOOKED;
+
+  // "Leads by page" links straight to that page's Leads tab when the source
+  // belongs to a page in the content registry.
+  const pageBySource = new Map(
+    PAGES.filter((p) => p.leadSource).map((p) => [p.leadSource as string, p]),
+  );
+  const leadsByPage = bySource.slice(0, 7).map((row) => {
+    const page = pageBySource.get(row.slug);
+    return {
+      label: page?.title ?? row.label,
+      count: row.count,
+      href: page ? `/dashboard/pages/${page.slug}/leads` : `/dashboard/leads?source=${row.slug}`,
+    };
+  });
 
   const today = new Date();
   const fmt = today.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
@@ -117,6 +135,16 @@ export default async function DashboardHome() {
         <CitiesBar data={cities} />
         <TeamBars data={team} />
         <Funnel inquiry={funnelInquiry} confirmed={funnelConfirmed} booked={funnelBooked} bestRep={topRepName} />
+      </div>
+
+      <div style={{ marginBottom: 20 }}>
+        <BarList
+          title="Leads by page"
+          subtitle="Which page each lead came from"
+          labelWidth={150}
+          data={leadsByPage}
+          empty="No leads have been submitted yet."
+        />
       </div>
     </>
   );

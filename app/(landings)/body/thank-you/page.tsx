@@ -1,13 +1,22 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { FireFormConversion } from "@/components/landing/FireFormConversion";
+import { getPageContent } from "@/lib/pages/get";
+import { BODY } from "../content";
 
-export const metadata: Metadata = {
-  title: "شكراً لكِ — عيادات د. مها دحلان",
-  description: "تم استلام طلبك بنجاح، سنتواصل معك خلال ساعة عمل واحدة.",
-};
+export const revalidate = 300;
 
-export default function BodyThankYouPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const { thankYou } = await getPageContent(BODY);
+  return {
+    title: thankYou.metaTitle,
+    description: thankYou.metaDescription,
+  };
+}
+
+export default async function BodyThankYouPage() {
+  const { thankYou } = await getPageContent(BODY);
+
   return (
     <main className="min-h-screen flex items-center justify-center px-6 py-16 bg-body-bg text-body-fg">
       <FireFormConversion />
@@ -27,28 +36,27 @@ export default function BodyThankYouPage() {
           </div>
 
           <h1 className="font-display-body text-3xl md:text-4xl font-bold leading-tight mb-4">
-            تم استلام طلبك بنجاح
+            {thankYou.title}
           </h1>
 
           <p className="text-body-muted leading-relaxed mb-8">
-            شكراً لتواصلك مع عيادات د. مها دحلان. فريقنا سيقوم بالتواصل معك
-            خلال ساعة عمل واحدة لتأكيد موعد جلسة تحليل القوام المجانية.
+            {thankYou.body}
           </p>
 
           <div className="rounded-2xl border border-body-line bg-white/40 p-5 mb-8 text-right">
-            <h4 className="font-display-body font-bold mb-3">الخطوات التالية</h4>
+            <h4 className="font-display-body font-bold mb-3">
+              {thankYou.stepsTitle}
+            </h4>
             <ul className="space-y-2 text-sm text-body-muted">
-              <li>• سيتصل بك أحد مستشارينا لتحديد موعد يناسبك</li>
-              <li>• موعد الاستشارة خلال ٢٤ ساعة عمل</li>
-              <li>
-                • جدة — حي الروضة، شارع التحلية، مركز بن حمران، الدور الثالث
-              </li>
+              {thankYou.steps.map((step) => (
+                <li key={step}>• {step}</li>
+              ))}
             </ul>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/body" className="btn-primary-body">
-              العودة للصفحة الرئيسية
+              {thankYou.home}
             </Link>
             <a
               href="tel:+966920007515"

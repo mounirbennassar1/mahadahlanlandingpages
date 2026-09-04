@@ -1,16 +1,7 @@
 "use client";
 
-const ITEMS = [
-  "بروتوكول كوري أصيل",
-  "بدون إبر · بدون نقاهة",
-  "نخبة من خبراء العناية بالبشرة",
-  "+٢٤٠٠ جلسة ناجحة",
-  "منتجات كورية طبية موثوقة",
-  "تقييم ٤.٩ / ٥",
-  "نتائج من أول جلسة",
-];
-
-export function Marquee() {
+export function Marquee({ items }: { items: string[] }) {
+  const ITEMS = items;
   return (
     <div className="relative z-10 overflow-hidden border-y border-[var(--color-gls-line-soft)] bg-[#060708]/50 py-4 backdrop-blur-sm">
       <div

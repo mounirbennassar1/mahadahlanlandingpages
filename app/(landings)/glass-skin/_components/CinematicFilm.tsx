@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { Fragment, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon } from "@/components/icons";
 import { StatPill } from "@/components/usablecomponents/StatPill";
+import type { ContentOf } from "@/lib/pages/define";
+import type { GLASS_SKIN } from "../content";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -14,41 +16,12 @@ if (typeof window !== "undefined") {
 
 const BG = "#0b0c0e";
 
-type Caption = {
-  k: string;
-  label: string;
-  title: string;
-  text: string;
-  a: number;
-  b: number;
-};
-
-const CAPTIONS: Caption[] = [
-  {
-    k: "٠١",
-    label: "تنقية",
-    title: "نقاءٌ يعكس الضوء",
-    text: "تنظيف مزدوج وتقشير إنزيمي لطيف يفتح المسام ويُهيّئ بشرتكِ للامتصاص المثالي.",
-    a: 0.16,
-    b: 0.34,
-  },
-  {
-    k: "٠٢",
-    label: "تغذية",
-    title: "ترطيبٌ يتوهّج من الداخل",
-    text: "هيالورونيك وببتيدات كورية تُشبع البشرة طبقةً بعد طبقة حتى تمتلئ بالضوء.",
-    a: 0.4,
-    b: 0.58,
-  },
-  {
-    k: "٠٣",
-    label: "إشراقة",
-    title: "توهّجٌ زجاجي يدوم",
-    text: "لمعان فوري وملمس حريري من أول جلسة، بدون إبر وبدون فترة نقاهة.",
-    a: 0.64,
-    b: 0.82,
-  },
-];
+/* Scroll windows each caption fades in and out over, in content order. */
+const CAPTION_WINDOWS = [
+  { a: 0.16, b: 0.34 },
+  { a: 0.4, b: 0.58 },
+  { a: 0.64, b: 0.82 },
+] as const;
 
 // Deterministic mote configs (no Math.random → no hydration mismatch).
 const MOTES = [
@@ -78,9 +51,10 @@ const getReducedMotion = () => window.matchMedia(REDUCED_QUERY).matches;
 
 type Props = {
   frameCount: number;
+  copy: ContentOf<typeof GLASS_SKIN>["hero"];
 };
 
-export function CinematicFilm({ frameCount }: Props) {
+export function CinematicFilm({ frameCount, copy }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -222,7 +196,7 @@ export function CinematicFilm({ frameCount }: Props) {
           if (cueRef.current) {
             cueRef.current.style.opacity = String(1 - smoothstep(0.01, 0.05, p));
           }
-          CAPTIONS.forEach((c, i) => {
+          CAPTION_WINDOWS.forEach((c, i) => {
             const el = captionRefs.current[i];
             if (!el) return;
             const win =
@@ -351,7 +325,7 @@ export function CinematicFilm({ frameCount }: Props) {
           <div className="flex h-full w-full flex-col items-center justify-end px-5 pb-28 pt-24 text-center md:absolute md:right-[6%] md:w-[min(38rem,46vw)] md:items-start md:justify-center md:pb-10 md:text-right">
             <span className="gls-hero-fade inline-flex items-center gap-2 rounded-full border border-[var(--color-gls-line)] bg-[#060708]/55 px-3.5 py-1.5 text-[10px] font-bold tracking-normal text-[var(--color-gls-primary-dim)] backdrop-blur-md sm:text-[11px]">
               <Icon.Sparkles className="size-3.5" />
-              عيادات د. مها دحلان · بروتوكول كوري أصيل
+              {copy.badge}
             </span>
 
             <h1 className="mt-4 md:mt-5">
@@ -365,26 +339,24 @@ export function CinematicFilm({ frameCount }: Props) {
                     the matching -mb cancels it so line rhythm stays unchanged. */}
                 <span className="-mb-[0.2em] block overflow-hidden pt-[0.16em] pb-[0.34em]">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
-                    البشرة
+                    {copy.line1}
                   </span>
                 </span>
                 <span className="-mb-[0.2em] block overflow-hidden pt-[0.16em] pb-[0.34em]">
                   <span className="gls-line gls-gold-text gls-gold-text-animated block">
-                    الزجاجية
+                    {copy.line2}
                   </span>
                 </span>
               </span>
               <span className="mt-3 -mb-[0.24em] block overflow-hidden pt-[0.12em] pb-[0.24em] md:mt-4">
                 <span className="gls-line block text-[clamp(1.35rem,5.4vw,2.3rem)] font-extrabold leading-snug text-white">
-                  بشرةٌ زجاجية… تتوهّج من الداخل
+                  {copy.tagline}
                 </span>
               </span>
             </h1>
 
             <p className="gls-hero-fade mx-auto mt-4 max-w-md text-[13.5px] leading-7 text-[var(--color-gls-ink-soft)] sm:mt-5 sm:text-base sm:leading-8 md:mx-0">
-              الطقس الكوري الكامل للبشرة الزجاجية: تنظيف عميق، وتقشير لطيف،
-              وترطيب مكثّف يمنحكِ نقاءً ولمعاناً فورياً. بدون إبر، وبدون فترة
-              نقاهة.
+              {copy.body}
             </p>
 
             <div className="gls-hero-fade mt-6 flex w-full items-center justify-center sm:mt-7 md:w-auto md:justify-start">
@@ -396,24 +368,30 @@ export function CinematicFilm({ frameCount }: Props) {
                   background: "linear-gradient(120deg, #f0d98c 0%, #d4af37 55%, #b8912e 100%)",
                 }}
               >
-                احجزي جلستكِ الآن
+                {copy.cta}
                 <Icon.ArrowLeft className="size-4" />
               </a>
             </div>
 
             <div className="gls-hero-fade mt-6 flex items-center gap-5 sm:mt-8 sm:gap-6 md:gap-8">
-              <StatPill tokenPrefix="gls" num="٩٨٪" label="نسبة رضا" />
-              <span className="h-7 w-px bg-[var(--color-gls-line)] sm:h-8" aria-hidden />
-              <StatPill tokenPrefix="gls" num="+٢٤٠٠" label="جلسة ناجحة" />
-              <span className="h-7 w-px bg-[var(--color-gls-line)] sm:h-8" aria-hidden />
-              <StatPill tokenPrefix="gls" num="٦٠ د" label="مدة الجلسة" />
+              {copy.stats.map((stat, i) => (
+                <Fragment key={stat.label}>
+                  {i > 0 && (
+                    <span
+                      className="h-7 w-px bg-[var(--color-gls-line)] sm:h-8"
+                      aria-hidden
+                    />
+                  )}
+                  <StatPill tokenPrefix="gls" num={stat.num} label={stat.label} />
+                </Fragment>
+              ))}
             </div>
           </div>
         </div>
 
         {/* ── film captions (off-center, start side for RTL) ── */}
         {!showPoster &&
-          CAPTIONS.map((c, i) => (
+          copy.captions.map((c, i) => (
             <div
               key={c.k}
               ref={(el) => {
@@ -447,7 +425,7 @@ export function CinematicFilm({ frameCount }: Props) {
             aria-hidden
           >
             <span className="text-[10px] font-bold tracking-normal text-[var(--color-gls-muted)]">
-              مرّري للأسفل
+              {copy.scrollCue}
             </span>
             <span className="block h-10 w-px bg-gradient-to-b from-[var(--color-gls-primary)] to-transparent" />
             <Icon.ChevronDown className="size-4 animate-bounce text-[var(--color-gls-primary)]" />
@@ -462,7 +440,7 @@ export function CinematicFilm({ frameCount }: Props) {
           aria-hidden
         >
           <span className="size-1.5 animate-pulse rounded-full bg-[var(--color-gls-primary)]" />
-          تحميل الفيلم {pct}٪
+          {copy.loading} {pct}٪
         </div>
       </div>
     </section>

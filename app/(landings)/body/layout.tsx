@@ -1,37 +1,7 @@
-import type { Metadata } from "next";
 import Script from "next/script";
 import { cairo, plexArabic } from "@/lib/fonts";
 import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "نحت الجسم بتقنية التحفيز العضلي — عيادات د. مها دحلان",
-  description:
-    "تجربة نحت الجسم الأكثر أناقةً في المنطقة. جلسات تحفيز عضلي كهرومغناطيسي (HIFEM) تمنحك قوامًا متناسقًا وعضلات مشدودة بدون جراحة ولا فترة تعافٍ.",
-  openGraph: {
-    title: "نحت الجسم بتقنية التحفيز العضلي — عيادات د. مها دحلان",
-    description:
-      "تجربة نحت الجسم الأكثر أناقةً في المنطقة. جلسات تحفيز عضلي كهرومغناطيسي (HIFEM) تمنحك قوامًا متناسقًا وعضلات مشدودة بدون جراحة ولا فترة تعافٍ.",
-    locale: "ar_SA",
-    type: "website",
-    siteName: "عيادات د. مها دحلان",
-    images: [
-      {
-        url: "/body/hero-hifem.webp",
-        width: 1200,
-        height: 630,
-        alt: "عيادات د. مها دحلان — نحت الجسم بتقنية HIFEM",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "نحت الجسم بتقنية التحفيز العضلي — عيادات د. مها دحلان",
-    description:
-      "جلسات HIFEM لنحت الجسم وشدّ العضلات بدون جراحة في جدة. احجزي تجربتك.",
-    images: ["/body/hero-hifem.webp"],
-  },
-};
 
 export default function BodyLayout({
   children,

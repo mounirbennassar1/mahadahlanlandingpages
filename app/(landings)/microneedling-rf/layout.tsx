@@ -1,21 +1,8 @@
-import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Script from "next/script";
 import { almarai } from "@/lib/fonts";
 import { ConversionTracking } from "@/components/landing/ConversionTracking";
 import "./landing.css";
-
-export const metadata: Metadata = {
-  title: "علاج البشرة بتقنية الميكرونيدلينغ بالترددات الراديوية | عيادة د. مها دحلان",
-  description:
-    "برنامج طبي متخصص في علاج البشرة بتقنية الميكرونيدلينغ بالترددات الراديوية بأحدث التقنيات في عيادات د. مها دحلان.",
-  openGraph: {
-    title: "علاج البشرة بتقنية الميكرونيدلينغ بالترددات الراديوية",
-    description: "برنامج طبي متخصص في علاج البشرة بتقنية الميكرونيدلينغ بالترددات الراديوية بأحدث التقنيات في عيادات د. مها دحلان.",
-    locale: "ar_SA",
-    type: "website",
-  },
-};
 
 // Palette tokens — declared inline so the JSX can read them via
 // `bg-[var(--color-mrf-primary)]` without a per-landing CSS rule.

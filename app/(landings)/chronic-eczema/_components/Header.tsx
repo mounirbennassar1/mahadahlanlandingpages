@@ -7,7 +7,7 @@ import { GOLD_GRADIENT, PHONE_DISPLAY, TEL_LINK } from "./config";
 
 /** Fixed header: transparent over the frost hero, midnight glass after 30px.
  *  Logo right (RTL), phone center on desktop, gold CTA left. */
-export function Header() {
+export function Header({ cta }: { cta: string }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export function Header() {
           className="group inline-flex items-center gap-2.5 rounded-[4px] px-[22px] py-[11px] text-[0.85rem] font-extrabold text-[#231303] transition-all duration-300 hover:-translate-y-0.5"
           style={{ background: GOLD_GRADIENT }}
         >
-          احجزي موعدك
+          {cta}
           <Icon.ArrowLeft
             className="size-4 transition-transform duration-300 group-hover:-translate-x-1"
             strokeWidth={2.4}

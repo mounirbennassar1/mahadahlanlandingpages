@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@/components/icons";
 import { readUtmFromUrl } from "@/lib/utm";
 import { fireConversion } from "@/lib/gtag";
+import type { ContentOf } from "@/lib/pages/define";
+import type { DARK_CIRCLES } from "../content";
+
+type BookingCopy = ContentOf<typeof DARK_CIRCLES>["booking"];
 
 type Status =
   | { kind: "idle" }
@@ -12,7 +16,7 @@ type Status =
   | { kind: "ok" }
   | { kind: "error"; message: string };
 
-export function LeadForm() {
+export function LeadForm({ copy }: { copy: BookingCopy }) {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
@@ -96,11 +100,10 @@ export function LeadForm() {
               <Icon.Check className="size-8 text-[var(--color-dc-primary-dim)]" />
             </div>
             <h3 className="text-2xl font-bold text-[var(--color-dc-ink)]">
-              تم استلام طلبكِ
+              {copy.successTitle}
             </h3>
             <p className="max-w-md text-sm leading-7 text-[var(--color-dc-ink-soft)]">
-              سيتواصل معكِ فريقنا خلال ٢٤ ساعة لتحديد موعد استشارتكِ الخاصة.
-              يمكنكِ أيضاً مراسلتنا مباشرة على واتساب لتسريع الحجز.
+              {copy.successBody}
             </p>
             <a
               href="https://wa.me/966503377702?text=مرحباً%20عندي%20استفسار%20عن%20علاج%20الهالات"
@@ -109,7 +112,7 @@ export function LeadForm() {
               className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-transform hover:scale-[1.02]"
             >
               <Icon.MessageCircle className="size-4" />
-              تواصلي عبر واتساب
+              {copy.successWhatsapp}
             </a>
           </motion.div>
         ) : (
@@ -125,21 +128,21 @@ export function LeadForm() {
             <div className="space-y-1.5 text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-dc-primary)]/20 bg-[var(--color-dc-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-[0.18em] text-[var(--color-dc-primary-dim)]">
                 <Icon.Sparkles className="size-3.5" />
-                استشارة مجانية
+                {copy.formBadge}
               </span>
               <h3 className="pt-2 text-2xl font-bold text-[var(--color-dc-ink)] sm:text-3xl">
-                ابدئي رحلتكِ نحو نظرة أكثر إشراقاً
+                {copy.formTitle}
               </h3>
               <p className="text-sm text-[var(--color-dc-ink-soft)]">
-                اتركي بياناتكِ، وسنتواصل معكِ خلال ٢٤ ساعة.
+                {copy.formSub}
               </p>
             </div>
 
             <div className="space-y-4">
               <Field
                 id="dc-name"
-                label="الاسم الكامل"
-                placeholder="اكتبي اسمكِ"
+                label={copy.nameLabel}
+                placeholder={copy.namePlaceholder}
                 autoComplete="name"
                 value={fullName}
                 onChange={setFullName}
@@ -147,8 +150,8 @@ export function LeadForm() {
               />
               <Field
                 id="dc-phone"
-                label="رقم الجوال"
-                placeholder="+966 5X XXX XXXX"
+                label={copy.phoneLabel}
+                placeholder={copy.phonePlaceholder}
                 type="tel"
                 inputMode="tel"
                 autoComplete="tel"
@@ -159,8 +162,8 @@ export function LeadForm() {
               />
               <Field
                 id="dc-city"
-                label="المدينة"
-                placeholder="مثال: جدة"
+                label={copy.cityLabel}
+                placeholder={copy.cityPlaceholder}
                 autoComplete="address-level2"
                 value={city}
                 onChange={setCity}
@@ -178,12 +181,12 @@ export function LeadForm() {
               {submitting ? (
                 <>
                   <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                  جارٍ الإرسال...
+                  {copy.submitting}
                 </>
               ) : (
                 <>
                   <Icon.CalendarCheck className="size-5" />
-                  أرسلي الطلب الآن
+                  {copy.submit}
                   <Icon.ArrowLeft className="size-4" />
                 </>
               )}
@@ -204,7 +207,7 @@ export function LeadForm() {
             </AnimatePresence>
 
             <p className="text-center text-xs leading-relaxed text-[var(--color-dc-muted)]">
-              بياناتكِ محمية وتُستخدم فقط للتواصل بشأن استشارتكِ.
+              {copy.privacy}
             </p>
           </motion.form>
         )}

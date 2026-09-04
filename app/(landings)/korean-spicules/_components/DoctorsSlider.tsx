@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
+import type { ContentOf } from "@/lib/pages/define";
+import type { KOREAN_SPICULES } from "../content";
 
 type Doctor = {
   /** Kept for the dot/nav aria-labels; not shown as an eyebrow. */
@@ -21,7 +23,7 @@ type Doctor = {
 
 /* Same specialists as the glass-skin landing — THESERA (Korean) leads,
  * since the spicules ampoules are a THESERA protocol. */
-const DOCTORS: Doctor[] = [
+const BASE_DOCTORS: Doctor[] = [
   {
     label: "الأخصائية الأولى",
     name: "نضال الجريدي",
@@ -61,7 +63,30 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const ORANGE_GRADIENT =
   "linear-gradient(120deg, #ffb473 0%, #ff6b1a 55%, #e35500 100%)";
 
-export function DoctorsSlider() {
+type PeopleCopy = ContentOf<typeof KOREAN_SPICULES>["doctors"]["people"];
+
+/** Photos and the highlighted credential stay in code; the rest is editable. */
+export function DoctorsSlider({
+  people,
+  caption,
+}: {
+  people: PeopleCopy;
+  caption: string;
+}) {
+  const DOCTORS: Doctor[] = BASE_DOCTORS.map((doc, i) => {
+    const copy = people[i];
+    return copy
+      ? {
+          ...doc,
+          label: copy.label,
+          name: copy.name,
+          title: copy.title,
+          experience: copy.experience,
+          credentials: copy.credentials.filter(Boolean),
+        }
+      : doc;
+  });
+
   const [[index, dir], setSlide] = useState<[number, number]>([0, 0]);
   const count = DOCTORS.length;
   const d = DOCTORS[index];
@@ -180,7 +205,7 @@ export function DoctorsSlider() {
             <div className="absolute bottom-5 right-5 left-5 flex items-center justify-between">
               <span className="text-sm font-extrabold text-white">{d.name}</span>
               <span className="text-[10px] font-semibold tracking-normal text-[var(--color-kos-accent)]">
-                عيادات مها دحلان
+                {caption}
               </span>
             </div>
           </div>

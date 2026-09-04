@@ -10,6 +10,10 @@ import {
   OPENING,
 } from "@/app/_home/config";
 import { CLINIC_ADDRESS } from "../../_booking/shared";
+import type { ContentOf } from "@/lib/pages/define";
+import type { BOOK_NOW } from "../content";
+
+type VisitCopy = ContentOf<typeof BOOK_NOW>["visit"];
 
 /** Riyadh-time open/closed state, resolved after mount (no hydration drift). */
 function useOpenNow() {
@@ -37,7 +41,7 @@ function useOpenNow() {
 }
 
 /** Hours card (with live open/closed pill) beside the dark-graded Google map. */
-export function HoursAndMap() {
+export function HoursAndMap({ copy }: { copy: VisitCopy }) {
   const openNow = useOpenNow();
 
   return (
@@ -52,7 +56,7 @@ export function HoursAndMap() {
         <div className="relative flex items-center justify-between gap-3">
           <h3 className="inline-flex items-center gap-2.5 text-[1.2rem] font-extrabold text-[var(--color-md-text)]">
             <Icon.Clock className="size-5 text-[var(--color-md-champagne)]" />
-            ساعات العمل
+            {copy.hoursTitle}
           </h3>
 
           {/* all three states share one node; only classes + text change after mount */}
@@ -75,9 +79,9 @@ export function HoursAndMap() {
               style={openNow ? undefined : { animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
               aria-hidden
             />
-            <span className={openNow === null ? "" : "hidden"}>الدوام</span>
-            <span className={openNow === true ? "" : "hidden"}>مفتوح الآن</span>
-            <span className={openNow === false ? "" : "hidden"}>مغلق الآن</span>
+            <span className={openNow === null ? "" : "hidden"}>{copy.statusIdle}</span>
+            <span className={openNow === true ? "" : "hidden"}>{copy.statusOpen}</span>
+            <span className={openNow === false ? "" : "hidden"}>{copy.statusClosed}</span>
           </span>
         </div>
 
@@ -112,14 +116,14 @@ export function HoursAndMap() {
           style={{ background: GOLD_GRADIENT }}
         >
           <Icon.Navigation className="size-[17px]" strokeWidth={2.2} />
-          احصلي على الاتجاهات
+          {copy.directions}
         </a>
       </div>
 
       <div className="md-map-frame relative min-h-[340px] overflow-hidden rounded-[28px] border border-[var(--color-md-line-strong)] shadow-[0_0_50px_-14px_rgba(232,195,106,0.3)] lg:min-h-0">
         <iframe
           src={MAPS_EMBED_SRC}
-          title="موقع عيادات د. مها دحلان على خرائط Google"
+          title={copy.mapTitle}
           loading="lazy"
           allowFullScreen
           referrerPolicy="no-referrer-when-downgrade"
@@ -127,7 +131,7 @@ export function HoursAndMap() {
         />
         <span className="pointer-events-none absolute top-4 right-4 inline-flex items-center gap-2 rounded-full border border-[rgba(240,212,138,0.4)] bg-[rgba(11,8,5,0.82)] px-4 py-2 text-[0.78rem] font-extrabold text-[var(--color-md-champagne)] backdrop-blur-md">
           <Icon.MapPin className="size-3.5" />
-          عيادات د. مها دحلان
+          {copy.mapPin}
         </span>
       </div>
     </div>

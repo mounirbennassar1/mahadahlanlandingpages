@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@/components/icons";
+import type { ContentOf } from "@/lib/pages/define";
+import type { KOREAN_SPICULES } from "../content";
 
 type Status =
   | { kind: "idle" }
@@ -13,7 +15,9 @@ type Status =
 const ORANGE_GRADIENT =
   "linear-gradient(120deg, #ffb473 0%, #ff6b1a 55%, #e35500 100%)";
 
-export function LeadForm() {
+type BookingCopy = ContentOf<typeof KOREAN_SPICULES>["booking"];
+
+export function LeadForm({ copy }: { copy: BookingCopy }) {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
@@ -87,11 +91,10 @@ export function LeadForm() {
               <Icon.Check className="size-8 text-[var(--color-kos-primary-dim)]" />
             </div>
             <h3 className="text-2xl font-bold text-[var(--color-kos-ink)]">
-              تم استلام طلبكِ
+              {copy.successTitle}
             </h3>
             <p className="max-w-md text-sm leading-7 text-[var(--color-kos-ink-soft)]">
-              سيتواصل معكِ فريقنا خلال ٢٤ ساعة لتأكيد موعدكِ وتقييم بشرتكِ
-              وتحديد كثافة السبيكولز المناسبة لها.
+              {copy.successBody}
             </p>
           </motion.div>
         ) : (
@@ -107,21 +110,21 @@ export function LeadForm() {
             <div className="space-y-1.5 text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-kos-primary)]/20 bg-[var(--color-kos-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-normal text-[var(--color-kos-primary-dim)]">
                 <Icon.Sparkles className="size-3.5" />
-                مقاعد محدودة أسبوعياً
+                {copy.formBadge}
               </span>
               <h3 className="pt-2 text-2xl font-bold text-[var(--color-kos-ink)] sm:text-3xl">
-                احجزي جلسة السبيكولز
+                {copy.formTitle}
               </h3>
               <p className="text-sm text-[var(--color-kos-ink-soft)]">
-                اتركي بياناتكِ، وسنتواصل معكِ خلال ٢٤ ساعة.
+                {copy.formSub}
               </p>
             </div>
 
             <div className="space-y-4">
               <Field
                 id="kos-name"
-                label="الاسم الكامل"
-                placeholder="اكتبي اسمكِ"
+                label={copy.nameLabel}
+                placeholder={copy.namePlaceholder}
                 autoComplete="name"
                 value={fullName}
                 onChange={setFullName}
@@ -129,8 +132,8 @@ export function LeadForm() {
               />
               <Field
                 id="kos-phone"
-                label="رقم الجوال"
-                placeholder="مثال: ٠٥٠ ١٢٣ ٤٥٦٧"
+                label={copy.phoneLabel}
+                placeholder={copy.phonePlaceholder}
                 type="tel"
                 inputMode="tel"
                 autoComplete="tel"
@@ -141,8 +144,8 @@ export function LeadForm() {
               />
               <Field
                 id="kos-city"
-                label="المدينة"
-                placeholder="مثال: جدة"
+                label={copy.cityLabel}
+                placeholder={copy.cityPlaceholder}
                 autoComplete="address-level2"
                 value={city}
                 onChange={setCity}
@@ -164,13 +167,13 @@ export function LeadForm() {
                 className={`items-center justify-center gap-3 ${submitting ? "flex" : "hidden"}`}
               >
                 <span className="size-4 animate-spin rounded-full border-2 border-[#180a02]/30 border-t-[#180a02]" />
-                <span>جارٍ الإرسال...</span>
+                <span>{copy.submitting}</span>
               </span>
               <span
                 className={`items-center justify-center gap-3 ${submitting ? "hidden" : "flex"}`}
               >
                 <Icon.CalendarCheck className="size-5" />
-                <span>أرسلي الطلب الآن</span>
+                <span>{copy.submit}</span>
                 <Icon.ArrowLeft className="size-4" />
               </span>
             </motion.button>
@@ -190,7 +193,7 @@ export function LeadForm() {
             </AnimatePresence>
 
             <p className="text-center text-xs leading-relaxed text-[var(--color-kos-muted)]">
-              بياناتكِ محمية وتُستخدم فقط للتواصل بشأن استشارتكِ.
+              {copy.privacy}
             </p>
           </motion.form>
         )}

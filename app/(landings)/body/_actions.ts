@@ -1,6 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { ensureSource } from "@/lib/sources";
 
 export type LeadFormState = {
   status: "idle" | "validation_error" | "server_error";
@@ -25,6 +27,17 @@ export async function submitBodyLead(
   const phone = String(formData.get("phone") ?? "").trim();
   const city = String(formData.get("city") ?? "").trim();
 
+  // UTM attribution (optional — passed as hidden inputs from the form).
+  const utmField = (k: string) => {
+    const v = String(formData.get(k) ?? "").trim();
+    return v.length > 0 ? v.slice(0, 120) : null;
+  };
+  const utmSource = utmField("utmSource");
+  const utmMedium = utmField("utmMedium");
+  const utmCampaign = utmField("utmCampaign");
+  const utmContent = utmField("utmContent");
+  const utmTerm = utmField("utmTerm");
+
   const clientIssues: LeadFormState["issues"] = {};
   if (!fullName) clientIssues.fullName = "الاسم الكامل مطلوب";
   if (!phone) clientIssues.phone = "رقم الجوال مطلوب";
@@ -38,35 +51,40 @@ export async function submitBodyLead(
     };
   }
 
-  const panelUrl = process.env.LEAD_PANEL_URL;
-  const apiKey = process.env.LEAD_API_KEY_BODY;
-
-  if (!panelUrl || !apiKey) {
-    console.error(
-      "[submitBodyLead] Missing LEAD_PANEL_URL or LEAD_API_KEY_BODY env var",
-    );
-    return {
-      status: "server_error",
-      message:
-        "حدث خطأ ما، يرجى المحاولة لاحقاً أو الاتصال بنا على 920007515",
-      values: { fullName, phone, city },
-    };
-  }
-
-  let response: Response;
   try {
-    response = await fetch(`${panelUrl.replace(/\/+$/, "")}/api/leads`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": apiKey,
+    // ensureSource bootstraps the LeadSource + 5 UTM links if this is the
+    // first body submission ever — so the body landing works in any env
+    // where it has been deployed, with or without a prior seed run.
+    const source = await ensureSource("body");
+    if (!source || !source.active) {
+      console.error("[submitBodyLead] Source 'body' missing or inactive.");
+      return {
+        status: "server_error",
+        message:
+          "حدث خطأ ما، يرجى المحاولة لاحقاً أو الاتصال بنا على 920007515",
+        values: { fullName, phone, city },
+      };
+    }
+
+    const lead = await prisma.lead.create({
+      data: {
+        fullName,
+        phone,
+        city,
+        sourceId: source.id,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        utmTerm,
       },
-      // Dashboard derives source from the API key — body is just lead fields.
-      body: JSON.stringify({ fullName, phone, city }),
-      cache: "no-store",
+    });
+
+    await prisma.leadActivity.create({
+      data: { leadId: lead.id, type: "CREATED", meta: { via: "form" } },
     });
   } catch (err) {
-    console.error("[submitBodyLead] network error", err);
+    console.error("[submitBodyLead] DB error", err);
     return {
       status: "server_error",
       message:
@@ -75,47 +93,5 @@ export async function submitBodyLead(
     };
   }
 
-  if (response.status === 200 || response.status === 201) {
-    redirect("/body/thank-you");
-  }
-
-  if (response.status === 400) {
-    let issues: Record<string, string> = {};
-    try {
-      const data = (await response.json()) as {
-        error?: string;
-        issues?: Record<string, unknown>;
-      };
-      if (data.issues && typeof data.issues === "object") {
-        for (const [key, value] of Object.entries(data.issues)) {
-          if (typeof value === "string") {
-            issues[key] = value;
-          } else if (Array.isArray(value) && typeof value[0] === "string") {
-            issues[key] = value[0];
-          }
-        }
-      }
-    } catch {
-      issues = {};
-    }
-    return {
-      status: "validation_error",
-      issues,
-      values: { fullName, phone, city },
-    };
-  }
-
-  let detail = "";
-  try {
-    detail = await response.text();
-  } catch {}
-  console.error(
-    `[submitBodyLead] panel responded ${response.status}: ${detail.slice(0, 500)}`,
-  );
-  return {
-    status: "server_error",
-    message:
-      "حدث خطأ ما، يرجى المحاولة لاحقاً أو الاتصال بنا على 920007515",
-    values: { fullName, phone, city },
-  };
+  redirect("/body/thank-you");
 }

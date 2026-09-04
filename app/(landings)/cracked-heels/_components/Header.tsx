@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
 
 /** Fixed header: transparent over the hero, espresso glass after 30px. */
-export function Header() {
+export function Header({ cta }: { cta: string }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export function Header() {
             background: "linear-gradient(135deg, #8C6A3F, #E4C87E 50%, #B08D57)",
           }}
         >
-          احجزي موعدك
+          {cta}
           <Icon.ArrowLeft className="size-4" strokeWidth={2.4} />
         </a>
       </div>

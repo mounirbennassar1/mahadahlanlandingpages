@@ -1,134 +1,74 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import BeforeAfter from "./_components/BeforeAfter";
 import HeroCanvas from "./_components/HeroCanvasLazy";
 import LeadForm from "./_components/LeadForm";
 import Reveals from "./_components/Reveals";
+import { getPageContent } from "@/lib/pages/get";
+import { BODY } from "./content";
 
-const benefits = [
-  {
-    title: "حرق دهون موضعي",
-    body: "تستهدف موجات HIFEM الطبقة الدهنية بأمان لتقليل محيط الخصر والأرداف دون جراحة.",
-    number: "01",
-  },
-  {
-    title: "تكبير وشدّ العضلات",
-    body: "الجلسة الواحدة تعادل ٢٠٬٠٠٠ انقباضة عضلية — نتائج رياضي محترف خلال أسابيع.",
-    number: "02",
-  },
-  {
-    title: "دون ألم ولا تعافٍ",
-    body: "بدون إبر ولا تخدير ولا فترة نقاهة — عودي إلى يومك مباشرة بعد الجلسة.",
-    number: "03",
-  },
-  {
-    title: "تقنية معتمدة طبيًا",
-    body: "أجهزة مرخّصة من FDA وهيئات التجميل الطبية في الخليج، تحت إشراف أطباء متخصصين.",
-    number: "04",
-  },
-];
+/** Anchors for the top nav links, in content order. */
+const NAV_HREFS = [
+  "#benefits",
+  "#treatments",
+  "#process",
+  "#results",
+  "#stories",
+  "#faq",
+] as const;
 
-const treatments = [
-  {
-    area: "البطن والخصر",
-    desc: "نحت الخصر وتفعيل عضلات البطن السفلية للحصول على قوام ساعة رملية.",
-    duration: "٣٠ دقيقة",
-    sessions: "٤–٦ جلسات",
-  },
-  {
-    area: "الأرداف والمؤخرة",
-    desc: "رفع طبيعي للمؤخرة وتكبيرها بزاوية عضلية متناسقة دون حقن.",
-    duration: "٣٠ دقيقة",
-    sessions: "٤–٦ جلسات",
-  },
-  {
-    area: "الذراعين والكتفين",
-    desc: "شد الترهلات وتنسيق العضلة الثلاثية لإطلالة أنيقة في الفساتين المفتوحة.",
-    duration: "٢٠ دقيقة",
-    sessions: "٤ جلسات",
-  },
-  {
-    area: "الفخذين الداخلية",
-    desc: "تنحيف الفخذين الداخلية وإزالة الاحتكاك مع الحفاظ على الليونة الحركية.",
-    duration: "٣٠ دقيقة",
-    sessions: "٦ جلسات",
-  },
-];
+/** Whether each hero stat shows the gold "+" suffix, in content order. */
+const HERO_STAT_PLUS = [true, false, true] as const;
 
-const steps = [
-  {
-    step: "١",
-    title: "استشارة أولى",
-    body: "نحلل قياسات الجسم، التركيب العضلي، ونضع خطة مخصصة لأهدافك.",
-  },
-  {
-    step: "٢",
-    title: "بروتوكول الجلسات",
-    body: "تجربة هادئة في غرفة خاصة، تحت إشراف فني معتمد ومتابعة طبية.",
-  },
-  {
-    step: "٣",
-    title: "متابعة ونتائج",
-    body: "قياسات أسبوعية وتقارير مصورة حتى الوصول إلى القوام المثالي.",
-  },
-];
+/** Before/after image pairs for the results cards, in content order. */
+const RESULT_IMAGES = [
+  { before: "/body/afterbefore/before.webp", after: "/body/afterbefore/after.webp" },
+  { before: "/body/afterbefore/before.webp", after: "/body/afterbefore/after.webp" },
+  { before: "/body/afterbefore/before.webp", after: "/body/afterbefore/after.webp" },
+] as const;
 
-const testimonials = [
-  {
-    name: "نورة المطيري",
-    city: "الرياض",
-    quote:
-      "بعد أربع جلسات فقط لاحظت فرق واضح في شدّ البطن وتناسق الخصر — الجلسة مريحة وممتعة.",
-  },
-  {
-    name: "ريم الحربي",
-    city: "جدة",
-    quote:
-      "التجربة راقية من لحظة الدخول، والنتائج ظهرت قبل رحلة الصيف بأسبوعين فقط.",
-  },
-  {
-    name: "سارة العتيبي",
-    city: "الخبر",
-    quote:
-      "أخيرًا حل بدون جراحة يعطيني شكل رياضي طبيعي — موصى به لكل من يبحث عن الأناقة.",
-  },
-];
+export const revalidate = 300;
 
-const faqs = [
-  {
-    q: "هل الجلسة مؤلمة؟",
-    a: "أبدًا. ستشعرين بانقباضات عضلية قوية تشبه التمرين المركّز، لكنها مريحة ومُتحكَّم بها. معظم عميلاتنا يستمتعن بالجلسة من أول مرة.",
-  },
-  {
-    q: "متى تظهر النتائج؟",
-    a: "تظهر بوادر الشد بعد الجلسة الثانية، وتكتمل النتائج بعد الجلسة الرابعة إلى السادسة بحسب البروتوكول والأهداف.",
-  },
-  {
-    q: "هل التقنية آمنة؟",
-    a: "نعم. تعتمد التقنية على موجات مغناطيسية كهربائية غير ضارة ومعتمدة من FDA، ولا تتطلب تخديرًا ولا فترة نقاهة.",
-  },
-  {
-    q: "هل تصلح بعد الولادة؟",
-    a: "نعم بعد انقضاء فترة النفاس (٦–٨ أسابيع) وموافقة الطبيب، وتعد من أفضل الحلول لاستعادة شدّ عضلات البطن بعد الولادة.",
-  },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(BODY);
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.ogDescription,
+      locale: "ar_SA",
+      type: "website",
+      siteName: "عيادات د. مها دحلان",
+      images: [
+        {
+          url: "/body/hero-hifem.webp",
+          width: 1200,
+          height: 630,
+          alt: "عيادات د. مها دحلان — نحت الجسم بتقنية HIFEM",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.title,
+      description:
+        "جلسات HIFEM لنحت الجسم وشدّ العضلات بدون جراحة في جدة. احجزي تجربتك.",
+      images: ["/body/hero-hifem.webp"],
+    },
+  };
+}
 
-const marqueeWords = [
-  "نحت الجسم",
-  "•",
-  "تحفيز عضلي",
-  "•",
-  "بدون جراحة",
-  "•",
-  "تقنية مرخّصة",
-  "•",
-  "نتائج مرئية",
-  "•",
-  "تجربة فاخرة",
-  "•",
-];
+export default async function BodyLanding() {
+  const c = await getPageContent(BODY);
+  const benefits = c.benefits.cards;
+  const treatments = c.treatments.cards;
+  const steps = c.process.steps;
+  const testimonials = c.testimonials.cards;
+  const faqs = c.faq.questions;
+  const marqueeWords = c.marquee.words.flatMap((w) => [w, "•"]);
 
-export default function BodyLanding() {
   return (
     <>
       <Reveals />
@@ -151,31 +91,22 @@ export default function BodyLanding() {
             />
           </Link>
           <nav className="hidden md:flex items-center gap-8 text-sm text-body-muted">
-            <a href="#benefits" className="hover:text-body-fg transition">
-              المميزات
-            </a>
-            <a href="#treatments" className="hover:text-body-fg transition">
-              مناطق العلاج
-            </a>
-            <a href="#process" className="hover:text-body-fg transition">
-              الرحلة
-            </a>
-            <a href="#results" className="hover:text-body-fg transition">
-              قبل وبعد
-            </a>
-            <a href="#stories" className="hover:text-body-fg transition">
-              قصص النجاح
-            </a>
-            <a href="#faq" className="hover:text-body-fg transition">
-              الأسئلة
-            </a>
+            {c.nav.links.map((link, i) => (
+              <a
+                key={NAV_HREFS[i]}
+                href={NAV_HREFS[i]}
+                className="hover:text-body-fg transition"
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
           <a
             href="#reserve"
             className="btn-primary-body shrink-0 text-sm !px-4 !py-2"
           >
-            احجزي
-            <span className="hidden sm:inline">&nbsp;استشارتك</span>
+            {c.nav.book}
+            <span className="hidden sm:inline">&nbsp;{c.nav.bookLong}</span>
           </a>
         </div>
       </header>
@@ -194,27 +125,26 @@ export default function BodyLanding() {
           <div className="lg:col-span-7">
             <div className="inline-flex items-center gap-3 rounded-full border border-body-line bg-white/50 px-4 py-1.5 text-xs backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-body-accent" />
-              <span className="text-body-muted">جيل جديد من نحت الجسم غير الجراحي</span>
+              <span className="text-body-muted">{c.hero.badge}</span>
             </div>
 
             <h1
               data-split
               className="hero-headline font-display-body mt-6 text-4xl leading-[1.2] sm:mt-8 sm:text-5xl sm:leading-[1.15] md:text-6xl lg:text-7xl text-body-fg"
             >
-              نحت جسمك يبدأ بنبضة واحدة.
+              {c.hero.title}
             </h1>
 
             <p
               data-split
               className="hero-sub mt-5 max-w-xl text-base leading-8 text-body-muted sm:mt-6 sm:text-lg sm:leading-9"
             >
-              نجمع بين التحفيز الكهرومغناطيسي عالي الكثافة والعلم الرياضي
-              لنمنحك قوامًا متناسقًا، عضلات مشدودة، وثقة تُرى قبل أن تُقال.
+              {c.hero.sub}
             </p>
 
             <div className="hero-cta mt-10 flex flex-wrap items-center gap-4 opacity-0 translate-y-4">
               <a href="#reserve" className="btn-primary-body">
-                احجزي جلستك الأولى
+                {c.hero.book}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M14 5l-7 7 7 7"
@@ -226,31 +156,24 @@ export default function BodyLanding() {
                 </svg>
               </a>
               <a href="#benefits" className="btn-ghost-body">
-                تعرّفي على التجربة
+                {c.hero.learn}
               </a>
             </div>
 
             <dl className="mt-10 grid max-w-xl grid-cols-3 gap-4 sm:mt-16 sm:gap-6">
-              <div>
-                <dt className="text-[11px] text-body-muted sm:text-xs">انقباضة/جلسة</dt>
-                <dd className="mt-2 font-display-body text-2xl sm:text-3xl text-body-fg">
-                  <span data-count="20000">0</span>
-                  <span className="text-body-accent">+</span>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[11px] text-body-muted sm:text-xs">فرع بالمملكة</dt>
-                <dd className="mt-2 font-display-body text-2xl sm:text-3xl text-body-fg">
-                  <span data-count="7">0</span>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-[11px] text-body-muted sm:text-xs">سيدة بثقة</dt>
-                <dd className="mt-2 font-display-body text-2xl sm:text-3xl text-body-fg">
-                  <span data-count="3400">0</span>
-                  <span className="text-body-accent">+</span>
-                </dd>
-              </div>
+              {c.hero.stats.map((stat, i) => (
+                <div key={stat.label}>
+                  <dt className="text-[11px] text-body-muted sm:text-xs">
+                    {stat.label}
+                  </dt>
+                  <dd className="mt-2 font-display-body text-2xl sm:text-3xl text-body-fg">
+                    <span data-count={stat.count}>0</span>
+                    {HERO_STAT_PLUS[i] && (
+                      <span className="text-body-accent">+</span>
+                    )}
+                  </dd>
+                </div>
+              ))}
             </dl>
           </div>
 
@@ -267,7 +190,7 @@ export default function BodyLanding() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-body-bg/75 via-body-bg/0 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 flex items-center justify-between px-6 pb-5 sm:px-8">
-                  <span className="eyebrow-body">تقنية HIFEM®</span>
+                  <span className="eyebrow-body">{c.heroCard.tag}</span>
                   <span className="h-8 w-8 rounded-full border border-body-fg/25 bg-body-bg/70 backdrop-blur flex items-center justify-center">
                     <span className="h-1.5 w-1.5 rounded-full bg-body-accent animate-pulse" />
                   </span>
@@ -276,29 +199,21 @@ export default function BodyLanding() {
 
               <div className="p-8 sm:p-10">
                 <h3 className="font-display-body text-3xl leading-snug text-body-fg">
-                  موجات مغناطيسية تُشغّل ١٠٠٪ من ألياف العضلة.
+                  {c.heroCard.title}
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-body-muted">
-                  التدريب التقليدي يُشغّل ٣٠–٤٠٪ فقط من ألياف العضلة. تقنيتنا
-                  تصل إلى العمق العضلي وتُحدث تفعيلًا كاملاً يُحرّر بروتينات
-                  البناء ويحرق الدهون موضعيًا.
+                  {c.heroCard.body}
                 </p>
 
                 <div className="hairline my-6" />
 
                 <ul className="grid gap-3 text-sm text-body-fg">
-                  <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1 w-5 bg-body-accent" />
-                    <span>إشراف طبي معتمد من هيئة التخصصات الصحية.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1 w-5 bg-body-accent" />
-                    <span>غرف خاصة بأجواء سبا فاخر لراحتك الكاملة.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="mt-2 h-1 w-5 bg-body-accent" />
-                    <span>خطة غذائية ومتابعة شخصية بعد كل جلسة.</span>
-                  </li>
+                  {c.heroCard.points.map((point) => (
+                    <li key={point} className="flex items-start gap-3">
+                      <span className="mt-2 h-1 w-5 bg-body-accent" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -326,17 +241,15 @@ export default function BodyLanding() {
         <div className="mx-auto max-w-7xl px-6 sm:px-10">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-4">
-              <span className="eyebrow-body reveal">لماذا عيادة د. مها دحلان</span>
+              <span className="eyebrow-body reveal">{c.benefits.eyebrow}</span>
               <h2
                 data-split-scroll
                 className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl text-body-fg"
               >
-                علم دقيق. تجربة راقية. نتائج ترونها.
+                {c.benefits.title}
               </h2>
               <p className="mt-6 leading-8 text-body-muted reveal">
-                كل جلسة مصمّمة بعناية لتحاكي أفضل ما يقدّمه علم الرياضة، في
-                بيئة تحتفي بخصوصيتك وراحتك. خبرة مركز طبي متكاملة تشبه زيارة
-                مقصد سبا فاخر.
+                {c.benefits.body}
               </p>
             </div>
             <ul className="lg:col-span-8 grid gap-px sm:grid-cols-2 bg-body-line overflow-hidden rounded-2xl">
@@ -374,17 +287,16 @@ export default function BodyLanding() {
         <div className="relative mx-auto max-w-7xl px-6 sm:px-10">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <span className="eyebrow-body reveal">مناطق العلاج</span>
+              <span className="eyebrow-body reveal">{c.treatments.eyebrow}</span>
               <h2
                 data-split-scroll
                 className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl text-body-fg"
               >
-                بروتوكولات مصمّمة لكل منطقة.
+                {c.treatments.title}
               </h2>
             </div>
             <p className="max-w-md leading-8 text-body-muted reveal">
-              نقدّم بروتوكولات متخصصة لكل منطقة من الجسم، بجرعات ومدد مختلفة،
-              لضمان نتائج مرئية وطبيعية تناسب تفاصيل قوامك.
+              {c.treatments.sub}
             </p>
           </div>
 
@@ -410,7 +322,7 @@ export default function BodyLanding() {
                 </p>
                 <div className="hairline my-6" />
                 <div className="flex items-center justify-between text-xs text-body-muted">
-                  <span>بروتوكول مُوصى به</span>
+                  <span>{c.treatments.protocolLabel}</span>
                   <span className="text-body-fg">{t.sessions}</span>
                 </div>
               </article>
@@ -423,12 +335,12 @@ export default function BodyLanding() {
       <section id="process" className="relative py-16 sm:py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 sm:px-10">
           <div className="max-w-2xl">
-            <span className="eyebrow-body reveal">الرحلة</span>
+            <span className="eyebrow-body reveal">{c.process.eyebrow}</span>
             <h2
               data-split-scroll
               className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl text-body-fg"
             >
-              ثلاث خطوات نحو القوام الذي تريدينه.
+              {c.process.title}
             </h2>
           </div>
 
@@ -468,30 +380,25 @@ export default function BodyLanding() {
         <div className="relative mx-auto max-w-6xl px-6 sm:px-10">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <span className="eyebrow-body reveal">نتائج حقيقية</span>
+              <span className="eyebrow-body reveal">{c.results.eyebrow}</span>
               <h2
                 data-split-scroll
                 className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl text-body-fg"
               >
-                قبل وبعد — الفرق الذي ترينه.
+                {c.results.title}
               </h2>
             </div>
             <p className="reveal max-w-md leading-8 text-body-muted">
-              اسحبي العصا يمينًا ويسارًا لرؤية التحوّل بعد بروتوكول الجلسات
-              المخصص، بنفس الإضاءة ونفس الزاوية.
+              {c.results.sub}
             </p>
           </div>
 
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { area: "البطن والخصر", note: "٦ جلسات — بروتوكول النحت" },
-              { area: "الأرداف والمؤخرة", note: "٥ جلسات — بروتوكول الرفع" },
-              { area: "الذراعين", note: "٤ جلسات — بروتوكول الشدّ" },
-            ].map((item, i) => (
+            {c.results.cards.map((item, i) => (
               <figure key={item.area} className="reveal grid gap-4">
                 <BeforeAfter
-                  beforeSrc="/body/afterbefore/before.webp"
-                  afterSrc="/body/afterbefore/after.webp"
+                  beforeSrc={RESULT_IMAGES[i].before}
+                  afterSrc={RESULT_IMAGES[i].after}
                   beforeAlt={`صورة قبل الجلسات — ${item.area}`}
                   afterAlt={`صورة بعد الجلسات — ${item.area}`}
                   delay={i * 0.25}
@@ -523,18 +430,18 @@ export default function BodyLanding() {
           <div className="flex items-end justify-between flex-wrap gap-6">
             <div>
               <span className="eyebrow-body reveal text-body-accent-soft">
-                قصص نجاح
+                {c.testimonials.eyebrow}
               </span>
               <h2
                 data-split-scroll
                 className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl max-w-xl"
               >
-                سيدات اخترن الأناقة بدلًا من الجراحة.
+                {c.testimonials.title}
               </h2>
             </div>
             <div className="reveal flex items-center gap-3 text-sm text-body-bg/70">
               <span className="h-1.5 w-1.5 rounded-full bg-body-accent" />
-              <span>أكثر من ٣٤٠٠ تجربة ناجحة منذ ٢٠٢٢</span>
+              <span>{c.testimonials.note}</span>
             </div>
           </div>
 
@@ -579,12 +486,12 @@ export default function BodyLanding() {
       <section id="faq" className="relative py-16 sm:py-24 lg:py-32">
         <div className="mx-auto max-w-5xl px-6 sm:px-10">
           <div className="text-center">
-            <span className="eyebrow-body reveal">الأسئلة الشائعة</span>
+            <span className="eyebrow-body reveal">{c.faq.eyebrow}</span>
             <h2
               data-split-scroll
               className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl text-body-fg"
             >
-              كل ما تريدين معرفته قبل جلستك الأولى.
+              {c.faq.title}
             </h2>
           </div>
 
@@ -631,25 +538,19 @@ export default function BodyLanding() {
 
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 gap-14 px-6 sm:px-10 lg:grid-cols-2">
           <div>
-            <span className="eyebrow-body reveal">احجزي الآن</span>
+            <span className="eyebrow-body reveal">{c.booking.eyebrow}</span>
             <h2
               data-split-scroll
               className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl text-body-fg"
             >
-              الجلسة الأولى عليها مكالمة استشارة مجانية.
+              {c.booking.title}
             </h2>
             <p className="reveal mt-6 leading-8 text-body-muted max-w-lg">
-              اتركي بياناتك وسنعاود التواصل معك خلال ساعة عمل لتحديد موعد
-              زيارة الفرع الأقرب لك، مع هدية ترحيبية وتحليل قوام مجاني.
+              {c.booking.body}
             </p>
 
             <ul className="mt-10 grid gap-4 text-sm text-body-fg/90">
-              {[
-                "اتصال خلال ساعة عمل واحدة",
-                "تحليل قوام وخطة مخصصة مجانًا",
-                "هدية ترحيبية في أول زيارة",
-                "٧ فروع في أهم مدن المملكة",
-              ].map((line) => (
+              {c.booking.points.map((line) => (
                 <li key={line} className="reveal flex items-center gap-3">
                   <span className="grid h-6 w-6 place-items-center rounded-full bg-body-fg text-body-bg">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
@@ -670,16 +571,16 @@ export default function BodyLanding() {
             <div className="mt-12 rounded-2xl border border-body-line bg-body-bg/70 p-6">
               <div className="flex items-center gap-3 text-sm text-body-muted">
                 <span className="h-1.5 w-1.5 rounded-full bg-body-accent animate-pulse" />
-                <span>المقاعد محدودة لهذا الأسبوع</span>
+                <span>{c.booking.badge}</span>
               </div>
               <p className="mt-3 font-display-body text-xl leading-relaxed text-body-fg">
-                يتم استقبال ٤٠ سيدة فقط أسبوعيًا لضمان تجربة خاصة وراقية.
+                {c.booking.note}
               </p>
             </div>
           </div>
 
           <div className="reveal">
-            <LeadForm />
+            <LeadForm copy={c.booking} />
           </div>
         </div>
       </section>
@@ -701,25 +602,23 @@ export default function BodyLanding() {
                 </div>
                 <div className="leading-tight">
                   <div className="font-display-body text-lg text-body-bg">
-                    عيادة د. مها دحلان
+                    {c.footer.brand}
                   </div>
                   <div className="text-xs text-body-bg/60">
-                    نحت الجسم الطبي
+                    {c.footer.tagline}
                   </div>
                 </div>
               </div>
               <p className="mt-5 text-sm leading-7 max-w-sm">
-                وجهتك الأنيقة لنحت الجسم بتقنية التحفيز العضلي الكهرومغناطيسي.
-                تجربة طبية فاخرة مصمّمة لها.
+                {c.footer.about}
               </p>
             </div>
             <div>
-              <span className="eyebrow-body text-body-bg/60">تواصل معنا</span>
+              <span className="eyebrow-body text-body-bg/60">
+                {c.footer.contactTitle}
+              </span>
               <ul className="mt-4 grid gap-3 text-sm leading-7">
-                <li>
-                  جدة، حي الروضة، شارع الأمير محمد بن عبدالعزيز (التحلية)،
-                  مركز بن حمران – الدور الثالث
-                </li>
+                <li>{c.footer.address}</li>
                 <li>
                   <a
                     href="mailto:info@mahadahlan.com"
@@ -750,21 +649,23 @@ export default function BodyLanding() {
               </ul>
             </div>
             <div>
-              <span className="eyebrow-body text-body-bg/60">ساعات العمل</span>
+              <span className="eyebrow-body text-body-bg/60">
+                {c.footer.hoursTitle}
+              </span>
               <ul className="mt-4 grid gap-3 text-sm leading-7">
                 <li>
-                  <div className="text-body-bg">السبت – الخميس</div>
-                  <div className="text-body-bg/70">١٢:٠٠ ظ – ٨:٠٠ م</div>
+                  <div className="text-body-bg">{c.footer.weekdays}</div>
+                  <div className="text-body-bg/70">{c.footer.weekdaysTime}</div>
                 </li>
                 <li>
-                  <div className="text-body-bg">الجمعة</div>
-                  <div className="text-body-bg/70">مغلق</div>
+                  <div className="text-body-bg">{c.footer.friday}</div>
+                  <div className="text-body-bg/70">{c.footer.fridayTime}</div>
                 </li>
               </ul>
             </div>
           </div>
           <div className="mt-14 flex flex-col gap-4 border-t border-body-bg/15 pt-6 text-xs text-body-bg/50 sm:flex-row sm:items-center sm:justify-between">
-            <span>© ٢٠٢٦ عيادة د. مها دحلان. جميع الحقوق محفوظة.</span>
+            <span>{c.footer.copyright}</span>
           </div>
         </div>
       </footer>

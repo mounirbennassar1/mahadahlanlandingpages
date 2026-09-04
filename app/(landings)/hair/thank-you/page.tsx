@@ -1,13 +1,23 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { FireFormConversion } from "@/components/landing/FireFormConversion";
+import { getPageContent } from "@/lib/pages/get";
+import { HAIR } from "../content";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "شكراً لك - عيادة مها دهلان",
   description: "تم استلام طلبك بنجاح، سنتواصل معك قريباً",
 };
 
-export default function HairThankYouPage() {
+/** Material icons for the "next steps" list, in content order. */
+const STEP_ICONS = ["call", "schedule", "location_on"] as const;
+
+export default async function HairThankYouPage() {
+  const { thankYou } = await getPageContent(HAIR);
+  const steps = thankYou.steps.map((step, i) => ({ ...step, icon: STEP_ICONS[i] }));
+
   return (
     <main className="min-h-screen bg-[#f9f7f2] text-[#1a3a2a] flex items-center justify-center px-6 py-16">
       <FireFormConversion />
@@ -23,12 +33,11 @@ export default function HairThankYouPage() {
           </div>
 
           <h1 className="text-3xl md:text-4xl font-bold text-[#1a3a2a] mb-4 leading-tight">
-            تم استلام طلبك بنجاح
+            {thankYou.title}
           </h1>
 
           <p className="text-slate-600 leading-relaxed mb-8">
-            شكراً لتواصلك مع عيادة د. مها دهلان. فريقنا الطبي سيقوم بالتواصل
-            معك خلال أقرب وقت لتأكيد موعد استشارتك.
+            {thankYou.body}
           </p>
 
           <div className="bg-[#f9f7f2] border border-[#1a3a2a]/10 rounded-2xl p-5 mb-8 text-right">
@@ -36,27 +45,17 @@ export default function HairThankYouPage() {
               <span className="material-symbols-outlined text-[#c9a84c]">
                 info
               </span>
-              الخطوات التالية
+              {thankYou.stepsTitle}
             </h4>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li className="flex gap-2 items-start">
-                <span className="material-symbols-outlined text-[#c9a84c] text-base shrink-0 mt-0.5">
-                  call
-                </span>
-                سيتصل بك أحد مستشارينا لتحديد موعد يناسبك
-              </li>
-              <li className="flex gap-2 items-start">
-                <span className="material-symbols-outlined text-[#c9a84c] text-base shrink-0 mt-0.5">
-                  schedule
-                </span>
-                موعد الاستشارة خلال 24 ساعة عمل
-              </li>
-              <li className="flex gap-2 items-start">
-                <span className="material-symbols-outlined text-[#c9a84c] text-base shrink-0 mt-0.5">
-                  location_on
-                </span>
-                جدة - حي الروضة، مركز بن حمران - الدور الثالث
-              </li>
+              {steps.map((step) => (
+                <li key={step.text} className="flex gap-2 items-start">
+                  <span className="material-symbols-outlined text-[#c9a84c] text-base shrink-0 mt-0.5">
+                    {step.icon}
+                  </span>
+                  {step.text}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -66,7 +65,7 @@ export default function HairThankYouPage() {
               className="inline-flex items-center justify-center gap-2 bg-[#1a3a2a] text-[#c9a84c] px-6 py-3 rounded-xl font-bold border border-[#c9a84c]/30 hover:bg-[#1a3a2a]/90 transition-colors"
             >
               <span className="material-symbols-outlined">home</span>
-              العودة للصفحة الرئيسية
+              {thankYou.home}
             </Link>
             <a
               href="tel:+966920007515"

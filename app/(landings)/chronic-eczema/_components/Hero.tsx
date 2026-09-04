@@ -7,15 +7,12 @@ import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, PHONE_DISPLAY, TEL_LINK, WA_LINK } from "./config";
 import { HeroBackdrop } from "./HeroBackdrop";
+import type { ContentOf } from "@/lib/pages/define";
+import type { CHRONIC_ECZEMA } from "../content";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STATS = [
-  { value: "٤٫٨ من ٥", label: "تقييم Google" },
-  { value: "+١٢٧٠", label: "تقييم موثّق" },
-  { value: "+١٣ عاماً", label: "خبرة طبية" },
-  { value: "١٠٠٪", label: "طاقم نسائي" },
-] as const;
+type HeroCopy = ContentOf<typeof CHRONIC_ECZEMA>["hero"];
 
 /**
  * Modern centered hero over the aurora-graded clinic video: badge, two-line
@@ -23,7 +20,8 @@ const STATS = [
  * CTAs with a phone line, and a frosted stats strip on the bottom edge.
  * No letter-spacing anywhere — tracking breaks connected Arabic script.
  */
-export function Hero() {
+export function Hero({ copy }: { copy: HeroCopy }) {
+  const STATS = copy.stats;
   const rootRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -75,17 +73,17 @@ export function Hero() {
               aria-hidden
             />
             <span className="text-[0.82rem] font-bold text-[rgba(244,238,250,0.92)]">
-              عيادات د. مها دحلان ، جدة
+              {copy.badge}
             </span>
           </div>
 
           {/* display title */}
           <h1 className="mt-8 mb-0" style={{ textShadow: "0 2px 34px rgba(10,4,20,0.6)" }}>
             <span className="che-title-line che-display-hero block text-[var(--color-che-ink)]">
-              حان وقت السيطرة على
+              {copy.line1}
             </span>
             <span className="che-title-line che-display-hero block">
-              <em className="che-gold-text not-italic">الاكزيما المزمنة</em>
+              <em className="che-gold-text not-italic">{copy.line2}</em>
             </span>
           </h1>
 
@@ -94,8 +92,7 @@ export function Hero() {
             className="che-h mt-6 max-w-[46ch] text-[1.08rem] leading-[2.1] font-normal text-[rgba(244,238,250,0.85)] sm:text-[1.18rem]"
             style={{ textShadow: "0 1px 18px rgba(10,4,20,0.6)" }}
           >
-            خطة علاجية واضحة تُرمّم حاجز بشرتك، تهدّئ الالتهاب، وتحدّد محفزاتك
-            بدقة، بإشراف طبي نسائي ومتابعة مستمرة حتى تستقر بشرتك.
+            {copy.sub}
           </p>
 
           {/* CTAs */}
@@ -105,7 +102,7 @@ export function Hero() {
               className="group inline-flex items-center gap-3 rounded-full px-9 py-[18px] text-[1.05rem] font-extrabold text-[#231303] shadow-[0_20px_50px_-14px_rgba(201,164,92,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_28px_60px_-14px_rgba(229,199,127,0.65)]"
               style={{ background: GOLD_GRADIENT }}
             >
-              احجزي تقييم بشرتك
+              {copy.book}
               <Icon.ArrowLeft
                 className="size-[18px] transition-transform duration-300 group-hover:-translate-x-1"
                 strokeWidth={2.4}
@@ -118,7 +115,7 @@ export function Hero() {
               className="inline-flex items-center gap-2.5 rounded-full border border-[rgba(244,238,250,0.32)] bg-[rgba(20,12,34,0.5)] px-8 py-[17px] text-base font-extrabold text-[var(--color-che-ink)] backdrop-blur-md transition-colors duration-300 hover:border-[#25D366] hover:text-[#25D366]"
             >
               <SocialIcon name="whatsapp" className="text-[19px] text-[#25D366]" />
-              استشارة واتساب
+              {copy.whatsapp}
             </a>
           </div>
 
@@ -131,7 +128,7 @@ export function Hero() {
               className="size-4 text-[var(--color-che-gold-bright)]"
               strokeWidth={2.2}
             />
-            أو اتصلي مباشرة:
+            {copy.phoneLead}
             <span dir="ltr" className="font-extrabold text-[var(--color-che-ink)]">
               {PHONE_DISPLAY}
             </span>

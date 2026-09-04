@@ -5,57 +5,41 @@ import { Reveal, RevealGroup, ScrubLine } from "@/app/_home/Motion";
 import { Payments } from "@/app/_home/Payments";
 import { GOLD_GRADIENT } from "@/app/_home/config";
 import { formatSar, getActiveOffers } from "@/lib/content";
+import { getPageContent } from "@/lib/pages/get";
 import { PageHero } from "../_components/PageHero";
 import { CtaBand } from "../_components/CtaBand";
 import { OfferGrid } from "./_components/OfferGrid";
 import type { OfferItem } from "./_components/types";
+import { OFFERS } from "./content";
 
 export const revalidate = 300;
 
-const DESCRIPTION =
-  "كل عروض عيادات د. مها دحلان في جدة: الكشفيات، تنظيف البشرة، الهايدرافيشل، الجلاس سكين الكوري وجلسات الليزر بأسعار واضحة، مع التقسيط عبر تابي وتمارا.";
+/** Icons for the hero proof pills, in content order. */
+const PROOF_ICONS = [Icon.Star, Icon.MessageCircle, Icon.Award, Icon.Users] as const;
 
-export const metadata: Metadata = {
-  title: "العروض",
-  description: DESCRIPTION,
-  alternates: { canonical: "/offers" },
-  openGraph: {
-    title: "كل العروض | عيادات د. مها دحلان",
-    description: DESCRIPTION,
-    url: "/offers",
-  },
-};
+/** Icons for the booking steps, in content order. */
+const STEP_ICONS = [Icon.Gift, Icon.ClipboardCheck, Icon.CalendarCheck] as const;
 
-const PROOF = [
-  { icon: Icon.Star, text: "4.8 من 5 على Google" },
-  { icon: Icon.MessageCircle, text: "أكثر من 1270 تقييماً" },
-  { icon: Icon.Award, text: "خبرة تتجاوز 13 عاماً" },
-  { icon: Icon.Users, text: "طاقم نسائي بالكامل" },
-];
-
-const STEPS = [
-  {
-    num: "01",
-    icon: Icon.Gift,
-    title: "اختاري عرضك",
-    body: "تصفّحي العروض حسب الفئة، واضغطي «احجزي العرض» على ما يناسبك. السعر المعلن هو ما ستدفعينه.",
-  },
-  {
-    num: "02",
-    icon: Icon.ClipboardCheck,
-    title: "أدخلي بياناتك",
-    body: "اسمك وجوالك وطريقة الدفع المفضلة، في أقل من دقيقة. لا يُطلب أي دفع عبر الموقع.",
-  },
-  {
-    num: "03",
-    icon: Icon.CalendarCheck,
-    title: "نؤكد لك الموعد",
-    body: "يتصل بك فريق الاستقبال خلال ساعات العمل لتثبيت الموعد، والدفع يتم داخل العيادة.",
-  },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getPageContent(OFFERS);
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: "/offers" },
+    openGraph: {
+      title: "كل العروض | عيادات د. مها دحلان",
+      description: seo.description,
+      url: "/offers",
+    },
+  };
+}
 
 export default async function OffersPage() {
+  const c = await getPageContent(OFFERS);
   const offers = await getActiveOffers();
+
+  const proof = c.proof.items.map((p, i) => ({ ...p, icon: PROOF_ICONS[i] }));
+  const steps = c.steps.items.map((s, i) => ({ ...s, icon: STEP_ICONS[i] }));
 
   const items: OfferItem[] = offers.map((o) => ({
     id: o.id,
@@ -79,14 +63,14 @@ export default async function OffersPage() {
     <>
       <PageHero
         compact
-        crumbs={[{ label: "العروض" }]}
-        eyebrow="عروض العيادة"
-        title="كل العروض،"
-        gold="جمالك أقرب وأوفر"
-        lede="أسعار معلنة بلا مفاجآت، تقسيط عبر تابي وتمارا داخل العيادة، وطاقم نسائي بالكامل. اختاري عرضك واحجزيه في أقل من دقيقة، ونؤكد لك الموعد خلال ساعات العمل."
+        crumbs={[{ label: c.hero.crumb }]}
+        eyebrow={c.hero.eyebrow}
+        title={c.hero.title}
+        gold={c.hero.gold}
+        lede={c.hero.lede}
         actions={
           <ul className="flex flex-wrap justify-center gap-2.5">
-            {PROOF.map((p) => (
+            {proof.map((p) => (
               <li
                 key={p.text}
                 className="inline-flex items-center gap-2 rounded-full border border-[var(--color-md-line-strong)] bg-[rgba(22,16,10,0.7)] px-4 py-2 text-[0.8rem] font-bold text-[rgba(246,238,223,0.82)]"
@@ -108,14 +92,14 @@ export default async function OffersPage() {
       <Section className="relative bg-[var(--color-md-bg)]">
         <Glow className="-top-16 left-1/4 h-[320px] w-[520px]" />
         <SectionHead
-          eyebrow="كيف يتم الحجز"
-          title="ثلاث خطوات"
-          gold="وموعدك مؤكد"
-          body="لا دفع إلكتروني ولا تعقيد. تختارين العرض، نتصل بك، وتدفعين في العيادة بالطريقة التي تناسبك."
+          eyebrow={c.steps.eyebrow}
+          title={c.steps.title}
+          gold={c.steps.gold}
+          body={c.steps.body}
         />
         <ScrubLine className="mt-12 hidden h-[2px] w-full rounded-full lg:block" />
         <RevealGroup className="mt-8 grid gap-5 md:grid-cols-3 md:gap-6">
-          {STEPS.map((step) => (
+          {steps.map((step) => (
             <div
               key={step.num}
               className="relative flex flex-col rounded-[24px] border border-[var(--color-md-line)] bg-[var(--color-md-card)] p-7 transition-colors duration-400 hover:border-[rgba(232,195,106,0.45)]"
@@ -147,22 +131,17 @@ export default async function OffersPage() {
       <Section id="installments" className="relative bg-[var(--color-md-band)]">
         <Glow className="-top-14 left-1/3 h-[300px] w-[560px]" />
         <SectionHead
-          eyebrow="الدفع على راحتك"
-          title="عرضك اليوم،"
-          gold="والدفع على دفعات"
-          body="اختاري تابي أو تمارا عند الحجز، وتُقسَّم قيمة العرض على 4 دفعات متساوية بدون فوائد، بموافقة فورية عند الاستقبال."
+          eyebrow={c.installments.eyebrow}
+          title={c.installments.title}
+          gold={c.installments.gold}
+          body={c.installments.body}
         />
         <Reveal className="mt-12">
           <Payments />
         </Reveal>
       </Section>
 
-      <CtaBand
-        eyebrow="المواعيد محدودة أسبوعياً"
-        title="لم تجدي عرضك؟"
-        gold="احجزي استشارة"
-        body="أخبرينا بما تحتاجين، ونقترح عليك العرض الأنسب لحالتك مع التكلفة المتوقعة قبل أن تخطي خطوة نحو العيادة."
-      />
+      <CtaBand {...c.cta} />
     </>
   );
 }

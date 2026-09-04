@@ -2,10 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { SPECIALTIES, type Specialty } from "./config";
-import { LANG_META, specialtyCopy, type Locale } from "./i18n/dictionary";
+import {
+  LANG_META,
+  specialtyCopy,
+  type Locale,
+  type SpecialtyOverrides,
+} from "./i18n/dictionary";
 
-function PageCard({ item, locale }: { item: Specialty; locale: Locale }) {
-  const copy = specialtyCopy(item.slug, locale);
+function PageCard({
+  item,
+  locale,
+  overrides,
+}: {
+  item: Specialty;
+  locale: Locale;
+  overrides?: SpecialtyOverrides;
+}) {
+  const copy = specialtyCopy(item.slug, locale, overrides);
   const Arrow = LANG_META[locale].dir === "rtl" ? Icon.ArrowLeft : Icon.ArrowRight;
   return (
     <Link
@@ -50,11 +63,13 @@ function Row({
   duration,
   reverse,
   locale,
+  overrides,
 }: {
   items: Specialty[];
   duration: string;
   reverse?: boolean;
   locale: Locale;
+  overrides?: SpecialtyOverrides;
 }) {
   const dir = LANG_META[locale].dir;
   // Mirror the flow for LTR so the two rows counter-scroll the same way the
@@ -78,7 +93,12 @@ function Row({
         {[0, 1].map((copy) => (
           <div key={copy} dir={dir} className="flex gap-4 pe-4 sm:gap-5 sm:pe-5">
             {items.map((item) => (
-              <PageCard key={`${copy}-${item.slug}`} item={item} locale={locale} />
+              <PageCard
+                key={`${copy}-${item.slug}`}
+                item={item}
+                locale={locale}
+                overrides={overrides}
+              />
             ))}
           </div>
         ))}
@@ -91,12 +111,30 @@ function Row({
  * Every landing page as a card, flowing in two counter-scrolling marquee rows.
  * Hover pauses the row (see .md-marquee-track:hover).
  */
-export function PagesMarquee({ locale = "ar" }: { locale?: Locale }) {
+export function PagesMarquee({
+  locale = "ar",
+  overrides,
+}: {
+  locale?: Locale;
+  /** Treatment-card copy edited in the dashboard. */
+  overrides?: SpecialtyOverrides;
+}) {
   const mid = Math.ceil(SPECIALTIES.length / 2);
   return (
     <div className="flex flex-col gap-4 sm:gap-5">
-      <Row items={SPECIALTIES.slice(0, mid)} duration="64s" locale={locale} />
-      <Row items={SPECIALTIES.slice(mid)} duration="74s" reverse locale={locale} />
+      <Row
+        items={SPECIALTIES.slice(0, mid)}
+        duration="64s"
+        locale={locale}
+        overrides={overrides}
+      />
+      <Row
+        items={SPECIALTIES.slice(mid)}
+        duration="74s"
+        reverse
+        locale={locale}
+        overrides={overrides}
+      />
     </div>
   );
 }
