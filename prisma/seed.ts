@@ -71,13 +71,21 @@ function randomPhone(): string {
 }
 
 const DEFAULT_ADMIN_EMAIL = "admin@mahadahlan.com";
-const DEFAULT_ADMIN_PASSWORD = "Mahadahlan@2026";
 const DEFAULT_ADMIN_NAME = "Mahadahlan Admin";
 
 async function main() {
   const adminEmail = process.env.ADMIN_EMAIL ?? DEFAULT_ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD ?? DEFAULT_ADMIN_PASSWORD;
   const adminName = process.env.ADMIN_NAME ?? DEFAULT_ADMIN_NAME;
+
+  // No fallback password: this file is public, so a default here would be a
+  // published admin credential for every deployment that forgot to set one.
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    throw new Error(
+      "ADMIN_PASSWORD is not set. Add it to .env.local before seeding, or run " +
+        "`npm run admin:password` to rotate an existing admin instead.",
+    );
+  }
 
   console.log("→ Seeding admin…");
   const passwordHash = await bcrypt.hash(adminPassword, 12);

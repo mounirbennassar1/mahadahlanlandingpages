@@ -12,7 +12,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:content": "tsx prisma/seed-content.ts",
     "db:studio": "prisma studio",
-    "check:content": "tsx scripts/check-content.ts"
+    "check:content": "tsx scripts/check-content.ts",
+    "admin:password": "tsx scripts/rotate-admin-password.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
