@@ -126,7 +126,7 @@ async function main() {
   }
 
   console.log("→ Seeding UTM links (one per source × platform)…");
-  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahadahlan.com").replace(/\/+$/, "");
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mahadahlan.com").replace(/\/+$/, "");
   const PLATFORMS: { platform: UtmPlatform; utmSource: string; utmMedium: string }[] = [
     { platform: "GOOGLE_ADS", utmSource: "google", utmMedium: "cpc" },
     { platform: "INSTAGRAM", utmSource: "instagram", utmMedium: "paid_social" },

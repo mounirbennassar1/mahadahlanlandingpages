@@ -5,7 +5,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./globals.css";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahadahlan.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mahadahlan.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

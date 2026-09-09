@@ -36,7 +36,7 @@ function humanize(slug: string): string {
 }
 
 function siteBaseUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahadahlan.com").replace(
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mahadahlan.com").replace(
     /\/+$/,
     "",
   );

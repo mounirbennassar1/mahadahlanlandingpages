@@ -4,7 +4,7 @@
  * imports so client components can use it too.
  */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mahadahlan.com"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mahadahlan.com"
 ).replace(/\/+$/, "");
 
 export const SITE_NAME = "عيادات د. مها دحلان";

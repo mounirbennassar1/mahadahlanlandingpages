@@ -38,16 +38,12 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
-      // ── www → apex ───────────────────────────────────────────────────────
-      // The canonical host is the bare domain: every default in the code, the
-      // sitemap and the stored UTM links use it. Vercel can also do this at the
-      // domain level; keeping it here means the rule holds wherever we deploy.
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.mahadahlan.com" }],
-        destination: "https://mahadahlan.com/:path*",
-        permanent: true,
-      },
+      // No www/apex redirect here on purpose.
+      //
+      // www.mahadahlan.com is the canonical host, and Vercel already 308s the
+      // bare domain to it at the domain level. Adding the opposite rule in the
+      // app would bounce requests between the two forever, so the redirect is
+      // owned by exactly one layer: Vercel.
 
       // ── URLs of the previous PHP site ────────────────────────────────────
       // mahadahlan.com used to serve a different site. These paths are linked
