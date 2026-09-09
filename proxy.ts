@@ -48,6 +48,9 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   if (isPublicApi(pathname)) return NextResponse.next();
 
   const isPortal = host.startsWith("portal.");
+  // lp.mahadahlan.com serves the same app as the main domain so existing ad
+  // final URLs keep working unchanged.
+  const isAdsHost = host.startsWith("lp.");
   const isLocal = host.startsWith("localhost") || host.startsWith("127.");
   const isAdmin = isAdminPath(pathname);
   const isAuth = isAuthApi(pathname);
@@ -71,6 +74,20 @@ export default auth((req: NextRequest & { auth: unknown }) => {
         return new NextResponse("Not found", { status: 404 });
       }
     }
+  }
+
+  // Keep the ads host out of the search index once the main domain is indexed.
+  //
+  // This is deliberately opt-in: switching it on before mahadahlan.com is
+  // indexed would drop the rankings lp.mahadahlan.com holds today and leave
+  // nothing in their place. Set NOINDEX_ADS_HOST=true only after the main
+  // domain is showing in Search Console. Crawling stays allowed either way,
+  // which Google's AdsBot needs for landing-page checks; the canonical tags
+  // already point at the main domain, so signals consolidate there regardless.
+  if (isAdsHost && process.env.NOINDEX_ADS_HOST === "true") {
+    const res = NextResponse.next();
+    res.headers.set("X-Robots-Tag", "noindex");
+    return res;
   }
 
   // ── Auth gate for the dashboard's JSON API (401, never a redirect) ─────

@@ -69,6 +69,9 @@ export const revalidate = 300;
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getPageContent(FACIAL_ATROPHY);
   return {
+    // Both mahadahlan.com and the ads host serve this page; the canonical
+    // keeps the main domain as the one Google indexes.
+    alternates: { canonical: "/facial-atrophy" },
     title: seo.title,
     description: seo.description,
     openGraph: {

@@ -11,6 +11,9 @@ const OG_TITLE = "السبيكولز الكورية — ميكرونيدلينغ
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getPageContent(KOREAN_SPICULES);
   return {
+    // Both mahadahlan.com and the ads host serve this page; the canonical
+    // keeps the main domain as the one Google indexes.
+    alternates: { canonical: "/korean-spicules" },
     title: seo.title,
     description: seo.description,
     openGraph: {

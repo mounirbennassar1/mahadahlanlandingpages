@@ -1,3 +1,5 @@
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbSchema } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -68,6 +70,21 @@ export function PageHero({
         }`}
       >
         <div className={split ? "text-right" : "flex flex-col items-center"}>
+          {crumbs?.length ? (
+            <>
+              {/* Same trail as the visible breadcrumb, for the SERP. */}
+              <JsonLd
+                data={breadcrumbSchema([
+                  { name: "الرئيسية", path: "/" },
+                  ...crumbs.map((c, i) => ({
+                    name: c.label,
+                    path: c.href ?? crumbPath(crumbs, i),
+                  })),
+                ])}
+              />
+            </>
+          ) : null}
+
           {crumbs?.length ? (
             <nav aria-label="مسار الصفحة" className="mb-6">
               <ol className="flex flex-wrap items-center gap-1.5 text-[0.8rem] font-bold text-[rgba(246,238,223,0.5)]">
@@ -150,4 +167,17 @@ export function PageHero({
       <div className="md-sheen-line absolute inset-x-0 bottom-0 h-px" aria-hidden />
     </section>
   );
+}
+
+/**
+ * Path for a crumb in the structured-data trail. The final crumb is the page
+ * itself and has no `href`, so fall back to the current path shape used by the
+ * visible breadcrumb.
+ */
+function crumbPath(crumbs: Crumb[], index: number): string {
+  const withHref = crumbs
+    .slice(0, index + 1)
+    .map((c) => c.href)
+    .filter(Boolean) as string[];
+  return withHref.length ? withHref[withHref.length - 1] : "/";
 }

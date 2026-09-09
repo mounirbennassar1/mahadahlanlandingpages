@@ -15,6 +15,8 @@ import {
   type SpecialtyOverrides,
 } from "./i18n/dictionary";
 import { LocaleProvider } from "./i18n/LocaleProvider";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { clinicSchema } from "@/lib/seo";
 import "./home.css";
 
 /** Almarai is Arabic-only; the English tree defines `--font-en` (see `app/en/layout.tsx`). */
@@ -57,6 +59,9 @@ export function SiteShell({
             lineHeight: 1.7,
           }}
         >
+          {/* Local-SEO structured data: rendered once per page, on every page
+              that uses the site chrome. */}
+          <JsonLd data={clinicSchema()} />
           <ScrollProgress />
           <Header />
 

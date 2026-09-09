@@ -14,6 +14,9 @@ const TWITTER_DESCRIPTION =
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getPageContent(EID_OFFER);
   return {
+    // Both mahadahlan.com and the ads host serve this page; the canonical
+    // keeps the main domain as the one Google indexes.
+    alternates: { canonical: "/eid-offer" },
     title: seo.title,
     description: seo.description,
     openGraph: {

@@ -235,6 +235,36 @@ export const SPECIALTIES: Specialty[] = [
     tag: "خصم حتى 40%",
     icon: Icon.Gift,
   },
+  {
+    slug: "chronic-eczema",
+    title: "علاج الإكزيما المزمنة",
+    description:
+      "ترميم حاجز الجلد وتهدئة الالتهاب وخطة محفزات واضحة، لبشرة تستقر بدل أن تنتكس كل موسم.",
+    image: "/chronic-eczema/hero.webp",
+    category: "نضارة البشرة",
+    tag: "متابعة طبية",
+    icon: Icon.ShieldCheck,
+  },
+  {
+    slug: "hair-breakage",
+    title: "علاج تكسر وتقصف الشعر",
+    description:
+      "تشخيص رقمي للشعرة والفروة، وبروتوكولات ترميم وبروتين وميزوثيرابي تعيد للشعر قوته ولمعانه.",
+    image: "/hair-breakage/hero.webp",
+    category: "الشعر",
+    tag: "ترميم من الجذور",
+    icon: Icon.Scissors,
+  },
+  {
+    slug: "cracked-heels",
+    title: "علاج تشقق الكعبين",
+    description:
+      "باديكير طبي معقم وتقشير علاجي وترطيب عميق، لقدمين ناعمتين بلا تشققات أو خشونة.",
+    image: "/cracked-heels/pedicure.webp",
+    category: "الجسم",
+    tag: "عناية طبية",
+    icon: Icon.Footprints,
+  },
 ];
 
 export type Slide = {
