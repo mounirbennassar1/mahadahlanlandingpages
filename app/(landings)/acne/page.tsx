@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "ar_SA",
       type: "website",
       siteName: "عيادات د. مها دحلان",
-      url: "https://acne.mahadahlan.com",
+      url: "/acne",
       images: [
         {
           url: "/acne/logo.avif",
@@ -57,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
     },
     alternates: {
-      canonical: "https://acne.mahadahlan.com",
+      canonical: "/acne",
     },
   };
 }

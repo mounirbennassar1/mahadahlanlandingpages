@@ -18,6 +18,7 @@ import { DOCTORS } from "@/app/(site)/doctors/content";
 import { NEWS_ARTICLES } from "@/app/(site)/news-articles/content";
 import { OFFERS } from "@/app/(site)/offers/content";
 import { OUR_DEVICES } from "@/app/(site)/our-devices/content";
+import { PRIVACY_POLICY } from "@/app/(site)/privacy-policy/content";
 import { SERVICES } from "@/app/(site)/services/content";
 import { ACNE } from "@/app/(landings)/acne/content";
 import { BODY } from "@/app/(landings)/body/content";
@@ -49,6 +50,7 @@ export const PAGES: PageDef[] = [
   NEWS_ARTICLES,
   OFFERS,
   OUR_DEVICES,
+  PRIVACY_POLICY,
   SERVICES,
   ACNE,
   BODY,

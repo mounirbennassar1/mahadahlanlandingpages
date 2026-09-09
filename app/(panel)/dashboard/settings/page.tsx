@@ -42,7 +42,7 @@ export default async function SettingsPage() {
             overflowX: "auto",
             color: "var(--ink-2)",
           }}
-        >{`fetch("https://panel.mahadahlan.com/api/leads", {
+        >{`fetch("https://mahadahlan.com/api/leads", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",

@@ -18,7 +18,7 @@ export function absoluteUrl(path: string) {
 const OPTIMIZABLE_HOSTS = [
   /(^|\.)public\.blob\.vercel-storage\.com$/,
   /^res\.cloudinary\.com$/,
-  /^mahadahlan\.com$/,
+  /^(www\.)?mahadahlan\.com$/,
   /^images\.unsplash\.com$/,
   /^lh3\.googleusercontent\.com$/,
 ];
