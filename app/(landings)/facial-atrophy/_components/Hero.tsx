@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Icon, SocialIcon } from "@/components/icons";
+import { PayButton } from "@/components/checkout";
 import { EASE } from "./Reveal";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
 import type { ContentOf } from "@/lib/pages/define";
@@ -132,14 +133,13 @@ export function Hero({ copy }: { copy: HeroCopy }) {
           {...fadeUpAt(0.46)}
           className="mt-8 flex flex-wrap justify-center gap-3.5"
         >
-          <a
-            href="#booking"
-            className="inline-flex items-center gap-2.5 rounded-full px-[34px] py-4 text-base font-extrabold text-[var(--color-faa-cta-ink)] shadow-[0_18px_44px_-14px_rgba(217,179,108,0.55)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(240,212,138,0.65)]"
+          <PayButton
+            className="inline-flex cursor-pointer items-center gap-2.5 rounded-full px-[34px] py-4 text-base font-extrabold text-[var(--color-faa-cta-ink)] shadow-[0_18px_44px_-14px_rgba(217,179,108,0.55)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(240,212,138,0.65)]"
             style={{ background: GOLD_GRADIENT }}
           >
+            <Icon.CreditCard className="size-[17px]" strokeWidth={2.2} />
             {copy.book}
-            <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
-          </a>
+          </PayButton>
           <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
             <div
               className="absolute -inset-[120%]"

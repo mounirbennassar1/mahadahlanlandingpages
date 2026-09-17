@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { STRETCHMARKS } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -56,6 +58,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function StretchmarksPage() {
-  const content = await getPageContent(STRETCHMARKS);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([getPageContent(STRETCHMARKS), getSellableItems(STRETCHMARKS.slug)]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: STRETCHMARKS.slug, title: STRETCHMARKS.title, path: STRETCHMARKS.path }}
+      whatsappTopic="عندي استفسار بخصوص علاج علامات التمدد أو السترتش ماركس"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

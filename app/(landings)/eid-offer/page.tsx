@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { EID_OFFER } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -44,6 +46,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function EidOfferPage() {
-  const content = await getPageContent(EID_OFFER);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([getPageContent(EID_OFFER), getSellableItems(EID_OFFER.slug)]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: EID_OFFER.slug, title: EID_OFFER.title, path: EID_OFFER.path }}
+      whatsappTopic="عرض عيد الأضحى، أرغب بحجز موعد"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

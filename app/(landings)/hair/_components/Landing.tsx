@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, AnimatePresence, Variants } from "framer-motion";
 import React, { useState, useRef, useEffect } from "react";
-import LeadForm from "./LeadForm";
+import { CheckoutPanel, PayButton } from "@/components/checkout";
 import type { ContentOf } from "@/lib/pages/define";
 import type { HAIR } from "../content";
 
@@ -289,14 +289,13 @@ export function Landing({ content }: { content: ContentOf<typeof HAIR> }) {
           </nav>
 
           <div className="flex items-center gap-4">
-            <motion.a
-              href={BOOKING_ANCHOR}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="hidden md:block bg-[#c9a84c] hover:bg-[#c9a84c]/90 text-[#1a3a2a] font-bold px-6 py-2.5 rounded-full transition-all text-sm shadow-lg shadow-[#c9a84c]/20"
+            <PayButton
+              noIcon
+              className="hidden md:inline-flex items-center gap-2 cursor-pointer bg-[#c9a84c] hover:bg-[#c9a84c]/90 text-[#1a3a2a] font-bold px-6 py-2.5 rounded-full transition-all text-sm shadow-lg shadow-[#c9a84c]/20 hover:scale-105 active:scale-[0.97]"
             >
+              <span className="material-symbols-outlined text-base">credit_card</span>
               {c.nav.cta}
-            </motion.a>
+            </PayButton>
             <button className="md:hidden text-[#1a3a2a]" onClick={() => setMenuOpen((p) => !p)} aria-label="Toggle menu">
               <span className="material-symbols-outlined">{menuOpen ? "close" : "menu"}</span>
             </button>
@@ -387,10 +386,10 @@ export function Landing({ content }: { content: ContentOf<typeof HAIR> }) {
               </motion.div>
 
               <motion.div variants={fadeUp} custom={0.15} className="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
-                <motion.a href={BOOKING_ANCHOR} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto bg-[#1a3a2a] text-[#c9a84c] px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-[#1a3a2a]/20 border border-[#c9a84c]/30 flex items-center justify-center gap-3 text-center">
-                  <span className="material-symbols-outlined">event_available</span>
+                <PayButton noIcon className="w-full sm:w-auto cursor-pointer bg-[#1a3a2a] text-[#c9a84c] px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-[#1a3a2a]/20 border border-[#c9a84c]/30 flex items-center justify-center gap-3 text-center transition-transform hover:scale-105 active:scale-[0.97]">
+                  <span className="material-symbols-outlined">credit_card</span>
                   {c.hero.ctaBook}
-                </motion.a>
+                </PayButton>
                 <motion.a
                   href={WA}
                   target="_blank"
@@ -567,10 +566,16 @@ export function Landing({ content }: { content: ContentOf<typeof HAIR> }) {
                   ))}
                 </div>
 
-                <motion.a href={BOOKING_ANCHOR} variants={fadeUp} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} className="bg-[#c9a84c] text-[#1a3a2a] px-8 py-3 rounded-xl font-bold inline-flex items-center justify-center gap-3 shadow-lg shadow-[#c9a84c]/20 w-full sm:w-fit transition-colors">
-                  <span className="material-symbols-outlined">event_available</span>
-                  {c.treatments.cta}
-                </motion.a>
+                <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3">
+                  <PayButton noIcon className="cursor-pointer bg-[#c9a84c] text-[#1a3a2a] px-8 py-3 rounded-xl font-bold inline-flex items-center justify-center gap-3 shadow-lg shadow-[#c9a84c]/20 w-full sm:w-fit transition-transform hover:scale-105 active:scale-[0.97]">
+                    <span className="material-symbols-outlined">credit_card</span>
+                    {c.treatments.cta}
+                  </PayButton>
+                  <a href={WA} target="_blank" rel="noopener noreferrer" className="border border-[#1a3a2a]/20 px-8 py-3 rounded-xl font-bold inline-flex items-center justify-center gap-3 w-full sm:w-fit hover:bg-[#1a3a2a]/5 transition-colors">
+                    <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
+                    اسألي عبر واتساب
+                  </a>
+                </motion.div>
               </motion.div>
             </div>
           </div>
@@ -664,7 +669,13 @@ export function Landing({ content }: { content: ContentOf<typeof HAIR> }) {
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.7 }}>
-                  <LeadForm id="booking-form" copy={c.booking} />
+                  <CheckoutPanel
+                    theme="dark"
+                    id="booking-form"
+                    badge={c.booking.formBadge}
+                    title={c.booking.formTitle}
+                    subtitle={c.booking.formSub}
+                  />
                 </motion.div>
               </div>
             </motion.div>

@@ -1,7 +1,7 @@
 import { definePage, items, li, seoSectionWithOg, t, ta } from "@/lib/pages/define";
 
 /**
- * Editable copy for /hair (and its /hair/thank-you confirmation page).
+ * Editable copy for /hair.
  *
  * Everything a non-technical editor should be able to change lives here; the
  * page and its components read it through `getPageContent(HAIR)`. Icons,
@@ -16,7 +16,6 @@ export const HAIR = definePage({
   kind: "landing",
   locale: "ar",
   leadSource: "hair",
-  extraPaths: ["/hair/thank-you"],
   sections: {
     seo: seoSectionWithOg(
       "عيادة مها دهلان لمعالجة تساقط الشعر",
@@ -235,21 +234,11 @@ export const HAIR = definePage({
           "خطة علاج مصممة لحالتك",
           "أحدث التقنيات الطبية في جدة",
         ]),
-        formBadge: t("شارة النموذج", "احجزي استشارتك المجانية"),
-        formTitle: t("عنوان النموذج", "اتركي بياناتك وسنتواصل معك"),
-        formSub: t("وصف النموذج", "فريقنا الطبي سيتواصل معك لتحديد موعدك خلال أقرب وقت"),
-        nameLabel: t("حقل الاسم", "الاسم الكامل"),
-        namePlaceholder: t("حقل الاسم، النص التوضيحي", "مثال: سارة أحمد"),
-        phoneLabel: t("حقل الجوال", "رقم الجوال"),
-        phonePlaceholder: t("حقل الجوال، النص التوضيحي", "+966 5X XXX XXXX"),
-        cityLabel: t("حقل المدينة", "المدينة"),
-        cityPlaceholder: t("حقل المدينة، النص التوضيحي", "مثال: جدة"),
-        submit: t("زر الإرسال", "احجزي موعدك الآن"),
-        submitting: t("زر الإرسال أثناء العمل", "جاري الإرسال..."),
-        consent: ta(
-          "تنويه الموافقة",
-          "بالنقر على “احجزي موعدك الآن” فإنك توافقين على تواصلنا معك بخصوص استشارتك.",
-          { rows: 2 },
+        formBadge: t("شارة نموذج الدفع", "الدفع الإلكتروني الآمن"),
+        formTitle: t("عنوان نموذج الدفع", "احجزي وادفعي الآن"),
+        formSub: t(
+          "وصف نموذج الدفع",
+          "اختاري باقتك، أدخلي بياناتك، وادفعي بأمان عبر noon. نتصل بك خلال ساعات العمل لتثبيت الموعد.",
         ),
       },
     },
@@ -299,31 +288,6 @@ export const HAIR = definePage({
         copyright: t("حقوق النشر", "© 2026 عيادات د. مها دحلان. جميع الحقوق محفوظة."),
         privacy: t("سياسة الخصوصية", "سياسة الخصوصية"),
         terms: t("الشروط والأحكام", "الشروط والأحكام"),
-      },
-    },
-
-    thankYou: {
-      title: "صفحة الشكر",
-      hint: "تظهر بعد إرسال النموذج على /hair/thank-you.",
-      fields: {
-        title: t("العنوان", "تم استلام طلبك بنجاح"),
-        body: ta(
-          "النص",
-          "شكراً لتواصلك مع عيادة د. مها دهلان. فريقنا الطبي سيقوم بالتواصل معك خلال أقرب وقت لتأكيد موعد استشارتك.",
-          { rows: 3 },
-        ),
-        stepsTitle: t("عنوان الخطوات", "الخطوات التالية"),
-        steps: items(
-          "الخطوات التالية",
-          { text: t("النص", "") },
-          [
-            { text: "سيتصل بك أحد مستشارينا لتحديد موعد يناسبك" },
-            { text: "موعد الاستشارة خلال 24 ساعة عمل" },
-            { text: "جدة - حي الروضة، مركز بن حمران - الدور الثالث" },
-          ],
-          { fixed: true, hint: "لكل خطوة أيقونة ثابتة في التصميم." },
-        ),
-        home: t("زر العودة", "العودة للصفحة الرئيسية"),
       },
     },
   },

@@ -1,19 +1,17 @@
 'use client'
 
-import { useEffect, useRef, useMemo, useState } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import Image from 'next/image'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { readUtmFromUrl } from '@/lib/utm'
-import { fireConversion } from '@/lib/gtag'
+import { CheckoutPanel, PayButton, useCheckout } from '@/components/checkout'
 import type { ContentOf } from '@/lib/pages/define'
 import type { BOTOX } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
 
 type Content = ContentOf<typeof BOTOX>
-type BookingCopy = Content['booking']
 
 /* ─── Anchors for the top-nav links, in content order ─── */
 const NAV_HREFS = ['#about', '#services', '#reviews', '#location'] as const
@@ -117,6 +115,25 @@ function ArrowRtl({ className = 'w-4 h-4' }: { className?: string }) {
   )
 }
 
+/* ─── Card icon for the pay buttons ─── */
+function CardIcon({ className = 'w-4 h-4' }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <rect x="2" y="5" width="20" height="14" rx="2" strokeWidth={2} />
+      <path strokeLinecap="round" strokeWidth={2} d="M2 10h20" />
+    </svg>
+  )
+}
+
+/* ─── WhatsApp glyph ─── */
+function WaIcon({ className = 'w-4 h-4' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 448 512" fill="currentColor" aria-hidden>
+      <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.8-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+    </svg>
+  )
+}
+
 /* ─── Service card ─── */
 function ServiceCard({
   img, alt, icon, title, desc, cta, delay,
@@ -182,142 +199,11 @@ function LazyMap() {
   )
 }
 
-/* ─── Booking form (lead-panel integration) ─── */
-function BookingForm({ copy }: { copy: BookingCopy }) {
-  const [fullName, setFullName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [city, setCity] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-  const [status, setStatus] = useState<
-    | { kind: 'idle' }
-    | { kind: 'success' }
-    | { kind: 'error'; message: string }
-  >({ kind: 'idle' })
-
-  const inputClass =
-    'w-full border border-white/15 rounded-xl px-5 py-4 text-sm text-white placeholder-white/40 focus:outline-none focus:border-gold-400/70 transition-colors disabled:opacity-60'
-  const inputStyle = { background: 'rgba(255,255,255,0.06)' } as const
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (submitting) return
-
-    if (!fullName.trim() || !phone.trim() || !city.trim()) {
-      setStatus({ kind: 'error', message: 'الرجاء تعبئة الاسم الكامل ورقم الجوال والمدينة.' })
-      return
-    }
-
-    setSubmitting(true)
-    setStatus({ kind: 'idle' })
-
-    try {
-      const res = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fullName: fullName.trim(),
-          phone: phone.trim(),
-          city: city.trim(),
-          source: 'botox',
-          ...readUtmFromUrl(),
-        }),
-      })
-      const data = await res.json().catch(() => ({}))
-
-      if (!res.ok) {
-        setStatus({
-          kind: 'error',
-          message: data?.error || 'تعذّر إرسال طلبكِ، حاولي مرة أخرى لاحقاً.',
-        })
-        return
-      }
-
-      fireConversion('form')
-      setStatus({ kind: 'success' })
-      setFullName('')
-      setPhone('')
-      setCity('')
-    } catch {
-      setStatus({ kind: 'error', message: 'تعذّر الاتصال بالخادم. تحققي من اتصالكِ بالإنترنت.' })
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  return (
-    <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-      <input
-        type="text"
-        name="fullName"
-        autoComplete="name"
-        placeholder={copy.namePlaceholder}
-        value={fullName}
-        onChange={(e) => setFullName(e.target.value)}
-        disabled={submitting}
-        required
-        className={inputClass}
-        style={inputStyle}
-      />
-      <input
-        type="tel"
-        name="phone"
-        autoComplete="tel"
-        inputMode="tel"
-        placeholder={copy.phonePlaceholder}
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        disabled={submitting}
-        required
-        className={inputClass}
-        style={inputStyle}
-      />
-      <input
-        type="text"
-        name="city"
-        autoComplete="address-level2"
-        placeholder={copy.cityPlaceholder}
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        disabled={submitting}
-        required
-        className={inputClass}
-        style={inputStyle}
-      />
-
-      <motion.button
-        type="submit"
-        disabled={submitting}
-        className="w-full bg-gradient-gold text-white rounded-xl px-8 py-4 font-semibold text-sm shadow-lg mt-2 flex items-center justify-center gap-2 disabled:opacity-70"
-        whileHover={submitting ? undefined : { y: -3, boxShadow: '0 20px 40px -5px rgba(212,175,55,0.55)' }}
-        whileTap={submitting ? undefined : { scale: 0.97 }}
-      >
-        {submitting ? copy.submitting : copy.submit}
-        {!submitting && <ArrowRtl />}
-      </motion.button>
-
-      {status.kind === 'success' && (
-        <p
-          role="status"
-          className="text-sm text-emerald-300 bg-emerald-400/10 border border-emerald-400/30 rounded-xl px-4 py-3"
-        >
-          {copy.success}
-        </p>
-      )}
-      {status.kind === 'error' && (
-        <p
-          role="alert"
-          className="text-sm text-red-300 bg-red-400/10 border border-red-400/30 rounded-xl px-4 py-3"
-        >
-          {status.message}
-        </p>
-      )}
-    </form>
-  )
-}
-
 /* ─── Main landing (client) ─── */
 export function Landing({ content }: { content: Content }) {
   const c = content
+  const { whatsappHref } = useCheckout()
+  const waHref = whatsappHref()
   const heroRef = useRef<HTMLElement>(null)
   const bgRef = useRef<HTMLImageElement>(null)
 
@@ -435,14 +321,15 @@ export function Landing({ content }: { content: Content }) {
           ))}
         </div>
 
-        <motion.a
-          href="#book"
-          className="bg-charcoal text-white px-6 py-2.5 rounded-full text-xs font-medium shadow-lg"
-          whileHover={{ backgroundColor: '#D4AF37', y: -2, boxShadow: '0 10px 25px -5px rgba(212,175,55,0.5)' }}
+        <motion.div
+          whileHover={{ y: -2 }}
           transition={{ duration: 0.25 }}
         >
-          {c.nav.book}
-        </motion.a>
+          <PayButton className="inline-flex items-center gap-2 bg-charcoal hover:bg-gold-500 text-white px-6 py-2.5 rounded-full text-xs font-medium shadow-lg hover:shadow-[0_10px_25px_-5px_rgba(212,175,55,0.5)] transition-colors cursor-pointer">
+            <CardIcon className="w-3.5 h-3.5" />
+            {c.nav.book}
+          </PayButton>
+        </motion.div>
       </motion.nav>
 
       {/* ══ HERO ══ */}
@@ -546,15 +433,28 @@ export function Landing({ content }: { content: Content }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 1.05 }}
                 >
-                  <motion.a
-                    href="#book"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-gold text-white px-9 py-4 rounded-full font-semibold text-sm shadow-lg"
+                  <motion.div
                     whileHover={{ y: -4, boxShadow: '0 22px 44px -6px rgba(212,175,55,0.55)' }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                    className="rounded-full"
                   >
-                    {c.hero.book}
-                    <ArrowRtl />
+                    <PayButton className="w-full inline-flex items-center justify-center gap-2 bg-gradient-gold text-white px-9 py-4 rounded-full font-semibold text-sm shadow-lg cursor-pointer">
+                      <CardIcon />
+                      {c.hero.book}
+                    </PayButton>
+                  </motion.div>
+                  <motion.a
+                    href={waHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 border border-white/40 text-white px-9 py-4 rounded-full font-medium text-sm backdrop-blur-sm bg-white/10"
+                    whileHover={{ borderColor: '#25D366', y: -4, backgroundColor: 'rgba(255,255,255,0.18)' }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <WaIcon className="w-4 h-4 text-[#25D366]" />
+                    {c.hero.whatsapp}
                   </motion.a>
                   <motion.a
                     href="#services"
@@ -901,7 +801,13 @@ export function Landing({ content }: { content: Content }) {
                   <p className="text-white/60 mb-8 text-sm leading-loose">
                     {c.booking.body}
                   </p>
-                  <BookingForm copy={c.booking} />
+                  <CheckoutPanel
+                    theme="dark"
+                    id="booking"
+                    badge={c.booking.panelBadge}
+                    title={c.booking.panelTitle}
+                    subtitle={c.booking.panelSub}
+                  />
 
                   <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center gap-5">
                     {c.booking.assurances.map(({ label }, i) => (

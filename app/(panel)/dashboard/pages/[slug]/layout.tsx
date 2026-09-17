@@ -42,7 +42,12 @@ export default async function PageShell({
           </a>
         }
       />
-      <PageTabs slug={def.slug} hasLeads={Boolean(def.leadSource)} />
+      <PageTabs
+        slug={def.slug}
+        hasLeads={Boolean(def.leadSource)}
+        hasPackages={def.kind === "landing"}
+        hasOrders={def.kind === "landing" || def.slug === "offers"}
+      />
       {children}
     </div>
   );

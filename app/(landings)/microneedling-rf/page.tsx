@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { MICRONEEDLING_RF } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -26,6 +28,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function MicroneedlingRfPage() {
-  const content = await getPageContent(MICRONEEDLING_RF);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([
+    getPageContent(MICRONEEDLING_RF),
+    getSellableItems(MICRONEEDLING_RF.slug),
+  ]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: MICRONEEDLING_RF.slug, title: MICRONEEDLING_RF.title, path: MICRONEEDLING_RF.path }}
+      whatsappTopic="عندي استفسار عن علاج الميكرونيدلينغ بالترددات الراديوية"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

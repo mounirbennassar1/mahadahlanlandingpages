@@ -6,7 +6,8 @@ import { definePage, items, li, seoSectionWithOg, t, ta } from "@/lib/pages/defi
  * The page and its hero component read it through `getPageContent(FACIAL)`.
  * Images, videos, gradients and the per-card accent colours stay in the page
  * and are paired with these rows by index, which is why those lists are
- * `fixed`. The landing has no lead form — every CTA opens WhatsApp.
+ * `fixed`. The landing has no lead form: the primary CTAs open the checkout
+ * sheet and the secondary ones open WhatsApp.
  */
 export const FACIAL = definePage({
   slug: "facial",
@@ -14,7 +15,8 @@ export const FACIAL = definePage({
   path: "/facial",
   kind: "landing",
   locale: "ar",
-  leadSource: null,
+  // Checkout customers from this page are filed under this lead source.
+  leadSource: "facial",
   sections: {
     seo: seoSectionWithOg(
       "عيادات د. مها دحلان | العناية بالبشرة والهايدرافيشل",
@@ -37,8 +39,8 @@ export const FACIAL = definePage({
         ),
         bodyStrong: t("الفقرة، العبارة المميزة", "أجهزة طبية حديثة"),
         body3: t("الفقرة، الخاتمة", "وبروتوكولات معتمدة تناسب احتياجات كل بشرة."),
-        book: t("زر الحجز", "احجز موعدك الآن"),
-        services: t("الزر الثانوي", "اكتشف خدماتنا"),
+        book: t("زر الحجز والدفع", "احجز وادفع الآن"),
+        services: t("زر واتساب", "اسأل عبر واتساب"),
       },
     },
 
@@ -170,7 +172,8 @@ export const FACIAL = definePage({
           "استفيدي من التقييم الشامل مع نخبة من أطباء العيادة وابدئي رحلتك نحو الجمال الحقيقي.",
           { rows: 3 },
         ),
-        whatsapp: t("زر واتساب", "تواصل معنا عبر واتساب"),
+        pay: t("زر الدفع", "احجز وادفع الآن"),
+        whatsapp: t("زر واتساب", "اسأل عبر واتساب"),
         stats: items(
           "أرقام الثقة",
           { value: t("الرقم أو الكلمة", ""), label: t("الوصف", "") },

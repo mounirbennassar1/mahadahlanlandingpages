@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
+import { PayButton } from "@/components/checkout";
 import { GOLD_GRADIENT } from "./config";
 
 /** Fixed header: transparent over the hero, obsidian glass after 30px. */
@@ -33,14 +34,13 @@ export function Header({ cta }: { cta: string }) {
           priority
           className="size-[58px] object-contain brightness-0 invert"
         />
-        <a
-          href="#booking"
-          className="inline-flex items-center gap-2 rounded-full px-[22px] py-2.5 text-[0.85rem] font-extrabold text-[#1A1405] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-12px_rgba(240,212,138,0.5)]"
+        <PayButton
+          className="inline-flex cursor-pointer items-center gap-2 rounded-full px-[22px] py-2.5 text-[0.85rem] font-extrabold text-[#1A1405] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-12px_rgba(240,212,138,0.5)]"
           style={{ background: GOLD_GRADIENT }}
         >
+          <Icon.CreditCard className="size-4" strokeWidth={2.2} />
           {cta}
-          <Icon.ArrowLeft className="size-4" strokeWidth={2.4} />
-        </a>
+        </PayButton>
       </div>
     </header>
   );

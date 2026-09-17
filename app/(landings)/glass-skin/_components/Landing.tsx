@@ -16,7 +16,7 @@ import { AmbientLayers } from "./AmbientLayers";
 import { GlassStickyCTA } from "./GlassStickyCTA";
 import { ScrollProgress } from "./ScrollProgress";
 import { Marquee } from "./Marquee";
-import { LeadForm } from "./LeadForm";
+import { CheckoutPanel, PayButton } from "@/components/checkout";
 import { DoctorsSlider } from "./DoctorsSlider";
 import { ProtocolSteps } from "./ProtocolSteps";
 import type { ContentOf } from "@/lib/pages/define";
@@ -25,8 +25,8 @@ import type { GLASS_SKIN } from "../content";
 /* Frame count of the scroll film — MUST match public/glass-skin/seq/fNNN.jpg */
 const FRAME_COUNT = 121;
 
-/* TikTok-ads funnel: form-only lead capture — every CTA anchors here. */
-const FORM_ANCHOR = "#lead-form";
+/* Every CTA opens the checkout sheet; the booking section carries the inline panel. */
+const PANEL_ID = "lead-form";
 
 /* house animation variants */
 const fadeUp: Variants = {
@@ -128,17 +128,16 @@ export function Landing({ content }: { content: ContentOf<typeof GLASS_SKIN> }) 
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href={FORM_ANCHOR}
-            className="hidden items-center gap-2 rounded-full px-5 py-2 text-xs font-extrabold text-[#1d2023] shadow-[0_10px_24px_-10px_rgba(212,175,55,0.55)] transition-transform hover:scale-[1.03] sm:inline-flex"
+          <PayButton
+            className="hidden cursor-pointer items-center gap-2 rounded-full px-5 py-2 text-xs font-extrabold text-[#1d2023] shadow-[0_10px_24px_-10px_rgba(212,175,55,0.55)] transition-transform hover:scale-[1.03] sm:inline-flex"
             style={{
               background:
                 "linear-gradient(120deg, #f0d98c 0%, #d4af37 55%, #b8912e 100%)",
             }}
           >
+            <Icon.CreditCard className="size-3.5" />
             {content.nav.book}
-            <Icon.ArrowLeft className="size-3.5" />
-          </a>
+          </PayButton>
           <button
             type="button"
             onClick={() => setMenuOpen((p) => !p)}
@@ -174,7 +173,7 @@ export function Landing({ content }: { content: ContentOf<typeof GLASS_SKIN> }) 
                 ))}
                 <li className="p-2">
                   <a
-                    href={FORM_ANCHOR}
+                    href={`#${PANEL_ID}`}
                     onClick={() => setMenuOpen(false)}
                     className="flex h-11 items-center justify-center gap-2 rounded-2xl text-sm font-extrabold text-[#1d2023]"
                     style={{
@@ -182,7 +181,7 @@ export function Landing({ content }: { content: ContentOf<typeof GLASS_SKIN> }) 
                         "linear-gradient(120deg, #f0d98c 0%, #d4af37 55%, #b8912e 100%)",
                     }}
                   >
-                    <Icon.CalendarCheck className="size-4" />
+                    <Icon.CreditCard className="size-4" />
                     {content.nav.bookMobile}
                   </a>
                 </li>
@@ -349,9 +348,15 @@ export function Landing({ content }: { content: ContentOf<typeof GLASS_SKIN> }) 
             </motion.ul>
           </div>
 
-          {/* form — left column in RTL */}
+          {/* checkout — left column in RTL */}
           <motion.div variants={fadeUp}>
-            <LeadForm copy={content.booking} />
+            <CheckoutPanel
+              theme="dark"
+              id={PANEL_ID}
+              badge={content.booking.formBadge}
+              title={content.booking.formTitle}
+              subtitle={content.booking.formSub}
+            />
           </motion.div>
         </motion.section>
 
@@ -641,8 +646,8 @@ export function Landing({ content }: { content: ContentOf<typeof GLASS_SKIN> }) 
         <div className="h-16 md:hidden" aria-hidden />
       </main>
 
-      {/* ───── Floating CTA (form-only funnel — no WhatsApp) ───── */}
-      <GlassStickyCTA bookHref={FORM_ANCHOR} book={content.sticky.book} />
+      {/* ───── Floating CTA: pay + ask on WhatsApp ───── */}
+      <GlassStickyCTA book={content.sticky.book} />
     </>
   );
 }

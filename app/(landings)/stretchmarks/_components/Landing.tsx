@@ -5,6 +5,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { Icon } from "@/components/icons";
+import { PayButton } from "@/components/checkout";
 import { FadeIn } from "./FadeIn";
 import type { ContentOf } from "@/lib/pages/define";
 import type { STRETCHMARKS } from "../content";
@@ -155,14 +157,18 @@ export function Landing({ content }: { content: ContentOf<typeof STRETCHMARKS> }
           </div>
 
           <div className="flex items-center gap-3">
+            <PayButton className="hidden sm:inline-flex items-center gap-2 bg-primary text-on-primary px-5 py-2.5 rounded-full font-label text-sm tracking-wider hover:bg-primary-dim transition-all duration-200 active:scale-95 cursor-pointer">
+              <Icon.CreditCard className="size-4" strokeWidth={2} />
+              {c.nav.cta}
+            </PayButton>
             <a
               href={WA}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 bg-primary text-on-primary px-5 py-2.5 rounded-full font-label text-sm tracking-wider hover:bg-primary-dim transition-all duration-200 active:scale-95"
+              className="hidden sm:inline-flex items-center justify-center size-10 rounded-full bg-[#25D366] text-white hover:scale-105 transition-transform duration-200"
+              aria-label="اسألي عبر واتساب"
             >
-              <FontAwesomeIcon icon={faWhatsapp} className="text-base" />
-              {c.nav.cta}
+              <FontAwesomeIcon icon={faWhatsapp} className="text-lg" />
             </a>
 
             <button
@@ -196,14 +202,18 @@ export function Landing({ content }: { content: ContentOf<typeof STRETCHMARKS> }
                     {link.label}
                   </button>
                 ))}
+                <PayButton className="inline-flex items-center justify-center gap-2 bg-white text-primary px-6 py-3 rounded-full font-label text-sm font-bold tracking-wider mt-2 hover:bg-primary-container transition-colors duration-300 cursor-pointer">
+                  <Icon.CreditCard className="size-4" strokeWidth={2} />
+                  {c.nav.ctaMobile}
+                </PayButton>
                 <a
                   href={WA}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-primary px-6 py-3 rounded-full font-label text-sm font-bold tracking-wider mt-2 hover:bg-primary-container transition-colors duration-300"
+                  className="inline-flex items-center justify-center gap-2 border border-white/40 text-white px-6 py-3 rounded-full font-label text-sm font-bold tracking-wider hover:bg-white/10 transition-colors duration-300"
                 >
                   <FontAwesomeIcon icon={faWhatsapp} className="text-base" />
-                  {c.nav.ctaMobile}
+                  اسألي عبر واتساب
                 </a>
               </div>
             </motion.div>
@@ -236,10 +246,14 @@ export function Landing({ content }: { content: ContentOf<typeof STRETCHMARKS> }
               <p className="text-xl text-on-surface-variant leading-relaxed mb-12 font-body max-w-lg">
                 {c.hero.body}
               </p>
-              <div className="flex flex-col sm:flex-row-reverse gap-6">
-                <a className="inline-flex items-center justify-center gap-3 bg-primary text-on-primary px-10 py-5 rounded-full text-lg font-medium hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300" href={WA} target="_blank" rel="noopener noreferrer">
+              <div className="flex flex-col sm:flex-row-reverse flex-wrap gap-6">
+                <PayButton className="inline-flex items-center justify-center gap-3 bg-primary text-on-primary px-10 py-5 rounded-full text-lg font-medium hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 cursor-pointer">
                   <span>{c.hero.cta}</span>
-                  <FontAwesomeIcon icon={faWhatsapp} className="text-xl" />
+                  <Icon.CreditCard className="size-5" strokeWidth={2} />
+                </PayButton>
+                <a className="inline-flex items-center justify-center gap-3 border border-outline-variant text-primary px-10 py-5 rounded-full text-lg font-medium hover:bg-white transition-all duration-300" href={WA} target="_blank" rel="noopener noreferrer">
+                  <span>اسألي عبر واتساب</span>
+                  <FontAwesomeIcon icon={faWhatsapp} className="text-xl text-[#25D366]" />
                 </a>
                 <button onClick={() => smoothScroll("#about")} className="inline-flex items-center justify-center gap-3 border border-outline-variant text-primary px-10 py-5 rounded-full text-lg font-medium hover:bg-white transition-all duration-300">
                   {c.hero.secondary}
@@ -367,10 +381,16 @@ export function Landing({ content }: { content: ContentOf<typeof STRETCHMARKS> }
                     ))}
                   </div>
                 </div>
-                <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-primary text-on-primary px-7 py-3 rounded-full text-sm font-medium hover:bg-primary-dim transition-all w-fit">
-                  <span>{c.treatments.firstCta}</span>
-                  <span className="material-symbols-outlined text-base">arrow_back</span>
-                </a>
+                <div className="flex flex-wrap items-center gap-3">
+                  <PayButton className="inline-flex items-center gap-3 bg-primary text-on-primary px-7 py-3 rounded-full text-sm font-medium hover:bg-primary-dim transition-all w-fit cursor-pointer">
+                    <Icon.CreditCard className="size-4" strokeWidth={2} />
+                    <span>{c.treatments.firstPay}</span>
+                  </PayButton>
+                  <a href={WA} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 border border-primary/30 text-primary px-7 py-3 rounded-full text-sm font-medium hover:bg-primary/10 transition-all w-fit">
+                    <FontAwesomeIcon icon={faWhatsapp} className="text-base text-[#25D366]" />
+                    <span>{c.treatments.firstCta}</span>
+                  </a>
+                </div>
               </div>
               <Image src={heroSlides[2].src} alt="صورة العلاج" fill className="object-cover opacity-15 group-hover:scale-110 transition-transform duration-700" />
             </FadeIn>
@@ -454,7 +474,10 @@ export function Landing({ content }: { content: ContentOf<typeof STRETCHMARKS> }
               <div className="text-center">
                 <p className="font-headline text-2xl text-primary mb-4">{c.results.joinTitle}</p>
                 <p className="text-on-surface-variant text-sm mb-6">{c.results.joinBody}</p>
-                <a className="bg-primary text-on-primary px-8 py-3 rounded-full text-sm font-medium hover:bg-primary-dim transition-all" href={WA} target="_blank" rel="noopener noreferrer">{c.results.joinCta}</a>
+                <PayButton className="inline-flex items-center gap-2 bg-primary text-on-primary px-8 py-3 rounded-full text-sm font-medium hover:bg-primary-dim transition-all cursor-pointer">
+                  <Icon.CreditCard className="size-4" strokeWidth={2} />
+                  {c.results.joinCta}
+                </PayButton>
               </div>
             </div>
           </div>
@@ -559,15 +582,21 @@ export function Landing({ content }: { content: ContentOf<typeof STRETCHMARKS> }
             ))}
           </div>
           <FadeIn className="mt-12 text-center">
-            <a
-              href={WA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 border border-outline-variant text-on-surface-variant px-8 py-3 rounded-full text-sm hover:bg-surface-container-low transition-colors"
-            >
-              <FontAwesomeIcon icon={faWhatsapp} className="text-base text-[#25D366]" />
-              <span>{c.testimonials.cta}</span>
-            </a>
+            <div className="flex flex-wrap justify-center gap-3">
+              <PayButton className="inline-flex items-center gap-3 bg-primary text-on-primary px-8 py-3 rounded-full text-sm font-medium hover:bg-primary-dim transition-all cursor-pointer">
+                <Icon.CreditCard className="size-4" strokeWidth={2} />
+                <span>{c.testimonials.cta}</span>
+              </PayButton>
+              <a
+                href={WA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 border border-outline-variant text-on-surface-variant px-8 py-3 rounded-full text-sm hover:bg-surface-container-low transition-colors"
+              >
+                <FontAwesomeIcon icon={faWhatsapp} className="text-base text-[#25D366]" />
+                <span>اسألي عبر واتساب</span>
+              </a>
+            </div>
           </FadeIn>
         </div>
       </section>
@@ -613,9 +642,13 @@ export function Landing({ content }: { content: ContentOf<typeof STRETCHMARKS> }
             </p>
             <p className="text-sm opacity-70 mb-12">{c.cta.note}</p>
             <div className="flex flex-wrap justify-center gap-6">
-              <a className="text-primary bg-white px-12 py-5 rounded-full text-xl font-bold flex items-center gap-3 hover:scale-105 transition-transform shadow-lg" href={WA} target="_blank" rel="noopener noreferrer">
-                <FontAwesomeIcon icon={faWhatsapp} className="text-2xl text-[#25D366]" />
+              <PayButton className="text-primary bg-white px-12 py-5 rounded-full text-xl font-bold flex items-center gap-3 hover:scale-105 transition-transform shadow-lg cursor-pointer">
+                <Icon.CreditCard className="size-6" strokeWidth={2} />
                 <span>{c.cta.button}</span>
+              </PayButton>
+              <a className="border border-white/50 text-on-primary px-12 py-5 rounded-full text-xl font-bold flex items-center gap-3 hover:bg-white/10 transition-colors" href={WA} target="_blank" rel="noopener noreferrer">
+                <FontAwesomeIcon icon={faWhatsapp} className="text-2xl text-[#25D366]" />
+                <span>{c.cta.whatsapp}</span>
               </a>
             </div>
           </div>

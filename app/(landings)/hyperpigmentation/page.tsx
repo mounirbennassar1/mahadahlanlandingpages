@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import BeforeAfter from "./_components/BeforeAfter";
-import ContactForm from "./_components/ContactForm";
 import HeroCanvas from "./_components/HeroCanvasLazy";
 import Nav from "./_components/Nav";
 import ScrollAnimations from "./_components/ScrollAnimations";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutPanel, CheckoutProvider, PayButton } from "@/components/checkout";
+import { WHATSAPP_NUMBER } from "@/app/_home/config";
 import { HYPERPIGMENTATION } from "./content";
+
+const WA_TOPIC = "عندي استفسار بخصوص علاج التصبّغات";
+const WA = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`السلام عليكم ورحمة الله وبركاته\n${WA_TOPIC}`)}`;
 
 /** Before/after pairs + alt text for the results cards, in content order. */
 const RESULT_IMAGES = [
@@ -66,10 +71,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HyperpigmentationLanding() {
-  const c = await getPageContent(HYPERPIGMENTATION);
+  const [c, items] = await Promise.all([
+    getPageContent(HYPERPIGMENTATION),
+    getSellableItems(HYPERPIGMENTATION.slug),
+  ]);
 
   return (
-    <>
+    <CheckoutProvider
+      items={items}
+      page={{ slug: HYPERPIGMENTATION.slug, title: HYPERPIGMENTATION.title, path: HYPERPIGMENTATION.path }}
+      whatsappTopic={WA_TOPIC}
+    >
       <ScrollAnimations />
 
       <Nav copy={c.nav} />
@@ -93,9 +105,12 @@ export default async function HyperpigmentationLanding() {
             {c.hero.lead}
           </p>
           <div className="hero-actions">
-            <a href="#cta" className="btn btn-gold">
+            <PayButton className="btn btn-gold" noIcon>
               {c.hero.book}
               <span className="arrow" />
+            </PayButton>
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+              اسألي عبر واتساب
             </a>
             <a href="#process" className="btn btn-ghost">
               {c.hero.plan}
@@ -423,7 +438,12 @@ export default async function HyperpigmentationLanding() {
             </div>
           </div>
 
-          <ContactForm copy={c.booking} />
+          <CheckoutPanel
+            theme="dark"
+            id="checkout"
+            title={c.booking.formTitle}
+            subtitle={c.booking.formSub}
+          />
         </div>
       </section>
 
@@ -438,6 +458,6 @@ export default async function HyperpigmentationLanding() {
           ))}
         </div>
       </footer>
-    </>
+    </CheckoutProvider>
   );
 }

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
+import { PayButton } from "@/components/checkout";
 
 /** Fixed header: transparent over the hero, ivory glass after 30px. */
 export function Header() {
@@ -32,13 +33,10 @@ export function Header() {
           priority
           className="size-[58px] object-contain"
         />
-        <a
-          href="#booking"
-          className="inline-flex items-center gap-2 rounded-full bg-[var(--color-nkl-dark)] px-[22px] py-2.5 text-[0.85rem] font-extrabold text-[#F0D48A] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3A2A1A]"
-        >
+        <PayButton className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-[var(--color-nkl-dark)] px-[22px] py-2.5 text-[0.85rem] font-extrabold text-[#F0D48A] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3A2A1A]">
+          <Icon.CreditCard className="size-4" strokeWidth={2.2} />
           احجزي موعدك
-          <Icon.ArrowLeft className="size-4" strokeWidth={2.4} />
-        </a>
+        </PayButton>
       </div>
     </header>
   );

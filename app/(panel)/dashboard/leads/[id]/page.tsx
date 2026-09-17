@@ -8,6 +8,8 @@ import { Card } from "@/app/(panel)/dashboard/_components/card";
 import { PageHeader } from "@/app/(panel)/dashboard/_components/forms";
 import { secondaryButtonStyle } from "@/app/(panel)/dashboard/_components/forms/styles";
 import { DeleteButton } from "@/app/(panel)/dashboard/_components/forms/delete-button";
+import { ORDER_STATUS_META } from "@/lib/order-status";
+import { Pill } from "@/app/(panel)/dashboard/content/_components/table";
 import { StatusPill } from "../status-pill";
 import { AssigneePill } from "../assignee-pill";
 import { extraEntries } from "../lead-details";
@@ -40,6 +42,7 @@ export default async function LeadDetailPage({
         source: true,
         assignee: true,
         offer: { select: { title: true } },
+        orders: { orderBy: { createdAt: "desc" }, select: { id: true, reference: true, status: true, amount: true, itemTitle: true, createdAt: true } },
         activities: {
           orderBy: { createdAt: "desc" },
           include: { user: { select: { name: true } } },
@@ -195,6 +198,27 @@ export default async function LeadDetailPage({
               )}
             </dl>
           </Card>
+
+          {lead.orders.length > 0 && (
+            <Card title="Online payments" subtitle="Orders this customer started through noon">
+              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 10 }}>
+                {lead.orders.map((o) => (
+                  <li key={o.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+                      <Link href={`/dashboard/orders/${o.id}`} className="fk-link" style={{ fontFamily: "var(--font-data)", fontWeight: 600, color: "var(--primary)" }}>
+                        {o.reference}
+                      </Link>
+                      <Ar>{o.itemTitle}</Ar>
+                    </span>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+                      <b style={{ fontFamily: "var(--font-data)" }}>{o.amount.toLocaleString("en-US")} SAR</b>
+                      <Pill tone={ORDER_STATUS_META[o.status].tone}>{ORDER_STATUS_META[o.status].label}</Pill>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          )}
 
           {(lead.utmSource || lead.utmMedium || lead.utmCampaign) && (
             <Card title="Campaign">

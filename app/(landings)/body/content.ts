@@ -3,8 +3,7 @@ import { definePage, items, li, seoSectionWithOg, t, ta } from "@/lib/pages/defi
 /**
  * Editable copy for /body (نحت الجسم بتقنية HIFEM).
  *
- * The page, its lead form and its thank-you page read this through
- * `getPageContent(BODY)`. Images, icons, section anchors and the hero counter
+ * The page and its checkout panel read this through `getPageContent(BODY)`. Images, icons, section anchors and the hero counter
  * animation stay in the components and are paired with these rows by index,
  * which is why every icon/image-backed list is `fixed`.
  */
@@ -15,7 +14,6 @@ export const BODY = definePage({
   kind: "landing",
   locale: "ar",
   leadSource: "body",
-  extraPaths: ["/body/thank-you"],
   sections: {
     seo: seoSectionWithOg(
       "نحت الجسم بتقنية التحفيز العضلي — عيادات د. مها دحلان",
@@ -332,24 +330,11 @@ export const BODY = definePage({
         ]),
         badge: t("شارة الندرة", "المقاعد محدودة لهذا الأسبوع"),
         note: t("ملاحظة الندرة", "يتم استقبال 40 سيدة فقط أسبوعيًا لضمان تجربة خاصة وراقية."),
-        formEyebrow: t("عنوان النموذج الصغير", "احجزي استشارتك"),
-        formTitle: t("عنوان النموذج", "جلسة تحليل قوام مجانية"),
+        formEyebrow: t("شارة نموذج الدفع", "الدفع الإلكتروني الآمن"),
+        formTitle: t("عنوان نموذج الدفع", "احجزي وادفعي الآن"),
         formBody: ta(
-          "وصف النموذج",
-          "اتركي بياناتك وسيعاود فريق الاستشارات التواصل خلال ساعة عمل واحدة لتحديد موعدك في أقرب فرع.",
-          { rows: 3 },
-        ),
-        nameLabel: t("تسمية حقل الاسم", "الاسم الكامل"),
-        namePlaceholder: t("النص التلميحي للاسم", "اكتبي اسمك"),
-        phoneLabel: t("تسمية حقل الجوال", "رقم الجوال"),
-        phonePlaceholder: t("النص التلميحي للجوال", "+9665xxxxxxxx"),
-        cityLabel: t("تسمية حقل المدينة", "المدينة"),
-        cityPlaceholder: t("النص التلميحي للمدينة", "مثال: جدة"),
-        submit: t("زر الإرسال", "احجزي استشارتك"),
-        submitting: t("زر الإرسال أثناء التحميل", "جارٍ الإرسال…"),
-        consent: ta(
-          "تنويه الخصوصية",
-          "بالضغط على الزر أنت توافقين على سياسة الخصوصية والتواصل عبر قنواتنا. بياناتك محفوظة ولن تُشارك مع أي طرف ثالث.",
+          "وصف نموذج الدفع",
+          "اختاري باقتك، أدخلي بياناتك، وادفعي بأمان عبر noon. نتصل بك خلال ساعات العمل لتثبيت الموعد.",
           { rows: 3 },
         ),
       },
@@ -378,32 +363,6 @@ export const BODY = definePage({
         friday: t("يوم الإغلاق", "الجمعة"),
         fridayTime: t("توقيت يوم الإغلاق", "مغلق"),
         copyright: t("حقوق النشر", "© 2026 عيادة د. مها دحلان. جميع الحقوق محفوظة."),
-      },
-    },
-
-    thankYou: {
-      title: "صفحة الشكر",
-      hint: "تظهر بعد إرسال النموذج على /body/thank-you.",
-      fields: {
-        metaTitle: t("عنوان المتصفح", "شكراً لكِ — عيادات د. مها دحلان"),
-        metaDescription: ta(
-          "وصف محركات البحث",
-          "تم استلام طلبك بنجاح، سنتواصل معك خلال ساعة عمل واحدة.",
-          { rows: 2 },
-        ),
-        title: t("العنوان", "تم استلام طلبك بنجاح"),
-        body: ta(
-          "النص",
-          "شكراً لتواصلك مع عيادات د. مها دحلان. فريقنا سيقوم بالتواصل معك خلال ساعة عمل واحدة لتأكيد موعد جلسة تحليل القوام المجانية.",
-          { rows: 4 },
-        ),
-        stepsTitle: t("عنوان الخطوات", "الخطوات التالية"),
-        steps: li("الخطوات", [
-          "سيتصل بك أحد مستشارينا لتحديد موعد يناسبك",
-          "موعد الاستشارة خلال 24 ساعة عمل",
-          "جدة — حي الروضة، شارع التحلية، مركز بن حمران، الدور الثالث",
-        ]),
-        home: t("زر العودة", "العودة للصفحة الرئيسية"),
       },
     },
   },

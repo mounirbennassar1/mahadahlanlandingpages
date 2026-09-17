@@ -21,7 +21,7 @@ import { auth } from "@/auth";
 const ADMIN_PATHS = [/^\/login(\/|$)/, /^\/dashboard(\/|$)/];
 const ADMIN_API = [/^\/api\/auth(\/|$)/];
 const PRIVATE_API = [/^\/api\/admin(\/|$)/];
-const PUBLIC_API = [/^\/api\/leads(\/|$)/];
+const PUBLIC_API = [/^\/api\/leads(\/|$)/, /^\/api\/checkout(\/|$)/, /^\/api\/noon(\/|$)/];
 
 function isAdminPath(pathname: string) {
   return ADMIN_PATHS.some((r) => r.test(pathname));
@@ -44,7 +44,7 @@ export default auth((req: NextRequest & { auth: unknown }) => {
   const host = (req.headers.get("host") ?? "").toLowerCase();
   const { pathname } = req.nextUrl;
 
-  // /api/leads is the public ingest — always allow regardless of host.
+  // Public endpoints (lead ingest, checkout, noon webhook) work on every host.
   if (isPublicApi(pathname)) return NextResponse.next();
 
   const isPortal = host.startsWith("portal.");

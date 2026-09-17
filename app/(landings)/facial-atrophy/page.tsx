@@ -10,7 +10,6 @@ import { Doctors } from "./_components/Doctors";
 import { BeforeAfter } from "./_components/BeforeAfter";
 import { Journey } from "./_components/Journey";
 import { Testimonials } from "./_components/Testimonials";
-import { Booking } from "./_components/Booking";
 import { StickyBar } from "./_components/StickyBar";
 import {
   GOLD_GRADIENT,
@@ -21,6 +20,8 @@ import {
   WHATSAPP_NUMBER,
 } from "./_components/config";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutPanel, CheckoutProvider, PayButton } from "@/components/checkout";
 import { FACIAL_ATROPHY } from "./content";
 
 const CARD_GRADIENT = "linear-gradient(160deg, #2E0D18, #1D060D)";
@@ -85,7 +86,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function FacialAtrophyPage() {
-  const c = await getPageContent(FACIAL_ATROPHY);
+  const [c, items] = await Promise.all([
+    getPageContent(FACIAL_ATROPHY),
+    getSellableItems(FACIAL_ATROPHY.slug),
+  ]);
   const problemCards = c.problem.cards.map((card, i) => ({
     ...card,
     icon: PROBLEM_ICONS[i],
@@ -96,6 +100,11 @@ export default async function FacialAtrophyPage() {
   }));
 
   return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: FACIAL_ATROPHY.slug, title: FACIAL_ATROPHY.title, path: FACIAL_ATROPHY.path }}
+      whatsappTopic={WA_TOPIC_MESSAGE}
+    >
     <main>
       <Header cta={c.cta.header} />
       <Hero copy={c.hero} />
@@ -229,13 +238,12 @@ export default async function FacialAtrophyPage() {
                   {c.solutions.ctaBody}
                 </p>
               </div>
-              <a
-                href="#booking"
-                className="mt-[22px] inline-flex w-fit shrink-0 items-center gap-[9px] rounded-full bg-[var(--color-faa-cta-ink)] px-6 py-[13px] text-[0.92rem] font-extrabold text-[var(--color-faa-gold-bright)] transition-transform duration-300 hover:-translate-x-1 sm:mt-0"
+              <PayButton
+                className="mt-[22px] inline-flex w-fit shrink-0 cursor-pointer items-center gap-[9px] rounded-full bg-[var(--color-faa-cta-ink)] px-6 py-[13px] text-[0.92rem] font-extrabold text-[var(--color-faa-gold-bright)] transition-transform duration-300 hover:-translate-x-1 sm:mt-0"
               >
+                <Icon.CreditCard className="size-[15px]" strokeWidth={2.2} />
                 {c.solutions.ctaButton}
-                <Icon.ArrowLeft className="size-[15px]" strokeWidth={2.4} />
-              </a>
+              </PayButton>
             </Reveal>
           </div>
         </div>
@@ -412,7 +420,26 @@ export default async function FacialAtrophyPage() {
           </Reveal>
 
           <Reveal delay={120}>
-            <Booking copy={c.booking} />
+            {/* the design's animated conic border, now around the checkout */}
+            <div className="relative overflow-hidden rounded-[30px] p-[1.5px]">
+              <div
+                className="absolute -inset-[130%]"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, transparent 0 62%, rgba(240,212,138,.9) 76%, rgba(166,124,61,.9) 86%, transparent 97%)",
+                  animation: "faa-spin 5s linear infinite",
+                }}
+                aria-hidden
+              />
+              <CheckoutPanel
+                theme="dark"
+                id="checkout"
+                badge={c.booking.formBadge}
+                title={c.booking.formTitle}
+                subtitle={c.booking.formSub}
+                className="!border-transparent"
+              />
+            </div>
           </Reveal>
         </div>
       </section>
@@ -466,5 +493,6 @@ export default async function FacialAtrophyPage() {
       />
       <StickyBar label={c.cta.sticky} />
     </main>
+    </CheckoutProvider>
   );
 }

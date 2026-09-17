@@ -9,7 +9,6 @@ import { MarqueeStrip } from "./_components/MarqueeStrip";
 import { ApproachPin } from "./_components/ApproachPin";
 import { Doctors } from "./_components/Doctors";
 import { Testimonials } from "./_components/Testimonials";
-import { LeadForm } from "./_components/LeadForm";
 import { StickyBar } from "./_components/StickyBar";
 import {
   PHONE_DISPLAY,
@@ -19,6 +18,8 @@ import {
   WHATSAPP_NUMBER,
 } from "./_components/config";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutPanel, CheckoutProvider } from "@/components/checkout";
 import { CHRONIC_ECZEMA } from "./content";
 
 // Bento order: index 0 and 3 render as the two wide cards stacked on the
@@ -114,7 +115,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ChronicEczemaPage() {
-  const c = await getPageContent(CHRONIC_ECZEMA);
+  const [c, items] = await Promise.all([
+    getPageContent(CHRONIC_ECZEMA),
+    getSellableItems(CHRONIC_ECZEMA.slug),
+  ]);
   const symptoms = c.symptoms.cards.map((card, i) => ({
     ...card,
     icon: SYMPTOM_ICONS[i],
@@ -123,6 +127,11 @@ export default async function ChronicEczemaPage() {
   const whyUs = c.whyUs.cards.map((card, i) => ({ ...card, icon: WHY_US_ICONS[i] }));
 
   return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: CHRONIC_ECZEMA.slug, title: CHRONIC_ECZEMA.title, path: CHRONIC_ECZEMA.path }}
+      whatsappTopic={WA_TOPIC_MESSAGE}
+    >
     <main className="relative">
       <ScrollSystem />
       <div className="relative z-[1]">
@@ -522,7 +531,13 @@ export default async function ChronicEczemaPage() {
               </div>
 
               <div data-reveal="zoom">
-                <LeadForm copy={c.booking} />
+                <CheckoutPanel
+                  theme="dark"
+                  id="checkout"
+                  badge={c.booking.formBadge}
+                  title={c.booking.formTitle}
+                  subtitle={c.booking.formSub}
+                />
               </div>
             </div>
           </div>
@@ -580,5 +595,6 @@ export default async function ChronicEczemaPage() {
         />
       </div>
     </main>
+    </CheckoutProvider>
   );
 }

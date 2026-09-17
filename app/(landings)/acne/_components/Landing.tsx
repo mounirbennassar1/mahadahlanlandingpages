@@ -13,6 +13,7 @@ import {
   Star,
   User,
 } from "lucide-react";
+import { PayButton } from "@/components/checkout";
 import AcneAnimations from "./AcneAnimations";
 import MobileStickyCTA from "./MobileStickyCTA";
 import type { ContentOf } from "@/lib/pages/define";
@@ -24,6 +25,23 @@ declare global {
     dataLayer?: unknown[];
   }
 }
+
+const CardIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    aria-hidden
+  >
+    <rect x="2" y="5" width="20" height="14" rx="2" />
+    <line x1="2" y1="10" x2="22" y2="10" />
+  </svg>
+);
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg
@@ -271,16 +289,11 @@ export function Landing({ content }: { content: ContentOf<typeof ACNE> }) {
             </div>
 
             {/* CTA: visible on every breakpoint with strong gold contrast */}
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="acne-btn-primary !py-2 !px-4 sm:!px-5 text-sm sm:text-base"
-            >
-              <WhatsAppIcon className="w-5 h-5" />
+            <PayButton className="acne-btn-primary !py-2 !px-4 sm:!px-5 text-sm sm:text-base">
+              <CardIcon className="w-5 h-5" />
               <span className="hidden sm:inline">{content.nav.book}</span>
               <span className="sm:hidden">{content.nav.bookShort}</span>
-            </a>
+            </PayButton>
           </div>
         </div>
       </nav>
@@ -331,29 +344,24 @@ export function Landing({ content }: { content: ContentOf<typeof ACNE> }) {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+                <PayButton
+                  data-hero-cta
+                  className="acne-btn-primary !py-4 sm:!py-5 !px-7 sm:!px-9 text-base sm:text-lg"
+                >
+                  <CardIcon className="w-6 h-6" />
+                  <span>{content.hero.book}</span>
+                </PayButton>
+
                 <a
                   data-hero-cta
                   href={WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="acne-btn-primary !py-4 sm:!py-5 !px-7 sm:!px-9 text-base sm:text-lg"
-                >
-                  <WhatsAppIcon className="w-6 h-6" />
-                  <span>{content.hero.book}</span>
-                </a>
-
-                <button
-                  data-hero-cta
-                  onClick={() =>
-                    document
-                      .getElementById("doctors")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
                   className="acne-btn-ghost !py-4 sm:!py-5 !px-7 sm:!px-9 text-base sm:text-lg"
                 >
-                  <User className="w-5 h-5 text-gold-700" />
-                  <span>{content.hero.doctorsButton}</span>
-                </button>
+                  <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
+                  <span>اسألي عبر واتساب</span>
+                </a>
               </div>
 
               {/* Social-proof pill — avatar stack + rating */}
@@ -763,15 +771,10 @@ export function Landing({ content }: { content: ContentOf<typeof ACNE> }) {
           </div>
 
           <div data-reveal className="flex justify-center mt-12">
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="acne-btn-primary"
-            >
-              <WhatsAppIcon className="w-5 h-5" />
+            <PayButton className="acne-btn-primary">
+              <CardIcon className="w-5 h-5" />
               <span>{content.reviews.book}</span>
-            </a>
+            </PayButton>
           </div>
         </div>
       </section>
@@ -812,14 +815,18 @@ export function Landing({ content }: { content: ContentOf<typeof ACNE> }) {
             {content.cta.body}
           </p>
 
-          <div data-reveal className="mt-10">
+          <div data-reveal className="mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+            <PayButton className="acne-btn-primary !py-5 !px-10 text-lg sm:text-xl">
+              <CardIcon className="w-6 h-6 sm:w-7 sm:h-7" />
+              <span>احجزي وادفعي الآن</span>
+            </PayButton>
             <a
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="acne-btn-primary !py-5 !px-10 text-lg sm:text-xl"
+              className="acne-btn-ghost !py-5 !px-10 text-lg sm:text-xl !text-white !border-white/30 hover:!bg-white/10"
             >
-              <WhatsAppIcon className="w-6 h-6 sm:w-7 sm:h-7" />
+              <WhatsAppIcon className="w-6 h-6 sm:w-7 sm:h-7 text-[#25D366]" />
               <span>{content.cta.button}</span>
             </a>
           </div>

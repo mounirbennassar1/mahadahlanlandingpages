@@ -3,10 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import BeforeAfter from "./_components/BeforeAfter";
 import HeroCanvas from "./_components/HeroCanvasLazy";
-import LeadForm from "./_components/LeadForm";
 import Reveals from "./_components/Reveals";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutPanel, CheckoutProvider, PayButton } from "@/components/checkout";
+import { WHATSAPP_NUMBER } from "@/app/_home/config";
 import { BODY } from "./content";
+
+const WA_TOPIC = "عندي استفسار بخصوص نحت الجسم بتقنية HIFEM";
+const WA = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`السلام عليكم ورحمة الله وبركاته\n${WA_TOPIC}`)}`;
 
 /** Anchors for the top nav links, in content order. */
 const NAV_HREFS = [
@@ -64,7 +69,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function BodyLanding() {
-  const c = await getPageContent(BODY);
+  const [c, items] = await Promise.all([getPageContent(BODY), getSellableItems(BODY.slug)]);
   const benefits = c.benefits.cards;
   const treatments = c.treatments.cards;
   const steps = c.process.steps;
@@ -73,7 +78,11 @@ export default async function BodyLanding() {
   const marqueeWords = c.marquee.words.flatMap((w) => [w, "•"]);
 
   return (
-    <>
+    <CheckoutProvider
+      items={items}
+      page={{ slug: BODY.slug, title: BODY.title, path: BODY.path }}
+      whatsappTopic={WA_TOPIC}
+    >
       <Reveals />
 
       {/* NAV */}
@@ -104,13 +113,10 @@ export default async function BodyLanding() {
               </a>
             ))}
           </nav>
-          <a
-            href="#reserve"
-            className="btn-primary-body shrink-0 text-sm !px-4 !py-2"
-          >
+          <PayButton className="btn-primary-body shrink-0 text-sm !px-4 !py-2" noIcon>
             {c.nav.book}
             <span className="hidden sm:inline">&nbsp;{c.nav.bookLong}</span>
-          </a>
+          </PayButton>
         </div>
       </header>
 
@@ -146,17 +152,15 @@ export default async function BodyLanding() {
             </p>
 
             <div className="hero-cta mt-10 flex flex-wrap items-center gap-4 opacity-0 translate-y-4">
-              <a href="#reserve" className="btn-primary-body">
+              <PayButton className="btn-primary-body" noIcon>
                 {c.hero.book}
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M14 5l-7 7 7 7"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.6" />
+                  <path d="M2 10h20" stroke="currentColor" strokeWidth="1.6" />
                 </svg>
+              </PayButton>
+              <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost-body">
+                اسألي عبر واتساب
               </a>
               <a href="#benefits" className="btn-ghost-body">
                 {c.hero.learn}
@@ -583,7 +587,13 @@ export default async function BodyLanding() {
           </div>
 
           <div className="reveal">
-            <LeadForm copy={c.booking} />
+            <CheckoutPanel
+              theme="light"
+              id="booking-form"
+              badge={c.booking.formEyebrow}
+              title={c.booking.formTitle}
+              subtitle={c.booking.formBody}
+            />
           </div>
         </div>
       </section>
@@ -672,6 +682,6 @@ export default async function BodyLanding() {
           </div>
         </div>
       </footer>
-    </>
+    </CheckoutProvider>
   );
 }

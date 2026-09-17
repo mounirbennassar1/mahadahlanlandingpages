@@ -5,6 +5,8 @@ import { Reveal, RevealGroup, ScrubLine } from "@/app/_home/Motion";
 import { Payments } from "@/app/_home/Payments";
 import { GOLD_GRADIENT } from "@/app/_home/config";
 import { formatSar, getActiveOffers } from "@/lib/content";
+import { offerToItem } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { getPageContent } from "@/lib/pages/get";
 import { PageHero } from "../_components/PageHero";
 import { CtaBand } from "../_components/CtaBand";
@@ -59,8 +61,14 @@ export default async function OffersPage() {
     imageAlt: o.imageAlt,
   }));
 
+  const sellable = offers.map(offerToItem);
+
   return (
-    <>
+    <CheckoutProvider
+      items={sellable}
+      page={{ slug: OFFERS.slug, title: OFFERS.title, path: OFFERS.path }}
+      whatsappTopic="عندي استفسار بخصوص عروض العيادة"
+    >
       <PageHero
         compact
         crumbs={[{ label: c.hero.crumb }]}
@@ -142,6 +150,6 @@ export default async function OffersPage() {
       </Section>
 
       <CtaBand {...c.cta} />
-    </>
+    </CheckoutProvider>
   );
 }

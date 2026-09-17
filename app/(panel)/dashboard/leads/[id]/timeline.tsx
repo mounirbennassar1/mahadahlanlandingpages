@@ -16,6 +16,7 @@ const DOT: Record<LeadActivityType, string> = {
   NOTE: "var(--primary)",
   STATUS: "var(--amber)",
   ASSIGN: "var(--green)",
+  PAYMENT: "var(--green)",
 };
 
 function metaString(meta: Prisma.JsonValue, key: string): string | null {
@@ -33,7 +34,12 @@ function describe(row: ActivityRow, sourceLabel: string) {
   switch (row.type) {
     case "CREATED": {
       const via = metaString(row.meta, "via");
+      if (via === "checkout") return `Started an online checkout on ${sourceLabel}`;
       return `Submitted from ${sourceLabel}${via === "api-key" ? " (via API key)" : ""}`;
+    }
+    case "PAYMENT": {
+      const reference = metaString(row.meta, "reference");
+      return `${row.body ?? "Payment update"}${reference ? ` · ${reference}` : ""}`;
     }
     case "STATUS": {
       const from = statusLabel(metaString(row.meta, "from"));

@@ -3,14 +3,28 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-/** Overview / Content / Leads switcher for one page. */
-export function PageTabs({ slug, hasLeads }: { slug: string; hasLeads: boolean }) {
+/** Overview / Content / Leads / Packages / Orders switcher for one page. */
+export function PageTabs({
+  slug,
+  hasLeads,
+  hasPackages = false,
+  hasOrders = false,
+}: {
+  slug: string;
+  hasLeads: boolean;
+  /** Landings sell packages through their pay button. */
+  hasPackages?: boolean;
+  /** Pages with a pay button (landings and /offers) list their orders. */
+  hasOrders?: boolean;
+}) {
   const pathname = usePathname();
   const base = `/dashboard/pages/${slug}`;
   const tabs = [
     { href: base, label: "Overview" },
     { href: `${base}/content`, label: "Content" },
     ...(hasLeads ? [{ href: `${base}/leads`, label: "Leads" }] : []),
+    ...(hasPackages ? [{ href: `${base}/packages`, label: "Packages" }] : []),
+    ...(hasOrders ? [{ href: `${base}/orders`, label: "Orders" }] : []),
   ];
 
   return (

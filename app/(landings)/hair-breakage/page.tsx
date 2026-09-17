@@ -15,7 +15,6 @@ import {
 import { Protocol } from "./_components/Protocol";
 import { Doctor } from "./_components/Doctor";
 import { Testimonials } from "./_components/Testimonials";
-import { Booking } from "./_components/Booking";
 import { StickyBar } from "./_components/StickyBar";
 import {
   PHONE_DISPLAY,
@@ -25,6 +24,8 @@ import {
   WHATSAPP_NUMBER,
 } from "./_components/config";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutPanel, CheckoutProvider } from "@/components/checkout";
 import { HAIR_BREAKAGE } from "./content";
 
 /** Icons for the "causes" cards, in content order. */
@@ -108,7 +109,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HairBreakagePage() {
-  const c = await getPageContent(HAIR_BREAKAGE);
+  const [c, items] = await Promise.all([
+    getPageContent(HAIR_BREAKAGE),
+    getSellableItems(HAIR_BREAKAGE.slug),
+  ]);
   const causes = c.causes.cards.map((card, i) => ({ ...card, icon: CAUSE_ICONS[i] }));
   const milestones = c.results.milestones.map((m, i) => ({
     ...m,
@@ -121,6 +125,11 @@ export default async function HairBreakagePage() {
   const whyUs = c.whyUs.cards.map((card, i) => ({ ...card, icon: WHY_US_ICONS[i] }));
 
   return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: HAIR_BREAKAGE.slug, title: HAIR_BREAKAGE.title, path: HAIR_BREAKAGE.path }}
+      whatsappTopic={WA_TOPIC_MESSAGE}
+    >
     <main>
       <ScrollProgress />
       <Header cta={c.cta.header} />
@@ -511,7 +520,13 @@ export default async function HairBreakagePage() {
                 </a>
               </div>
               <div className="min-w-[290px] max-w-[480px] flex-1">
-                <Booking copy={c.booking} />
+                <CheckoutPanel
+                  theme="dark"
+                  id="booking-panel"
+                  badge={c.booking.formBadge}
+                  title={c.booking.formTitle}
+                  subtitle={c.booking.formSub}
+                />
               </div>
             </div>
           </div>
@@ -569,5 +584,6 @@ export default async function HairBreakagePage() {
         whatsappLabel={c.cta.stickyWhatsapp}
       />
     </main>
+    </CheckoutProvider>
   );
 }

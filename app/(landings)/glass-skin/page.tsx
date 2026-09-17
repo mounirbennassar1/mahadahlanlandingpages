@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { GLASS_SKIN } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -27,6 +29,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GlassSkinPage() {
-  const content = await getPageContent(GLASS_SKIN);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([getPageContent(GLASS_SKIN), getSellableItems(GLASS_SKIN.slug)]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: GLASS_SKIN.slug, title: GLASS_SKIN.title, path: GLASS_SKIN.path }}
+      whatsappTopic="عندي استفسار بخصوص الجلاس سكين الكوري"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

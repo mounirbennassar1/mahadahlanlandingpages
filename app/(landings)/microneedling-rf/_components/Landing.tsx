@@ -11,11 +11,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { Icon } from "@/components/icons";
 import { WhatsAppFAB } from "@/components/usablecomponents/WhatsAppFAB";
-import { MobileStickyCTA } from "@/components/usablecomponents/MobileStickyCTA";
 import { HeroChoreography } from "./HeroChoreography";
 import { ScrollProgress } from "./ScrollProgress";
 import { Marquee } from "./Marquee";
-import { LeadForm } from "./LeadForm";
+import { MrfStickyCTA } from "./MrfStickyCTA";
+import { CheckoutPanel, PayButton } from "@/components/checkout";
 import type { ContentOf } from "@/lib/pages/define";
 import type { MICRONEEDLING_RF } from "../content";
 
@@ -121,13 +121,10 @@ export function Landing({
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#book"
-            className="hidden items-center gap-2 rounded-full bg-[var(--color-mrf-ink)] px-5 py-2 text-xs font-bold text-white shadow-md transition-transform hover:scale-[1.03] sm:inline-flex"
-          >
+          <PayButton className="hidden cursor-pointer items-center gap-2 rounded-full bg-[var(--color-mrf-ink)] px-5 py-2 text-xs font-bold text-white shadow-md transition-transform hover:scale-[1.03] sm:inline-flex">
+            <Icon.CreditCard className="size-3.5" />
             {content.nav.book}
-            <Icon.ArrowLeft className="size-3.5" />
-          </a>
+          </PayButton>
           <button
             type="button"
             onClick={() => setMenuOpen((p) => !p)}
@@ -201,15 +198,11 @@ export function Landing({
               </p>
 
               <div className="flex flex-col gap-2 sm:gap-3 lg:flex-row">
-                <a
-                  href="#book"
-                  className="mrf-cta inline-flex h-10 translate-y-5 items-center justify-center gap-1.5 rounded-xl bg-[var(--color-mrf-ink)] px-3 text-[11px] font-bold text-white opacity-0 shadow-md transition-transform hover:scale-[1.02] sm:h-12 sm:gap-3 sm:rounded-2xl sm:px-6 sm:text-base lg:h-14 lg:px-7 lg:py-4"
-                >
-                  <Icon.CalendarCheck className="size-3.5 sm:size-5" />
+                <PayButton className="mrf-cta inline-flex h-10 translate-y-5 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-[var(--color-mrf-ink)] px-3 text-[11px] font-bold text-white opacity-0 shadow-md transition-transform hover:scale-[1.02] sm:h-12 sm:gap-3 sm:rounded-2xl sm:px-6 sm:text-base lg:h-14 lg:px-7 lg:py-4">
+                  <Icon.CreditCard className="size-3.5 sm:size-5" />
                   {content.hero.book}
                   <span className="hidden sm:inline">{content.hero.bookLong}</span>
-                  <Icon.ArrowLeft className="hidden size-4 sm:inline" />
-                </a>
+                </PayButton>
                 <a
                   href={WA}
                   target="_blank"
@@ -682,13 +675,10 @@ export function Landing({
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#book"
-                className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[var(--color-mrf-ink)] px-6 py-3.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
-              >
-                <Icon.CalendarCheck className="size-4" />
+              <PayButton className="inline-flex cursor-pointer items-center justify-center gap-3 rounded-2xl bg-[var(--color-mrf-ink)] px-6 py-3.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.02]">
+                <Icon.CreditCard className="size-4" />
                 {content.booking.book}
-              </a>
+              </PayButton>
               <a
                 href={WA}
                 target="_blank"
@@ -719,7 +709,12 @@ export function Landing({
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <LeadForm copy={content.booking} />
+            <CheckoutPanel
+              theme="light"
+              badge={content.booking.formBadge}
+              title={content.booking.formTitle}
+              subtitle={content.booking.formSub}
+            />
           </motion.div>
         </div>
       </section>
@@ -735,12 +730,7 @@ export function Landing({
         </div>
       </footer>
 
-      <MobileStickyCTA
-        tokenPrefix="mrf"
-        bookHref="#book"
-        whatsappNumber={WA_NUMBER}
-        topicMessage={"مرحباً عندي استفسار عن " + WA_TOPIC}
-      />
+      <MrfStickyCTA whatsappHref={WA} />
 
       <WhatsAppFAB
         tokenPrefix="mrf"

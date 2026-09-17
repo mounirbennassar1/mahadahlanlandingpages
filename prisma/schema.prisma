@@ -54,6 +54,33 @@ enum LeadActivityType {
   NOTE
   STATUS
   ASSIGN
+  PAYMENT
+}
+
+/// Lifecycle of an online payment started from a page (see docs/payments.md).
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  EXPIRED
+  REFUNDED
+}
+
+enum OrderItemType {
+  PACKAGE
+  OFFER
+}
+
+enum OrderEventType {
+  CREATED
+  CHECKOUT
+  RETURN
+  WEBHOOK
+  SYNC
+  STATUS
+  REFUND
+  NOTE
 }
 
 model User {
@@ -69,6 +96,7 @@ model User {
   assignedLeads  Lead[]         @relation("AssignedLeads")
   pageEdits      PageContent[]
   leadActivities LeadActivity[]
+  orderEvents    OrderEvent[]
 }
 
 model LeadSource {
@@ -156,6 +184,7 @@ model Lead {
   updatedAt   DateTime @updatedAt
 
   activities LeadActivity[]
+  orders     Order[]
 
   @@index([sourceId, submittedAt])
   @@index([status])
@@ -263,7 +292,8 @@ model Offer {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  leads Lead[]
+  leads  Lead[]
+  orders Order[]
 }
 
 model Service {
@@ -311,4 +341,114 @@ model PageContent {
   updatedAt   DateTime @updatedAt
   updatedById String?
   updatedBy   User?    @relation(fields: [updatedById], references: [id], onDelete: SetNull)
+}
+
+// ───────────────────────── Online payments (noon) ─────────────────────────
+
+/// A priced treatment sold from a landing page through noon payments.
+/// `pageSlug` is the registry slug of the landing it belongs to; null means the
+/// package is offered on every page that has a "pay" button.
+model Package {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  description String?
+  /// Whole Saudi riyals.
+  price       Int
+  oldPrice    Int?
+  badge       String?
+  /// Short bullet points shown on the package card.
+  features    String[]  @default([])
+  pageSlug    String?
+  image       String?
+  imageAlt    String?
+  order       Int       @default(0)
+  active      Boolean   @default(true)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  orders Order[]
+
+  @@index([pageSlug, active])
+}
+
+/// One checkout attempt. Created before the customer is sent to noon's hosted
+/// page; the status follows noon's order status through the return page,
+/// webhooks and manual syncs from the dashboard.
+model Order {
+  id        String      @id @default(cuid())
+  /// Merchant reference sent to noon, e.g. "MD-K2N9V3-7Q4A".
+  reference String      @unique
+  status    OrderStatus @default(PENDING)
+  /// Whole Saudi riyals.
+  amount    Int
+  currency  String      @default("SAR")
+
+  itemType  OrderItemType
+  /// Snapshot of what was bought, so the row survives package/offer edits.
+  itemTitle String
+  packageId String?
+  package   Package?      @relation(fields: [packageId], references: [id], onDelete: SetNull)
+  offerId   String?
+  offer     Offer?        @relation(fields: [offerId], references: [id], onDelete: SetNull)
+
+  fullName String
+  phone    String
+  city     String
+  email    String?
+
+  /// Registry slug of the page the checkout started on (see lib/pages/registry.ts).
+  pageSlug String?
+  /// The CRM lead opened for this customer at checkout time.
+  leadId   String?
+  lead     Lead?   @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+
+  /// noon's own order id, once INITIATE succeeded.
+  noonOrderId   String?   @unique
+  /// Raw last status reported by noon (CAPTURED, FAILED, ...).
+  noonStatus    String?
+  /// Card scheme / wallet reported by noon (MADA, VISA, APPLE_PAY, ...).
+  paymentBrand  String?
+  checkoutUrl   String?
+  paidAt        DateTime?
+  refundedAmount Int      @default(0)
+  failureReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  events OrderEvent[]
+
+  @@index([status, createdAt])
+  @@index([pageSlug, createdAt])
+  @@index([leadId])
+  @@index([phone])
+  @@index([createdAt])
+}
+
+/// Audit trail of an order: creation, redirect to noon, return, webhooks,
+/// manual syncs, refunds and staff notes.
+model OrderEvent {
+  id      String @id @default(cuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  type OrderEventType
+  body String?
+  meta Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([orderId, createdAt])
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { HAIR } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -42,6 +44,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HairPage() {
-  const content = await getPageContent(HAIR);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([getPageContent(HAIR), getSellableItems(HAIR.slug)]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: HAIR.slug, title: HAIR.title, path: HAIR.path }}
+      whatsappTopic="عندي استفسار بخصوص خدماتكم للشعر"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

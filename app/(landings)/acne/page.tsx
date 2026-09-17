@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { ACNE } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -63,6 +65,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AcnePage() {
-  const content = await getPageContent(ACNE);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([getPageContent(ACNE), getSellableItems(ACNE.slug)]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: ACNE.slug, title: ACNE.title, path: ACNE.path }}
+      whatsappTopic="عندي استفسار بخصوص علاج حب الشباب"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

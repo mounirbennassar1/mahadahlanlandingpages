@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { BOTOX } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -39,6 +41,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function BotoxPage() {
-  const content = await getPageContent(BOTOX);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([getPageContent(BOTOX), getSellableItems(BOTOX.slug)]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: BOTOX.slug, title: BOTOX.title, path: BOTOX.path }}
+      whatsappTopic="عندي استفسار بخصوص البوتوكس والفيلر"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

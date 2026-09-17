@@ -14,6 +14,7 @@ import {
   faSnapchat,
 } from "@fortawesome/free-brands-svg-icons";
 import { WhatsAppFAB } from "@/components/usablecomponents/WhatsAppFAB";
+import { PayButton } from "@/components/checkout";
 import type { ContentOf } from "@/lib/pages/define";
 import type { EID_OFFER } from "../content";
 
@@ -22,6 +23,13 @@ const WA_TOPIC = "عرض عيد الأضحى — أرغب بحجز موعد";
 const waLink = (msg: string) =>
   `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 const WA_DEFAULT = waLink(WA_TOPIC);
+
+const CardIcon = ({ size = 16 }: { size?: number }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="2" y="5" width="20" height="14" rx="2" />
+    <line x1="2" y1="10" x2="22" y2="10" />
+  </svg>
+);
 
 // 5 days from today
 const EID_OFFSET_MS = 5 * 24 * 60 * 60 * 1000;
@@ -230,10 +238,10 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
               <a key={l.href} href={l.href}>{l.label}</a>
             ))}
           </div>
-          <a href={WA_DEFAULT} target="_blank" rel="noopener noreferrer" className="nav-cta">
-            <FontAwesomeIcon icon={faWhatsapp} />
+          <PayButton className="nav-cta cursor-pointer">
+            <CardIcon size={15} />
             {c.nav.cta}
-          </a>
+          </PayButton>
         </div>
       </nav>
 
@@ -253,6 +261,10 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
               {c.hero.body}
             </p>
             <div className="hero-cta">
+              <PayButton className="btn-gold cursor-pointer">
+                <CardIcon />
+                {c.hero.ctaPay}
+              </PayButton>
               <a href={WA_DEFAULT} target="_blank" rel="noopener noreferrer" className="btn-wa">
                 <FontAwesomeIcon icon={faWhatsapp} />
                 {c.hero.ctaWhatsapp}
@@ -361,15 +373,24 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
                 <div className="svc-body">
                   <h3>{s.title}</h3>
                   <p>{s.desc}</p>
-                  <a
-                    href={waLink(`عرض العيد — ${s.title}: أرغب بالحجز والاستفسار عن السعر`)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="svc-wa"
-                  >
-                    <FontAwesomeIcon icon={faWhatsapp} />
-                    {c.services.cta}
-                  </a>
+                  <div className="mt-auto flex items-center gap-2">
+                    <PayButton
+                      className="svc-wa !mt-0 flex-1 cursor-pointer"
+                      style={{ background: "linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%)", boxShadow: "0 10px 20px -10px rgba(184, 137, 62, 0.7)" }}
+                    >
+                      <CardIcon size={15} />
+                      {c.services.cta}
+                    </PayButton>
+                    <a
+                      href={waLink(`عرض العيد، ${s.title}: أرغب بالاستفسار عن السعر`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="svc-wa !mt-0 !px-0 w-11 shrink-0"
+                      aria-label={`اسأل عبر واتساب عن ${s.title}`}
+                    >
+                      <FontAwesomeIcon icon={faWhatsapp} />
+                    </a>
+                  </div>
                 </div>
               </article>
             ))}
@@ -401,15 +422,22 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
                   {OFFERS[0].desc}
                 </div>
               </div>
-              <a
-                href={waLink(`${OFFERS[0].title} — أرغب بالحجز`)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta"
-              >
-                <FontAwesomeIcon icon={faWhatsapp} />
-                {c.offers.cta}
-              </a>
+              <div className="flex flex-wrap items-center gap-2 self-start">
+                <PayButton className="cta cursor-pointer">
+                  <CardIcon size={14} />
+                  {c.offers.cta}
+                </PayButton>
+                <a
+                  href={waLink(`${OFFERS[0].title}، أرغب بالاستفسار`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta"
+                  aria-label={`اسأل عبر واتساب عن ${OFFERS[0].title}`}
+                >
+                  <FontAwesomeIcon icon={faWhatsapp} />
+                  {c.offers.ask}
+                </a>
+              </div>
             </div>
 
             <div className="offer-card o2">
@@ -422,15 +450,22 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
                   {OFFERS[1].desc}
                 </div>
               </div>
-              <a
-                href={waLink(`${OFFERS[1].title} — أرغب بالحجز`)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta"
-              >
-                <FontAwesomeIcon icon={faWhatsapp} />
-                {c.offers.cta}
-              </a>
+              <div className="flex flex-wrap items-center gap-2 self-start">
+                <PayButton className="cta cursor-pointer">
+                  <CardIcon size={14} />
+                  {c.offers.cta}
+                </PayButton>
+                <a
+                  href={waLink(`${OFFERS[1].title}، أرغب بالاستفسار`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta"
+                  aria-label={`اسأل عبر واتساب عن ${OFFERS[1].title}`}
+                >
+                  <FontAwesomeIcon icon={faWhatsapp} />
+                  {c.offers.ask}
+                </a>
+              </div>
             </div>
 
             <div className="offer-card o3">
@@ -446,15 +481,22 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
                   {OFFERS[2].desc}
                 </div>
               </div>
-              <a
-                href={waLink(`${OFFERS[2].title} — أرغب بالحجز`)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta"
-              >
-                <FontAwesomeIcon icon={faWhatsapp} />
-                {c.offers.cta}
-              </a>
+              <div className="flex flex-wrap items-center gap-2 self-start">
+                <PayButton className="cta cursor-pointer">
+                  <CardIcon size={14} />
+                  {c.offers.cta}
+                </PayButton>
+                <a
+                  href={waLink(`${OFFERS[2].title}، أرغب بالاستفسار`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta"
+                  aria-label={`اسأل عبر واتساب عن ${OFFERS[2].title}`}
+                >
+                  <FontAwesomeIcon icon={faWhatsapp} />
+                  {c.offers.ask}
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -599,9 +641,13 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
             {c.cta.body}
           </p>
           <div className="cta-band-actions">
-            <a href={WA_DEFAULT} target="_blank" rel="noopener noreferrer" className="btn-gold">
-              <FontAwesomeIcon icon={faWhatsapp} />
+            <PayButton className="btn-gold cursor-pointer">
+              <CardIcon />
               {c.cta.button}
+            </PayButton>
+            <a href={WA_DEFAULT} target="_blank" rel="noopener noreferrer" className="btn-wa">
+              <FontAwesomeIcon icon={faWhatsapp} />
+              {c.cta.whatsapp}
             </a>
           </div>
         </div>
@@ -663,9 +709,12 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
 
       {/* mobile sticky WhatsApp CTA (custom, no form) */}
       <div className="eid-mobile-cta">
-        <a href={WA_DEFAULT} target="_blank" rel="noopener noreferrer">
-          <FontAwesomeIcon icon={faWhatsapp} />
+        <PayButton className="pay cursor-pointer">
+          <CardIcon size={18} />
           {c.mobileCta.label}
+        </PayButton>
+        <a href={WA_DEFAULT} target="_blank" rel="noopener noreferrer" className="ask" aria-label="اسأل عبر واتساب">
+          <FontAwesomeIcon icon={faWhatsapp} />
         </a>
       </div>
 
@@ -678,23 +727,38 @@ export function Landing({ content }: { content: ContentOf<typeof EID_OFFER> }) {
           bottom: calc(env(safe-area-inset-bottom) + 12px);
           z-index: 50;
           display: none;
+          gap: 10px;
         }
-        .eid-mobile-cta a {
+        .eid-mobile-cta :global(.pay) {
+          flex: 1;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 10px;
           height: 56px;
           border-radius: 18px;
-          background: #25d366;
+          background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
           color: #fff;
           font-weight: 800;
           font-size: 15px;
+          box-shadow: 0 18px 36px -10px rgba(184, 137, 62, 0.6);
+        }
+        .eid-mobile-cta :global(.ask) {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 56px;
+          height: 56px;
+          flex: none;
+          border-radius: 18px;
+          background: #25d366;
+          color: #fff;
+          font-size: 24px;
           box-shadow: 0 18px 36px -10px rgba(37, 211, 102, 0.55);
         }
         @media (max-width: 980px) {
           .eid-mobile-cta {
-            display: block;
+            display: flex;
           }
         }
       `}</style>

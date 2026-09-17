@@ -15,7 +15,7 @@ import { Icon } from "@/components/icons";
 import { HeroChoreography } from "./HeroChoreography";
 import { ScrollProgress } from "./ScrollProgress";
 import { Marquee } from "./Marquee";
-import { LeadForm } from "./LeadForm";
+import { CheckoutPanel, PayButton } from "@/components/checkout";
 import type { ContentOf } from "@/lib/pages/define";
 import type { DARK_CIRCLES } from "../content";
 
@@ -122,13 +122,11 @@ export function Landing({
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#book"
-            className="hidden items-center gap-2 rounded-full bg-[var(--color-dc-ink)] px-5 py-2 text-xs font-bold text-white shadow-md transition-transform hover:scale-[1.03] sm:inline-flex"
-          >
-            {content.nav.book}
-            <Icon.ArrowLeft className="size-3.5" />
-          </a>
+          <PayButton
+            className="hidden cursor-pointer items-center gap-2 rounded-full bg-[var(--color-dc-ink)] px-5 py-2 text-xs font-bold text-white shadow-md transition-transform hover:scale-[1.03] sm:inline-flex"
+            iconClassName="size-3.5"
+            label={content.nav.book}
+          />
           <button
             type="button"
             onClick={() => setMenuOpen((p) => !p)}
@@ -169,7 +167,7 @@ export function Landing({
                 onClick={() => setMenuOpen(false)}
                 className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-dc-ink)] px-5 py-3 text-sm font-bold text-white shadow-md"
               >
-                <Icon.CalendarCheck className="size-4" />
+                <Icon.CreditCard className="size-4" />
                 {content.nav.bookMobile}
               </a>
             </motion.div>
@@ -232,15 +230,14 @@ export function Landing({
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#book"
-                  className="dc-cta inline-flex h-14 items-center justify-center gap-3 rounded-2xl bg-[var(--color-dc-ink)] px-6 text-base font-bold text-white shadow-lg shadow-[var(--color-dc-ink)]/20 opacity-0 transition-transform hover:scale-[1.02] sm:h-auto sm:px-7 sm:py-4"
+                <PayButton
+                  className="dc-cta inline-flex h-14 cursor-pointer items-center justify-center gap-3 rounded-2xl bg-[var(--color-dc-ink)] px-6 text-base font-bold text-white shadow-lg shadow-[var(--color-dc-ink)]/20 opacity-0 transition-transform hover:scale-[1.02] sm:h-auto sm:px-7 sm:py-4"
                   style={{ transform: "translateY(20px)" }}
                 >
-                  <Icon.CalendarCheck className="size-5" />
+                  <Icon.CreditCard className="size-5" />
                   {content.hero.book}
                   <Icon.ArrowLeft className="size-4" />
-                </a>
+                </PayButton>
                 <a
                   href={WA}
                   target="_blank"
@@ -653,13 +650,12 @@ export function Landing({
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#book"
-                className="inline-flex items-center justify-center gap-3 rounded-2xl bg-[var(--color-dc-ink)] px-6 py-3.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
+              <PayButton
+                className="inline-flex cursor-pointer items-center justify-center gap-3 rounded-2xl bg-[var(--color-dc-ink)] px-6 py-3.5 text-sm font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
               >
-                <Icon.CalendarCheck className="size-4" />
+                <Icon.CreditCard className="size-4" />
                 {content.booking.book}
-              </a>
+              </PayButton>
               <a
                 href={WA}
                 target="_blank"
@@ -690,7 +686,13 @@ export function Landing({
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <LeadForm copy={content.booking} />
+            <CheckoutPanel
+              theme="light"
+              id="checkout"
+              badge={content.booking.formBadge}
+              title={content.booking.formTitle}
+              subtitle={content.booking.formSub}
+            />
           </motion.div>
         </div>
       </section>
@@ -718,13 +720,12 @@ export function Landing({
         className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--color-dc-line)] bg-white/95 px-3 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shadow-[0_-10px_30px_-10px_rgba(154,90,78,0.2)] backdrop-blur-xl md:hidden"
       >
         <div className="grid grid-cols-[1fr_auto] gap-2">
-          <a
-            href="#book"
-            className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-[var(--color-dc-ink)] text-sm font-bold text-white shadow-md transition-transform active:scale-[0.98]"
+          <PayButton
+            className="flex h-12 cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[var(--color-dc-ink)] text-sm font-bold text-white shadow-md transition-transform active:scale-[0.98]"
           >
-            <Icon.CalendarCheck className="size-4" />
+            <Icon.CreditCard className="size-4" />
             {content.sticky.book}
-          </a>
+          </PayButton>
           <a
             href={WA}
             target="_blank"

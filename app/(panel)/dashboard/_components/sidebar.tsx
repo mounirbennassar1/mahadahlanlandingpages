@@ -44,6 +44,17 @@ const OVERVIEW_NAV: NavItem[] = [
     ),
   },
   {
+    href: "/dashboard/orders",
+    label: "Orders",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={navIconStyle}>
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <line x1="2" y1="10" x2="22" y2="10" />
+        <line x1="6" y1="15" x2="10" y2="15" />
+      </svg>
+    ),
+  },
+  {
     href: "/dashboard/sources",
     label: "Sources",
     icon: (
@@ -136,6 +147,17 @@ const WEBSITE_NAV: NavItem[] = [
         <line x1="20" y1="14" x2="23" y2="14" />
         <line x1="1" y1="9" x2="4" y2="9" />
         <line x1="1" y1="14" x2="4" y2="14" />
+      </svg>
+    ),
+  },
+  {
+    href: "/dashboard/packages",
+    label: "Packages",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={navIconStyle}>
+        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
       </svg>
     ),
   },

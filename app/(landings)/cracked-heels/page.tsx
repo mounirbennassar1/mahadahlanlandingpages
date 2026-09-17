@@ -8,7 +8,6 @@ import { MarqueeStrip } from "./_components/MarqueeStrip";
 import { Parallax, Reveal, ScrollProgress, SpotlightCard } from "./_components/Gsap";
 import { Stages } from "./_components/Stages";
 import { Testimonials } from "./_components/Testimonials";
-import { Booking } from "./_components/Booking";
 import { StickyBar } from "./_components/StickyBar";
 import {
   PHONE_DISPLAY,
@@ -18,6 +17,8 @@ import {
   WHATSAPP_NUMBER,
 } from "./_components/config";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutPanel, CheckoutProvider } from "@/components/checkout";
 import { CRACKED_HEELS } from "./content";
 
 /** Icons for the "causes" cards, in content order. */
@@ -101,7 +102,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CrackedHeelsPage() {
-  const c = await getPageContent(CRACKED_HEELS);
+  const [c, items] = await Promise.all([
+    getPageContent(CRACKED_HEELS),
+    getSellableItems(CRACKED_HEELS.slug),
+  ]);
   const causes = c.causes.cards.map((card, i) => ({ ...card, icon: CAUSE_ICONS[i] }));
   const protocol = c.protocol.cards.map((card, i) => ({
     ...card,
@@ -110,6 +114,11 @@ export default async function CrackedHeelsPage() {
   const whyUs = c.whyUs.cards.map((card, i) => ({ ...card, icon: WHY_US_ICONS[i] }));
 
   return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: CRACKED_HEELS.slug, title: CRACKED_HEELS.title, path: CRACKED_HEELS.path }}
+      whatsappTopic={WA_TOPIC_MESSAGE}
+    >
     <main>
       <ScrollProgress />
       <Header cta={c.cta.header} />
@@ -475,7 +484,13 @@ export default async function CrackedHeelsPage() {
                 </a>
               </div>
               <div className="min-w-[290px] max-w-[480px] flex-1">
-                <Booking copy={c.booking} />
+                <CheckoutPanel
+                  theme="dark"
+                  id="checkout"
+                  badge={c.booking.formBadge}
+                  title={c.booking.formTitle}
+                  subtitle={c.booking.formSub}
+                />
               </div>
             </div>
           </div>
@@ -533,5 +548,6 @@ export default async function CrackedHeelsPage() {
         whatsappLabel={c.cta.stickyWhatsapp}
       />
     </main>
+    </CheckoutProvider>
   );
 }

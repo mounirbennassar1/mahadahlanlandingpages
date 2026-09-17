@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
+import { PayButton } from "@/components/checkout";
 import { GOLD_GRADIENT, PHONE_DISPLAY, TEL_LINK, WA_LINK } from "./config";
 import { HeroBackdrop } from "./HeroBackdrop";
 import type { ContentOf } from "@/lib/pages/define";
@@ -97,17 +98,13 @@ export function Hero({ copy }: { copy: HeroCopy }) {
 
           {/* CTAs */}
           <div className="che-h mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="#booking"
-              className="group inline-flex items-center gap-3 rounded-full px-9 py-[18px] text-[1.05rem] font-extrabold text-[#231303] shadow-[0_20px_50px_-14px_rgba(201,164,92,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_28px_60px_-14px_rgba(229,199,127,0.65)]"
+            <PayButton
+              className="group inline-flex cursor-pointer items-center gap-3 rounded-full px-9 py-[18px] text-[1.05rem] font-extrabold text-[#231303] shadow-[0_20px_50px_-14px_rgba(201,164,92,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_28px_60px_-14px_rgba(229,199,127,0.65)]"
               style={{ background: GOLD_GRADIENT }}
             >
+              <Icon.CreditCard className="size-[18px]" strokeWidth={2.2} />
               {copy.book}
-              <Icon.ArrowLeft
-                className="size-[18px] transition-transform duration-300 group-hover:-translate-x-1"
-                strokeWidth={2.4}
-              />
-            </a>
+            </PayButton>
             <a
               href={WA_LINK}
               target="_blank"

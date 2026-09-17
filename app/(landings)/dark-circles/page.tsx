@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { DARK_CIRCLES } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -42,6 +44,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function DarkCirclesPage() {
-  const content = await getPageContent(DARK_CIRCLES);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([getPageContent(DARK_CIRCLES), getSellableItems(DARK_CIRCLES.slug)]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: DARK_CIRCLES.slug, title: DARK_CIRCLES.title, path: DARK_CIRCLES.path }}
+      whatsappTopic="عندي استفسار عن علاج الهالات والتصبّغات"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutProvider } from "@/components/checkout";
 import { KOREAN_SPICULES } from "./content";
 import { Landing } from "./_components/Landing";
 
@@ -27,6 +29,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function KoreanSpiculesPage() {
-  const content = await getPageContent(KOREAN_SPICULES);
-  return <Landing content={content} />;
+  const [content, items] = await Promise.all([
+    getPageContent(KOREAN_SPICULES),
+    getSellableItems(KOREAN_SPICULES.slug),
+  ]);
+  return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: KOREAN_SPICULES.slug, title: KOREAN_SPICULES.title, path: KOREAN_SPICULES.path }}
+      whatsappTopic="عندي استفسار بخصوص جلسة السبيكولز الكورية"
+    >
+      <Landing content={content} />
+    </CheckoutProvider>
+  );
 }

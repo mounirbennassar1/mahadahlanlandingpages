@@ -8,7 +8,8 @@ import { definePage, items, seoSectionWithOg, t, ta } from "@/lib/pages/define";
  * the WhatsApp number stay in the component and are paired with these rows by
  * index, which is why the asset-backed lists are `fixed`.
  *
- * The page has no lead form — every call to action opens WhatsApp.
+ * The page has no lead form: primary calls to action open the checkout sheet
+ * and the secondary ones open WhatsApp.
  */
 export const EID_OFFER = definePage({
   slug: "eid-offer",
@@ -16,7 +17,8 @@ export const EID_OFFER = definePage({
   path: "/eid-offer",
   kind: "landing",
   locale: "ar",
-  leadSource: null,
+  // Checkout customers from this page are filed under this lead source.
+  leadSource: "eid-offer",
   sections: {
     seo: seoSectionWithOg(
       "عيادة مها دحلان | عرض عيد الأضحى — خصومات ذهبية",
@@ -39,7 +41,7 @@ export const EID_OFFER = definePage({
           ],
           { fixed: true, hint: "وجهة كل رابط ثابتة في التصميم." },
         ),
-        cta: t("زر واتساب", "احجز موعدك"),
+        cta: t("زر الحجز والدفع", "احجز موعدك"),
       },
     },
 
@@ -55,7 +57,8 @@ export const EID_OFFER = definePage({
           "احتفلوا معنا بقدوم عيد الأضحى المبارك، واستمتعوا بخصومات تصل إلى 40% على جميع خدماتنا التجميلية والطبية في عيادة مها دحلان.",
           { rows: 3 },
         ),
-        ctaWhatsapp: t("زر واتساب", "احجز عبر واتساب"),
+        ctaPay: t("زر الدفع", "احجز وادفع الآن"),
+        ctaWhatsapp: t("زر واتساب", "اسأل عبر واتساب"),
         ctaOffers: t("الزر الثانوي", "اكتشف العروض"),
         floats: items(
           "البطاقات العائمة",
@@ -101,7 +104,7 @@ export const EID_OFFER = definePage({
           "8 خدمات أساسية بأسعار العيد، احجز الآن عبر واتساب واستفد من خصومات مضاعفة على باقاتك المفضلة.",
           { rows: 2 },
         ),
-        cta: t("زر واتساب على كل بطاقة", "احجز عبر واتساب"),
+        cta: t("زر الدفع على كل بطاقة", "احجز وادفع"),
         cards: items(
           "الخدمات",
           {
@@ -168,7 +171,8 @@ export const EID_OFFER = definePage({
           "اختاري الباقة التي تناسبك واحصلي على خصومات مضاعفة عند الحجز قبل انتهاء العرض.",
           { rows: 2 },
         ),
-        cta: t("زر واتساب على كل باقة", "احجز عبر واتساب"),
+        cta: t("زر الدفع على كل باقة", "احجز وادفع"),
+        ask: t("زر واتساب على كل باقة", "اسأل"),
         cards: items(
           "الباقات",
           {
@@ -303,7 +307,8 @@ export const EID_OFFER = definePage({
           "احجز موعدك الآن عبر واتساب واستمتع بخصومات تصل إلى 40% على جميع باقات العيد، إضافةً إلى استشارة مجانية مع أحد أطبائنا الاستشاريين.",
           { rows: 3 },
         ),
-        button: t("زر واتساب", "احجز موعدك الآن"),
+        button: t("زر الدفع", "احجز وادفع الآن"),
+        whatsapp: t("زر واتساب", "اسأل عبر واتساب"),
       },
     },
 
@@ -340,7 +345,7 @@ export const EID_OFFER = definePage({
     mobileCta: {
       title: "الشريط السفلي على الجوال",
       fields: {
-        label: t("زر واتساب", "احجز عبر واتساب — عرض العيد"),
+        label: t("زر الدفع", "احجز وادفع، عرض العيد"),
       },
     },
   },

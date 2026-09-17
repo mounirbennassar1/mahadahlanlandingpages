@@ -1,19 +1,19 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LuBadgePercent } from "react-icons/lu";
 import { Icon } from "@/components/icons";
 import { GOLD_GRADIENT, toArabicDigits } from "@/app/_home/config";
+import { useCheckout } from "@/components/checkout";
 import { OfferCard } from "./OfferCard";
-import { OfferBookingModal } from "./OfferBookingModal";
 import type { OfferItem } from "./types";
 
 const ALL = "الكل";
 const UNCATEGORISED = "أخرى";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/** Sticky category chips + animated offer grid + the booking modal. */
+/** Sticky category chips + animated offer grid; cards open the shared checkout sheet. */
 export function OfferGrid({ offers }: { offers: OfferItem[] }) {
   const categories = useMemo(() => {
     const seen = new Set<string>();
@@ -22,8 +22,8 @@ export function OfferGrid({ offers }: { offers: OfferItem[] }) {
   }, [offers]);
 
   const [active, setActive] = useState(ALL);
-  const [selected, setSelected] = useState<OfferItem | null>(null);
-  const close = useCallback(() => setSelected(null), []);
+  const { open, whatsappHref, items } = useCheckout();
+  const askHref = (offer: OfferItem) => whatsappHref(items.find((i) => i.id === offer.id) ?? null);
 
   const visible =
     active === ALL
@@ -91,7 +91,7 @@ export function OfferGrid({ offers }: { offers: OfferItem[] }) {
           </span>
           <span className="inline-flex items-center gap-2">
             <Icon.ShieldCheck className="size-4 text-[var(--color-md-champagne)]" />
-            تكلفة واضحة قبل الجلسة، والدفع داخل العيادة
+            ادفعي أونلاين بأمان عبر noon، أو اسألي عبر واتساب قبل أن تقرري
           </span>
         </div>
 
@@ -109,15 +109,13 @@ export function OfferGrid({ offers }: { offers: OfferItem[] }) {
                   exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.18 } }}
                   transition={{ duration: 0.45, ease: EASE, delay: Math.min(i, 8) * 0.04 }}
                 >
-                  <OfferCard offer={offer} onBook={setSelected} />
+                  <OfferCard offer={offer} onPay={(o) => open(o.id)} askHref={askHref(offer)} />
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
         )}
       </div>
-
-      <OfferBookingModal offer={selected} onClose={close} />
     </>
   );
 }

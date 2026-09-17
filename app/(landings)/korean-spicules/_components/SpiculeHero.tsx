@@ -5,15 +5,14 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Icon } from "@/components/icons";
+import { Icon, SocialIcon } from "@/components/icons";
+import { PayButton, useCheckout } from "@/components/checkout";
 import type { ContentOf } from "@/lib/pages/define";
 import type { KOREAN_SPICULES } from "../content";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-const FORM_ANCHOR = "#lead-form";
 
 const ORANGE_GRADIENT =
   "linear-gradient(120deg, #ffb473 0%, #ff6b1a 55%, #e35500 100%)";
@@ -39,6 +38,7 @@ type HeroCopy = ContentOf<typeof KOREAN_SPICULES>["hero"];
  * Sticky-positioning does the pinning (no pin-spacer jank on mobile).
  */
 export function SpiculeHero({ copy }: { copy: HeroCopy }) {
+  const { whatsappHref } = useCheckout();
   const STATS = copy.stats;
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -321,13 +321,21 @@ export function SpiculeHero({ copy }: { copy: HeroCopy }) {
             {/* CTA + stats are desktop-only: the mobile funnel uses the fixed
                 bottom bar, and the freed space goes to the portrait. */}
             <div className="kos-hero-fade mt-7 hidden w-full items-center gap-3 md:flex md:justify-start">
-              <a
-                href={FORM_ANCHOR}
-                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-sm font-extrabold text-[#180a02] shadow-[0_12px_32px_-10px_rgba(255,107,26,0.6)] transition-transform hover:scale-[1.03] active:scale-[0.98] sm:w-auto"
+              <PayButton
+                className="inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full px-7 text-sm font-extrabold text-[#180a02] shadow-[0_12px_32px_-10px_rgba(255,107,26,0.6)] transition-transform hover:scale-[1.03] active:scale-[0.98] sm:w-auto"
                 style={{ background: ORANGE_GRADIENT }}
               >
+                <Icon.CreditCard className="size-4" />
                 {copy.book}
-                <Icon.ArrowLeft className="size-4" />
+              </PayButton>
+              <a
+                href={whatsappHref()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden h-12 w-full items-center justify-center gap-2 rounded-full border border-[rgba(37,211,102,0.45)] bg-black/40 px-6 text-sm font-bold text-[#25D366] backdrop-blur-sm transition-colors hover:bg-[rgba(37,211,102,0.1)] sm:inline-flex sm:w-auto"
+              >
+                <SocialIcon name="whatsapp" className="text-base" />
+                اسألي عبر واتساب
               </a>
               <a
                 href="#about"

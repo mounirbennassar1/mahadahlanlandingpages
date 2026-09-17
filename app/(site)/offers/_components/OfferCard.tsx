@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Icon } from "@/components/icons";
+import { Icon, SocialIcon } from "@/components/icons";
 import { GOLD_GRADIENT, toArabicDigits } from "@/app/_home/config";
-import { PayLogo } from "@/app/_home/PayLogo";
+import { PaymentBadges } from "@/app/_home/PaymentBadges";
 import { isOptimizableImage } from "@/lib/site";
 import type { OfferItem } from "./types";
 
@@ -18,10 +18,14 @@ const CATEGORY_ICONS: Record<string, typeof Icon.Gift> = {
 
 export function OfferCard({
   offer,
-  onBook,
+  onPay,
+  askHref,
 }: {
   offer: OfferItem;
-  onBook: (offer: OfferItem) => void;
+  /** Opens the checkout sheet with this offer preselected. */
+  onPay: (offer: OfferItem) => void;
+  /** wa.me link asking about this offer. */
+  askHref: string;
 }) {
   const CatIcon = CATEGORY_ICONS[offer.category ?? ""] ?? Icon.Gift;
 
@@ -39,15 +43,11 @@ export function OfferCard({
             className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           />
         ) : (
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ background: GOLD_GRADIENT }}
-          >
+          <div className="absolute inset-0 flex items-center justify-center" style={{ background: GOLD_GRADIENT }}>
             <div
               className="pointer-events-none absolute inset-0 opacity-60"
               style={{
-                backgroundImage:
-                  "radial-gradient(rgba(36,26,14,.22) 1px, transparent 1px)",
+                backgroundImage: "radial-gradient(rgba(36,26,14,.22) 1px, transparent 1px)",
                 backgroundSize: "18px 18px",
               }}
               aria-hidden
@@ -58,18 +58,11 @@ export function OfferCard({
           </div>
         )}
 
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[var(--color-md-card)] to-transparent"
-          aria-hidden
-        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[var(--color-md-card)] to-transparent" aria-hidden />
 
         {offer.badge ? (
           <span className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full border border-[rgba(240,212,138,0.45)] bg-[rgba(11,8,5,0.85)] px-3.5 py-1.5 text-[0.74rem] font-extrabold text-[var(--color-md-champagne)] backdrop-blur-md">
-            <span
-              className="size-1.5 rounded-full bg-[var(--color-md-neon)]"
-              style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }}
-              aria-hidden
-            />
+            <span className="size-1.5 rounded-full bg-[var(--color-md-neon)]" style={{ animation: "md-neon-pulse 2.4s ease-in-out infinite" }} aria-hidden />
             {offer.badge}
           </span>
         ) : null}
@@ -90,43 +83,42 @@ export function OfferCard({
           </span>
         ) : null}
 
-        <h3 className="mt-2 text-[1.12rem] leading-[1.5] font-extrabold text-[var(--color-md-text)]">
-          {offer.title}
-        </h3>
+        <h3 className="mt-2 text-[1.12rem] leading-[1.5] font-extrabold text-[var(--color-md-text)]">{offer.title}</h3>
 
         {offer.description ? (
-          <p className="mt-2 text-[0.9rem] leading-[1.85] font-light text-[rgba(246,238,223,0.58)]">
-            {offer.description}
-          </p>
+          <p className="mt-2 text-[0.9rem] leading-[1.85] font-light text-[rgba(246,238,223,0.58)]">{offer.description}</p>
         ) : null}
 
         <div className="mt-auto flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-5">
           <span className="md-gold-glow inline-block">
-            <span className="md-gold-text text-[1.75rem] leading-none font-extrabold">
-              {offer.priceLabel}
-            </span>
+            <span className="md-gold-text text-[1.75rem] leading-none font-extrabold">{offer.priceLabel}</span>
           </span>
-          {offer.oldPriceLabel ? (
-            <s className="text-[0.95rem] font-bold text-[rgba(246,238,223,0.38)]">
-              {offer.oldPriceLabel}
-            </s>
-          ) : null}
+          {offer.oldPriceLabel ? <s className="text-[0.95rem] font-bold text-[rgba(246,238,223,0.38)]">{offer.oldPriceLabel}</s> : null}
         </div>
 
-        <button
-          type="button"
-          onClick={() => onBook(offer)}
-          className="mt-5 inline-flex min-h-12 cursor-pointer items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-extrabold text-[var(--color-md-ink)] shadow-[0_0_30px_-8px_rgba(232,195,106,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-8px_rgba(255,223,142,0.75)]"
-          style={{ background: GOLD_GRADIENT }}
-        >
-          <Icon.CalendarCheck className="size-[17px]" />
-          احجزي العرض
-        </button>
+        <div className="mt-5 grid gap-2.5">
+          <button
+            type="button"
+            onClick={() => onPay(offer)}
+            className="inline-flex min-h-12 cursor-pointer items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-extrabold text-[var(--color-md-ink)] shadow-[0_0_30px_-8px_rgba(232,195,106,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-8px_rgba(255,223,142,0.75)]"
+            style={{ background: GOLD_GRADIENT }}
+          >
+            <Icon.Lock className="size-[17px]" strokeWidth={2.2} />
+            ادفعي الآن
+          </button>
+          <a
+            href={askHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full border border-[rgba(240,212,138,0.35)] px-6 py-3 text-[0.92rem] font-extrabold text-[#F0D48A] transition-colors hover:bg-[rgba(240,212,138,0.1)]"
+          >
+            <SocialIcon name="whatsapp" className="text-[18px]" />
+            اسألي عبر واتساب
+          </a>
+        </div>
 
-        <div className="mt-4 flex items-center justify-center gap-2.5 text-[0.74rem] font-bold text-[rgba(246,238,223,0.5)]">
-          قسّطيها مع
-          <PayLogo brand="tabby" height={18} />
-          <PayLogo brand="tamara" height={18} />
+        <div className="mt-4 flex items-center justify-center">
+          <PaymentBadges withSplit={false} className="justify-center gap-1.5 scale-[0.82]" />
         </div>
       </div>
     </article>

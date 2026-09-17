@@ -198,6 +198,60 @@ export function parseOfferForm(fd: FormData) {
   });
 }
 
+/* ───────────────────────── packages ───────────────────────── */
+
+export const PackageSchema = z
+  .object({
+    title: z.string().trim().min(1, "Title is required").max(200),
+    slug: slugField,
+    description: optional(2000),
+    price: z
+      .number({ error: "Price is required" })
+      .int("Price must be whole riyals")
+      .min(1, "Price must be at least 1 riyal")
+      .max(10_000_000),
+    oldPrice: z.number({ error: "Old price must be a number" }).int("Old price must be whole riyals").min(0).max(10_000_000).nullable(),
+    badge: optional(60),
+    features: z.array(z.string().trim().min(1).max(120)).max(12, "At most 12 points"),
+    /** Registry slug of the page, or null for "every page". */
+    pageSlug: z.string().trim().max(80).nullable(),
+    image: optionalUrl,
+    imageAlt: optional(300),
+    order: orderField,
+    active: z.boolean(),
+    startsAt: z.date().nullable(),
+    endsAt: z.date().nullable(),
+  })
+  .superRefine((o, ctx) => {
+    if (o.oldPrice !== null && o.oldPrice <= o.price) {
+      ctx.addIssue({ code: "custom", path: ["oldPrice"], message: "Old price must be higher than the price" });
+    }
+    if (o.startsAt && o.endsAt && o.endsAt < o.startsAt) {
+      ctx.addIssue({ code: "custom", path: ["endsAt"], message: "End must be after the start" });
+    }
+  });
+export type PackageInput = z.infer<typeof PackageSchema>;
+
+export function parsePackageForm(fd: FormData) {
+  const price = int(fd, "price");
+  return PackageSchema.parse({
+    title: text(fd, "title"),
+    slug: text(fd, "slug"),
+    description: optText(fd, "description"),
+    price: price === null ? undefined : price,
+    oldPrice: int(fd, "oldPrice"),
+    badge: optText(fd, "badge"),
+    features: list(fd, "features"),
+    pageSlug: optText(fd, "pageSlug"),
+    image: optText(fd, "image"),
+    imageAlt: optText(fd, "imageAlt"),
+    order: int(fd, "order"),
+    active: bool(fd, "active"),
+    startsAt: dateTime(fd, "startsAt"),
+    endsAt: dateTime(fd, "endsAt"),
+  });
+}
+
 /* ───────────────────────── services ───────────────────────── */
 
 export const ServiceSchema = z.object({

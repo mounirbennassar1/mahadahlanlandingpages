@@ -9,8 +9,8 @@ import { definePage, items, li, seoSectionWithOg, t, ta } from "@/lib/pages/defi
  * `fixed`. The Google reviews are genuine and stay in code as well; only the
  * section heading around them is editable.
  *
- * This landing has no lead form — every CTA opens WhatsApp — so `leadSource`
- * is null.
+ * This landing has no lead form; the pay buttons open the checkout sheet and
+ * the customers it collects are filed under the "acne" lead source.
  */
 export const ACNE = definePage({
   slug: "acne",
@@ -18,7 +18,7 @@ export const ACNE = definePage({
   path: "/acne",
   kind: "landing",
   locale: "ar",
-  leadSource: null,
+  leadSource: "acne",
   sections: {
     seo: seoSectionWithOg(
       "عيادات د. مها دحلان | علاج حب الشباب وآثاره في جدة",

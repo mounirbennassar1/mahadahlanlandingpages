@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { PayButton } from "@/components/checkout";
 import type { ContentOf } from "@/lib/pages/define";
 import type { HYPERPIGMENTATION } from "../content";
 
@@ -43,9 +44,9 @@ export default function Nav({ copy }: { copy: NavCopy }) {
         <a href="tel:+966920007515" className="nav-phone">
           +966 920007515
         </a>
-        <a href="#cta" className="btn btn-gold">
+        <PayButton className="btn btn-gold" noIcon>
           {copy.book}
-        </a>
+        </PayButton>
       </div>
     </nav>
   );

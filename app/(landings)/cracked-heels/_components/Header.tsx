@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/icons";
+import { PayButton } from "@/components/checkout";
 
 /** Fixed header: transparent over the hero, espresso glass after 30px. */
 export function Header({ cta }: { cta: string }) {
@@ -32,16 +33,15 @@ export function Header({ cta }: { cta: string }) {
           priority
           className="size-[58px] object-contain"
         />
-        <a
-          href="#booking"
-          className="inline-flex items-center gap-2 rounded-full px-[22px] py-2.5 text-[0.85rem] font-extrabold text-[#1C120C] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-12px_rgba(228,200,126,0.6)]"
+        <PayButton
+          className="inline-flex cursor-pointer items-center gap-2 rounded-full px-[22px] py-2.5 text-[0.85rem] font-extrabold text-[#1C120C] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-12px_rgba(228,200,126,0.6)]"
           style={{
             background: "linear-gradient(135deg, #8C6A3F, #E4C87E 50%, #B08D57)",
           }}
         >
+          <Icon.CreditCard className="size-4" strokeWidth={2.2} />
           {cta}
-          <Icon.ArrowLeft className="size-4" strokeWidth={2.4} />
-        </a>
+        </PayButton>
       </div>
     </header>
   );

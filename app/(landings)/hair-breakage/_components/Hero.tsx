@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Icon, SocialIcon } from "@/components/icons";
+import { PayButton } from "@/components/checkout";
 import { GOLD_GRADIENT, WA_LINK } from "./config";
 import type { ContentOf } from "@/lib/pages/define";
 import type { HAIR_BREAKAGE } from "../content";
@@ -143,14 +144,13 @@ export function Hero({
           </p>
 
           <div className="hab-h mt-8 flex flex-wrap justify-center gap-3.5 lg:justify-start">
-            <a
-              href="#booking"
-              className="inline-flex items-center gap-2.5 rounded-full px-[32px] py-4 text-base font-extrabold text-[#1A1405] shadow-[0_18px_44px_-14px_rgba(212,175,55,0.5)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(240,212,138,0.55)]"
+            <PayButton
+              className="inline-flex cursor-pointer items-center gap-2.5 rounded-full px-[32px] py-4 text-base font-extrabold text-[#1A1405] shadow-[0_18px_44px_-14px_rgba(212,175,55,0.5)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_24px_54px_-14px_rgba(240,212,138,0.55)]"
               style={{ background: GOLD_GRADIENT }}
             >
+              <Icon.CreditCard className="size-[17px]" strokeWidth={2.2} />
               {copy.book}
-              <Icon.ArrowLeft className="size-[17px]" strokeWidth={2.4} />
-            </a>
+            </PayButton>
             <div className="relative inline-flex overflow-hidden rounded-full p-[1.5px]">
               <div
                 className="absolute -inset-[120%]"

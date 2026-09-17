@@ -15,13 +15,13 @@ import { SpiculeHero } from "./SpiculeHero";
 import { Marquee } from "./Marquee";
 import { HorizontalProtocol } from "./HorizontalProtocol";
 import { StatCounters } from "./StatCounters";
-import { LeadForm } from "./LeadForm";
+import { CheckoutPanel, PayButton } from "@/components/checkout";
 import { DoctorsSlider } from "./DoctorsSlider";
 import { StickyCTA } from "./StickyCTA";
 import type { ContentOf } from "@/lib/pages/define";
 import type { KOREAN_SPICULES } from "../content";
 
-/* Ads funnel: form-only lead capture — every CTA anchors here. */
+/* Every CTA opens the checkout sheet; the booking section carries the inline panel. */
 const FORM_ANCHOR = "#lead-form";
 
 const ORANGE_GRADIENT =
@@ -148,14 +148,13 @@ export function Landing({ content }: { content: ContentOf<typeof KOREAN_SPICULES
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href={FORM_ANCHOR}
-            className="hidden items-center gap-2 rounded-full px-5 py-2 text-xs font-extrabold text-[#180a02] shadow-[0_10px_24px_-10px_rgba(255,107,26,0.6)] transition-transform hover:scale-[1.03] sm:inline-flex"
+          <PayButton
+            className="hidden cursor-pointer items-center gap-2 rounded-full px-5 py-2 text-xs font-extrabold text-[#180a02] shadow-[0_10px_24px_-10px_rgba(255,107,26,0.6)] transition-transform hover:scale-[1.03] sm:inline-flex"
             style={{ background: ORANGE_GRADIENT }}
           >
+            <Icon.CreditCard className="size-3.5" />
             {c.nav.book}
-            <Icon.ArrowLeft className="size-3.5" />
-          </a>
+          </PayButton>
           <button
             type="button"
             onClick={() => setMenuOpen((p) => !p)}
@@ -196,7 +195,7 @@ export function Landing({ content }: { content: ContentOf<typeof KOREAN_SPICULES
                     className="flex h-11 items-center justify-center gap-2 rounded-2xl text-sm font-extrabold text-[#180a02]"
                     style={{ background: ORANGE_GRADIENT }}
                   >
-                    <Icon.CalendarCheck className="size-4" />
+                    <Icon.CreditCard className="size-4" />
                     {c.nav.bookMobile}
                   </a>
                 </li>
@@ -335,7 +334,7 @@ export function Landing({ content }: { content: ContentOf<typeof KOREAN_SPICULES
           </div>
         </section>
 
-        {/* ───── 5 · Booking (lead form — early in the funnel) ───── */}
+        {/* ───── 5 · Booking (checkout — early in the funnel) ───── */}
         <section
           id="lead-form"
           data-glow="70,60,0.45"
@@ -381,9 +380,14 @@ export function Landing({ content }: { content: ContentOf<typeof KOREAN_SPICULES
             </ul>
           </div>
 
-          {/* form — left column in RTL */}
+          {/* checkout — left column in RTL */}
           <div data-reveal="zoom">
-            <LeadForm copy={c.booking} />
+            <CheckoutPanel
+              theme="dark"
+              badge={c.booking.formBadge}
+              title={c.booking.formTitle}
+              subtitle={c.booking.formSub}
+            />
           </div>
         </section>
 
@@ -563,8 +567,8 @@ export function Landing({ content }: { content: ContentOf<typeof KOREAN_SPICULES
         <div className="h-16 md:hidden" aria-hidden />
       </main>
 
-      {/* ───── Floating CTA (form-only funnel) ───── */}
-      <StickyCTA bookHref={FORM_ANCHOR} label={c.stickyCta.book} />
+      {/* ───── Floating CTA: pay + ask on WhatsApp ───── */}
+      <StickyCTA label={c.stickyCta.book} />
     </>
   );
 }

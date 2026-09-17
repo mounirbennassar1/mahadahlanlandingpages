@@ -1,6 +1,7 @@
 "use client";
 
-import { Phone } from "lucide-react";
+import { CreditCard, Phone } from "lucide-react";
+import { PayButton } from "@/components/checkout";
 
 type Props = {
   whatsappHref: string;
@@ -23,14 +24,18 @@ export default function MobileStickyCTA({ whatsappHref, book }: Props) {
   return (
     <div className="acne-mobile-cta md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pt-2 pointer-events-none">
       <div className="pointer-events-auto flex items-stretch gap-2 acne-card !rounded-2xl shadow-2xl shadow-stone-900/15 p-2">
+        <PayButton className="acne-btn-primary flex-1 !py-3.5 !text-base">
+          <CreditCard className="w-5 h-5" />
+          <span>{book}</span>
+        </PayButton>
         <a
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="acne-btn-primary flex-1 !py-3.5 !text-base"
+          className="acne-btn-ghost !py-3.5 !px-4"
+          aria-label="اسألي عبر واتساب"
         >
-          <WhatsAppIcon className="w-5 h-5" />
-          <span>{book}</span>
+          <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
         </a>
         <a
           href="tel:+966920007515"

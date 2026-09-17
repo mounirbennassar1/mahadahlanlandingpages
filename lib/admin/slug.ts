@@ -20,6 +20,8 @@ async function slugTaken(kind: ContentKind, slug: string, excludeId?: string) {
       return (await prisma.offer.count({ where })) > 0;
     case "services":
       return (await prisma.service.count({ where })) > 0;
+    case "packages":
+      return (await prisma.package.count({ where })) > 0;
   }
 }
 

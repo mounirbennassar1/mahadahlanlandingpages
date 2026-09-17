@@ -10,7 +10,6 @@ import { Doctors } from "./_components/Doctors";
 import { BeforeAfter } from "./_components/BeforeAfter";
 import { Journey } from "./_components/Journey";
 import { Testimonials } from "./_components/Testimonials";
-import { Booking } from "./_components/Booking";
 import { StickyBar } from "./_components/StickyBar";
 import {
   PHONE_DISPLAY,
@@ -20,6 +19,8 @@ import {
   WHATSAPP_NUMBER,
 } from "./_components/config";
 import { getPageContent } from "@/lib/pages/get";
+import { getSellableItems } from "@/lib/orders";
+import { CheckoutPanel, CheckoutProvider } from "@/components/checkout";
 import { NECK_LIFT } from "./content";
 
 /** Icons for the "signs" cards, in content order. */
@@ -105,12 +106,20 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function NeckLiftPage() {
-  const c = await getPageContent(NECK_LIFT);
+  const [c, items] = await Promise.all([
+    getPageContent(NECK_LIFT),
+    getSellableItems(NECK_LIFT.slug),
+  ]);
   const signs = c.signs.cards.map((card, i) => ({ ...card, icon: SIGN_ICONS[i] }));
   const solutions = c.solutions.cards.map((card, i) => ({ ...card, icon: SOLUTION_ICONS[i] }));
   const whyUs = c.whyUs.cards.map((card, i) => ({ ...card, icon: WHY_US_ICONS[i] }));
 
   return (
+    <CheckoutProvider
+      items={items}
+      page={{ slug: NECK_LIFT.slug, title: NECK_LIFT.title, path: NECK_LIFT.path }}
+      whatsappTopic={WA_TOPIC_MESSAGE}
+    >
     <main>
       <ScrollProgress />
       <Header />
@@ -408,7 +417,13 @@ export default async function NeckLiftPage() {
                 </a>
               </div>
               <div className="min-w-[290px] max-w-[480px] flex-1">
-                <Booking />
+                <CheckoutPanel
+                  theme="dark"
+                  id="booking-panel"
+                  badge={c.booking.formBadge}
+                  title={c.booking.formTitle}
+                  subtitle={c.booking.formSub}
+                />
               </div>
             </div>
           </div>
@@ -463,5 +478,6 @@ export default async function NeckLiftPage() {
       />
       <StickyBar />
     </main>
+    </CheckoutProvider>
   );
 }

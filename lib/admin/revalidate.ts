@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
+import { PAGES, getPageDef } from "@/lib/pages/registry";
 
-export type ContentKind = "articles" | "categories" | "doctors" | "devices" | "offers" | "services";
+export type ContentKind = "articles" | "categories" | "doctors" | "devices" | "offers" | "services" | "packages";
 
 /**
  * Revalidates the public routes (see lib/content.ts consumers) affected by a
@@ -35,6 +36,22 @@ export function revalidateContent(kind: ContentKind, slug?: string | null) {
     case "services":
       paths.add("/book-now");
       break;
+    case "packages":
+      // `slug` is the package's page; a global package shows on every page.
+      revalidatePackages(slug ?? null);
+      break;
   }
   for (const p of paths) revalidatePath(p);
+}
+
+/** Packages render inside the landings, so bust the page(s) that list them. */
+export function revalidatePackages(pageSlug: string | null) {
+  if (pageSlug) {
+    const def = getPageDef(pageSlug);
+    if (def) revalidatePath(def.path);
+    return;
+  }
+  for (const def of PAGES) {
+    if (def.kind === "landing") revalidatePath(def.path);
+  }
 }

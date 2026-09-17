@@ -14,6 +14,7 @@ import { CitiesBar } from "./_components/cities-bar";
 import { TeamBars } from "./_components/team-bars";
 import { Funnel } from "./_components/funnel";
 import { ContentStats, getContentCounts } from "./_components/content-stats";
+import { PaymentsStats, getPaymentCounts } from "./_components/payments-stats";
 import { BarList } from "./_components/bar-list";
 import { prisma } from "@/lib/prisma";
 
@@ -39,7 +40,7 @@ export default async function DashboardHome() {
     }),
   ]);
 
-  const contentCounts = await getContentCounts();
+  const [contentCounts, paymentCounts] = await Promise.all([getContentCounts(), getPaymentCounts()]);
 
   const topRepName =
     topRep.length && topRep[0].assigneeId
@@ -109,6 +110,8 @@ export default async function DashboardHome() {
       </div>
 
       <KpiRow overview={overview} />
+
+      <PaymentsStats counts={paymentCounts} />
 
       <ContentStats counts={contentCounts} />
 

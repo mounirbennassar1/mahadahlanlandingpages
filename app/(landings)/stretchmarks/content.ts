@@ -8,7 +8,8 @@ import { definePage, items, li, seoSectionWithOg, t, ta } from "@/lib/pages/defi
  * and the WhatsApp number stay in the component and are paired with these rows
  * by index, which is why the asset-backed lists are `fixed`.
  *
- * The page has no lead form — every call to action opens WhatsApp.
+ * The page has no lead form: primary calls to action open the checkout sheet,
+ * secondary ones open WhatsApp.
  */
 export const STRETCHMARKS = definePage({
   slug: "stretchmarks",
@@ -16,7 +17,8 @@ export const STRETCHMARKS = definePage({
   path: "/stretchmarks",
   kind: "landing",
   locale: "ar",
-  leadSource: null,
+  // Checkout customers from this page are filed under this lead source.
+  leadSource: "stretchmarks",
   sections: {
     seo: seoSectionWithOg(
       "د. مها دحلان | علاج التشققات وعلامات التمدد في جدة",
@@ -39,8 +41,8 @@ export const STRETCHMARKS = definePage({
           ],
           { fixed: true, hint: "وجهة كل رابط ثابتة في التصميم." },
         ),
-        cta: t("زر واتساب", "احجزي استشارة"),
-        ctaMobile: t("زر واتساب في قائمة الجوال", "احجزي استشارة مجانية"),
+        cta: t("زر الحجز والدفع", "احجزي استشارة"),
+        ctaMobile: t("زر الدفع في قائمة الجوال", "احجزي وادفعي الآن"),
       },
     },
 
@@ -55,7 +57,7 @@ export const STRETCHMARKS = definePage({
           "تشققات الجلد ليست قدرًا دائمًا — مع الخطة العلاجية الصحيحة، يمكن تحسين بنية الجلد من الداخل واستعادة مظهره الطبيعي بشكل حقيقي وتدريجي.",
           { rows: 3 },
         ),
-        cta: t("زر واتساب", "احجزي استشارتك الآن"),
+        cta: t("زر الحجز والدفع", "احجزي استشارتك الآن"),
         secondary: t("الزر الثانوي", "اكتشفي المزيد"),
         statValue: t("الرقم العائم", "90%"),
         statLabel: t("وصف الرقم العائم", "من الحالات تستجيب إيجابياً للعلاج"),
@@ -129,6 +131,7 @@ export const STRETCHMARKS = definePage({
           "تأثير طويل الأمد",
           "محفّز طبيعي للكولاجين",
         ]),
+        firstPay: t("البطاقة الأولى، زر الدفع", "احجزي وادفعي"),
         firstCta: t("البطاقة الأولى، زر واتساب", "استفسري عن هذا العلاج"),
         secondTag: t("البطاقة الثانية، الوسم", "الخيار الثاني"),
         secondTitle: t("البطاقة الثانية، العنوان", "فيلر الكالسيوم"),
@@ -174,7 +177,7 @@ export const STRETCHMARKS = definePage({
         ),
         joinTitle: t("بطاقة الدعوة، العنوان", "انضمي لهنّ"),
         joinBody: t("بطاقة الدعوة، النص", "احصلي على استشارتك اليوم وابدئي رحلتك"),
-        joinCta: t("بطاقة الدعوة، زر واتساب", "احجزي موعدك الأول"),
+        joinCta: t("بطاقة الدعوة، زر الدفع", "احجزي موعدك الأول"),
       },
     },
 
@@ -276,7 +279,7 @@ export const STRETCHMARKS = definePage({
         eyebrow: t("العنوان الصغير", "آراء حقيقية"),
         title: t("العنوان", "ماذا قالت عميلاتنا؟"),
         sub: t("الوصف", "نجاحنا يُقاس بابتسامة كل مريضة خرجت من عيادتنا بثقة أعلى."),
-        cta: t("زر واتساب", "احجزي استشارتك الآن"),
+        cta: t("زر الحجز والدفع", "احجزي استشارتك الآن"),
         cards: items(
           "الآراء",
           { name: t("الاسم", ""), text: ta("النص", "", { rows: 4 }) },
@@ -321,7 +324,8 @@ export const STRETCHMARKS = definePage({
           { rows: 2 },
         ),
         note: t("التنويه", "بدون التزامات — فقط احجزي واكتشفي الخيار المناسب لكِ."),
-        button: t("زر واتساب", "تحدثي معنا على واتساب"),
+        button: t("زر الدفع", "احجزي وادفعي الآن"),
+        whatsapp: t("زر واتساب", "اسألي عبر واتساب"),
         fab: t("زر واتساب العائم", "تحدثي معنا"),
       },
     },
