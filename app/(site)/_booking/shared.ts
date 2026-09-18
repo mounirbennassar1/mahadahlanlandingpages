@@ -1,9 +1,10 @@
 import { WHATSAPP_NUMBER } from "@/app/_home/config";
 
 /**
- * Shared bits of the two booking flows (offers modal + /book-now form):
- * city list, payment methods, Saudi mobile normalisation, field styles and
- * the `/api/leads` POST wrapper. Client-safe (no Prisma imports).
+ * Shared bits of the booking flows (/book-now form + the checkout sheet):
+ * city list, Saudi mobile normalisation, field styles and the `/api/leads`
+ * POST wrapper. Payment methods are chosen on noon's hosted page, so there is
+ * no payment-method list here any more. Client-safe (no Prisma imports).
  */
 
 export const CITIES = [
@@ -17,19 +18,6 @@ export const CITIES = [
 ] as const;
 
 export type City = (typeof CITIES)[number];
-
-export const PAYMENT_METHODS = [
-  { value: "COD", label: "نقداً في العيادة", hint: "الدفع عند الاستقبال" },
-  { value: "TAMARA", label: "تمارا", hint: "قسّطيها على دفعات" },
-  { value: "TABBY", label: "تابي", hint: "4 دفعات بدون فوائد" },
-  { value: "CARD", label: "بطاقة / مدى", hint: "فيزا، ماستركارد، مدى" },
-] as const;
-
-export type PaymentMethod = (typeof PAYMENT_METHODS)[number]["value"];
-
-export function paymentLabel(value: PaymentMethod) {
-  return PAYMENT_METHODS.find((m) => m.value === value)?.label ?? value;
-}
 
 const ARABIC_INDIC = "٠١٢٣٤٥٦٧٨٩";
 const EASTERN_ARABIC = "۰۱۲۳۴۵۶۷۸۹";
