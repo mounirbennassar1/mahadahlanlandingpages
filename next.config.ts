@@ -36,31 +36,6 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  async redirects() {
-    return [
-      // No www/apex redirect here on purpose.
-      //
-      // www.mahadahlan.com is the canonical host, and Vercel already 308s the
-      // bare domain to it at the domain level. Adding the opposite rule in the
-      // app would bounce requests between the two forever, so the redirect is
-      // owned by exactly one layer: Vercel.
-
-      // ── URLs of the previous PHP site ────────────────────────────────────
-      // mahadahlan.com used to serve a different site. These paths are linked
-      // from Google, ads and printed material, so they must not 404 after the
-      // DNS cutover.
-      { source: "/bookNow", destination: "/book-now", permanent: true },
-      { source: "/offersform", destination: "/offers", permanent: true },
-      { source: "/cosmetics-services", destination: "/services", permanent: true },
-      { source: "/hair-services", destination: "/services", permanent: true },
-      { source: "/laser-services", destination: "/services", permanent: true },
-      // "قيّم تجربتك" — the new site has no rating page, so send visitors to the
-      // reviews section on the home page. Swap this for the clinic's Google
-      // review link once we have the place URL (an Arabic Maps search query
-      // cannot go in a Location header: it is rejected as an invalid header).
-      { source: "/rate-us", destination: "/#reviews", permanent: false },
-    ];
-  },
 
   // Rewrite barrel imports of these packages to per-module paths so a page
   // only ships the icons/components it actually renders.

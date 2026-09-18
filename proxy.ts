@@ -1,119 +1,57 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { auth } from "@/auth";
+import { PAGES } from "@/lib/pages/registry";
 
 /**
- * Single proxy (Next 16 middleware) handling two concerns:
+ * lp.mahadahlan.com serves only the campaign landings. This proxy (Next 16
+ * middleware) does two things:
  *
- * 1. **Subdomain routing.** The admin panel is hosted at `portal.mahadahlan.com`.
- *    - On the portal host: only admin paths (/login, /dashboard, /api/auth,
- *      /api/admin) are allowed; anything else 404s. Root `/` redirects to
- *      /login or /dashboard.
- *    - On the public host: admin paths return 404 so the panel can't be reached
- *      from mahadahlan.com directly.
- *    - Localhost is unrestricted for dev (both panel and landings reachable).
+ * 1. **Sends everything else to the website.** The public site, its blog,
+ *    booking, offers and the admin portal live in the separate website
+ *    deployment (www.mahadahlan.com). Any path that is not a landing, an API
+ *    route or a static asset is redirected there with the same path and query,
+ *    so old links keep working on either host.
  *
- * 2. **Auth gating** for admin paths. Unauthenticated users hitting an admin
- *    path get redirected to /login; authed users hitting /login get bounced
- *    to /dashboard. Unauthenticated calls to /api/admin/* get a 401 JSON
- *    response instead of a redirect (they are fetch() calls from the panel).
+ * 2. **Optional noindex.** The landings carry a canonical to the website, so
+ *    they can stay crawlable for AdsBot. Once the website is indexed in Search
+ *    Console, set NOINDEX_ADS_HOST=true to add `X-Robots-Tag: noindex` here.
  */
 
-const ADMIN_PATHS = [/^\/login(\/|$)/, /^\/dashboard(\/|$)/];
-const ADMIN_API = [/^\/api\/auth(\/|$)/];
-const PRIVATE_API = [/^\/api\/admin(\/|$)/];
-const PUBLIC_API = [/^\/api\/leads(\/|$)/, /^\/api\/checkout(\/|$)/, /^\/api\/noon(\/|$)/];
+const WEBSITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mahadahlan.com").replace(/\/+$/, "");
 
-function isAdminPath(pathname: string) {
-  return ADMIN_PATHS.some((r) => r.test(pathname));
+/** `/acne`, `/glass-skin`, ... straight from the content registry. */
+const LANDING_PATHS = new Set(PAGES.map((page) => page.path.replace(/\/+$/, "") || "/"));
+
+/** Files served from public/ (logos, videos, fonts) are never redirected. */
+function isAsset(pathname: string) {
+  return /\.[a-z0-9]+$/i.test(pathname.split("/").pop() ?? "");
 }
 
-function isAuthApi(pathname: string) {
-  return ADMIN_API.some((r) => r.test(pathname));
-}
+export default function proxy(req: NextRequest) {
+  const { pathname, search } = req.nextUrl;
 
-function isPublicApi(pathname: string) {
-  return PUBLIC_API.some((r) => r.test(pathname));
-}
-
-/** Session-gated JSON endpoints used by the dashboard (uploads, etc.). */
-function isPrivateApi(pathname: string) {
-  return PRIVATE_API.some((r) => r.test(pathname));
-}
-
-export default auth((req: NextRequest & { auth: unknown }) => {
-  const host = (req.headers.get("host") ?? "").toLowerCase();
-  const { pathname } = req.nextUrl;
-
-  // Public endpoints (lead ingest, checkout, noon webhook) work on every host.
-  if (isPublicApi(pathname)) return NextResponse.next();
-
-  const isPortal = host.startsWith("portal.");
-  // lp.mahadahlan.com serves the same app as the main domain so existing ad
-  // final URLs keep working unchanged.
-  const isAdsHost = host.startsWith("lp.");
-  const isLocal = host.startsWith("localhost") || host.startsWith("127.");
-  const isAdmin = isAdminPath(pathname);
-  const isAuth = isAuthApi(pathname);
-  const isPrivate = isPrivateApi(pathname);
-
-  // ── Production host gating ─────────────────────────────────────────────
-  if (!isLocal) {
-    if (isPortal) {
-      // On portal: redirect root to /login (or /dashboard if authed).
-      if (pathname === "/") {
-        const target = req.auth ? "/dashboard" : "/login";
-        return NextResponse.redirect(new URL(target, req.nextUrl));
-      }
-      // Block any non-admin path on the portal subdomain.
-      if (!isAdmin && !isAuth && !isPrivate) {
-        return new NextResponse("Not found", { status: 404 });
-      }
-    } else {
-      // On the main domain: admin paths are hidden completely.
-      if (isAdmin || isAuth || isPrivate) {
-        return new NextResponse("Not found", { status: 404 });
-      }
-    }
+  if (pathname.startsWith("/api/") || pathname === "/robots.txt" || isAsset(pathname)) {
+    return NextResponse.next();
   }
 
-  // Keep the ads host out of the search index once the main domain is indexed.
-  //
-  // This is deliberately opt-in: switching it on before mahadahlan.com is
-  // indexed would drop the rankings lp.mahadahlan.com holds today and leave
-  // nothing in their place. Set NOINDEX_ADS_HOST=true only after the main
-  // domain is showing in Search Console. Crawling stays allowed either way,
-  // which Google's AdsBot needs for landing-page checks; the canonical tags
-  // already point at the main domain, so signals consolidate there regardless.
-  if (isAdsHost && process.env.NOINDEX_ADS_HOST === "true") {
+  const path = pathname.replace(/\/+$/, "") || "/";
+  if (LANDING_PATHS.has(path)) {
     const res = NextResponse.next();
-    res.headers.set("X-Robots-Tag", "noindex");
+    if (process.env.NOINDEX_ADS_HOST === "true") res.headers.set("X-Robots-Tag", "noindex");
     return res;
   }
 
-  // ── Auth gate for the dashboard's JSON API (401, never a redirect) ─────
-  if (isPrivate && !req.auth) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // Never bounce a host to itself (misconfigured NEXT_PUBLIC_SITE_URL).
+  const website = new URL(WEBSITE_URL);
+  const host = (req.headers.get("host") ?? "").toLowerCase();
+  if (host === website.host.toLowerCase()) {
+    return new NextResponse("Not found", { status: 404 });
   }
 
-  // ── Auth gate for admin paths ──────────────────────────────────────────
-  if (isAdmin) {
-    const isAuthed = Boolean(req.auth);
-    const isOnLogin = pathname === "/login";
-    if (!isAuthed && !isOnLogin) {
-      const url = new URL("/login", req.nextUrl);
-      url.searchParams.set("next", pathname);
-      return NextResponse.redirect(url);
-    }
-    if (isAuthed && isOnLogin) {
-      return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
-    }
-  }
-
-  return NextResponse.next();
-});
+  return NextResponse.redirect(new URL(`${path === "/" ? "/" : path}${search}`, website), 307);
+}
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif|mp4)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif|mp4|webm|woff2|ico|txt|json)$).*)",
   ],
 };

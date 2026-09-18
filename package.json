@@ -1,5 +1,5 @@
 {
-  "name": "landingpages",
+  "name": "mahadahlan-landing-pages",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,15 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts",
-    "db:seed:content": "tsx prisma/seed-content.ts",
-    "db:studio": "prisma studio",
-    "check:content": "tsx scripts/check-content.ts",
-    "admin:password": "tsx scripts/rotate-admin-password.ts"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "check:content": "tsx scripts/check-content.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",

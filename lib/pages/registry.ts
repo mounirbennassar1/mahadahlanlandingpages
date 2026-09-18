@@ -1,25 +1,17 @@
 import type { PageDef } from "./define";
 
 /**
- * Every page whose copy is editable from /dashboard/pages.
+ * Every landing whose copy is editable from the website's admin panel
+ * (portal.mahadahlan.com → /dashboard/pages). Both deployments read the same
+ * `PageContent` table, so an edit made there shows up here within the page's
+ * `revalidate` window.
  *
- * A page joins the registry by exporting a `definePage(...)` object from a
+ * A landing joins the registry by exporting a `definePage(...)` object from a
  * `content.ts` next to it and being listed below. The scaffold script inserts
  * new landings at the `@@landing-imports` / `@@landing-entries` markers, so
  * keep those comments exactly as they are.
  */
 
-import { HOME_AR, HOME_EN } from "@/app/_home/content";
-import { SPECIALTIES_PAGE } from "@/app/_home/specialties.content";
-import { ABOUT_US } from "@/app/(site)/about-us/content";
-import { BOOK_NOW } from "@/app/(site)/book-now/content";
-import { CAREERS } from "@/app/(site)/careers/content";
-import { DOCTORS } from "@/app/(site)/doctors/content";
-import { NEWS_ARTICLES } from "@/app/(site)/news-articles/content";
-import { OFFERS } from "@/app/(site)/offers/content";
-import { OUR_DEVICES } from "@/app/(site)/our-devices/content";
-import { PRIVACY_POLICY } from "@/app/(site)/privacy-policy/content";
-import { SERVICES } from "@/app/(site)/services/content";
 import { ACNE } from "@/app/(landings)/acne/content";
 import { BODY } from "@/app/(landings)/body/content";
 import { BOTOX } from "@/app/(landings)/botox/content";
@@ -40,18 +32,6 @@ import { STRETCHMARKS } from "@/app/(landings)/stretchmarks/content";
 // @@landing-imports
 
 export const PAGES: PageDef[] = [
-  HOME_AR,
-  HOME_EN,
-  SPECIALTIES_PAGE,
-  ABOUT_US,
-  BOOK_NOW,
-  CAREERS,
-  DOCTORS,
-  NEWS_ARTICLES,
-  OFFERS,
-  OUR_DEVICES,
-  PRIVACY_POLICY,
-  SERVICES,
   ACNE,
   BODY,
   BOTOX,

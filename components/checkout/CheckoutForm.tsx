@@ -10,7 +10,7 @@ import {
   isValidSaudiMobile,
   normalizeSaudiMobile,
   toE164,
-} from "@/app/(site)/_booking/shared";
+} from "@/lib/booking";
 import type { CheckoutPage, SellableItem } from "@/lib/checkout-types";
 import { startCheckout } from "./client";
 import { GOLD } from "./theme";
