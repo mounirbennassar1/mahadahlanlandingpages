@@ -61,7 +61,7 @@ export default function LeadForm({ id }: { id?: string }) {
       <div className="grid gap-1.5">
         <span className="eyebrow-body">احجزي استشارتك</span>
         <h3 className="font-display-body text-3xl sm:text-4xl leading-tight text-body-fg">
-          جلسة تحليل قوام مجانية
+          جلسة تحليل قوام
         </h3>
         <p className="text-body-muted text-sm leading-7">
           اتركي بياناتك وسيعاود فريق الاستشارات التواصل خلال ساعة عمل واحدة

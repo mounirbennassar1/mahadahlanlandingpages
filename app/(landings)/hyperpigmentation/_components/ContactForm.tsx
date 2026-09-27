@@ -72,7 +72,7 @@ export default function ContactForm() {
 
   return (
     <form className="form-card" onSubmit={onSubmit} noValidate>
-      <div className="form-title">احجزي استشارتكِ المجانية</div>
+      <div className="form-title">احجزي استشارتكِ الآن</div>
       <div className="form-sub">سنتواصل معكِ خلال ٢٤ ساعة</div>
 
       <div className="form-row">

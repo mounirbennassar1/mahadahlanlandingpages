@@ -645,7 +645,7 @@ export default function EidOfferPage() {
           </h2>
           <p>
             احجز موعدك الآن عبر واتساب واستمتع بخصومات تصل إلى ٤٠٪ على جميع
-            باقات العيد، إضافةً إلى استشارة مجانية مع أحد أطبائنا الاستشاريين.
+            باقات العيد، بإشراف نخبة من أطبائنا الاستشاريين.
           </p>
           <div className="cta-band-actions">
             <a href={WA_DEFAULT} target="_blank" rel="noopener noreferrer" className="btn-gold">

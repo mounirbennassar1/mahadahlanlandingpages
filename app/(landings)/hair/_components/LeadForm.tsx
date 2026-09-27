@@ -60,7 +60,7 @@ export default function LeadForm({ id }: { id?: string }) {
           <span className="material-symbols-outlined text-base">
             calendar_add_on
           </span>
-          احجزي استشارتك المجانية
+          احجزي استشارتك الآن
         </div>
         <h3 className="text-2xl md:text-3xl font-bold text-[#1a3a2a] mb-2">
           اتركي بياناتك وسنتواصل معك

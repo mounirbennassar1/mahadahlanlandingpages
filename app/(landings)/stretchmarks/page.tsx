@@ -171,7 +171,7 @@ export default function StretchmarksLanding() {
                   className="inline-flex items-center justify-center gap-2 bg-white text-primary px-6 py-3 rounded-full font-label text-sm font-bold tracking-wider mt-2 hover:bg-primary-container transition-colors duration-300"
                 >
                   <FontAwesomeIcon icon={faWhatsapp} className="text-base" />
-                  احجزي استشارة مجانية
+                  احجزي استشارتك الآن
                 </a>
               </div>
             </motion.div>
@@ -373,7 +373,7 @@ export default function StretchmarksLanding() {
                 </p>
                 <div className="flex items-center gap-3 text-primary text-sm font-body">
                   <span className="material-symbols-outlined text-base">info</span>
-                  <span>يُحدد البروتوكول المناسب خلال جلسة تقييم مجانية</span>
+                  <span>يُحدد البروتوكول المناسب خلال جلسة التقييم الأولى</span>
                 </div>
               </div>
               <div className="hidden sm:block w-48 h-48 bg-white rounded-full p-2 rotate-12 relative flex-shrink-0">
@@ -586,7 +586,7 @@ export default function StretchmarksLanding() {
           <div className="relative z-10">
             <h2 className="text-4xl md:text-6xl font-headline mb-8">هل أنتِ جاهزة لبداية جديدة؟</h2>
             <p className="text-xl opacity-90 mb-6 max-w-2xl mx-auto leading-relaxed">
-              نحن هنا لنرافقك في رحلة استعادة جمالك الطبيعي. استشارة خاصة ومجانية بانتظارك.
+              نحن هنا لنرافقك في رحلة استعادة جمالك الطبيعي. استشارة خاصة بانتظارك.
             </p>
             <p className="text-sm opacity-70 mb-12">بدون التزامات — فقط احجزي واكتشفي الخيار المناسب لكِ.</p>
             <div className="flex flex-wrap justify-center gap-6">

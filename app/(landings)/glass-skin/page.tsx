@@ -384,7 +384,7 @@ export default function GlassSkinLanding() {
                 </span>
                 <div>
                   <span className="block text-sm font-bold text-white">
-                    استشارة مجانية
+                    استشارة شخصية
                   </span>
                   <span className="text-sm text-[var(--color-gls-muted)]">
                     عبّئي النموذج ونحدّد لكِ الموعد المناسب

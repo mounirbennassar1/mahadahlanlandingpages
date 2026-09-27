@@ -760,7 +760,7 @@ export default function DarkCirclesLanding() {
               className="grid gap-2.5 pt-6 text-sm text-[var(--color-dc-ink-soft)]"
             >
               {[
-                "استشارة مجانية مع طبيبة متخصصة",
+                "استشارة مع طبيبة متخصصة",
                 "خطة علاج مصمّمة لحالتكِ تحديداً",
                 "سرية تامة وخصوصية بياناتكِ",
               ].map((b) => (

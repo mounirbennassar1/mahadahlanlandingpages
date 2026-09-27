@@ -32,7 +32,7 @@ export default function BodyThankYouPage() {
 
           <p className="text-body-muted leading-relaxed mb-8">
             شكراً لتواصلك مع عيادات د. مها دحلان. فريقنا سيقوم بالتواصل معك
-            خلال ساعة عمل واحدة لتأكيد موعد جلسة تحليل القوام المجانية.
+            خلال ساعة عمل واحدة لتأكيد موعد جلسة تحليل القوام.
           </p>
 
           <div className="rounded-2xl border border-body-line bg-white/40 p-5 mb-8 text-right">

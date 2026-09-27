@@ -844,7 +844,7 @@ export default function AcneLanding() {
             data-reveal
             className="mt-6 text-base sm:text-lg lg:text-xl text-stone-300 leading-relaxed max-w-2xl mx-auto"
           >
-            احجزي استشارتك المجانية مع نخبة أطباء الجلدية في عيادات د. مها
+            احجزي استشارتك مع نخبة أطباء الجلدية في عيادات د. مها
             دحلان وابدئي رحلتك نحو بشرة صافية ومشرقة.
           </p>
 

@@ -387,7 +387,7 @@ export default function HairLanding() {
                   <span className="material-symbols-outlined text-[#c9a84c] text-2xl">verified_user</span>
                 </div>
                 <div>
-                  <div className="font-bold text-[#1a3a2a] text-sm">استشارة مجانية</div>
+                  <div className="font-bold text-[#1a3a2a] text-sm">استشارة شخصية</div>
                   <div className="text-xs text-slate-400">مع خبير متخصص</div>
                 </div>
               </motion.div>
@@ -625,7 +625,7 @@ export default function HairLanding() {
 
                   <motion.ul initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="space-y-3 text-slate-200 text-sm">
                     {[
-                      "استشارة مجانية مع طبيب متخصص",
+                      "استشارة مع طبيب متخصص",
                       "خطة علاج مصممة لحالتك",
                       "أحدث التقنيات الطبية في جدة",
                     ].map((item) => (

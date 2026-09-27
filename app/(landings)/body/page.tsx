@@ -636,18 +636,18 @@ export default function BodyLanding() {
               data-split-scroll
               className="font-display-body mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl text-body-fg"
             >
-              الجلسة الأولى عليها مكالمة استشارة مجانية.
+              ابدئي بمكالمة استشارة مع فريقنا.
             </h2>
             <p className="reveal mt-6 leading-8 text-body-muted max-w-lg">
               اتركي بياناتك وسنعاود التواصل معك خلال ساعة عمل لتحديد موعد
-              زيارة الفرع الأقرب لك، مع هدية ترحيبية وتحليل قوام مجاني.
+              زيارة الفرع الأقرب لك، مع تحليل قوام دقيق لحالتك.
             </p>
 
             <ul className="mt-10 grid gap-4 text-sm text-body-fg/90">
               {[
                 "اتصال خلال ساعة عمل واحدة",
-                "تحليل قوام وخطة مخصصة مجانًا",
-                "هدية ترحيبية في أول زيارة",
+                "تحليل قوام وخطة مخصصة لأهدافك",
+                "فريق طبي نسائي متخصص",
                 "٧ فروع في أهم مدن المملكة",
               ].map((line) => (
                 <li key={line} className="reveal flex items-center gap-3">

@@ -115,10 +115,10 @@ export function LeadForm() {
             <div className="space-y-1.5 text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-mrf-primary)]/20 bg-[var(--color-mrf-primary)]/5 px-4 py-1.5 text-xs font-semibold tracking-[0.18em] text-[var(--color-mrf-primary-dim)]">
                 <Icon.Sparkles className="size-3.5" />
-                استشارة مجانية
+                استشارة شخصية
               </span>
               <h3 className="pt-2 text-2xl font-bold text-[var(--color-mrf-ink)] sm:text-3xl">
-                احجزي استشارتكِ المجانية
+                احجزي استشارتكِ الآن
               </h3>
               <p className="text-sm text-[var(--color-mrf-ink-soft)]">
                 اتركي بياناتكِ، وسنتواصل معكِ خلال ٢٤ ساعة.
