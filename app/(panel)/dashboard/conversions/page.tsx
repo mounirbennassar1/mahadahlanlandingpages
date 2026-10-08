@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { can, getMember } from "@/lib/team/member";
 import { redirect } from "next/navigation";
 import { ensureConversionActionsForSource } from "@/lib/sources";
 import { saveConversionAction } from "./actions";
@@ -19,7 +20,7 @@ const TYPE_COLOR = {
 export default async function ConversionsPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const isAdmin = session.user.role === "ADMIN";
+  const isAdmin = can(await getMember(), "marketing.manage");
 
   const sources = await prisma.leadSource.findMany({
     orderBy: { label: "asc" },

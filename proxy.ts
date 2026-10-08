@@ -18,7 +18,7 @@ import { auth } from "@/auth";
  *    response instead of a redirect (they are fetch() calls from the panel).
  */
 
-const ADMIN_PATHS = [/^\/login(\/|$)/, /^\/dashboard(\/|$)/];
+const ADMIN_PATHS = [/^\/login(\/|$)/, /^\/logout(\/|$)/, /^\/dashboard(\/|$)/];
 const ADMIN_API = [/^\/api\/auth(\/|$)/];
 const PRIVATE_API = [/^\/api\/admin(\/|$)/];
 const PUBLIC_API = [/^\/api\/leads(\/|$)/];
@@ -84,7 +84,8 @@ export default auth((req: NextRequest & { auth: unknown }) => {
     const isOnLogin = pathname === "/login";
     if (!isAuthed && !isOnLogin) {
       const url = new URL("/login", req.nextUrl);
-      url.searchParams.set("next", pathname);
+      // Never bounce back to /logout after signing in.
+      if (pathname !== "/logout") url.searchParams.set("next", pathname);
       return NextResponse.redirect(url);
     }
     if (isAuthed && isOnLogin) {

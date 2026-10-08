@@ -15,10 +15,12 @@ export function AssigneePill({
   leadId,
   assignee,
   users,
+  disabled = false,
 }: {
   leadId: string;
   assignee: UserLite | null;
   users: UserLite[];
+  disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState<UserLite | null>(assignee);
@@ -30,7 +32,8 @@ export function AssigneePill({
       {current ? (
         <button
           onClick={() => setOpen((v) => !v)}
-          disabled={pending}
+          disabled={pending || disabled}
+          title={disabled ? "Your role can't assign leads" : undefined}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -65,7 +68,8 @@ export function AssigneePill({
       ) : (
         <button
           onClick={() => setOpen((v) => !v)}
-          disabled={pending}
+          disabled={pending || disabled}
+          title={disabled ? "Your role can't assign leads" : undefined}
           style={{
             display: "inline-flex",
             alignItems: "center",

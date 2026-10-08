@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { can, getMember } from "@/lib/team/member";
 import { redirect } from "next/navigation";
 import { rotateKeyAction } from "./actions";
 import { RotateKeyButton } from "./rotate-button";
@@ -13,7 +14,7 @@ export default async function SourcesPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const isAdmin = session.user.role === "ADMIN";
+  const isAdmin = can(await getMember(), "marketing.manage");
 
   const { newKey, slug } = await searchParams;
 

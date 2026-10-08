@@ -1,20 +1,21 @@
 import { prisma } from "@/lib/prisma";
 import { STATUS_ORDER, formatRelative } from "@/lib/status";
-import type { LeadStatus, Prisma } from "@prisma/client";
+import { can, requirePageMember } from "@/lib/team/member";
 import { LeadsFilters } from "./filters";
 import { StatusPill } from "./status-pill";
 import { AssigneePill } from "./assignee-pill";
 import { LeadDetails, hasLeadDetails } from "./lead-details";
+import { ExportMenu } from "./export-menu";
+import {
+  PAGE_SIZE,
+  buildLeadWhere,
+  leadInclude,
+  parseLeadSearch,
+  searchToParams,
+  type RawSearch,
+} from "./_lib/query";
 
 export const dynamic = "force-dynamic";
-
-const PAGE_SIZE = 20;
-
-function parseStatus(value: string | undefined): LeadStatus | null {
-  if (!value) return null;
-  if (STATUS_ORDER.includes(value as LeadStatus)) return value as LeadStatus;
-  return null;
-}
 
 function leadAvatarHue(name: string) {
   let h = 0;
@@ -28,44 +29,43 @@ function initials(name: string) {
   return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase() || "·";
 }
 
-export default async function LeadsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ source?: string; status?: string; q?: string; page?: string }>;
-}) {
-  const params = await searchParams;
-  const activeSourceSlug = params.source && params.source !== "all" ? params.source : null;
-  const activeStatus = parseStatus(params.status);
-  const q = params.q?.trim() ?? "";
-  const pageNum = Math.max(1, Number.parseInt(params.page ?? "1", 10) || 1);
-
-  const where: Prisma.LeadWhereInput = {};
-  if (activeSourceSlug) where.source = { slug: activeSourceSlug };
-  if (activeStatus) where.status = activeStatus;
-  if (q) {
-    where.OR = [
-      { fullName: { contains: q, mode: "insensitive" } },
-      { phone: { contains: q } },
-      { city: { contains: q, mode: "insensitive" } },
-    ];
-  }
+export default async function LeadsPage({ searchParams }: { searchParams: Promise<RawSearch> }) {
+  const member = await requirePageMember();
+  const search = parseLeadSearch(await searchParams);
+  const pageNum = search.page;
+  const seesAll = can(member, "leads.view_all");
+  const scope = { onlyAssignedTo: seesAll ? undefined : member.id };
+  const where = buildLeadWhere(search, scope);
 
   const [leads, totalCount, sources, statusCounts, allUsers] = await Promise.all([
     prisma.lead.findMany({
       where,
       orderBy: { submittedAt: "desc" },
-      include: { source: true, assignee: true, offer: { select: { title: true } } },
+      include: leadInclude,
       skip: (pageNum - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
     }),
     prisma.lead.count({ where }),
-    prisma.leadSource.findMany({ orderBy: { label: "asc" }, select: { slug: true, label: true, _count: { select: { leads: true } } } }),
+    prisma.leadSource.findMany({
+      orderBy: { label: "asc" },
+      select: {
+        slug: true,
+        label: true,
+        _count: { select: { leads: seesAll ? true : { where: { assigneeId: member.id } } } },
+      },
+    }),
+    // Status chips count everything else in the filter, so switching status
+    // never changes the other numbers.
     prisma.lead.groupBy({
       by: ["status"],
       _count: { _all: true },
-      where: activeSourceSlug ? { source: { slug: activeSourceSlug } } : undefined,
+      where: buildLeadWhere({ ...search, status: null }, scope),
     }),
-    prisma.user.findMany({ select: { id: true, name: true, avatarHue: true, role: true } }),
+    prisma.user.findMany({
+      where: { active: true },
+      orderBy: { name: "asc" },
+      select: { id: true, name: true, avatarHue: true },
+    }),
   ]);
 
   const statusCountMap = new Map(statusCounts.map((s) => [s.status, s._count._all] as const));
@@ -80,9 +80,12 @@ export default async function LeadsPage({
             Leads
           </h1>
           <div style={{ fontSize: 14, color: "var(--ink-3)", marginTop: 6 }}>
-            {totalCount.toLocaleString("en-US")} leads · filtered view
+            {totalCount.toLocaleString("en-US")} leads · {seesAll ? "filtered view" : "assigned to you"}
           </div>
         </div>
+        {can(member, "leads.export") && (
+          <ExportMenu query={searchToParams(search).toString()} count={totalCount} />
+        )}
       </div>
 
       <div
@@ -96,9 +99,13 @@ export default async function LeadsPage({
       >
         <LeadsFilters
           sources={sources.map((s) => ({ slug: s.slug, label: s.label, count: s._count.leads }))}
-          activeSource={activeSourceSlug}
-          activeStatus={activeStatus}
-          query={q}
+          activeSource={search.source}
+          activeStatus={search.status}
+          query={search.q}
+          from={search.from}
+          to={search.to}
+          assignee={search.assignee}
+          assignees={seesAll ? allUsers.map((u) => ({ id: u.id, name: u.name })) : null}
           statusCounts={{
             ALL: allStatusTotal,
             ...Object.fromEntries(
@@ -213,13 +220,14 @@ export default async function LeadsPage({
                       {hasLeadDetails(lead) ? <LeadDetails data={lead} /> : <span style={{ color: "var(--ink-4)" }}>—</span>}
                     </Td>
                     <Td>
-                      <StatusPill leadId={lead.id} status={lead.status} />
+                      <StatusPill leadId={lead.id} status={lead.status} disabled={!can(member, "leads.update")} />
                     </Td>
                     <Td>
                       <AssigneePill
                         leadId={lead.id}
                         assignee={lead.assignee ? { id: lead.assignee.id, name: lead.assignee.name, avatarHue: lead.assignee.avatarHue } : null}
-                        users={allUsers.map((u) => ({ id: u.id, name: u.name, avatarHue: u.avatarHue }))}
+                        users={allUsers}
+                        disabled={!can(member, "leads.assign")}
                       />
                     </Td>
                     <Td>
@@ -240,6 +248,7 @@ export default async function LeadsPage({
           pageSize={PAGE_SIZE}
           currentPage={pageNum}
           totalPages={totalPages}
+          hrefFor={(page) => `?${searchToParams(search, { page: String(page) }).toString()}`}
         />
       </div>
     </>
@@ -287,14 +296,19 @@ function Pagination({
   pageSize,
   currentPage,
   totalPages,
+  hrefFor,
 }: {
   total: number;
   pageSize: number;
   currentPage: number;
   totalPages: number;
+  hrefFor: (page: number) => string;
 }) {
   const start = total === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const end = Math.min(total, currentPage * pageSize);
+  // A window of up to 7 pages around the current one.
+  const first = Math.max(1, Math.min(currentPage - 3, totalPages - 6));
+  const pages = Array.from({ length: Math.min(totalPages, 7) }, (_, i) => first + i);
   return (
     <div
       style={{
@@ -312,18 +326,18 @@ function Pagination({
         <b style={{ color: "var(--ink)" }}>{total.toLocaleString("en-US")}</b> leads
       </div>
       <div style={{ display: "flex", gap: 4 }}>
-        {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => i + 1).map((p) => (
-          <PageLink key={p} page={p} active={p === currentPage} />
+        {pages.map((p) => (
+          <PageLink key={p} page={p} href={hrefFor(p)} active={p === currentPage} />
         ))}
       </div>
     </div>
   );
 }
 
-function PageLink({ page, active }: { page: number; active: boolean }) {
+function PageLink({ page, href, active }: { page: number; href: string; active: boolean }) {
   return (
     <a
-      href={`?page=${page}`}
+      href={href}
       style={{
         width: 32,
         height: 32,

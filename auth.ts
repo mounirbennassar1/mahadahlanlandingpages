@@ -1,4 +1,4 @@
-import NextAuth, { type DefaultSession } from "next-auth";
+import NextAuth, { CredentialsSignin, type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
@@ -13,6 +13,11 @@ declare module "next-auth" {
       avatarHue: number;
     } & DefaultSession["user"];
   }
+}
+
+/** Shown on the login form instead of "Invalid email or password". */
+export class InactiveAccountError extends CredentialsSignin {
+  code = "inactive";
 }
 
 const CredentialsSchema = z.object({
@@ -38,7 +43,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         }
         const { email, password } = parsed.data;
 
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findFirst({
+          where: { email: { equals: email.trim(), mode: "insensitive" } },
+        });
         if (!user) {
           console.warn(`[auth] no user found for email: ${email}`);
           return null;
@@ -49,6 +56,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           console.warn(`[auth] bad password for: ${email}`);
           return null;
         }
+        if (!user.active) {
+          console.warn(`[auth] deactivated account: ${email}`);
+          throw new InactiveAccountError();
+        }
+
+        await prisma.user
+          .update({ where: { id: user.id }, data: { lastLoginAt: new Date() } })
+          .catch((err) => console.error("[auth] lastLoginAt", err));
 
         return {
           id: user.id,

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
+import { can, getMember } from "@/lib/team/member";
 import { prisma } from "@/lib/prisma";
 
 function normalize(input: FormDataEntryValue | null): string | null {
@@ -17,8 +17,7 @@ function normalize(input: FormDataEntryValue | null): string | null {
  * stays in the table (the `active` flag handles enable/disable separately).
  */
 export async function saveConversionAction(formData: FormData) {
-  const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
+  if (!can(await getMember(), "marketing.manage")) {
     throw new Error("Forbidden");
   }
 

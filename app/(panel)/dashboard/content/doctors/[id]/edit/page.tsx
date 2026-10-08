@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { DeleteButton, FormMessage, PageHeader, secondaryButtonStyle } from "../../../../_components/forms";
 import { DoctorForm } from "../../_components/DoctorForm";
 import { deleteDoctor } from "../../actions";
@@ -20,7 +20,7 @@ export default async function EditDoctorPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const canEdit = isEditor(session.user.role);
+  const canEdit = can(await getMember(), "content.edit");
 
   const [{ id }, { created }] = await Promise.all([params, searchParams]);
   const doctor = await prisma.doctor.findUnique({ where: { id }, include: { _count: { select: { articles: true } } } });

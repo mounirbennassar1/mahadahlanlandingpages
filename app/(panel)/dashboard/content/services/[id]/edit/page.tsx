@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { DeleteButton, FormMessage, PageHeader, secondaryButtonStyle } from "../../../../_components/forms";
 import { ServiceForm } from "../../_components/ServiceForm";
 import { deleteService } from "../../actions";
@@ -21,7 +21,7 @@ export default async function EditServicePage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const canEdit = isEditor(session.user.role);
+  const canEdit = can(await getMember(), "content.edit");
 
   const [{ id }, { created }] = await Promise.all([params, searchParams]);
   const [service, groups] = await Promise.all([prisma.service.findUnique({ where: { id } }), serviceGroups()]);

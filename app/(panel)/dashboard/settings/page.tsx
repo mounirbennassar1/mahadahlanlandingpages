@@ -1,9 +1,9 @@
-import { auth } from "@/auth";
+import { requirePageMember } from "@/lib/team/member";
 
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-  const session = await auth();
+  const member = await requirePageMember();
   return (
     <>
       <div style={{ marginBottom: 24 }}>
@@ -11,7 +11,7 @@ export default async function SettingsPage() {
           Settings
         </h1>
         <div style={{ fontSize: 14, color: "var(--ink-3)", marginTop: 6 }}>
-          Signed in as <b style={{ color: "var(--ink)" }}>{session?.user.email}</b> · {session?.user.role}
+          Signed in as <b style={{ color: "var(--ink)" }}>{member.email}</b> · {member.roleName}
         </div>
       </div>
       <div

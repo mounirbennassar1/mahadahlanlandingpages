@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import type { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { DeleteButton, PageHeader } from "../../_components/forms";
 import {
   Chip,
@@ -34,7 +34,7 @@ export default async function ArticlesPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const canEdit = isEditor(session.user.role);
+  const canEdit = can(await getMember(), "content.edit");
 
   const params = await searchParams;
   const q = params.q?.trim() ?? "";

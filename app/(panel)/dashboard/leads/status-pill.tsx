@@ -6,7 +6,15 @@ import type { LeadStatus } from "@prisma/client";
 import { STATUS_META, STATUS_ORDER } from "@/lib/status";
 import { updateLeadStatus } from "./actions";
 
-export function StatusPill({ leadId, status }: { leadId: string; status: LeadStatus }) {
+export function StatusPill({
+  leadId,
+  status,
+  disabled = false,
+}: {
+  leadId: string;
+  status: LeadStatus;
+  disabled?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(status);
   const [pending, startTransition] = useTransition();
@@ -18,8 +26,10 @@ export function StatusPill({ leadId, status }: { leadId: string; status: LeadSta
       <button
         className={meta.className}
         onClick={() => setOpen((v) => !v)}
-        disabled={pending}
+        disabled={pending || disabled}
+        title={disabled ? "Your role can't change lead status" : undefined}
         style={{
+          cursor: disabled ? "default" : undefined,
           display: "inline-flex",
           alignItems: "center",
           gap: 6,
@@ -35,9 +45,11 @@ export function StatusPill({ leadId, status }: { leadId: string; status: LeadSta
       >
         <span className="dot" style={{ width: 7, height: 7, borderRadius: "50%" }} />
         {meta.label}
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 2, opacity: 0.55 }}>
-          <polyline points="6 9 12 15 18 9" />
-        </svg>
+        {!disabled && (
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 2, opacity: 0.55 }}>
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        )}
       </button>
       {open && (
         <>

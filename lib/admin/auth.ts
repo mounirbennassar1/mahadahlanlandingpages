@@ -1,23 +1,11 @@
-import { auth } from "@/auth";
-import type { UserRole } from "@prisma/client";
-import { ActionError } from "./action";
+import { requireActionMember } from "@/lib/team/member";
 
-/** ADMIN and MANAGER may create/update/delete website content; AGENT is read-only. */
-export function isEditor(role: UserRole | string | null | undefined) {
-  return role === "ADMIN" || role === "MANAGER";
-}
-
+/** Signed-in, active member, or an `ActionError` the form can display. */
 export async function requireSession() {
-  const session = await auth();
-  if (!session?.user) throw new ActionError("Your session has expired. Please sign in again.");
-  return session;
+  return requireActionMember();
 }
 
-/** Session + editor role, or an `ActionError` the form can display. */
+/** Member whose role grants `content.edit`, or an `ActionError` the form can display. */
 export async function requireEditor() {
-  const session = await requireSession();
-  if (!isEditor(session.user.role)) {
-    throw new ActionError("You don't have permission to edit website content.");
-  }
-  return session;
+  return requireActionMember("content.edit");
 }

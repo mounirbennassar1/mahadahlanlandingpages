@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { PageHeader, secondaryButtonStyle } from "../../../_components/forms";
 import { DeviceForm } from "../_components/DeviceForm";
 
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function NewDevicePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (!isEditor(session.user.role)) redirect("/dashboard/content/devices");
+  if (!can(await getMember(), "content.edit")) redirect("/dashboard/content/devices");
 
   return (
     <>
