@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import type { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { DeleteButton, PageHeader } from "../../_components/forms";
 import { Code, DateCell, EditLink, EmptyRow, ListToolbar, NewButton, Num, Table, TableShell, Td, Th, TitleCell } from "../_components/table";
 import { deleteCategory } from "./actions";
@@ -14,7 +14,7 @@ const LIST = "/dashboard/content/categories";
 export default async function CategoriesPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const canEdit = isEditor(session.user.role);
+  const canEdit = can(await getMember(), "content.edit");
 
   const q = (await searchParams).q?.trim() ?? "";
   const where: Prisma.CategoryWhereInput = q

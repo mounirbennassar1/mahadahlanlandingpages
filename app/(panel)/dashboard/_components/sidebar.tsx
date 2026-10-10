@@ -3,13 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Session } from "next-auth";
+import type { Permission } from "@/lib/team/permissions";
 
 type NavItem = {
   href: string;
   label: string;
   icon: React.ReactNode;
   badge?: string | number;
+  /** Hidden unless the member's role grants it. */
+  requires?: Permission;
 };
 
 const navIconStyle: React.CSSProperties = {
@@ -168,6 +170,17 @@ const WORKSPACE_NAV: NavItem[] = [
     ),
   },
   {
+    href: "/dashboard/team/roles",
+    label: "Roles",
+    requires: "team.manage",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={navIconStyle}>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <polyline points="9 12 11 14 15 10" />
+      </svg>
+    ),
+  },
+  {
     href: "/dashboard/settings",
     label: "Settings",
     icon: (
@@ -185,27 +198,18 @@ function initials(name?: string | null) {
   return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase() || "·";
 }
 
-function roleLabel(role?: string) {
-  switch (role) {
-    case "ADMIN":
-      return "Administrator";
-    case "MANAGER":
-      return "Manager";
-    case "AGENT":
-      return "Sales Lead";
-    default:
-      return "Member";
-  }
-}
-
 export function Sidebar({
   user,
+  permissions,
   signOutAction,
 }: {
-  user: Session["user"];
+  user: { name: string; avatarHue: number; roleName: string };
+  permissions: Permission[];
   signOutAction: () => Promise<void>;
 }) {
   const pathname = usePathname();
+  const allowed = (items: NavItem[]) =>
+    items.filter((item) => !item.requires || permissions.includes(item.requires));
 
   return (
     <aside
@@ -232,9 +236,9 @@ export function Sidebar({
       </div>
 
       <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
-        <NavSection label="Overview" items={OVERVIEW_NAV} pathname={pathname} />
-        <NavSection label="Website" items={WEBSITE_NAV} pathname={pathname} />
-        <NavSection label="Workspace" items={WORKSPACE_NAV} pathname={pathname} />
+        <NavSection label="Overview" items={allowed(OVERVIEW_NAV)} pathname={pathname} />
+        <NavSection label="Website" items={allowed(WEBSITE_NAV)} pathname={pathname} />
+        <NavSection label="Workspace" items={allowed(WORKSPACE_NAV)} pathname={pathname} />
       </div>
 
       <div
@@ -275,7 +279,7 @@ export function Sidebar({
             <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {user.name}
             </div>
-            <div style={{ fontSize: 11, color: "var(--ink-3)", marginTop: 1 }}>{roleLabel(user.role)}</div>
+            <div style={{ fontSize: 11, color: "var(--ink-3)", marginTop: 1 }}>{user.roleName}</div>
           </div>
           <form action={signOutAction}>
             <button
@@ -313,8 +317,12 @@ function NavSection({ label, items, pathname }: { label: string; items: NavItem[
       </div>
       <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {items.map((item) => {
+          // Longest matching href wins, so /dashboard/team/roles doesn't also light up Team.
+          const matches = (href: string) =>
+            href === "/dashboard" ? pathname === "/dashboard" : pathname === href || pathname.startsWith(`${href}/`);
           const active =
-            item.href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(item.href);
+            matches(item.href) &&
+            !items.some((other) => other.href.length > item.href.length && other.href.startsWith(item.href) && matches(other.href));
           return (
             <Link
               key={item.href}

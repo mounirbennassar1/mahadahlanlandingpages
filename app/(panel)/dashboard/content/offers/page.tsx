@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import type { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { DeleteButton, PageHeader } from "../../_components/forms";
 import {
   Code,
@@ -37,7 +37,7 @@ function offerState(o: { active: boolean; startsAt: Date | null; endsAt: Date | 
 export default async function OffersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  const canEdit = isEditor(session.user.role);
+  const canEdit = can(await getMember(), "content.edit");
 
   const q = (await searchParams).q?.trim() ?? "";
   const where: Prisma.OfferWhereInput = q

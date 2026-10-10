@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { PageHeader, secondaryButtonStyle } from "../../../_components/forms";
 import { ServiceForm } from "../_components/ServiceForm";
 import { landingOptions, serviceGroups } from "../options";
@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function NewServicePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (!isEditor(session.user.role)) redirect("/dashboard/content/services");
+  if (!can(await getMember(), "content.edit")) redirect("/dashboard/content/services");
 
   const groups = await serviceGroups();
 

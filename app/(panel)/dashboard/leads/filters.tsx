@@ -12,12 +12,21 @@ export function LeadsFilters({
   activeSource,
   activeStatus,
   query,
+  from,
+  to,
+  assignee,
+  assignees,
   statusCounts,
 }: {
   sources: Source[];
   activeSource: string | null;
   activeStatus: LeadStatus | null;
   query: string;
+  from: string | null;
+  to: string | null;
+  assignee: string | null;
+  /** Null when the member only sees their own leads. */
+  assignees: { id: string; name: string }[] | null;
   statusCounts: Record<string, number>;
 }) {
   const router = useRouter();
@@ -156,6 +165,73 @@ export function LeadsFilters({
           />
         ))}
       </div>
+      {/* Period + assignee */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 8,
+          padding: "12px 22px",
+          background: "var(--surface-2)",
+          borderBottom: "1px solid var(--hairline)",
+        }}
+      >
+        <span style={{ color: "var(--ink-3)", fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginRight: 4 }}>
+          Period
+        </span>
+        {PRESETS.map((p) => {
+          const range = p.range();
+          return (
+            <Chip
+              key={p.label}
+              active={from === range.from && to === range.to}
+              label={p.label}
+              onClick={() => go(range)}
+            />
+          );
+        })}
+        <label style={dateLabel}>
+          From
+          <input
+            type="date"
+            value={from ?? ""}
+            max={to ?? undefined}
+            onChange={(e) => go({ from: e.target.value || null })}
+            style={dateInput}
+          />
+        </label>
+        <label style={dateLabel}>
+          To
+          <input
+            type="date"
+            value={to ?? ""}
+            min={from ?? undefined}
+            onChange={(e) => go({ to: e.target.value || null })}
+            style={dateInput}
+          />
+        </label>
+
+        {assignees && (
+          <label style={{ ...dateLabel, marginLeft: "auto" }}>
+            Assigned to
+            <select
+              value={assignee ?? ""}
+              onChange={(e) => go({ assignee: e.target.value || null })}
+              style={dateInput}
+            >
+              <option value="">Anyone</option>
+              <option value="none">Unassigned</option>
+              {assignees.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+      </div>
+
       {isPending && (
         <div style={{ height: 2, background: "var(--primary-soft)", overflow: "hidden" }}>
           <div style={{ height: "100%", width: "30%", background: "var(--primary)", animation: "progress 0.8s ease-in-out infinite" }} />
@@ -212,3 +288,48 @@ function Chip({
     </button>
   );
 }
+
+/**
+ * yyyy-mm-dd on the clinic's calendar (Riyadh), the format the filter expects.
+ * Fixed to one zone so the server render and the browser agree.
+ */
+function ymd(d: Date) {
+  return d.toLocaleDateString("en-CA", { timeZone: "Asia/Riyadh" });
+}
+
+function daysAgo(n: number) {
+  return new Date(Date.now() - n * 24 * 60 * 60 * 1000);
+}
+
+const PRESETS: { label: string; range: () => { from: string | null; to: string | null } }[] = [
+  { label: "All time", range: () => ({ from: null, to: null }) },
+  { label: "Today", range: () => ({ from: ymd(new Date()), to: ymd(new Date()) }) },
+  { label: "Last 7 days", range: () => ({ from: ymd(daysAgo(6)), to: ymd(new Date()) }) },
+  { label: "Last 30 days", range: () => ({ from: ymd(daysAgo(29)), to: ymd(new Date()) }) },
+  {
+    label: "This month",
+    range: () => {
+      const today = ymd(new Date());
+      return { from: `${today.slice(0, 8)}01`, to: today };
+    },
+  },
+];
+
+const dateLabel: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 6,
+  fontSize: 12,
+  color: "var(--ink-3)",
+  fontWeight: 500,
+};
+
+const dateInput: React.CSSProperties = {
+  padding: "6px 8px",
+  borderRadius: 9,
+  border: "1px solid var(--hairline)",
+  background: "var(--surface)",
+  color: "var(--ink-2)",
+  fontSize: 12.5,
+  fontFamily: "var(--font-data)",
+};

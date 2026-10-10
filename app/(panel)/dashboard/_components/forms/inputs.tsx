@@ -92,12 +92,15 @@ export function NumberInput({
 /** Plain checkbox styled as a toggle row; uncontrolled so form reset works. */
 export function Checkbox({
   name,
+  value,
   label,
   description,
   defaultChecked,
   disabled,
 }: {
   name: string;
+  /** Submitted value when checked (defaults to "on"); set it for checkbox groups. */
+  value?: string;
   label: React.ReactNode;
   description?: React.ReactNode;
   defaultChecked?: boolean;
@@ -120,6 +123,7 @@ export function Checkbox({
       <input
         type="checkbox"
         name={name}
+        value={value}
         defaultChecked={defaultChecked}
         disabled={disabled}
         style={{ width: 16, height: 16, marginTop: 2, accentColor: "var(--primary)", flex: "none" }}

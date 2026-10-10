@@ -79,7 +79,7 @@ export async function getLeadsByCity(limit = 6) {
 export async function getTeamPerformance(limit = 7) {
   const users = await prisma.user.findMany({
     take: limit,
-    where: { role: { in: ["AGENT", "MANAGER"] } },
+    where: { active: true, role: { in: ["AGENT", "MANAGER"] } },
     select: { id: true, name: true },
   });
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);

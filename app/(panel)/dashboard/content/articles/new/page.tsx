@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 import { PageHeader, secondaryButtonStyle } from "../../../_components/forms";
 import { ArticleForm } from "../_components/ArticleForm";
 import Link from "next/link";
@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function NewArticlePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (!isEditor(session.user.role)) redirect("/dashboard/content/articles");
+  if (!can(await getMember(), "content.edit")) redirect("/dashboard/content/articles");
 
   const [categories, doctors] = await Promise.all([
     prisma.category.findMany({ orderBy: [{ order: "asc" }, { name: "asc" }], select: { id: true, name: true } }),

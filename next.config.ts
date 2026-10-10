@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // pdfkit reads its built-in font metrics from its own folder at runtime, so
+  // it must stay a real node_modules package rather than be bundled.
+  serverExternalPackages: ["pdfkit", "exceljs"],
+
+  // The PDF export embeds Almarai for Arabic; the route reads it from disk.
+  outputFileTracingIncludes: {
+    "/api/admin/leads/export": ["./lib/export/fonts/*.ttf"],
+  },
+
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [360, 480, 640, 768, 900, 1080, 1280, 1600, 1920],

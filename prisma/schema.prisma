@@ -54,12 +54,59 @@ model User {
   email        String   @unique
   name         String
   passwordHash String
+  /// Coarse role kept for the website panel, which shares this database.
+  /// Derived from `teamRole` (see lib/team/permissions.ts `baseRoleFor`).
   role         UserRole @default(AGENT)
   avatarHue    Int      @default(295)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  assignedLeads Lead[] @relation("AssignedLeads")
+  /// Fine-grained role managed at /dashboard/team/roles. Null falls back to
+  /// the defaults for `role`.
+  teamRoleId  String?
+  teamRole    Role?     @relation(fields: [teamRoleId], references: [id], onDelete: SetNull)
+  /// Deactivated members cannot sign in; their leads and history stay.
+  active      Boolean   @default(true)
+  phone       String?
+  jobTitle    String?
+  lastLoginAt DateTime?
+
+  assignedLeads Lead[]       @relation("AssignedLeads")
+  auditEvents   AuditEvent[] @relation("AuditActor")
+
+  @@index([teamRoleId])
+}
+
+/// A named set of permissions (keys from lib/team/permissions.ts).
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  permissions String[] @default([])
+  hue         Int      @default(295)
+  /// Seeded roles: cannot be renamed or deleted.
+  system      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+}
+
+/// Who did what in the panel: team changes and lead exports.
+model AuditEvent {
+  id         String  @id @default(cuid())
+  actorId    String?
+  actor      User?   @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  /// e.g. "member.created", "role.updated", "leads.exported".
+  action     String
+  /// Snapshot of the target's name so the log still reads after a delete.
+  targetId   String?
+  targetName String?
+  meta       Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }
 
 model LeadSource {

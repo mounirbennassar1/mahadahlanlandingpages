@@ -2,13 +2,12 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
+import { can, getMember } from "@/lib/team/member";
 import { prisma } from "@/lib/prisma";
 import { generateApiKey } from "@/lib/api-key";
 
 export async function rotateKeyAction(formData: FormData) {
-  const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") throw new Error("Forbidden");
+  if (!can(await getMember(), "marketing.manage")) throw new Error("Forbidden");
 
   const sourceId = String(formData.get("sourceId") ?? "");
   if (!sourceId) throw new Error("Missing sourceId");

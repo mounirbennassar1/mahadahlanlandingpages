@@ -16,6 +16,9 @@ export async function signInAction(formData: FormData, redirectTo: string) {
     console.error("[signIn] failed:", error);
     if (error instanceof AuthError) {
       if (error.type === "CredentialsSignin") {
+        if ((error as { code?: string }).code === "inactive") {
+          return { error: "This account has been deactivated. Ask an administrator to reactivate it." };
+        }
         return { error: "Invalid email or password." };
       }
       const cause = (error.cause as { err?: Error } | undefined)?.err?.message;

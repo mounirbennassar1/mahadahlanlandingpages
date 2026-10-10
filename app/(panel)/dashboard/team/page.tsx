@@ -1,77 +1,106 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { can, requirePageMember } from "@/lib/team/member";
+import { describeAudit } from "@/lib/team/audit";
+import { formatRiyadh } from "@/lib/export/leads";
+import { secondaryButtonStyle } from "../_components/forms";
+import { TeamBoard, type MemberRow } from "./_components/team-board";
 
 export const dynamic = "force-dynamic";
 
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase() || "·";
-}
-
 export default async function TeamPage() {
-  const users = await prisma.user.findMany({
-    orderBy: { name: "asc" },
-    include: { _count: { select: { assignedLeads: true } } },
-  });
+  const member = await requirePageMember();
+  const canManage = can(member, "team.manage");
+
+  const [users, roles, events] = await Promise.all([
+    prisma.user.findMany({
+      orderBy: [{ active: "desc" }, { name: "asc" }],
+      include: { teamRole: true, _count: { select: { assignedLeads: true } } },
+    }),
+    prisma.role.findMany({ orderBy: [{ system: "desc" }, { name: "asc" }] }),
+    canManage
+      ? prisma.auditEvent.findMany({
+          orderBy: { createdAt: "desc" },
+          take: 25,
+          include: { actor: { select: { name: true } } },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  const rows: MemberRow[] = users.map((u) => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    phone: u.phone,
+    jobTitle: u.jobTitle,
+    roleId: u.teamRoleId,
+    roleName: u.teamRole?.name ?? u.role,
+    roleHue: u.teamRole?.hue ?? 295,
+    avatarHue: u.avatarHue,
+    active: u.active,
+    leads: u._count.assignedLeads,
+    lastLoginAt: u.lastLoginAt?.toISOString() ?? null,
+  }));
 
   return (
     <>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.025em", margin: 0 }}>
-          Team
-        </h1>
-        <div style={{ fontSize: 14, color: "var(--ink-3)", marginTop: 6 }}>
-          {users.length} members
-        </div>
-      </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-          gap: 16,
-        }}
-      >
-        {users.map((u) => (
-          <div
-            key={u.id}
-            style={{
-              background: "var(--surface)",
-              border: "1px solid var(--hairline)",
-              borderRadius: 16,
-              padding: 18,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div
-                style={{
-                  width: 42,
-                  height: 42,
-                  borderRadius: "50%",
-                  color: "#fff",
-                  fontWeight: 700,
-                  display: "grid",
-                  placeItems: "center",
-                  fontFamily: "var(--font-display)",
-                  background: `linear-gradient(135deg, oklch(0.72 0.12 ${u.avatarHue}), oklch(0.5 0.15 ${u.avatarHue}))`,
-                }}
-              >
-                {initials(u.name)}
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontWeight: 600, color: "var(--ink)" }}>{u.name}</div>
-                <div style={{ fontSize: 12, color: "var(--ink-3)" }}>{u.email}</div>
-              </div>
-            </div>
-            <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-              <span style={{ fontSize: 11.5, padding: "3px 8px", borderRadius: 999, background: "var(--primary-softer)", color: "var(--primary)", fontWeight: 600 }}>
-                {u.role}
-              </span>
-              <span style={{ fontSize: 12, color: "var(--ink-3)" }}>
-                {u._count.assignedLeads} assigned
-              </span>
-            </div>
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: 24 }}>
+        <div>
+          <h1 style={{ fontFamily: "var(--font-display)", fontSize: 30, fontWeight: 700, letterSpacing: "-0.025em", margin: 0 }}>
+            Team
+          </h1>
+          <div style={{ fontSize: 14, color: "var(--ink-3)", marginTop: 6 }}>
+            {rows.filter((r) => r.active).length} active members · {roles.length} roles
           </div>
-        ))}
+        </div>
+        {canManage && (
+          <Link href="/dashboard/team/roles" style={secondaryButtonStyle}>
+            Roles &amp; permissions
+          </Link>
+        )}
       </div>
+
+      <TeamBoard
+        members={rows}
+        roles={roles.map((r) => ({ id: r.id, name: r.name, description: r.description, hue: r.hue }))}
+        meId={member.id}
+        canManage={canManage}
+      />
+
+      {canManage && (
+        <section
+          style={{
+            marginTop: 24,
+            background: "var(--surface)",
+            border: "1px solid var(--hairline)",
+            borderRadius: "var(--radius)",
+            padding: "18px 22px",
+          }}
+        >
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 700, margin: "0 0 12px" }}>Recent activity</h2>
+          {events.length === 0 ? (
+            <p style={{ fontSize: 13.5, color: "var(--ink-3)", margin: 0 }}>
+              Team changes and lead exports will be listed here.
+            </p>
+          ) : (
+            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+              {events.map((e) => (
+                <li
+                  key={e.id}
+                  style={{ display: "flex", gap: 12, padding: "8px 0", borderTop: "1px solid var(--hairline)", fontSize: 13.5 }}
+                >
+                  <span style={{ fontFamily: "var(--font-data)", fontSize: 12, color: "var(--ink-4)", minWidth: 120 }}>
+                    {formatRiyadh(e.createdAt)}
+                  </span>
+                  <span style={{ color: "var(--ink-2)" }}>
+                    <b style={{ color: "var(--ink)" }}>{e.actor?.name ?? "A removed member"}</b> {describeAudit(e)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
     </>
   );
 }

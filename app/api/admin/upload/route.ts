@@ -4,7 +4,7 @@ import { randomBytes } from "node:crypto";
 import path from "node:path";
 import { put } from "@vercel/blob";
 import { auth } from "@/auth";
-import { isEditor } from "@/lib/admin/auth";
+import { can, getMember } from "@/lib/team/member";
 
 export const runtime = "nodejs";
 
@@ -40,7 +40,7 @@ function safeName(original: string, ext: string) {
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  if (!isEditor(session.user.role)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!can(await getMember(), "content.edit")) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   let formData: FormData;
   try {
